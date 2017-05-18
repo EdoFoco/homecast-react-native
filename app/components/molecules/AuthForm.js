@@ -5,12 +5,14 @@ import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 import * as t from 'tcomb-form-native'
 import LoginStatusMessage from '../atoms/LoginStatusMessage';
-import AuthButton from '../atoms/AuthButton';
+import Loader from '../atoms/Loader';
+
 import { 
   View,
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
+  AsyncStorage,
   TextInput,
   Text } from 'react-native';
 
@@ -67,9 +69,39 @@ var styles = StyleSheet.create({
 
 class AuthForm extends Component{
 
- componentDidMount(){
-    // give focus to the name textbox
-    this.refs.form.getComponent('username').refs.input.focus();
+ componentWillMount(){
+    if(!this.props.isLoggedIn){
+      this._getAuthToken();
+    }
+    
+  }
+
+  componentDidUpdate(){
+    if(this.props.isLoggedIn){
+        this.props.goToScreen('Profile');
+    }
+     if(!this.props.isAuthenticating){
+        this.refs.form.getComponent('username').refs.input.focus();
+    }
+  }
+
+async _getAuthToken(){
+    try {
+        const token = await AsyncStorage.getItem('@AuthToken:key')
+        .then(function(token){
+          if(token != null){
+            return token;
+          }
+          else{
+            throw Error("Token not found");
+          }
+        })
+        .then(this.props.getUser)
+        .catch(this.props.actionNotAuthenticating);
+ 
+    } catch (error) {
+        console.log(error);
+    }
   }
 
   _login(credentials){
@@ -87,29 +119,34 @@ class AuthForm extends Component{
   }
 
   render() {
-    return(
-      <View style={styles.container}>
-        <Form style={styles.form}
-          ref="form"
-          type={Person}
-          options={options}
-        />
-        <TouchableHighlight style={styles.button} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableHighlight>
-        <LoginStatusMessage />
-      </View>
-    )
+        if (this.props.isAuthenticating) {
+            return( <Loader />);
+        }
+        
+        return (
+            <View style={styles.container}>
+                <Form style={styles.form}
+                ref="form"
+                type={Person}
+                options={options}
+                />
+                <TouchableHighlight style={styles.button} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Login</Text>
+                </TouchableHighlight>
+                <LoginStatusMessage />
+            </View>
+        );
+     
+    
   }
 }
 
-AuthButton.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = (state) => {
-  console.log(state);
-  return {};
+    console.log(state);
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+        isAuthenticating: state.user.isAuthenticating
+    }
 };
 
 function mapDispatchToProps(dispatch) {

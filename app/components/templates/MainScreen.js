@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import AuthContainer from '../organisms/AuthContainer';
+import AuthForm from '../molecules/AuthForm';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 
 const MainScreen = () => (
   <View style={styles.container}>
-    <AuthContainer />
+    <AuthForm />
   </View>
 );
 

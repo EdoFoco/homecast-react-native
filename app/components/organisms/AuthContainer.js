@@ -1,25 +1,31 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+import { ActionCreators } from '../../actions';
+import { bindActionCreators } from 'redux';
+import AuthForm from '../molecules/AuthForm';
+import Loader from '../atoms/Loader';
 import {
   Button,
   StyleSheet,
   View,
+  AsyncStorage
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 
-import AuthForm from '../molecules/AuthForm';
-import Loader from '../atoms/Loader';
-
-
-
-const AuthContainer = ({ isLoggedIn, isAuthenticating, dispatch }) => {
-  if (isAuthenticating) {
+class AuthContainer extends Component{
+  
+  
+  render(){
+    if (this.props.isAuthenticating) {
       return <Loader />
     }
-  return (
-    <AuthForm />
-  );
+    return (
+      <AuthForm />
+    );
+  }
+ 
 };
+
 const mapStateToProps = (state) => {
   console.log(state);
   return {
@@ -28,5 +34,9 @@ const mapStateToProps = (state) => {
   }
 };
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
 
-export default connect(mapStateToProps)(AuthContainer);
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthContainer);

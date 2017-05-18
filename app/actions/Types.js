@@ -4,6 +4,5 @@ export const LOGIN = 'LOGIN';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT = 'LOGOUT';
 
-//User
-export const SET_USER = 'SET_USER';
-export const UNSET_USER = 'UNSET_USER';
+//Navigation
+export const GOTO_SCREEN = 'GOTO_SCREEN';

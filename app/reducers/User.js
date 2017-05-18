@@ -1,6 +1,6 @@
 import * as types from '../actions/Types';
 
-const initialAuthState = { isLoggedIn: false, isAuthenticating: false };
+const initialAuthState = { isLoggedIn: false, isAuthenticating: true };
 
 export default function user(state = initialAuthState, action) {
   switch (action.type) {
