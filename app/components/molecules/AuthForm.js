@@ -78,31 +78,31 @@ class AuthForm extends Component{
 
   componentDidUpdate(){
     if(this.props.isLoggedIn){
-        this.props.goToScreen('Profile');
+        this.props.goToGuestTabBar();
     }
      if(!this.props.isAuthenticating){
         this.refs.form.getComponent('username').refs.input.focus();
     }
   }
 
-async _getAuthToken(){
+ async _getAuthToken(){
     try {
         const token = await AsyncStorage.getItem('@AuthToken:key')
         .then(function(token){
-          if(token != null){
+        if(token != null){
             return token;
-          }
-          else{
+        }
+        else{
             throw Error("Token not found");
-          }
+        }
         })
         .then(this.props.getUser)
         .catch(this.props.actionNotAuthenticating);
- 
+
     } catch (error) {
         console.log(error);
     }
-  }
+ }
 
   _login(credentials){
       console.log(credentials);
@@ -152,10 +152,5 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
-
-/*const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch({ type: 'Logout' }),
-  login: () => dispatch(NavigationActions.navigate({ routeName: 'Login' })),
-});*/
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);

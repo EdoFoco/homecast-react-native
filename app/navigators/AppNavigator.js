@@ -6,11 +6,19 @@ import LoginScreen from '../components/templates/LoginScreen';
 import MainScreen from '../components/templates/MainScreen';
 import ProfileScreen from '../components/templates/ProfileScreen';
 
+import {GuestTabBarNavigator} from './GuestTabBarNavigator';
+
+const navigatorOptions = {
+  navigationOptions:{
+    header: null
+  }
+};
+
 export const AppNavigator = StackNavigator({
-  Login: { screen: LoginScreen },
   Main: { screen: MainScreen },
-  Profile: { screen: ProfileScreen },
-});
+  Guest: { screen: GuestTabBarNavigator },
+}, navigatorOptions);
+
 
 const AppWithNavigationState = ({ dispatch, nav }) => (
   <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />

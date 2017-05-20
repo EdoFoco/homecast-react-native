@@ -4,7 +4,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import GuestTabBar from '../../navigators/GuestTabBarNavigator';
 
 
 const styles = StyleSheet.create({
@@ -21,17 +20,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const ProfileScreen = () => (
-  <GuestTabBar />
-  /*<View style={styles.container}>
+const ViewingsScreen = () => (
+  <View style={styles.container}>
     <Text style={styles.welcome}>
-      Profile Screen
+      Viewings Screen
     </Text>
-  </View>*/
+  </View>
 );
 
-ProfileScreen.navigationOptions = {
-  title: 'Profile',
+ViewingsScreen.navigationOptions = {
+  title: 'Viewings Screen',
 };
 
-export default ProfileScreen;
+export default ViewingsScreen;

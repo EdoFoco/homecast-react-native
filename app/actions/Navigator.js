@@ -7,3 +7,10 @@ export function goToScreen(screeName){
         screenName: screeName
     }
 }
+
+export function goToGuestTabBar(){
+    return {
+        type: types.GOTO_GUEST_TAB_BAR
+    }
+
+}
