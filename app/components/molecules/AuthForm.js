@@ -78,7 +78,12 @@ class AuthForm extends Component{
 
   componentDidUpdate(){
     if(this.props.isLoggedIn){
-        this.props.goToGuestTabBar();
+        /*const navigateAction = NavigationActions.navigate({
+            params: {},
+            action: NavigationActions.navigate({ routeName: 'Home'}) 
+        })*/
+        //this.props.nav.dispatch(navigateAction)
+       
     }
      if(!this.props.isAuthenticating){
         this.refs.form.getComponent('username').refs.input.focus();
@@ -86,7 +91,7 @@ class AuthForm extends Component{
   }
 
  async _getAuthToken(){
-    try {
+ 
         const token = await AsyncStorage.getItem('@AuthToken:key')
         .then(function(token){
         if(token != null){
@@ -99,9 +104,7 @@ class AuthForm extends Component{
         .then(this.props.getUser)
         .catch(this.props.actionNotAuthenticating);
 
-    } catch (error) {
-        console.log(error);
-    }
+
  }
 
   _login(credentials){
@@ -131,7 +134,7 @@ class AuthForm extends Component{
                 options={options}
                 />
                 <TouchableHighlight style={styles.button} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
-                <Text style={styles.buttonText}>Login</Text>
+                    <Text style={styles.buttonText}>Login</Text>
                 </TouchableHighlight>
                 <LoginStatusMessage />
             </View>
@@ -145,7 +148,8 @@ const mapStateToProps = (state) => {
     console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
-        isAuthenticating: state.user.isAuthenticating
+        isAuthenticating: state.user.isAuthenticating,
+        nav: state.nav
     }
 };
 

@@ -28,7 +28,7 @@ export default function nav(state = initialNavState, action) {
       nextState = AppNavigator.router.getStateForAction(_goToGuestTabBar(action.screenName))
       break;
     case types.GOTO_GUEST_TAB_BAR:
-      nextState = AppNavigator.router.getStateForAction(_goToGuestTabBar());
+      nextState = AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Guest' }), state);
       break;
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);
@@ -42,8 +42,9 @@ var _goToGuestTabBar = function(){
   const actionToDispatch = NavigationActions.reset({
     index: 0,
     key: null,
-    router: GuestTabBarNavigator,
-    actions: [NavigationActions.navigate({ routeName: 'Guest' })],
+    //router: GuestTabBarNavigator,
+    //routeName: 'Guest',
+    actions: [NavigationActions.navigate({ routeName: 'Guest' }), NavigationActions.navigate({routeName: 'Viewings'})],
   });
   return actionToDispatch;
 }

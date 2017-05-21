@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import AppReducer from './app/reducers';
 import AppWithNavigationState from './app/navigators/AppNavigator';
+import MainScreen from './app/components/templates/MainScreen';
 import thunk from 'redux-thunk';
 
 
@@ -13,7 +14,7 @@ class ReduxExampleApp extends React.Component {
   render() {
     return (
       <Provider store={this.store}>
-        <AppWithNavigationState />
+        <MainScreen />
       </Provider>
     );
   }

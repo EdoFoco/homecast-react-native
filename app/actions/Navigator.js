@@ -1,14 +1,15 @@
 import * as types from './Types';
-import { AsyncStorage } from 'react-native';
 
-export function goToScreen(screeName){
+export function goToScreen(routeName){
     return {
         type: types.GOTO_SCREEN,
-        screenName: screeName
+        routeName: routeName
     }
 }
 
 export function goToGuestTabBar(){
+   // return dispatch(NavigationActions.navigate({ routeName: 'Home' });
+
     return {
         type: types.GOTO_GUEST_TAB_BAR
     }

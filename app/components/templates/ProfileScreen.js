@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
 });
 
 const ProfileScreen = () => (
-  <GuestTabBar />
-  /*<View style={styles.container}>
+  //<GuestTabBar />
+  <View style={styles.container}>
     <Text style={styles.welcome}>
       Profile Screen
     </Text>
-  </View>*/
+  </View>
 );
 
 ProfileScreen.navigationOptions = {

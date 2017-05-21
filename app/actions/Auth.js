@@ -17,6 +17,7 @@ export function actionNotAuthenticating(){
 }
 
 export function loginFailed(error){
+    console.log(error);
     return {
         type: types.LOGIN_FAILED,
         isLoggedIn: false,

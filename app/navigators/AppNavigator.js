@@ -6,7 +6,7 @@ import LoginScreen from '../components/templates/LoginScreen';
 import MainScreen from '../components/templates/MainScreen';
 import ProfileScreen from '../components/templates/ProfileScreen';
 
-import {GuestTabBarNavigator} from './GuestTabBarNavigator';
+import GuestTabBar from './GuestTabBarNavigator';
 
 const navigatorOptions = {
   navigationOptions:{
@@ -16,7 +16,7 @@ const navigatorOptions = {
 
 export const AppNavigator = StackNavigator({
   Main: { screen: MainScreen },
-  Guest: { screen: GuestTabBarNavigator },
+  //Guest: { screen: GuestTabBar },
 }, navigatorOptions);
 
 

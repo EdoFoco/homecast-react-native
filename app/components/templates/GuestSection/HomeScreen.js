@@ -2,6 +2,8 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../actions';
 import { bindActionCreators } from 'redux';
+import { NavigationActions } from 'react-navigation';
+
 
 import {
   StyleSheet,
@@ -26,10 +28,11 @@ const styles = StyleSheet.create({
 });
 
 
-class GuestScreen extends Component{
+export default class HomeScreen extends Component{
 
   _onPress(){
-      this.props.goToScreen('Viewings');
+      //this.props.goToScreen('Viewings');
+     this.props.navigation.navigate('Viewings');
   }
 
   render() {
@@ -45,15 +48,16 @@ class GuestScreen extends Component{
 }
 
 
-GuestScreen.navigationOptions = {
+HomeScreen.navigationOptions = {
   title: 'Guest Screen',
 };
 
 
-const mapStateToProps = (state) => {
+/*const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
-        user: state.user
+        user: state.user,
+        nav: state.nav
     }
 };
 
@@ -63,3 +67,4 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuestScreen);
 
+*/

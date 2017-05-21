@@ -7,28 +7,26 @@ import ViewingsScreen from '../../components/templates/GuestSection/ViewingsScre
 
 
 const routeConfiguration = {
-      Viewings: { screen: ViewingsScreen },
+      Home: { screen: HomeScreen },
+      Viewings: { screen: ViewingsScreen }
 
-  Guest: { screen: HomeScreen },
+//  Guest: { screen: HomeScreen },
 }
 
 const stackConfiguration = {
-    //initialRoute: 'Guest'
+    initialRoute: 'Viewings'
 }
 
 export const GuestHomeNavigator = StackNavigator(routeConfiguration, stackConfiguration);
-
+/*
 const GuestHomeStack = ({ dispatch, nav }) => (
   <GuestHomeNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
 );
 
-GuestHomeStack.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  nav: PropTypes.object.isRequired,
-};
 
 const mapStateToProps = state => ({
   nav: state.nav,
 });
 
 export default connect(mapStateToProps)(GuestHomeStack);
+*/
