@@ -20,16 +20,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const ViewingsScreen = () => (
+const OtherScreen = () => (
   <View style={styles.container}>
     <Text style={styles.welcome}>
-      Viewings Screen
+      Other Screen
     </Text>
+   
   </View>
 );
 
-ViewingsScreen.navigationOptions = {
-  title: 'Viewings Screen',
+OtherScreen.navigationOptions = {
+  title: 'Other Screen',
 };
 
-export default ViewingsScreen;
+export default OtherScreen;

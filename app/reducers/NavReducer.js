@@ -1,4 +1,4 @@
-import { GuestHomeNavigator } from '../navigators/GuestSection/HomeNavigator';
+import { GuestHomeNavigator } from '../navigators/guest-section/HomeNavigator';
 import { GuestTabBarNavigator } from '../navigators/GuestTabBarNavigator';
 
 import { NavigationActions } from 'react-navigation';
@@ -8,11 +8,21 @@ export default function guestTabBar(state,action) {
   if (action.type === 'JUMP_TO_TAB') {
     return { ...state, index:0 }
   } else {
-    return GuestTabBarNavigator.router.getStateForAction(action,state)
+    /*let resetTabAction = NavigationActions.navigate({
+              routeName: action.routeName,
+              action: NavigationActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'Home' })],
+              }),
+            });*/
+
+    return GuestTabBarNavigator.router.getStateForAction(action, state);
+    //return GuestTabBarNavigator.router.getStateForAction(action,state)
+    
   }
 }
-/*
-export default function guestHomeNav(state, action) {
+
+/*export function guestHomeNav(state, action) {
   let nextState;
   switch (action.type) {
     case types.GOTO_SCREEN:
@@ -25,5 +35,5 @@ export default function guestHomeNav(state, action) {
   }
 
   return nextState || state;
-}
-*/
+}*/
+

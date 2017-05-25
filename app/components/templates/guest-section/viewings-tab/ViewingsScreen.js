@@ -1,15 +1,14 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../../../actions';
+import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
-
 
 import {
   StyleSheet,
   Text,
-  TouchableHighlight,
   View,
+  TouchableHighlight
 } from 'react-native';
 
 
@@ -27,37 +26,38 @@ const styles = StyleSheet.create({
   },
 });
 
-
-export default class HomeScreen extends Component{
+class ViewingsScreen extends Component{
 
   _onPress(){
       //this.props.goToScreen('Viewings');
-     this.props.navigation.navigate('Viewings');
+      this.props.navigation.navigate('Other');
   }
 
   render() {
-    return(<View style={styles.container}>
-      <Text style={styles.welcome}>
-        Guest Screen
-      </Text>
-      <TouchableHighlight style={styles.button} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Go To Viewings</Text>
-        </TouchableHighlight>
-    </View>)
+    return (
+      <View style={styles.container}>
+          <Text style={styles.welcome}>
+            Viewings Screen
+          </Text>
+            <TouchableHighlight style={styles.button} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
+                  <Text style={styles.buttonText}>Go To Other</Text>
+              </TouchableHighlight>
+      </View>
+
+    )
   }
+  
 }
 
-
-HomeScreen.navigationOptions = {
-  title: 'Guest Screen',
+ViewingsScreen.navigationOptions = {
+  title: 'Viewings Screen',
 };
 
 
-/*const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        nav: state.nav
     }
 };
 
@@ -65,6 +65,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GuestScreen);
-
-*/
+export default connect(mapStateToProps, mapDispatchToProps)(ViewingsScreen);

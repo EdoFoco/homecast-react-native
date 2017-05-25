@@ -38,7 +38,6 @@ MainScreen.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         isAuthenticating: state.user.isAuthenticating,

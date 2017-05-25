@@ -1,15 +1,20 @@
 import React from 'react';
 import { addNavigationHelpers } from 'react-navigation';
-import { GuestHomeNavigator } from '../../../../navigators/GuestSection/HomeNavigator';
+import { GuestViewingsNavigator } from '../../../../navigators/guest-section/ViewingsNavigator';
 import { connect } from 'react-redux';
 
-class GuestHomeNav extends React.Component {
+class GuestViewingsTab extends React.Component {
+    
+    static navigationOptions = {
+        tabBarLabel: 'Viewings'
+    }
+
+
     render(){
         const { navigationState, dispatch } = this.props;
         
-        console.log(this.props);
         return (
-            <GuestHomeNavigator  
+            <GuestViewingsNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
@@ -22,8 +27,8 @@ class GuestHomeNav extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.guestHomeNav
+        navigationState: state.guestViewingsNav
     }
 }
 
-export default connect(mapStateToProps)(GuestHomeNav)
+export default connect(mapStateToProps)(GuestViewingsTab)
