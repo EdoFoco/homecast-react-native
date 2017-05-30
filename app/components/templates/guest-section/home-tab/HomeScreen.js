@@ -54,9 +54,12 @@ HomeScreen.navigationOptions = {
 
 
 const mapStateToProps = (state) => {
+    console.log('HomeScreen');
+    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
-        user: state.user,
+        user: state.user
+
     }
 };
 

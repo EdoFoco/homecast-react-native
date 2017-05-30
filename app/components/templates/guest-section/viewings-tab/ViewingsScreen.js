@@ -55,6 +55,8 @@ ViewingsScreen.navigationOptions = {
 
 
 const mapStateToProps = (state) => {
+   console.log('ViewingsScreen');
+    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,

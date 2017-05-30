@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { Component} from 'react';
+import { connect } from 'react-redux';
+import { ActionCreators } from '../../../../actions';
+import { bindActionCreators } from 'redux';
+import { NavigationActions } from 'react-navigation';
 import {
   StyleSheet,
   Text,
@@ -20,17 +24,34 @@ const styles = StyleSheet.create({
   },
 });
 
-const OtherScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.welcome}>
-      Other Screen
-    </Text>
-   
-  </View>
-);
+class OtherScreen extends Component{
+
+  render(){
+    return(
+
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            Other Screen
+          </Text>
+        </View>
+    );
+  }
+  
+}
 
 OtherScreen.navigationOptions = {
   title: 'Other Screen',
 };
 
-export default OtherScreen;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+        user: state.user,
+    }
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OtherScreen);

@@ -1,14 +1,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
-import ProfileScreen from '../components/templates/ProfileScreen';
-import GuestHomeNavigator  from '../components/templates/guest-section/home-tab/Navigator';
-import GuestViewingsNavigator  from '../components/templates/guest-section/viewings-tab/Navigator';
+import GuestHomeNavigator  from '../../components/templates/guest-section/home-tab/Navigator';
+import GuestViewingsNavigator  from '../../components/templates/guest-section/viewings-tab/Navigator';
 
 
 
 const routeConfiguration = {
-  //Home2: { screen: GuestScreen },
   HomeTab: {
     screen: GuestHomeNavigator
   },
@@ -20,14 +18,7 @@ const routeConfiguration = {
 
 const tabBarConfiguration = {
   headerMode: 'screen',
-    //initialRoute: 'Viewings',
-    tabBarOptions:{
-      
-        //activeTintColor: 'white',
-        ///inactiveTintColor: 'blue',
-        //activeBackgroundColor: 'blue',
-        //inactiveBackgroundColor: 'white',
-  }
+  backBehavior: 'none'
 }
 
 export const GuestTabBarNavigator = TabNavigator(routeConfiguration,tabBarConfiguration);

@@ -4,7 +4,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import GuestTabBar from '../../navigators/GuestTabBarNavigator';
 
 
 const styles = StyleSheet.create({

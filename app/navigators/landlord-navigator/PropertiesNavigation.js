@@ -2,17 +2,16 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
-import ViewingsScreen from '../../components/templates/guest-section/viewings-tab/ViewingsScreen';
+import PropertiesNavigation from '../../components/templates/guest-section/viewings-tab/ViewingsScreen';
 import OtherScreen from '../../components/templates/guest-section/viewings-tab/OtherScreen';
 
 
 const routeConfiguration = {
-      ViewingsHome: { screen: ViewingsScreen },
-      Other: { screen: OtherScreen },
+      Home: { screen: ViewingsScreen },
 }
 
 const stackConfiguration = {
-    initialRoute: 'ViewingsHome',
+    initialRoute: 'Viewings',
 }
 
-export const GuestViewingsNavigator = StackNavigator(routeConfiguration, stackConfiguration);
+export const PropertiesNavigator = StackNavigator(routeConfiguration, stackConfiguration);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import  GuestTabBar  from '../../navigators/GuestTabBarNavigator';
+import  GuestTabBar  from '../../navigators/guest-section/GuestTabBarNavigator';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
