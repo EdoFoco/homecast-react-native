@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import  GuestTabBar  from '../../navigators/guest-section/GuestTabBarNavigator';
+import  LandlordTabBar  from '../../navigators/landlord-section/LandlordTabBarNavigator';
+
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
@@ -20,9 +22,16 @@ class MainScreen extends Component {
 
   render(){
     if(this.props.isLoggedIn){
+      if(this.props.section.sectionName === 'guest'){
         return(
           <GuestTabBar />
         )
+      }
+      if(this.props.section.sectionName === 'landlord'){
+        return(
+          <LandlordTabBar />
+        )
+      }
     }
     return(
       <View style={styles.container}>
@@ -38,10 +47,13 @@ MainScreen.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
+    console.log('Main Screen Section');
+    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         isAuthenticating: state.user.isAuthenticating,
-        nav: state.nav
+        nav: state.nav,
+        section: state.section,
     }
 };
 

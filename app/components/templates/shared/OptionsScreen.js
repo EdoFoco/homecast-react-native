@@ -1,8 +1,7 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../../../../actions';
+import { ActionCreators } from '../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
 
 
 import {
@@ -28,36 +27,38 @@ const styles = StyleSheet.create({
 });
 
 
- class LandlordHomeScreen extends Component{
+ class OptionsScreen extends Component{
 
   _onPress(){
-      //this.props.goToScreen('Viewings');
-      //this.props.navigation.navigate('Property');
+     if(this.props.section.sectionName === 'guest'){
+        this.props.goToSection('landlord');
+     }
+     else{
+         this.props.goToSection('guest');
+     }
   }
 
   render() {
     return(<View style={styles.container}>
       <Text style={styles.welcome}>
-        Landlord Home Screen
+        Options Screen
       </Text>
       <TouchableHighlight style={styles.button} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Go To Property</Text>
+            <Text style={styles.buttonText}>Change Section</Text>
         </TouchableHighlight>
     </View>)
   }
 }
 
 
-LandlordHomeScreen.navigationOptions = {
-  title: 'Landlord Home Screen',
+OptionsScreen.navigationOptions = {
+  title: 'Options',
 };
 
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.user.isLoggedIn,
-        user: state.user
-
+        section: state.section,
     }
 };
 
@@ -65,4 +66,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandlordHomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(OptionsScreen);
