@@ -7,6 +7,7 @@ import { LandlordHomeNavigator } from '../navigators/landlord-section/HomeNaviga
 
 import user from './User';
 import section from './Section';
+import webrtc from './WebRTC';
 
 import devToolsEnhancer from 'remote-redux-devtools';
 
@@ -23,7 +24,8 @@ const AppReducer = combineReducers({
 
 
   user,
-  section
+  section,
+  webrtc
 }, devToolsEnhancer());
 
 export default AppReducer;

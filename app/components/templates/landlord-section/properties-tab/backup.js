@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { ActionCreators } from '../../../../actions';
-import { bindActionCreators } from 'redux';
 import {
   AppRegistry,
   StyleSheet,
@@ -15,6 +12,7 @@ import {
 
 import io from 'socket.io-client';
 
+const socket = io.connect('https://react-native-webrtc.herokuapp.com', {transports: ['websocket']});
 
 import {
   RTCPeerConnection,
@@ -30,8 +28,6 @@ const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
 
 const pcPeers = {};
 let localStream;
-var container;
-var socket;
 
 function getLocalStream(isFront, callback) {
 
@@ -125,13 +121,13 @@ function createPC(socketId, isOffer) {
     console.log('onaddstream', event.stream);
 
     //PEER CONNECTED STATE - updateInfo
-    container.props.updateInfo( 'One peer join!' );
+    container.setState({info: 'One peer join!'});
 
-    const remoteList = container.props.webrtc.remoteList;
+    const remoteList = container.state.remoteList;
     remoteList[socketId] = event.stream.toURL();
 
     //Remote LIST STATE - updateChannelList
-    container.props.updateChannelList( remoteList );
+    container.setState({ remoteList: remoteList });
   };
   pc.onremovestream = function (event) {
     console.log('onremovestream', event.stream);
@@ -203,41 +199,32 @@ function leave(socketId) {
   pc.close();
   delete pcPeers[socketId];
 
-  const remoteList = container.props.webrtc.remoteList;
+  const remoteList = container.state.remoteList;
   delete remoteList[socketId]
 
   //LEAVE ROOM STATE - updateChannelLIst
-  container.props.updateChannelList( remoteList );
+  container.setState({ remoteList: remoteList });
   //SET INFO - updateInfo
-  container.props.updateInfo( 'One peer leave!' );
+  container.setState({info: 'One peer leave!'});
 }
 
-function initSocket(){
-  socket = io.connect('https://react-native-webrtc.herokuapp.com', {transports: ['websocket']});
-
-  socket.on('exchange', function(data){
-    exchange(data);
-  });
-
-  socket.on('leave', function(socketId){
-    leave(socketId);
-  });
-
-  socket.on('connect', function(data) {
-    console.log('connect');
-    getLocalStream(true, function(stream) {
-      localStream = stream;
-
-      //SOCKET CONNECTED STATE
-      if(container){
-        container.props.setVideoSource( stream.toURL() );
-        container.props.updateConnectionStatus('ready', 'Please enter or create room ID');
-      }
-      
-    });
+socket.on('exchange', function(data){
+  exchange(data);
 });
-}
+socket.on('leave', function(socketId){
+  leave(socketId);
+});
 
+socket.on('connect', function(data) {
+  console.log('connect');
+  getLocalStream(true, function(stream) {
+    localStream = stream;
+
+    //SOCKET CONNECTED STATE
+    container.setState({selfViewSrc: stream.toURL()});
+    container.setState({status: 'ready', info: 'Please enter or create room ID'});
+  });
+});
 
 function logError(error) {
   console.log("logError", error);
@@ -263,24 +250,38 @@ function getStats() {
   }
 }
 
+let contai
+ner;
+
 class PropertiesScreen extends Component{  
   
-  componentWillMount(){
+  getInitialState: function() {
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
+    return {
+      info: 'Initializing',
+      status: 'init',
+      roomID: '',
+      isFront: true,
+      selfViewSrc: null,
+      remoteList: {},
+      textRoomConnected: false,
+      textRoomData: [],
+      textRoomValue: '',
+    };
+  },
+  componentDidMount: function() {
     container = this;
-    initSocket();
-  }
-
+  },
   _press(event) {
-    //this.refs.roomID.blur();
+    this.refs.roomID.blur();
     //Connect STATE - updateConnectionStatus
-    container.props.updateConnectionStatus( 'connect', 'Connecting' );
-    join(container.props.webrtc.roomID);
-  }
-
+    this.setState({status: 'connect', info: 'Connecting'});
+    join(this.state.roomID);
+  },
   _switchVideoType() {
-    const isFront = !this.props.webrtc.isFront;
+    const isFront = !this.state.isFront;
     //Switch Camera STATE - switchCamera
-    this.props.switchCamera( isFront );
+    this.setState({isFront});
     getLocalStream(isFront, function(stream) {
       if (localStream) {
         for (const id in pcPeers) {
@@ -291,48 +292,45 @@ class PropertiesScreen extends Component{
       }
       localStream = stream;
       //SET VIDEO SOURCE STATE - setVideoSource
-      container.props.setVideoSource( stream.toURL() );
+      container.setState({selfViewSrc: stream.toURL()});
 
       for (const id in pcPeers) {
         const pc = pcPeers[id];
         pc && pc.addStream(localStream);
       }
     });
-  }
-
+  },
   receiveTextData(data) {
-    const textRoomData = this.props.webrtc.textRoomData.slice();
+    const textRoomData = this.state.textRoomData.slice();
     textRoomData.push(data);
     //RECEIVE TEXT STATE - receiveText
-    this.props.receiveText({textRoomData, textRoomValue: ''});
-  }
-
+    this.setState({textRoomData, textRoomValue: ''});
+  },
   _textRoomPress() {
-    if (!this.props.webrtc.textRoomValue) {
+    if (!this.state.textRoomValue) {
       return
     }
-    const textRoomData = this.props.webrtc.textRoomData.slice();
-    textRoomData.push({user: 'Me', message: this.props.webrtc.textRoomValue});
+    const textRoomData = this.state.textRoomData.slice();
+    textRoomData.push({user: 'Me', message: this.state.textRoomValue});
     for (const key in pcPeers) {
       const pc = pcPeers[key];
-      pc.textDataChannel.send(this.props.webrtc.textRoomValue);
+      pc.textDataChannel.send(this.state.textRoomValue);
     }
 
     //Send TEXT STATE - sendText
-    this.props.sendText({textRoomData, textRoomValue: ''});
-  }
-
+    this.setState({textRoomData, textRoomValue: ''});
+  },
   _renderTextRoom() {
     return (
       <View style={styles.listViewContainer}>
         <ListView
-          dataSource={this.ds.cloneWithRows(this.props.webrtc.textRoomData)}
-          renderRow={rowData => <Text>{rowData.user + ':' + rowData.message}</Text>}
+          dataSource={this.ds.cloneWithRows(this.state.textRoomData)}
+          renderRow={rowData => <Text>{`${rowData.user}: ${rowData.message}`}</Text>}
           />
         <TextInput
           style={{width: 200, height: 30, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={value => this.props.setRoom( value )}
-          value={this.props.webrtc.textRoomValue}
+          onChangeText={value => this.setState({textRoomValue: value})}
+          value={this.state.textRoomValue}
         />
         <TouchableHighlight
           onPress={this._textRoomPress}>
@@ -340,33 +338,32 @@ class PropertiesScreen extends Component{
         </TouchableHighlight>
       </View>
     );
-  }
-
+  },
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          {this.props.webrtc.info}
+          {this.state.info}
         </Text>
-        {this.props.webrtc.textRoomConnected && this._renderTextRoom()}
+        {this.state.textRoomConnected && this._renderTextRoom()}
         <View style={{flexDirection: 'row'}}>
           <Text>
-            {this.props.webrtc.isFront ? "Use front camera" : "Use back camera"}
+            {this.state.isFront ? "Use front camera" : "Use back camera"}
           </Text>
           <TouchableHighlight
-            style={{borderWidth: 1, borderColor: 'black' }}
-            onPress={this._switchVideoType.bind(this)}>
+            style={{borderWidth: 1, borderColor: 'black'}}
+            onPress={this._switchVideoType}>
             <Text>Switch camera</Text>
           </TouchableHighlight>
         </View>
-        { this.props.webrtc.status == 'ready' ?
+        { this.state.status == 'ready' ?
           (<View>
             <TextInput
               ref='roomID'
               autoCorrect={false}
               style={{width: 200, height: 40, borderColor: 'gray', borderWidth: 1}}
-              onChangeText={(text) => this.props.setRoomId( text )}
-              value={this.props.webrtc.roomID}
+              onChangeText={(text) => this.setState({roomID: text})}
+              value={this.state.roomID}
             />
             <TouchableHighlight
               onPress={this._press}>
@@ -374,16 +371,16 @@ class PropertiesScreen extends Component{
             </TouchableHighlight>
           </View>) : null
         }
-        <RTCView streamURL={this.props.webrtc.selfViewSrc} style={styles.selfView}/>
+        <RTCView streamURL={this.state.selfViewSrc} style={styles.selfView}/>
         {
-          mapHash(this.props.webrtc.remoteList, function(remote, index) {
+          mapHash(this.state.remoteList, function(remote, index) {
             return <RTCView key={index} streamURL={remote} style={styles.remoteView}/>
           })
         }
       </View>
     );
   }
-}
+});
 
 const styles = StyleSheet.create({
   selfView: {
@@ -410,16 +407,4 @@ const styles = StyleSheet.create({
 });
 
 
-const mapStateToProps = (state) => {
-    console.log('WebRTC State');
-    console.log(state.webrtc);
-    return {
-        webrtc: state.webrtc
-    }
-};
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PropertiesScreen);
+export default PropertiesScreen;

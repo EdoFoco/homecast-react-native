@@ -25,7 +25,8 @@ class TntApi {
   }
 
   static xhr(route, params, verb) {
-    const host = 'http://localhost:8111/api/'
+    const host = 'http://138.68.130.61/api/'
+    console.log(host);
     const url = `${host}${route}`
     let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null );
     options.headers = TntApi.headers();
