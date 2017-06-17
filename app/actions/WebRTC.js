@@ -24,10 +24,10 @@ export function setVideoSource( videoSrc ){
     }
 }
 
-export function receiveText( textRoomData ){
+export function receiveText( sender, data ){
     return {
         type: types.UPDATE_TEXT_ROOM_DATA,
-        textRoomData: textRoomData
+        textRoomData: data
     }
 }
 
@@ -52,10 +52,10 @@ export function updateChannelList( remoteList ){
     }
 }
 
-export function setConnectedState( textRoomConnected ){
+export function setTextRoomState( textRoomConnected ){
     return {
-        type: types.SET_CONNECTED_STATE,
-        remoteList: textRoomConnected
+        type: types.SET_TEXT_ROOM_CONNECTED_STATE,
+        textRoomConnected: textRoomConnected
     }
 }
 

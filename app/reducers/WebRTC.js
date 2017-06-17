@@ -4,7 +4,7 @@ const initialConferenceState = {
       info: 'Initializing',
       status: 'init',
       roomID: '',
-      isFront: true,
+      isFront: false,
       selfViewSrc: null,
       remoteList: {},
       textRoomConnected: false,
@@ -27,7 +27,7 @@ export default function webrtc(state = initialConferenceState, action) {
         return { ...state, info: action.info };
     case types.UPDATE_CHANNEL_LIST:
         return { ...state, remoteList: action.remoteList };
-    case types.SET_CONNECTED_STATE:
+    case types.SET_TEXT_ROOM_CONNECTED_STATE:
         return { ...state, textRoomConnected: action.textRoomConnected };
     case types.SET_ROOM:
         return { ...state, textRoomValue: action.textRoomValue };

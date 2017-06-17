@@ -10,6 +10,7 @@ import {
   View,
   TextInput,
   ListView,
+  ListViewDataSource,
   Platform,
 } from 'react-native';
 
@@ -26,7 +27,16 @@ import {
   getUserMedia,
 } from 'react-native-webrtc';
 
-const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
+const configuration = {
+  "iceServers": [
+    {"url": "stun:stun.l.google.com:19302"},
+    {"url":'stun:stun.ekiga.net'},
+    {
+      url: 'turn:numb.viagenie.ca',
+      credential: 'muazkh',
+      username: 'webrtc@live.com'
+    },
+  ]};
 
 const pcPeers = {};
 let localStream;
@@ -41,7 +51,7 @@ function getLocalStream(isFront, callback) {
   // uncomment it if you want to specify
   if (Platform.OS === 'ios') {
     MediaStreamTrack.getSources(sourceInfos => {
-      console.log("sourceInfos: ", sourceInfos);
+      //console.log("sourceInfos: ", sourceInfos);
 
       for (const i = 0; i < sourceInfos.length; i++) {
         const sourceInfo = sourceInfos[i];
@@ -63,14 +73,14 @@ function getLocalStream(isFront, callback) {
       optional: (videoSourceId ? [{sourceId: videoSourceId}] : []),
     }
   }, function (stream) {
-    console.log('getUserMedia success', stream);
+    //console.log('getUserMedia success', stream);
     callback(stream);
   }, logError);
 }
 
 function join(roomID) {
   socket.emit('join', roomID, function(socketIds){
-    console.log('join', socketIds);
+    //console.log('join', socketIds);
     for (const i in socketIds) {
       const socketId = socketIds[i];
       createPC(socketId, true);
@@ -83,7 +93,7 @@ function createPC(socketId, isOffer) {
   pcPeers[socketId] = pc;
 
   pc.onicecandidate = function (event) {
-    console.log('onicecandidate', event.candidate);
+    //console.log('onicecandidate', event.candidate);
     if (event.candidate) {
       socket.emit('exchange', {'to': socketId, 'candidate': event.candidate });
     }
@@ -91,23 +101,23 @@ function createPC(socketId, isOffer) {
 
   function createOffer() {
     pc.createOffer(function(desc) {
-      console.log('createOffer', desc);
+      //console.log('createOffer', desc);
       pc.setLocalDescription(desc, function () {
-        console.log('setLocalDescription', pc.localDescription);
+        //console.log('setLocalDescription', pc.localDescription);
         socket.emit('exchange', {'to': socketId, 'sdp': pc.localDescription });
       }, logError);
     }, logError);
   }
 
   pc.onnegotiationneeded = function () {
-    console.log('onnegotiationneeded');
+    //console.log('onnegotiationneeded');
     if (isOffer) {
       createOffer();
     }
   }
 
   pc.oniceconnectionstatechange = function(event) {
-    console.log('oniceconnectionstatechange', event.target.iceConnectionState);
+    //console.log('oniceconnectionstatechange', event.target.iceConnectionState);
     if (event.target.iceConnectionState === 'completed') {
       setTimeout(() => {
         getStats();
@@ -118,11 +128,11 @@ function createPC(socketId, isOffer) {
     }
   };
   pc.onsignalingstatechange = function(event) {
-    console.log('onsignalingstatechange', event.target.signalingState);
+    //console.log('onsignalingstatechange', event.target.signalingState);
   };
 
   pc.onaddstream = function (event) {
-    console.log('onaddstream', event.stream);
+    //console.log('onaddstream', event.stream);
 
     //PEER CONNECTED STATE - updateInfo
     container.props.updateInfo( 'One peer join!' );
@@ -134,7 +144,7 @@ function createPC(socketId, isOffer) {
     container.props.updateChannelList( remoteList );
   };
   pc.onremovestream = function (event) {
-    console.log('onremovestream', event.stream);
+    //console.log('onremovestream', event.stream);
   };
 
   pc.addStream(localStream);
@@ -145,23 +155,23 @@ function createPC(socketId, isOffer) {
     const dataChannel = pc.createDataChannel("text");
 
     dataChannel.onerror = function (error) {
-      console.log("dataChannel.onerror", error);
+      //console.log("dataChannel.onerror", error);
     };
 
     dataChannel.onmessage = function (event) {
-      console.log("dataChannel.onmessage:", event.data);
-      container.receiveTextData({user: socketId, message: event.data});
+      //console.log("dataChannel.onmessage:", event.data);
+      container.receiveTextData(socketId, event.data );
     };
 
     dataChannel.onopen = function () {
-      console.log('dataChannel.onopen');
+      //console.log('dataChannel.onopen');
 
       //SET STATE ROOM CONNECTED - SET_CONNECTED_STATE
-      container.setState({textRoomConnected: true});
+      container.props.setTextRoomState(true);
     };
 
     dataChannel.onclose = function () {
-      console.log("dataChannel.onclose");
+      //console.log("dataChannel.onclose");
     };
 
     pc.textDataChannel = dataChannel;
@@ -179,25 +189,25 @@ function exchange(data) {
   }
 
   if (data.sdp) {
-    console.log('exchange sdp', data);
+    //console.log('exchange sdp', data);
     pc.setRemoteDescription(new RTCSessionDescription(data.sdp), function () {
       if (pc.remoteDescription.type == "offer")
         pc.createAnswer(function(desc) {
-          console.log('createAnswer', desc);
+          //console.log('createAnswer', desc);
           pc.setLocalDescription(desc, function () {
-            console.log('setLocalDescription', pc.localDescription);
+            //console.log('setLocalDescription', pc.localDescription);
             socket.emit('exchange', {'to': fromId, 'sdp': pc.localDescription });
           }, logError);
         }, logError);
     }, logError);
   } else {
-    console.log('exchange candidate', data);
+    //console.log('exchange candidate', data);
     pc.addIceCandidate(new RTCIceCandidate(data.candidate));
   }
 }
 
 function leave(socketId) {
-  console.log('leave', socketId);
+  //console.log('leave', socketId);
   const pc = pcPeers[socketId];
   const viewIndex = pc.viewIndex;
   pc.close();
@@ -224,7 +234,7 @@ function initSocket(){
   });
 
   socket.on('connect', function(data) {
-    console.log('connect');
+    //console.log('connect');
     getLocalStream(true, function(stream) {
       localStream = stream;
 
@@ -240,7 +250,7 @@ function initSocket(){
 
 
 function logError(error) {
-  console.log("logError", error);
+  //console.log("logError", error);
 }
 
 function mapHash(hash, func) {
@@ -256,14 +266,15 @@ function getStats() {
   const pc = pcPeers[Object.keys(pcPeers)[0]];
   if (pc.getRemoteStreams()[0] && pc.getRemoteStreams()[0].getAudioTracks()[0]) {
     const track = pc.getRemoteStreams()[0].getAudioTracks()[0];
-    console.log('track', track);
+    //console.log('track', track);
     pc.getStats(track, function(report) {
-      console.log('getStats report', report);
+      //console.log('getStats report', report);
     }, logError);
   }
 }
 
 class PropertiesScreen extends Component{  
+  
   
   componentWillMount(){
     container = this;
@@ -300,11 +311,12 @@ class PropertiesScreen extends Component{
     });
   }
 
-  receiveTextData(data) {
+  receiveTextData(sender, data) {
     const textRoomData = this.props.webrtc.textRoomData.slice();
-    textRoomData.push(data);
+    const message = { user: sender, message: data };
+    textRoomData.push(message);
     //RECEIVE TEXT STATE - receiveText
-    this.props.receiveText({textRoomData, textRoomValue: ''});
+    this.props.receiveText(sender, textRoomData);
   }
 
   _textRoomPress() {
@@ -312,21 +324,23 @@ class PropertiesScreen extends Component{
       return
     }
     const textRoomData = this.props.webrtc.textRoomData.slice();
-    textRoomData.push({user: 'Me', message: this.props.webrtc.textRoomValue});
+    const message = { user: 'Me', message: this.props.webrtc.textRoomValue };
+    textRoomData.push(message);
     for (const key in pcPeers) {
       const pc = pcPeers[key];
       pc.textDataChannel.send(this.props.webrtc.textRoomValue);
     }
 
     //Send TEXT STATE - sendText
-    this.props.sendText({textRoomData, textRoomValue: ''});
+    this.props.sendText( textRoomData, '');
   }
 
   _renderTextRoom() {
+    
     return (
       <View style={styles.listViewContainer}>
         <ListView
-          dataSource={this.ds.cloneWithRows(this.props.webrtc.textRoomData)}
+          dataSource={this.props.textRoomData}
           renderRow={rowData => <Text>{rowData.user + ':' + rowData.message}</Text>}
           />
         <TextInput
@@ -335,7 +349,7 @@ class PropertiesScreen extends Component{
           value={this.props.webrtc.textRoomValue}
         />
         <TouchableHighlight
-          onPress={this._textRoomPress}>
+          onPress={this._textRoomPress.bind(this)}>
           <Text>Send</Text>
         </TouchableHighlight>
       </View>
@@ -406,15 +420,22 @@ const styles = StyleSheet.create({
   },
   listViewContainer: {
     height: 150,
+    backgroundColor: '#F9E9F9'
   },
 });
 
 
+const ds = new ListView.DataSource({
+  rowHasChanged: (r1, r2) => r1 !== r2
+});
+
 const mapStateToProps = (state) => {
     console.log('WebRTC State');
     console.log(state.webrtc);
+
     return {
-        webrtc: state.webrtc
+        webrtc: state.webrtc,
+        textRoomData:  ds.cloneWithRows(state.webrtc.textRoomData)
     }
 };
 
