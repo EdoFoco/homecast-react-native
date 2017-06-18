@@ -33,6 +33,10 @@ export default function webrtc(state = initialConferenceState, action) {
         return { ...state, textRoomValue: action.textRoomValue };
     case types.SET_ROOM_ID:
         return { ...state, roomID: action.roomID };
+    case types.REMOVE_PEER:
+        const remoteList = state.remoteList;
+        delete remoteList[action.peerId];
+        return { ...state, remoteList: remoteList };
     default:
       return state;
   }

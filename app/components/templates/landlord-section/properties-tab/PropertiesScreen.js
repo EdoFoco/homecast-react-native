@@ -29,18 +29,15 @@ import {
 
 const configuration = {
   "iceServers": [
-    {"url": "stun:stun.l.google.com:19302"},
-    {"url":'stun:stun.ekiga.net'},
-    {
-      url: 'turn:numb.viagenie.ca',
-      credential: 'muazkh',
-      username: 'webrtc@live.com'
+     {
+      url: 'turn:35.176.66.87:3478',
+      credential: 'test',
+      username: 'edo'
     },
   ]};
 
 const pcPeers = {};
 let localStream;
-var container;
 var socket;
 
 function getLocalStream(isFront, callback) {
@@ -239,10 +236,8 @@ function initSocket(){
       localStream = stream;
 
       //SOCKET CONNECTED STATE
-      if(container){
-        container.props.setVideoSource( stream.toURL() );
-        container.props.updateConnectionStatus('ready', 'Please enter or create room ID');
-      }
+      container.props.setVideoSource( stream.toURL() );
+      container.props.updateConnectionStatus('ready', 'Please enter or create room ID');
       
     });
 });
@@ -284,8 +279,8 @@ class PropertiesScreen extends Component{
   _press(event) {
     //this.refs.roomID.blur();
     //Connect STATE - updateConnectionStatus
-    container.props.updateConnectionStatus( 'connect', 'Connecting' );
-    join(container.props.webrtc.roomID);
+    this.props.updateConnectionStatus( 'connect', 'Connecting' );
+    join(this.props.webrtc.roomID);
   }
 
   _switchVideoType() {
@@ -327,6 +322,8 @@ class PropertiesScreen extends Component{
     const message = { user: 'Me', message: this.props.webrtc.textRoomValue };
     textRoomData.push(message);
     for (const key in pcPeers) {
+
+      //Send TExt Data
       const pc = pcPeers[key];
       pc.textDataChannel.send(this.props.webrtc.textRoomValue);
     }
@@ -383,7 +380,7 @@ class PropertiesScreen extends Component{
               value={this.props.webrtc.roomID}
             />
             <TouchableHighlight
-              onPress={this._press}>
+              onPress={this._press.bind(this)}>
               <Text>Enter room</Text>
             </TouchableHighlight>
           </View>) : null

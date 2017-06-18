@@ -1,4 +1,7 @@
 import * as types from './Types';
+import WebRTCClient from '../libs/services/WebRTCClient';
+
+const rtcClient = new WebRTCClient();
 
 export function updateConnectionStatus(status, info){
     return {
@@ -31,7 +34,9 @@ export function receiveText( sender, data ){
     }
 }
 
-export function sendText( textRoomData ){
+export function sendText( textRoomData, message ){
+    WebRTCClient.sendText(message);
+
     return {
         type: types.UPDATE_TEXT_ROOM_DATA,
         textRoomData: textRoomData
@@ -72,4 +77,15 @@ export function setRoomId( roomID ){
         type: types.SET_ROOM_ID,
         roomID: roomID
     }
+}
+
+export function removePeer( peerId ){
+    return {
+        type: types.REMOVE_PEER,
+        peerId: peerId
+    }
+}
+
+export function initWebRTC(){
+    rtcClient.initSocket();
 }

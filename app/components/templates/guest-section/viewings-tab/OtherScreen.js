@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
+import WebRTCChat from '../../../molecules/WebRTCChat';
 import {
   StyleSheet,
   Text,
@@ -30,9 +31,7 @@ class OtherScreen extends Component{
     return(
 
         <View style={styles.container}>
-          <Text style={styles.welcome}>
-            Other Screen
-          </Text>
+          <WebRTCChat />
         </View>
     );
   }
