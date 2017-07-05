@@ -60,6 +60,7 @@ class Chat extends Component{
                 <Text>Send</Text>
             </TouchableHighlight>
         </View>
+          
     );
      
     

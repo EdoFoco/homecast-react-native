@@ -10,6 +10,8 @@ import {
   StyleSheet,
   AsyncStorage,
   TextInput,
+  ListView,
+  ListViewDataSource,
   Text } from 'react-native';
 
 
@@ -51,25 +53,71 @@ class WebRTCChat extends Component{
  
 
   componentWillMount(){
-    this.props.message();
+    this.props.joinRoom({ roomId: this.props.webrtc.roomId, username: 'edo' });
+  }
+
+  componentWillUnmount(){
+    this.props.disconnect();
+  }
+
+  _messageTextChanged = function(text){
+    if(text){
+      this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: text, userIsTyping: true, username: this.props.user.user.name } );
+      this.props.chatTextChanged( { currentMessage: text, userIsTyping: true, username: this.props.user.user.name } )
+    }
+    else{
+      this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
+      this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } )
+    }
+
+  }
+
+  _sendMessage = function(){
+    console.log('sending message:' + this.props.currentMessage);
+    this.props.message({ roomId: this.props.webrtc.roomId, username: this.props.user.user.name, message: this.props.currentMessage });
+    this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name });
+    this.refs.message.clear();
   }
 
   render() {
         
         return (
-            <View style={styles.container}>
-                 <Text>Login</Text>
-            </View>
+          <View style={styles.listViewContainer}>
+            <ListView
+              dataSource={this.props.chatMessages}
+              renderRow={rowData => <Text>{rowData.username + ':' + rowData.message}</Text>}
+              />
+              <TextInput
+                ref='message'
+                autoCorrect={false}
+                style={{width: 200, height: 40, borderColor: 'gray', borderWidth: 1}}
+                onChangeText={(text) => this._messageTextChanged(text)}
+                value={this.props.currentMessage}
+              />
+              <TouchableHighlight
+                onPress={this._sendMessage.bind(this)}>
+              <Text>Send</Text>
+            </TouchableHighlight>
+              { this.props.webrtc.usersTyping.length > 0 &&
+                  <Text>Send</Text>
+              }
+           </View>
         );
-     
-    
   }
 }
+
+const ds = new ListView.DataSource({
+  rowHasChanged: (r1, r2) => r1 !== r2
+});
+
 
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-        
+        user: state.user,
+        chatMessages: ds.cloneWithRows(state.webrtc.chatMessages),
+        currentMessage: state.webrtc.currentMessage,
+        webrtc: state.webrtc
     }
 };
 

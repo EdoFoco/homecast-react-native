@@ -23,3 +23,15 @@ export const SET_TEXT_ROOM_CONNECTED_STATE = 'SET_TEXT_ROOM_CONNECTED_STATE';
 export const SET_ROOM = 'SET_ROOM';
 export const SET_ROOM_ID = 'SET_ROOM_ID';
 export const REMOVE_PEER = 'REMOVE_PEER';
+
+//Socket.io
+export const SERVER_MESSAGE = 'server/message';
+export const CLIENT_MESSAGE = 'client/message';
+export const SERVER_DISCONNECT = 'server/disconnect';
+export const SERVER_JOIN_ROOM = 'server/joinRoom';
+export const SERVER_USER_IS_TYPING = 'server/userIsTyping';
+export const CLIENT_UPDATE_TYPING_USERS = 'client/updateTypingUsers';
+
+//Chat
+export const CHAT_MESSAGE_CHANGED = 'chat_message_changed';
+

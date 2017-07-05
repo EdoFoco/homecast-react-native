@@ -9,11 +9,11 @@ import thunk from 'redux-thunk';
 import io from 'socket.io-client';
 
 //import { socketIOMiddleware } from './app/libs/middlewares/SocketIOMiddleware';
-import socketIO from 'socket.io-client';
+//import socketIO from 'socket.io-client';
 import createSocketIoMiddleware from './app/libs/middlewares/SocketIOMiddleware';
 
-let socket = io('http://localhost:3000');
-let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
+//let socket = io('http://localhost:3000');
+let socketIoMiddleware = createSocketIoMiddleware(null, "server/");
 
 class ReduxExampleApp extends React.Component {
   

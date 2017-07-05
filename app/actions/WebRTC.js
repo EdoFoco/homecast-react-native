@@ -92,10 +92,41 @@ export function initWebRTC(){
     };
 }
 
+/*
+        New Actions
+*/
 
-export function message(){
+export function message(data){
     return {
-        type: 'server/message',
-        data: 'hello'
+        type: types.SERVER_MESSAGE,
+        data: data
+    }
+}
+
+export function joinRoom(data){
+    return {
+        type: types.SERVER_JOIN_ROOM,
+        data: data
+    }
+}
+
+export function disconnect(){
+    return {
+        type: types.SERVER_DISCONNECT
+    }
+}
+
+export function userIsTyping(data){
+    return {
+        type: types.SERVER_USER_IS_TYPING,
+        data: data
+    }
+}
+
+export function chatTextChanged(data){
+    return {
+        type: types.CHAT_MESSAGE_CHANGED,
+        currentMessage: data.currentMessage,
+        userIsTyping: data.userIsTyping
     }
 }
