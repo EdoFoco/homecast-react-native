@@ -3,11 +3,10 @@ import WebRTCClient from '../libs/services/WebRTCClient';
 
 const rtcClient = new WebRTCClient();
 
-export function updateConnectionStatus(status, info){
+export function message(){
     return {
-        type: types.UPDATE_CONNECTION_STATUS,
-        status: status,
-        info: info
+        type: 'server/hello',
+        data: 'hello'
     }
 }
 
@@ -90,12 +89,4 @@ export function initWebRTC(){
     return (dispatch, getState) => {
         dispatch(rtcClient.initSocket());
     };
-}
-
-
-export function message(){
-    return {
-        type: 'server/message',
-        data: 'hello'
-    }
 }

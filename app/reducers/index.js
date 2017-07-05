@@ -7,7 +7,7 @@ import { LandlordHomeNavigator } from '../navigators/landlord-section/HomeNaviga
 
 import user from './User';
 import section from './Section';
-import webrtc from './WebRTC';
+import webrtc from './NewWebRTC';
 
 import devToolsEnhancer from 'remote-redux-devtools';
 
