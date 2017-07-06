@@ -15,7 +15,7 @@
 import io from 'socket.io-client';
 import * as types from './../../actions/Types';
 
-export default function createSocketIoMiddleware(socket, criteria = [],
+export default function createSocketIoMiddleware(criteria = [],
   { eventName = 'action', execute = defaultExecute } = {}) {
     
     var socket;
@@ -28,6 +28,13 @@ export default function createSocketIoMiddleware(socket, criteria = [],
                 socket = io('http://localhost:3000');
                 emitBound = socket.emit.bind(socket);
 
+                socket.on(types.CLIENT_CONNECTED, () => {
+                    return next({ type: types.CLIENT_CONNECTED, data: { socketId: socket.id}})
+                });
+
+                socket.on(types.CLIENT_RECONNECTED, () => {
+                    return next({ type: types.CLIENT_CONNECTED, data: { socketId: socket.id}})
+                });
                 // Wire socket.io to dispatch actions sent by the server.
                 socket.on(eventName, dispatch);
             }
@@ -55,14 +62,14 @@ export default function createSocketIoMiddleware(socket, criteria = [],
         const { type } = action;
         let matched = false;
         if (typeof option === 'function') {
-        // Test function
-        matched = option(type, action);
+            // Test function
+            matched = option(type, action);
         } else if (typeof option === 'string') {
-        // String prefix
-        matched = type.indexOf(option) === 0;
+            // String prefix
+            matched = type.indexOf(option) === 0;
         } else if (Array.isArray(option)) {
-        // Array of types
-        matched = option.some(item => type.indexOf(item) === 0);
+            // Array of types
+            matched = option.some(item => type.indexOf(item) === 0);
         }
         return matched;
     }

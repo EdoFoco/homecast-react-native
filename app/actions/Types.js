@@ -31,7 +31,13 @@ export const SERVER_DISCONNECT = 'server/disconnect';
 export const SERVER_JOIN_ROOM = 'server/joinRoom';
 export const SERVER_USER_IS_TYPING = 'server/userIsTyping';
 export const CLIENT_UPDATE_TYPING_USERS = 'client/updateTypingUsers';
+export const CLIENT_USERS_UPDATED = 'client/usersUpdated'; //Either joined or left room
+export const CLIENT_CONNECTED = 'connect';
+export const CLIENT_RECONNECTED = 'reconnect';
 
 //Chat
-export const CHAT_MESSAGE_CHANGED = 'chat_message_changed';
+export const CHAT_MESSAGE_CHANGED = 'CHAT_MESSAGE_CHANGED';
+export const SET_IS_PRESENTER = 'IS_PRESENTER';
 
+//WebRTC
+export const CREATE_PEER_CONNECTION = 'CREATE_PEER_CONNECTION';

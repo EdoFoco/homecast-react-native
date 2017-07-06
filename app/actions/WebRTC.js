@@ -130,3 +130,10 @@ export function chatTextChanged(data){
         userIsTyping: data.userIsTyping
     }
 }
+
+export function setIsPresenter(isPresenter){
+    return {
+        type: types.SET_IS_PRESENTER,
+        isPresenter: isPresenter
+    }
+}

@@ -14,7 +14,10 @@ const initialConferenceState = {
       currentMessage: '',
       userIsTyping: false,
       usersTyping: [],
-      roomId: 'test1'
+      roomId: 'test1',
+      socketIds: [],
+      isPresenter: false,
+      socketId: ''
 };
 
 export default function webrtc(state = initialConferenceState, action) {
@@ -27,7 +30,12 @@ export default function webrtc(state = initialConferenceState, action) {
         return { ...state,  userIsTyping: action.userIsTyping, currentMessage: action.currentMessage };
     case types.CLIENT_UPDATE_TYPING_USERS:
         return { ...state,  usersTyping: action.data.usersTyping };
-  
+    case types.CLIENT_USERS_UPDATED:
+        return { ...state,  socketIds: action.data.socketIds };
+    case types.CLIENT_CONNECTED:
+        return { ...state,  socketId: action.data.socketId };
+    case types.SET_IS_PRESENTER:
+        return { ...state,  isPresenter: action.isPresenter };
     default:
       return state;
   }

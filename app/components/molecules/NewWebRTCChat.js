@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 import { 
   View,
@@ -18,10 +19,8 @@ import {
 var styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginTop: 0,
-    padding: 0,
-    backgroundColor: '#ffffff',
-    width:300
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   title: {
     fontSize: 30,
@@ -44,21 +43,46 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     width: 100
   },
-  form: {
-      
+  listViewContainer: {
+    marginTop: 0,
+    paddingTop: 40,
+    backgroundColor: 'rgba(0,0,0,0)',
+    alignSelf: 'stretch',
+    flex: 1
+  },
+  chatContainer: {
+    marginTop: 0,
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: 'rgba(0,0,0,0)',
+    alignSelf: 'stretch',
+    flex: 1
+  },
+  chatInputGroup: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignSelf: 'stretch'
   }
 });
 
 class WebRTCChat extends Component{
  
-
   componentWillMount(){
-    this.props.joinRoom({ roomId: this.props.webrtc.roomId, username: 'edo' });
+    this.props.joinRoom({ roomId: this.props.webrtc.roomId, username: 'edo', socketId: this.props.webrtc.socketId, isPresenter: this.props.webrtc.isPresenter });
   }
 
   componentWillUnmount(){
     this.props.disconnect();
   }
+
+ _renderRow = function(rowData, rowId){
+   return (
+     <View style={{flexWrap: 'wrap', backgroundColor: 'rgba(34, 167, 240, 0.6)', borderRadius:10, margin:10, padding:10}}>
+      <Text style={{flex: 1, color:'white', fontWeight:'bold'}}>{rowData.username}</Text>
+      <Text style={{flex: 1, color:'white'}}>{rowData.message}</Text>
+    </View>
+    )
+ }
 
   _messageTextChanged = function(text){
     if(text){
@@ -79,28 +103,43 @@ class WebRTCChat extends Component{
     this.refs.message.clear();
   }
 
+  _setIsPresenter = function(){
+    this.props.setIsPresenter(true);
+  }
+
   render() {
-        
+       
         return (
-          <View style={styles.listViewContainer}>
-            <ListView
-              dataSource={this.props.chatMessages}
-              renderRow={rowData => <Text>{rowData.username + ':' + rowData.message}</Text>}
-              />
-              <TextInput
-                ref='message'
-                autoCorrect={false}
-                style={{width: 200, height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(text) => this._messageTextChanged(text)}
-                value={this.props.currentMessage}
-              />
-              <TouchableHighlight
-                onPress={this._sendMessage.bind(this)}>
-              <Text>Send</Text>
-            </TouchableHighlight>
-              { this.props.webrtc.usersTyping.length > 0 &&
-                  <Text>Send</Text>
-              }
+          <View style={styles.chatContainer}>
+             <TouchableHighlight
+                  onPress={this._setIsPresenter.bind(this)}
+                  style={{width:200, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10}}>
+                  <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Set Presenter</Text>
+              </TouchableHighlight>
+            <View style={styles.listViewContainer}>
+              <ListView
+                renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+                dataSource={this.props.chatMessages}
+                renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
+                />
+              </View>
+              <View style={styles.chatInputGroup}>
+                <TextInput
+                  ref='message'
+                  autoCorrect={false}
+                  style={{flex:3, height: 40, borderColor: 'gray', borderWidth: 1}}
+                  onChangeText={(text) => this._messageTextChanged(text)}
+                  value={this.props.currentMessage}
+                />
+                <TouchableHighlight
+                  onPress={this._sendMessage.bind(this)}
+                  style={{flex:1, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10}}>
+                  <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Send</Text>
+              </TouchableHighlight>
+              </View>
+                { ((this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) > -1 && this.props.webrtc.usersTyping.length > 1) || (this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) == -1 && this.props.webrtc.usersTyping.length > 0)) &&
+                    <View><Text>Someone is typing</Text></View>
+                }
            </View>
         );
   }
@@ -113,9 +152,11 @@ const ds = new ListView.DataSource({
 
 const mapStateToProps = (state) => {
     console.log(state);
+    //Re-order rows for inverted List View
+    var rowIds = state.webrtc.chatMessages.map((row, index) => index).reverse();
     return {
         user: state.user,
-        chatMessages: ds.cloneWithRows(state.webrtc.chatMessages),
+        chatMessages: ds.cloneWithRows(state.webrtc.chatMessages, rowIds),
         currentMessage: state.webrtc.currentMessage,
         webrtc: state.webrtc
     }
