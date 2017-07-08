@@ -1,5 +1,25 @@
 import * as types from './../../actions/Types';
 
+import {
+  RTCPeerConnection,
+  RTCMediaStream,
+  RTCIceCandidate,
+  RTCSessionDescription,
+  RTCView,
+  MediaStreamTrack,
+  getUserMedia,
+} from 'react-native-webrtc';
+
+const configuration = {
+  "iceServers": [
+     {
+      url: 'turn:35.176.66.87:3478',
+      credential: 'test',
+      username: 'edo'
+    },
+  ]};
+
+
 export default function createRTCMiddleware() {
     
     return ({ dispatch }) => {
