@@ -8,12 +8,11 @@ import MainScreen from './app/components/templates/MainScreen';
 import thunk from 'redux-thunk';
 import io from 'socket.io-client';
 
-//import { socketIOMiddleware } from './app/libs/middlewares/SocketIOMiddleware';
-//import socketIO from 'socket.io-client';
-import createSocketIoMiddleware from './app/libs/middlewares/SocketIOMiddleware';
+//import createSocketIoMiddleware from './app/libs/middlewares/SocketIOMiddleware';
+import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddleware';
 
 //let socket = io('http://localhost:3000');
-let socketIoMiddleware = createSocketIoMiddleware("server/");
+let socketIoMiddleware = createSocketMiddleware();
 
 class ReduxExampleApp extends React.Component {
   

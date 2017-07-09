@@ -103,6 +103,13 @@ export function message(data){
     }
 }
 
+export function connect(data){
+    return {
+        type: types.SERVER_CONNECT,
+        data: data
+    }
+}
+
 export function joinRoom(data){
     return {
         type: types.SERVER_JOIN_ROOM,
@@ -110,9 +117,10 @@ export function joinRoom(data){
     }
 }
 
-export function disconnect(){
+export function disconnect(data){
     return {
-        type: types.SERVER_DISCONNECT
+        type: types.SERVER_DISCONNECT,
+        data: data
     }
 }
 

@@ -25,6 +25,7 @@ export const SET_ROOM_ID = 'SET_ROOM_ID';
 export const REMOVE_PEER = 'REMOVE_PEER';
 
 //Socket.io
+export const SERVER_CONNECT = 'server/connect';
 export const SERVER_MESSAGE = 'server/message';
 export const CLIENT_MESSAGE = 'client/message';
 export const SERVER_DISCONNECT = 'server/disconnect';
@@ -38,6 +39,8 @@ export const CLIENT_RECONNECTED = 'reconnect';
 //Chat
 export const CHAT_MESSAGE_CHANGED = 'CHAT_MESSAGE_CHANGED';
 export const SET_IS_PRESENTER = 'IS_PRESENTER';
+export const SET_SOCKET_ERROR = 'SOCKET_ERROR';
+
 
 //WebRTC
 export const CREATE_PEER_CONNECTION = 'CREATE_PEER_CONNECTION';

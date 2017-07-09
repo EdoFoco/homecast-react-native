@@ -15,8 +15,7 @@
 import io from 'socket.io-client';
 import * as types from './../../actions/Types';
 
-export default function createSocketIoMiddleware(criteria = [],
-  { eventName = 'action', execute = defaultExecute } = {}) {
+export default function createSocketIoMiddleware() {
     
     var socket;
     var emitBound;

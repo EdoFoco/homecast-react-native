@@ -68,11 +68,11 @@ var styles = StyleSheet.create({
 class WebRTCChat extends Component{
  
   componentWillMount(){
-    this.props.joinRoom({ roomId: this.props.webrtc.roomId, username: 'edo', socketId: this.props.webrtc.socketId, isPresenter: this.props.webrtc.isPresenter });
+    this.props.connect({ roomId: this.props.webrtc.roomId, username: 'edo', isPresenter: this.props.webrtc.isPresenter });
   }
 
   componentWillUnmount(){
-    this.props.disconnect();
+    this.props.disconnect({ roomId: this.props.webrtc.roomId });
   }
 
  _renderRow = function(rowData, rowId){
@@ -87,11 +87,11 @@ class WebRTCChat extends Component{
   _messageTextChanged = function(text){
     if(text){
       this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: text, userIsTyping: true, username: this.props.user.user.name } );
-      this.props.chatTextChanged( { currentMessage: text, userIsTyping: true, username: this.props.user.user.name } )
+      this.props.chatTextChanged( { currentMessage: text, userIsTyping: true, username: this.props.user.user.name } );
     }
     else{
       this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
-      this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } )
+      this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
     }
 
   }
@@ -99,7 +99,8 @@ class WebRTCChat extends Component{
   _sendMessage = function(){
     console.log('sending message:' + this.props.currentMessage);
     this.props.message({ roomId: this.props.webrtc.roomId, username: this.props.user.user.name, message: this.props.currentMessage });
-    this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name });
+    this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
+    this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
     this.refs.message.clear();
   }
 
@@ -108,7 +109,12 @@ class WebRTCChat extends Component{
   }
 
   render() {
-       
+       if(this.props.webrtc.hasError){
+          return <View>
+            <Text>There was an error connecting to the socket. Go Back and try again</Text>
+          </View>
+        }
+        
         return (
           <View style={styles.chatContainer}>
              <TouchableHighlight

@@ -44,6 +44,7 @@ class Chat extends Component{
   }
 
   render() {
+        
        return (
         <View style={styles.listViewContainer}>
             <ListView
