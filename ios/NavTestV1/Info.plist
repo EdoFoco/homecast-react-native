@@ -34,6 +34,11 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>localhost:8000</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>138.68.130.61</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
