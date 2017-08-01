@@ -16,6 +16,16 @@ import {
   Platform,
 } from 'react-native';
 
+import {
+  RTCPeerConnection,
+  RTCMediaStream,
+  RTCIceCandidate,
+  RTCSessionDescription,
+  RTCView,
+  MediaStreamTrack,
+  getUserMedia,
+} from 'react-native-webrtc';
+
 
 class Chat extends Component{
 

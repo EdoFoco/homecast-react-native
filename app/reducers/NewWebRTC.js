@@ -14,12 +14,19 @@ const initialConferenceState = {
       currentMessage: '',
       userIsTyping: false,
       usersTyping: [],
-      roomId: 'test1',
+      roomId: 'test123',
       isPresenter: false,
       socketId: '',
       subscribedUsers: [],
       hasError: false,
-      error: null
+      error: null,
+      viewer: {
+          isReady: false,
+          sdpOffer: '',
+          isProcessingAnswer: false,
+          sdpAnswer: '',
+          candidate: ''
+      }
 };
 
 export default function webrtc(state = initialConferenceState, action) {
@@ -40,6 +47,22 @@ export default function webrtc(state = initialConferenceState, action) {
         return { ...state,  isPresenter: action.isPresenter };
     case types.SET_SOCKET_ERROR:
         return { ...state,  hasError: action.data.hasError, error: action.data.error };
+    case 'viewer':
+        var viewer = state.viewer;
+        viewer.sdpOffer = action.data.sdpOffer;
+        return { ...state,  viewer: viewer };
+
+    case 'setViewerReadyToStream':
+        var viewer = state.viewer;
+        viewer.isProcessingAnswer = false,
+        viewer.isReady = true;
+        return { ...state,  viewer: viewer };
+
+    case types.CLIENT_VIEWER_RESPONSE:
+        var viewer = state.viewer;
+        viewer.isProcessingAnswer = true,
+        viewer.sdpAnswer = action.data.sdpAnswer
+        return { ...state, viewer};
     default:
       return state;
   }

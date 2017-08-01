@@ -27,12 +27,16 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
 
                     socket.on('subscribe', function(){
                         console.log('subscribed' + socket.id);
+                        console.log(action.data.roomId);
                         socket.publish(action.data.roomId, {type: 'server/joinRoom', data: {socketId: socket.id, username: action.data.username, isPresenter: action.data.isPresenter, roomId: action.data.roomId} });
                         return next({ type: types.CLIENT_CONNECTED, data: { socketId: socket.id}})
                     });
                     
                     room.watch(function(event){
-                          if(event.type.indexOf(callsToClientPrefix) > -1){
+                        if(event.type.indexOf(callsToClientPrefix) > -1){
+                            dispatch(event);
+                        }
+                        if(event.type === 'viewerResponse'){
                             dispatch(event);
                         }
                     });
@@ -49,6 +53,10 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
             
             
             if(socket && action.type.indexOf(callsToServerPrefix) > -1){
+                socket.publish(action.data.roomId, action);
+            }
+
+            if(socket && (action.type === 'viewer' || action.type === 'onIceCandidate')){
                 socket.publish(action.data.roomId, action);
             }
         

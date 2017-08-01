@@ -145,3 +145,26 @@ export function setIsPresenter(isPresenter){
         isPresenter: isPresenter
     }
 }
+
+//Kurento
+export function startViewer(data){
+    return {
+        type: 'viewer',
+        data: data
+    }
+}
+
+export function sendOnIceCandidate(data){
+    return {
+        type: 'onIceCandidate',
+        data: data
+    }
+}
+
+export function setViewerReadyToStream(){
+    return {
+        type: 'setViewerReadyToStream',
+        isReady: true
+    }
+}
+
