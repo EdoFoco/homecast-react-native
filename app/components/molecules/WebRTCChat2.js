@@ -13,17 +13,20 @@ import {
   TextInput,
   ListView,
   ListViewDataSource,
+  Platform,
   Text } from 'react-native';
 
  import {
   RTCPeerConnection,
+  RTCMediaStream,
+  RTCIceCandidate,
   RTCSessionDescription,
   RTCView,
-  MediaStream,
-  MediaStreamTrack
+  MediaStreamTrack,
+  getUserMedia,
 } from 'react-native-webrtc';
 
-import kurentoUtils from 'react-native-kurento-utils-js';
+//import kurentoUtils from 'react-native-kurento-utils-js';
 
 
 var styles = StyleSheet.create({
@@ -79,188 +82,128 @@ var styles = StyleSheet.create({
   }
 });
 
-var webRtcPeer;
 var pc;
-var video = {};
-var iceCandidates = [];
-var remoteDescriptionSet = false;
+var iceCandidatesCount = 0;
+var localStream;
+
+const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
 
 class WebRTCChat extends Component{
  
   componentWillMount(){
+    console.log("THIS IS 2");
+    var self = this;
     this.props.connect({ roomId: this.props.webrtc.roomId, username: 'edo', isPresenter: this.props.webrtc.isPresenter });
-    this._startWebRtcAsViewer();
-    
-    /*webRtcPeer.onaddstream(function (event) {
-      var x = event.stream.toURL();
-    };*/
+    this._getLocalStream(true, function(stream) {
+          localStream = stream;
+          self._startWebRtcAsViewer();
+    });
   }
 
   componentWillUnmount(){
     this.props.disconnect({ roomId: this.props.webrtc.roomId });
   }
 
-  componentDidUpdate(){
+  componentWillUpdate(){
     
-   //console.log(webRtcPeer.getRemoteSessionDescriptor());
-    var self = this;
-    if(this.props.webrtc.viewer.sdpAnswer && !remoteDescriptionSet){
-      const sessionDescription = {
-        type: 'answer',
-        sdp: this.props.webrtc.viewer.sdpAnswer
-    };
-
-    pc.setRemoteDescription(new RTCSessionDescription(sessionDescription), () => {
-        // After receiving the SDP we add again the ice candidates, in case they were forgotten (bug)
-       // pc = new RTCPeerConnection();
-        remoteDescriptionSet = true;
-        iceCandidates.forEach((iceCandidate) => {
-            pc.addIceCandidate(iceCandidate);
-        });
-
-        console.log(pc.getRemoteStreams()[0].toURL());
-        self.props.updateStreamUrl(pc.getRemoteStreams()[0].toURL());
-
-    }, function(error){
-      console.log(error);
-    });
+    if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){
+      iceCandidatesCount = this.props.webrtc.viewer.iceCandidates.length;
+      console.log("6. Adding Ice Candidate")
+      pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.viewer.iceCandidates[iceCandidatesCount -1]));
     }
-
-    
-
-    if(this.props.webrtc.viewer.isProcessingAnswer){
-      //this.props.setViewerReadyToStream();
-     /*   webRtcPeer.peerConnection.onaddstream = function (event) {
-          self.props.updateStreamUrl(event.stream.toURL());
-        };
-
-      webRtcPeer.processAnswer(this.props.webrtc.viewer.sdpAnswer, this.props.setViewerReadyToStream);
-    */
-    }
-    if(this.props.webrtc.viewer.isReady){
-      var x = webRtcPeer.getRemoteStream();
-      console.log(webRtcPeer.peerConnection);
-      var stream = webRtcPeer.peerConnection.getRemoteStreams()[0];
-      console.log(stream.toURL());
-
-  
-       this.props.updateStreamUrl(stream.toURL());
-
-      //pc.addStream(x._tracks[0]);
-      //pc.addStream(x._tracks[1]);
-      //pc.addTrack(x);
-      //ar streams = pc.getRemoteStreams()[0];
-      /*for(var i = 0; i < this.props.webrtc.viewer.iceCandidates.length; i++){
-        pc.addIceCandidate(this.props.webrtc.viewer.iceCandidates[i]);
-      }*/
-     
-    }
-    
   }
+
+  _getLocalStream(isFront, callback) {
+
+  let videoSourceId;
+
+  // on android, you don't have to specify sourceId manually, just use facingMode
+  // uncomment it if you want to specify
+  if (Platform.OS === 'ios') {
+    MediaStreamTrack.getSources(sourceInfos => {
+      console.log("sourceInfos: ", sourceInfos);
+
+      for (const i = 0; i < sourceInfos.length; i++) {
+        const sourceInfo = sourceInfos[i];
+        if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
+          videoSourceId = sourceInfo.id;
+        }
+      }
+    });
+  }
+  getUserMedia({
+    audio: true,
+    video: false,
+  }, function (stream) {
+    console.log('getUserMedia success', stream);
+    callback(stream);
+  }, function(error){console.log(error)});
+}
 
  _startWebRtcAsViewer  = function(){
 
-    var self = this;
-
-    if (!webRtcPeer) {
+      var self = this;
+      pc = new RTCPeerConnection();
+      console.log("1. Creating Peer Connection.")
       
-      var options = {
-       // remoteVideo: video,
-        onicecandidate : function(candidate){
-          self._onIceCandidate(candidate);
-        },
-        onSdpAnswer: function(answer){
-          self._onSdpAnswer(answer);
-        }
+      function logError(error){
+        console.log(error);
       }
 
-      pc = new RTCPeerConnection();
-      
       pc.onicecandidate = function (event) {
-        //console.log('onicecandidate', event.candidate);
-        if(event.candidate != null){
-          iceCandidates.push(event.candidate);
-          pc.addIceCandidate(event.candidate);
-        }
+        console.log('onicecandidate', event.candidate);
         if (event.candidate) {
+          console.log("5. Ice Candidate Received")
           self.props.sendOnIceCandidate({roomId: self.props.webrtc.roomId, candidate: event.candidate});
         }
       };
 
-      pc.createOffer(function(sdpOffer) {
-        pc.setLocalDescription(sdpOffer, function () {
-          self.props.startViewer({roomId: self.props.webrtc.roomId, sdpOffer: sdpOffer.sdp});
-        });
-      });
+      function createOffer() {
+        pc.createOffer(function(desc) {
+          console.log("3. Creating Offer.")
+          console.log('createOffer', desc);
+          pc.setLocalDescription(desc, function () {
+          console.log("4. Setting local description.")
+            console.log('setLocalDescription', pc.localDescription);
+            self.props.startViewer({roomId: self.props.webrtc.roomId, sdpOffer: pc.localDescription.sdp});
+          }, logError);
+        }, logError);
+      }
+
+      pc.onnegotiationneeded = function () {
+        console.log('onnegotiationneeded');
+       // if (isOffer) {
+          console.log("2. Negotiation needed, lets create an offer.")
+
+          createOffer();
+       // }
+      }
+
+      pc.oniceconnectionstatechange = function(event) {
+            console.log("7. Ice Connection State Changed - get stats")
+
+          console.log('oniceconnectionstatechange', event.target.iceConnectionState);
+          if (event.target.iceConnectionState === 'completed') {
+            setTimeout(() => {
+              getStats();
+            }, 1000);
+          }
+          if (event.target.iceConnectionState === 'connected') {
+            createDataChannel();
+          }
+      };
       
-       pc.onaddstream = function (event) {
-          console.log('adding stream');
-          console.log(event.stream.toURL());
+      pc.onaddstream = function (event) {
           //self.props.updateStreamUrl(event.stream.toURL());
-          
+        console.log("8. Stream has been added");
+
+        console.log('onaddstream', event.stream);
+        console.log(event.stream.toURL());
        };
 
-       pc.onsdpanswer = function(answer){
-         console.log(answer);
-       }
-/*
-      webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function(error) {
-        if(error) return onError(error);
-
-        this.peerConnection.onsdpanswer = function(answer){
-          self._onSdpAnswer(answer);
-        }
-
-        this.generateOffer(function(error, sdpOffer){
-          self._onOfferViewer(error, sdpOffer)
-        });
-      });*/
-
-      
-    }
+       pc.addStream(localStream);
  }
 
- _onSdpAnswer = function(answer){
-  //if(this.props.webrtc.viewer.sdpAnswer && !remoteDescriptionSet){
-      console.log(webRtcPeer.peerConnection.iceConnectionState);
-      webRtcPeer.peerConnection.setRemoteDescription(new RTCSessionDescription({ sdp: answer, type: "answer" }), function () {
-        console.log('remote description set');
-        iceCandidates.forEach((iceCandidate) => {
-            webRtcPeer.peerConnection.addIceCandidate(iceCandidate);
-        });
-        remoteDescriptionSet = true;
-        
-      /*if (pc.remoteDescription.type == "offer")
-        pc.createAnswer(function(desc) {
-          //console.log('createAnswer', desc);
-          pc.setLocalDescription(desc, function () {
-            console.log('setLocalDescription', pc.localDescription);
-          //  socket.emit('exchange', {'to': fromId, 'sdp': pc.localDescription });
-          }, function(error){
-            console.log(error);
-          });
-        }, function(error){
-            console.log(error);
-          });*/
-      }, function(error){
-        console.log(error);
-      });
-    //}
- }
-
-_onIceCandidate = function(candidate){
-     console.log('Local candidate' + JSON.stringify(candidate));
-     iceCandidates.push(candidate);
-     this.props.sendOnIceCandidate({roomId: this.props.webrtc.roomId, candidate: candidate});
-    // this.props.setViewerReadyToStream();
-}
-
-_onOfferViewer = function(error, sdpOffer){
-    //if (error) return onError(error)
-
-    console.log('Send SdpMessage');
-    this.props.startViewer({roomId: this.props.webrtc.roomId, sdpOffer: sdpOffer});
-}
 
 _renderRow = function(rowData, rowId){
    return (

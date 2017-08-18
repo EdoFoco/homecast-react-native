@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
-import WebRTCChat from '../../../molecules/NewWebRTCChat';
+import WebRTCChat from '../../../molecules/WebRTCChat2';
 import {
   StyleSheet,
   Text,

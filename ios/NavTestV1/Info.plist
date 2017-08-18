@@ -34,6 +34,10 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>test3KurentoLoadBalancer-1181578519.eu-west-1.elb.amazonaws.com/kurento</key>
+			<dict/>
+			<key>NSExceptionAllowsInsecureHTTPLoads</key>
+			<true/>
 			<key>localhost:8000</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

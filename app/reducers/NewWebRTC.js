@@ -25,7 +25,9 @@ const initialConferenceState = {
           sdpOffer: '',
           isProcessingAnswer: false,
           sdpAnswer: '',
-          candidate: ''
+          candidate: '',
+          streamUrl: '',
+          iceCandidates: []
       }
 };
 
@@ -62,7 +64,20 @@ export default function webrtc(state = initialConferenceState, action) {
         var viewer = state.viewer;
         viewer.isProcessingAnswer = true,
         viewer.sdpAnswer = action.data.sdpAnswer
-        return { ...state, viewer};
+        return { ...state, viewer: viewer};
+
+    case 'updateStreamUrl':
+        var viewer = state.viewer;
+        viewer.isReady = false;
+        viewer.streamUrl = action.url
+        return { ...state, viewer: viewer};
+    case 'iceCandidate':
+        var viewer = state.viewer;
+        var index = viewer.iceCandidates.indexOf(action.data.candidate);
+        if(index == -1){
+            viewer.iceCandidates.push(action.data.candidate);
+        }
+        return { ...state, viewer: viewer};
     default:
       return state;
   }

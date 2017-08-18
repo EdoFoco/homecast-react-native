@@ -1,9 +1,8 @@
 import * as types from './../../actions/Types';
 import * as socketCluster from 'socketcluster-client';
 
-var options = {
-    host: 'localhost:8000'
-};
+//var options = { host: 'localhost:8000' };
+var options = { host: '192.168.1.76:8000' };
 
 
 export default function createSocketMiddleware(callsToServerPrefix = 'server/', callsToClientPrefix = 'client/') {
@@ -37,6 +36,9 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
                             dispatch(event);
                         }
                         if(event.type === 'viewerResponse'){
+                            dispatch(event);
+                        }
+                        if(event.type === 'iceCandidate'){
                             dispatch(event);
                         }
                     });

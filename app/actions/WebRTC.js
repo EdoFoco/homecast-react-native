@@ -161,10 +161,17 @@ export function sendOnIceCandidate(data){
     }
 }
 
-export function setViewerReadyToStream(){
+export function setViewerReadyToStream(data, success){
     return {
         type: 'setViewerReadyToStream',
         isReady: true
+    }
+}
+
+export function updateStreamUrl(url){
+    return {
+        type: 'updateStreamUrl',
+        url: url
     }
 }
 

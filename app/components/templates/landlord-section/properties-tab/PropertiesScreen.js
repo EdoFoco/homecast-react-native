@@ -27,14 +27,7 @@ import {
   getUserMedia,
 } from 'react-native-webrtc';
 
-const configuration = {
-  "iceServers": [
-     {
-      url: 'turn:35.176.66.87:3478',
-      credential: 'test',
-      username: 'edo'
-    },
-  ]};
+const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
 
 const pcPeers = {};
 let localStream;
@@ -54,6 +47,8 @@ function getLocalStream(isFront, callback) {
         const sourceInfo = sourceInfos[i];
         if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
           videoSourceId = sourceInfo.id;
+
+  
         }
       }
     });
@@ -145,6 +140,7 @@ function createPC(socketId, isOffer) {
   };
 
   pc.addStream(localStream);
+  
   function createDataChannel() {
     if (pc.textDataChannel) {
       return;

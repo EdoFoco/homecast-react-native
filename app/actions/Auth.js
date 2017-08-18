@@ -79,7 +79,7 @@ export function loginUser(credentials) {
 export function getUser(token) {
   return (dispatch, getState) => {
     const params = {
-        "email": "no12@test.com",
+        "email": "test@test.com",
         "password": "test"
     }
 
