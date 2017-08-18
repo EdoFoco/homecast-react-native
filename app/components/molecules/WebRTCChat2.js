@@ -14,6 +14,7 @@ import {
   ListView,
   ListViewDataSource,
   Platform,
+  Dimensions,
   Text } from 'react-native';
 
  import {
@@ -77,10 +78,11 @@ var styles = StyleSheet.create({
     alignSelf: 'stretch'
   },
    remoteView: {
-    width: null,
-    height: null,
     flex: 1,
-    alignSelf: 'stretch'
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    backgroundColor: 'blue'
+   
   },
   videoContainer: {
      flex: 1,
@@ -282,11 +284,8 @@ _renderRow = function(rowData, rowId){
         }
 
         return (
-          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}>
+          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
                 
-          <View style={styles.videoContainer}>
-            
-          </View>
           <View style={styles.chatContainer}>
              <TouchableHighlight
                   onPress={this._setIsPresenter.bind(this)}
