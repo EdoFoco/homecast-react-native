@@ -26,7 +26,7 @@ import {
   getUserMedia,
 } from 'react-native-webrtc';
 
-//import kurentoUtils from 'react-native-kurento-utils-js';
+import kurentoUtils from 'react-native-kurento-utils-js';
 
 
 var styles = StyleSheet.create({
@@ -77,14 +77,24 @@ var styles = StyleSheet.create({
     alignSelf: 'stretch'
   },
    remoteView: {
-    width: 400,
-    height: 400
+    width: null,
+    height: null,
+    flex: 1,
+    alignSelf: 'stretch'
+  },
+  videoContainer: {
+     flex: 1,
+     justifyContent: 'center',
+     alignItems: 'center',
+     backgroundColor: '#F5FCFF',
+     flexDirection: 'column',
   }
 });
 
 var pc;
 var iceCandidatesCount = 0;
 var localStream;
+var kurentoPeer;
 
 const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
 
@@ -94,10 +104,30 @@ class WebRTCChat extends Component{
     console.log("THIS IS 2");
     var self = this;
     this.props.connect({ roomId: this.props.webrtc.roomId, username: 'edo', isPresenter: this.props.webrtc.isPresenter });
-    this._getLocalStream(true, function(stream) {
+    /*this._getLocalStream(true, function(stream) {
           localStream = stream;
           self._startWebRtcAsViewer();
-    });
+    });*/
+    
+    var kurentoOptions = {
+          onicecandidate: function (event, error) {
+            console.log('onicecandidate', event.candidate);
+            if (event.candidate) {
+              console.log("5. Ice Candidate Received")
+              self.props.sendOnIceCandidate({roomId: self.props.webrtc.roomId, candidate: event});
+            }
+          }
+      }
+
+    kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(kurentoOptions, function(error) {
+			if(error) return onError(error);
+
+			console.log('Viewer about to geenrate offer');
+			this.generateOffer(function(error, offer){
+          self.props.startViewer({roomId: self.props.webrtc.roomId, sdpOffer: offer});
+          self._startWebRtcAsViewer();
+      });
+		});
   }
 
   componentWillUnmount(){
@@ -110,6 +140,12 @@ class WebRTCChat extends Component{
       iceCandidatesCount = this.props.webrtc.viewer.iceCandidates.length;
       console.log("6. Adding Ice Candidate")
       pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.viewer.iceCandidates[iceCandidatesCount -1]));
+    }
+
+    if(this.props.webrtc.viewer.sdpAnswer){
+      	kurentoPeer.processAnswer(this.props.webrtc.viewer.sdpAnswer, function(){
+			    console.log('hi');
+		    });
     }
   }
 
@@ -143,22 +179,22 @@ class WebRTCChat extends Component{
  _startWebRtcAsViewer  = function(){
 
       var self = this;
-      pc = new RTCPeerConnection();
+      pc = kurentoPeer.peerConnection;
       console.log("1. Creating Peer Connection.")
       
       function logError(error){
         console.log(error);
       }
 
-      pc.onicecandidate = function (event) {
+      /*pc.onicecandidate = function (event) {
         console.log('onicecandidate', event.candidate);
         if (event.candidate) {
           console.log("5. Ice Candidate Received")
-          self.props.sendOnIceCandidate({roomId: self.props.webrtc.roomId, candidate: event.candidate});
+          self.props.sendOnIceCandidate({roomId: self.props.webrtc.roomId, candidate: candidate});
         }
-      };
+      };*/
 
-      function createOffer() {
+      /*function createOffer() {
         pc.createOffer(function(desc) {
           console.log("3. Creating Offer.")
           console.log('createOffer', desc);
@@ -168,14 +204,14 @@ class WebRTCChat extends Component{
             self.props.startViewer({roomId: self.props.webrtc.roomId, sdpOffer: pc.localDescription.sdp});
           }, logError);
         }, logError);
-      }
+      }*/
 
       pc.onnegotiationneeded = function () {
         console.log('onnegotiationneeded');
        // if (isOffer) {
           console.log("2. Negotiation needed, lets create an offer.")
 
-          createOffer();
+          //createOffer();
        // }
       }
 
@@ -185,23 +221,23 @@ class WebRTCChat extends Component{
           console.log('oniceconnectionstatechange', event.target.iceConnectionState);
           if (event.target.iceConnectionState === 'completed') {
             setTimeout(() => {
-              getStats();
+              //getStats();
             }, 1000);
           }
           if (event.target.iceConnectionState === 'connected') {
-            createDataChannel();
+            //createDataChannel();
           }
       };
       
       pc.onaddstream = function (event) {
-          //self.props.updateStreamUrl(event.stream.toURL());
+          self.props.updateStreamUrl(event.stream.toURL());
         console.log("8. Stream has been added");
 
         console.log('onaddstream', event.stream);
         console.log(event.stream.toURL());
        };
 
-       pc.addStream(localStream);
+       //pc.addStream(localStream);
  }
 
 
@@ -244,15 +280,17 @@ _renderRow = function(rowData, rowId){
             <Text>There was an error connecting to the socket. Go Back and try again</Text>
           </View>
         }
-       if(this.props.webrtc.viewer.streamUrl !== 'undefined'){
-          return(  <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}/> )
-       }
-       
+
         return (
+          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}>
+                
+          <View style={styles.videoContainer}>
+            
+          </View>
           <View style={styles.chatContainer}>
              <TouchableHighlight
                   onPress={this._setIsPresenter.bind(this)}
-                  style={{width:200, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10}}>
+                  style={{width:200, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10, height: 0}}>
                   <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Set Presenter</Text>
               </TouchableHighlight>
             <View style={styles.listViewContainer}>
@@ -280,6 +318,7 @@ _renderRow = function(rowData, rowId){
                     <View><Text>Someone is typing</Text></View>
                 }
            </View>
+           </RTCView>
         );
   }
 }
