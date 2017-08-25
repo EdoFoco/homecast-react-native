@@ -10,6 +10,7 @@
     "kurento-client": "^6.6.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
+    "react-native-animatable": "^1.2.3",
     "react-native-invertible-scroll-view": "^1.0.0",
     "react-native-kurento-utils-js": "^6.6.2",
     "react-native-webrtc": "^1.57.1",

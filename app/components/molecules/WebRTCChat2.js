@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
+import * as Animatable from 'react-native-animatable';
 
 import { 
   View,
@@ -93,15 +94,27 @@ var styles = StyleSheet.create({
   }
 });
 
+const myFadeOut = {
+  from: {
+    opacity: 1,
+  },
+  to: {
+    opacity: 0.5,
+  },
+};
+
 var pc;
 var iceCandidatesCount = 0;
 var localStream;
 var kurentoPeer;
 
+var renderRowWasCalled = false;
+
 const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
 
 class WebRTCChat extends Component{
  
+  
   componentWillMount(){
     console.log("THIS IS 2");
     var self = this;
@@ -242,13 +255,14 @@ class WebRTCChat extends Component{
        //pc.addStream(localStream);
  }
 
-
 _renderRow = function(rowData, rowId){
    return (
-     <View style={{flexWrap: 'wrap', backgroundColor: 'rgba(34, 167, 240, 0.6)', borderRadius:10, margin:10, padding:10}}>
-      <Text style={{flex: 1, color:'white', fontWeight:'bold'}}>{rowData.username}</Text>
-      <Text style={{flex: 1, color:'white'}}>{rowData.message}</Text>
-    </View>
+     <Animatable.View transition="myFadeOut"  delay={3000}>
+      <View style={{flex: 1,alignSelf: 'flex-start', backgroundColor: 'white', borderRadius:10, margin:10, padding:10}}>
+        <Text style={{flex: 1, color:'black', fontWeight:'bold'}}>{rowData.username}</Text>
+        <Text style={{flex: 1, color:'black'}}>{rowData.message}</Text>
+      </View>
+      </Animatable.View>
     )
  }
 
