@@ -37,9 +37,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-/*const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch({ type: 'Logout' }),
-  login: () => dispatch(NavigationActions.navigate({ routeName: 'Login' })),
-});*/
-
 export default connect(mapStateToProps, mapDispatchToProps)(AuthButton);
