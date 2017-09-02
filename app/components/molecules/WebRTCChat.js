@@ -83,8 +83,9 @@ var styles = StyleSheet.create({
   },
    remoteView: {
     alignSelf: 'flex-start',
+    flex: 1,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 100,
+    height: Dimensions.get('window').height,
     backgroundColor: 'blue'
    
   },
@@ -94,7 +95,10 @@ var styles = StyleSheet.create({
      alignItems: 'center',
      backgroundColor: '#F5FCFF',
      flexDirection: 'column',
-  }
+  },
+  resizableContainer: { 
+    //height:  new Animated.Value(Dimensions.get('window').height - 100)
+   }
 });
 
 const myFadeOut = {
@@ -114,15 +118,16 @@ var kurentoPeer;
 var renderRowWasCalled = false;
 
 const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
-const viewHeight = new Animated.Value(0);
+const textBoxOffset = 120;
 
 class WebRTCChat extends Component{
  
   componentWillMount(){
-    this.viewHeight = new Animated.Value(Dimensions.get('window').height);
-    //this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    this.keyboardHeight = new Animated.Value(0);
+    this.viewHeight = new Animated.Value(Dimensions.get('window').height - textBoxOffset);
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardDidShow);
+    //this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardDidHide);
     
     Animatable.initializeRegistryWithDefinitions(
       {
@@ -185,23 +190,31 @@ class WebRTCChat extends Component{
     }
   }
 
- /*  keyboardWillShow = (event) => {
-    Animated.timing(this.viewHeight, {
+  keyboardWillShow = (event) => {
+    
+
+    /*Animated.timing(this.viewHeight, {
       duration: event.duration,
       toValue: this.viewHeight - event.endCoordinates.height
-    }).start();
-  };*/
+    }).start();*/
+  };
 
- keyboardDidShow(e) {
-        Animated.spring(this.viewHeight, {
-            toValue: e.endCoordinates.height
-        }).start();
+ keyboardDidShow = event => {
+      /*Animated.spring(this.viewHeight, {
+          toValue: this.viewHeight - e.endCoordinates.height - 100
+      }).start();*/
+      Animated.timing(this.viewHeight, {
+        duration: 150,
+        toValue:   Dimensions.get('window').height - event.endCoordinates.height - 70,
+      }).start();
+      
     }
 
-  keyboardDidHide(e) {
-        Animated.spring(this.viewHeight, {
-            toValue: 0
-        }).start();
+  keyboardDidHide = e => {
+       Animated.spring(this.viewHeight, {
+        //duration: event.duration,
+        toValue:   Dimensions.get('window').height - textBoxOffset,
+      }).start();
     }
 
   _getLocalStream(isFront, callback) {
@@ -338,49 +351,45 @@ _renderRow = function(rowData, rowId){
         }
 
         return (
-           <KeyboardAvoidingView
-            style={styles.container}
-            behavior="padding"
-          >
-          <Animated.View style={{ height: this.imageHeight }}>
-            <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
-                  
-            <View style={styles.chatContainer}>
-              <TouchableHighlight
-                    onPress={this._setIsPresenter.bind(this)}
-                    style={{width:200, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10, height: 0}}>
-                    <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Set Presenter</Text>
-                </TouchableHighlight>
-              <View style={styles.listViewContainer}>
-                <ListView
-                  renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                  dataSource={this.props.chatMessages}
-                  renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
-                  />
-                </View>
-                <View style={styles.chatInputGroup}>
-                  <TextInput
-                    ref='message'
-                    keyboardAppearance='dark'
-                    autoCorrect={false}
-                    style={{flex:3, height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={(text) => this._messageTextChanged(text)}
-                    value={this.props.currentMessage}
-                  />
-                  <TouchableHighlight
-                    onPress={this._sendMessage.bind(this)}
-                    style={{flex:1, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10}}>
-                    <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Send</Text>
-                </TouchableHighlight>
-                </View>
-                  { ((this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) > -1 && this.props.webrtc.usersTyping.length > 1) || (this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) == -1 && this.props.webrtc.usersTyping.length > 0)) &&
-                      <View><Text>Someone is typing</Text></View>
-                  }
-            </View>
-            </RTCView>
-             </Animated.View>
-          </KeyboardAvoidingView>
-
+          
+      
+          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
+            <Animated.View style={{height: this.viewHeight}}>
+              <View style={styles.chatContainer}>
+                <TouchableHighlight
+                      onPress={this._setIsPresenter.bind(this)}
+                      style={{width:200, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10, height: 0}}>
+                      <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Set Presenter</Text>
+                  </TouchableHighlight>
+                <View style={styles.listViewContainer}>
+                  <ListView
+                    renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+                    dataSource={this.props.chatMessages}
+                    enableEmptySections={true}
+                    renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
+                    />
+                  </View>
+                  <View style={styles.chatInputGroup}>
+                    <TextInput
+                      ref='message'
+                      keyboardAppearance='dark'
+                      autoCorrect={false}
+                      style={{flex:3, height: 40, borderColor: 'gray', borderWidth: 1}}
+                      onChangeText={(text) => this._messageTextChanged(text)}
+                      value={this.props.currentMessage}
+                    />
+                    <TouchableHighlight
+                      onPress={this._sendMessage.bind(this)}
+                      style={{flex:1, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10}}>
+                      <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Send</Text>
+                  </TouchableHighlight>
+                  </View>
+                    { ((this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) > -1 && this.props.webrtc.usersTyping.length > 1) || (this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) == -1 && this.props.webrtc.usersTyping.length > 0)) &&
+                        <View><Text>Someone is typing</Text></View>
+                    }
+              </View>
+            </Animated.View>
+          </RTCView>
         );
   }
 }
