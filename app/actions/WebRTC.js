@@ -1,13 +1,11 @@
 import * as types from './Types';
-import WebRTCClient from '../libs/services/WebRTCClient';
+//import WebRTCClient from '../libs/services/WebRTCClient';
 
-const rtcClient = new WebRTCClient();
 
-export function updateConnectionStatus(status, info){
+export function updateConnectionStatus(status){
     return {
         type: types.UPDATE_CONNECTION_STATUS,
-        status: status,
-        info: info
+        status: status
     }
 }
 
@@ -33,7 +31,7 @@ export function receiveText( sender, data ){
         textRoomData: data
     }
 }
-
+/*
 export function sendText( textRoomData, message ){
     WebRTCClient.sendText(message);
 
@@ -41,7 +39,7 @@ export function sendText( textRoomData, message ){
         type: types.UPDATE_TEXT_ROOM_DATA,
         textRoomData: textRoomData
     }
-}
+}*/
 
 export function updateInfo( info ){
     return {
@@ -85,66 +83,13 @@ export function removePeer( peerId ){
         peerId: peerId
     }
 }
-
+/*
 export function initWebRTC(){
     return (dispatch, getState) => {
         dispatch(rtcClient.initSocket());
     };
 }
-
-/*
-        New Actions
 */
-
-export function message(data){
-    return {
-        type: types.SERVER_MESSAGE,
-        data: data
-    }
-}
-
-export function connect(data){
-    return {
-        type: types.SERVER_CONNECT,
-        data: data
-    }
-}
-
-export function joinRoom(data){
-    return {
-        type: types.SERVER_JOIN_ROOM,
-        data: data
-    }
-}
-
-export function disconnect(data){
-    return {
-        type: types.SERVER_DISCONNECT,
-        data: data
-    }
-}
-
-export function userIsTyping(data){
-    return {
-        type: types.SERVER_USER_IS_TYPING,
-        data: data
-    }
-}
-
-export function chatTextChanged(data){
-    return {
-        type: types.CHAT_MESSAGE_CHANGED,
-        currentMessage: data.currentMessage,
-        userIsTyping: data.userIsTyping
-    }
-}
-
-export function setIsPresenter(isPresenter){
-    return {
-        type: types.SET_IS_PRESENTER,
-        isPresenter: isPresenter
-    }
-}
 
 //Kurento
 export function startViewer(data){

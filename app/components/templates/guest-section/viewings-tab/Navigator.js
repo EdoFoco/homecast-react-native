@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class GuestViewingsTab extends React.Component {
     
     static navigationOptions = {
-        tabBarLabel: 'Viewings'
+        tabBarLabel: 'Properties'
     }
 
 

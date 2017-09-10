@@ -8,12 +8,13 @@ import { LandlordHomeNavigator } from '../navigators/landlord-section/HomeNaviga
 import user from './User';
 import section from './Section';
 import webrtc from './NewWebRTC';
+import chat from './Chat';
+import properties from './Properties';
 
 import devToolsEnhancer from 'remote-redux-devtools';
 
 const AppReducer = combineReducers({
   //Guest Navigators
-  // /nav: (state, action) => AppNavigator.router.getStateForAction(action, state),
   guestTabBar: (state,action) => GuestTabBarNavigator.router.getStateForAction(action,state),
   guestHomeNav: (state,action) => GuestHomeNavigator.router.getStateForAction(action,state),
   guestViewingsNav: (state,action) => GuestViewingsNavigator.router.getStateForAction(action,state),
@@ -25,7 +26,9 @@ const AppReducer = combineReducers({
 
   user,
   section,
-  webrtc
+  webrtc,
+  chat,
+  properties
 }, devToolsEnhancer());
 
 export default AppReducer;

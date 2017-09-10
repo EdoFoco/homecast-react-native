@@ -1,7 +1,7 @@
 import * as types from './../../actions/Types';
 import * as socketCluster from 'socketcluster-client';
 
-//var options = { host: 'localhost:8000' };
+//var options = { host: '35.176.192.208:8000' };
 var options = { host: '192.168.1.76:8000' };
 
 

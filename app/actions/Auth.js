@@ -51,6 +51,7 @@ export function actionLogout() {
 async function _saveAuthToken(token){
     try {
         console.log('saving' + token);
+        TntApi.setAuthToken(token);
         await AsyncStorage.setItem('@AuthToken:key', token);
     } catch (error) {
         console.log(error);

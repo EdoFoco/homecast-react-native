@@ -1,11 +1,16 @@
+//const baseUrl = 'http://138.68.130.61/api/';
+const baseUrl = 'http://localhost:8111/api/';
+
+var headers = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'dataType': 'json',
+}
+
 class TntApi {
+
   static headers() {
-    return {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'dataType': 'json',
-      'Authorization': 'Bearer b9729b8cd51f45f3a69ea4dec47b69d5'
-    }
+    return headers;
   }
 
   static get(route) {
@@ -24,10 +29,13 @@ class TntApi {
     return this.xhr(route, params, 'DELETE')
   }
 
+  static setAuthToken(token){
+    headers.Authorization = 'Bearer ' + token;
+  }
+
   static xhr(route, params, verb) {
-    const host = 'http://138.68.130.61/api/'
-    console.log(host);
-    const url = `${host}${route}`
+    console.log(TntApi.headers());
+    const url = `${baseUrl}${route}`
     let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null );
     options.headers = TntApi.headers();
     

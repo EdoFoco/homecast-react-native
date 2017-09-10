@@ -2,24 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
-import InvertibleScrollView from 'react-native-invertible-scroll-view';
-import * as Animatable from 'react-native-animatable';
+import Chat from './Chat';
 
 import { 
   View,
-  TouchableOpacity,
-  TouchableHighlight,
   StyleSheet,
-  AsyncStorage,
-  TextInput,
-  ListView,
-  ListViewDataSource,
-  Platform,
   Dimensions,
-  KeyboardAvoidingView,
-  Animated,
-  Keyboard,
-  Text } from 'react-native';
+  Text} from 'react-native';
 
  import {
   RTCPeerConnection,
@@ -86,7 +75,7 @@ var styles = StyleSheet.create({
     flex: 1,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-    backgroundColor: 'blue'
+    backgroundColor: '#4DD0E1'
    
   },
   videoContainer: {
@@ -94,66 +83,31 @@ var styles = StyleSheet.create({
      justifyContent: 'center',
      alignItems: 'center',
      backgroundColor: '#F5FCFF',
-     flexDirection: 'column',
-  },
-  resizableContainer: { 
-    //height:  new Animated.Value(Dimensions.get('window').height - 100)
-   }
+     flexDirection: 'column'
+  }
 });
-
-const myFadeOut = {
-  from: {
-    opacity: 1,
-  },
-  to: {
-    opacity: 0.5,
-  },
-};
 
 var pc;
 var iceCandidatesCount = 0;
 var localStream;
 var kurentoPeer;
 
-var renderRowWasCalled = false;
-
-const configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
-const textBoxOffset = 120;
-
 class WebRTCChat extends Component{
  
   componentWillMount(){
-    this.keyboardHeight = new Animated.Value(0);
-    this.viewHeight = new Animated.Value(Dimensions.get('window').height - textBoxOffset);
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardDidShow);
-    //this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardDidHide);
-    
-    Animatable.initializeRegistryWithDefinitions(
-      {
-        myFadeOut: {
-          from: {
-            opacity: 1,
-          },
-          to: {
-            opacity: 0.5,
-          },
-        }
-    });
-    console.log("THIS IS 2");
-    var self = this;
-    this.props.connect({ roomId: this.props.webrtc.roomId, username: 'edo', isPresenter: this.props.webrtc.isPresenter });
     /*this._getLocalStream(true, function(stream) {
           localStream = stream;
           self._startWebRtcAsViewer();
     });*/
+
+    var self = this;
     
     var kurentoOptions = {
           onicecandidate: function (event, error) {
             console.log('onicecandidate', event.candidate);
             if (event.candidate) {
               console.log("5. Ice Candidate Received")
-              self.props.sendOnIceCandidate({roomId: self.props.webrtc.roomId, candidate: event});
+              self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
             }
           }
       }
@@ -161,9 +115,9 @@ class WebRTCChat extends Component{
     kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(kurentoOptions, function(error) {
 			if(error) return onError(error);
 
-			console.log('Viewer about to geenrate offer');
+			console.log('Viewer about to generate offer');
 			this.generateOffer(function(error, offer){
-          self.props.startViewer({roomId: self.props.webrtc.roomId, sdpOffer: offer});
+          self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
           self._startWebRtcAsViewer();
       });
 		});
@@ -172,7 +126,6 @@ class WebRTCChat extends Component{
   componentWillUnmount(){
     this.keyboardWillShowSub.remove();
     this.keyboardWillHideSub.remove();
-    this.props.disconnect({ roomId: this.props.webrtc.roomId });
   }
 
   componentWillUpdate(){
@@ -189,33 +142,6 @@ class WebRTCChat extends Component{
 		    });
     }
   }
-
-  keyboardWillShow = (event) => {
-    
-
-    /*Animated.timing(this.viewHeight, {
-      duration: event.duration,
-      toValue: this.viewHeight - event.endCoordinates.height
-    }).start();*/
-  };
-
- keyboardDidShow = event => {
-      /*Animated.spring(this.viewHeight, {
-          toValue: this.viewHeight - e.endCoordinates.height - 100
-      }).start();*/
-      Animated.timing(this.viewHeight, {
-        duration: 150,
-        toValue:   Dimensions.get('window').height - event.endCoordinates.height - 70,
-      }).start();
-      
-    }
-
-  keyboardDidHide = e => {
-       Animated.spring(this.viewHeight, {
-        //duration: event.duration,
-        toValue:   Dimensions.get('window').height - textBoxOffset,
-      }).start();
-    }
 
   _getLocalStream(isFront, callback) {
 
@@ -258,7 +184,7 @@ class WebRTCChat extends Component{
         console.log('onicecandidate', event.candidate);
         if (event.candidate) {
           console.log("5. Ice Candidate Received")
-          self.props.sendOnIceCandidate({roomId: self.props.webrtc.roomId, candidate: candidate});
+          self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: candidate});
         }
       };*/
 
@@ -269,7 +195,7 @@ class WebRTCChat extends Component{
           pc.setLocalDescription(desc, function () {
           console.log("4. Setting local description.")
             console.log('setLocalDescription', pc.localDescription);
-            self.props.startViewer({roomId: self.props.webrtc.roomId, sdpOffer: pc.localDescription.sdp});
+            self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: pc.localDescription.sdp});
           }, logError);
         }, logError);
       }*/
@@ -308,37 +234,6 @@ class WebRTCChat extends Component{
        //pc.addStream(localStream);
  }
 
-_renderRow = function(rowData, rowId){
-   return (
-     <Animatable.View animation="myFadeOut"  delay={3000}>
-      <View style={{flex: 1,alignSelf: 'flex-start', backgroundColor: 'white', borderRadius:10, margin:10, padding:10}}>
-        <Text style={{flex: 1, color:'black', fontWeight:'bold'}}>{rowData.username}</Text>
-        <Text style={{flex: 1, color:'black'}}>{rowData.message}</Text>
-      </View>
-      </Animatable.View>
-    )
- }
-
-  _messageTextChanged = function(text){
-    if(text){
-      this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: text, userIsTyping: true, username: this.props.user.user.name } );
-      this.props.chatTextChanged( { currentMessage: text, userIsTyping: true, username: this.props.user.user.name } );
-    }
-    else{
-      this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
-      this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
-    }
-
-  }
-
-  _sendMessage = function(){
-    console.log('sending message:' + this.props.currentMessage);
-    this.props.message({ roomId: this.props.webrtc.roomId, username: this.props.user.user.name, message: this.props.currentMessage });
-    this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
-    this.props.userIsTyping({ roomId: this.props.webrtc.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
-    this.refs.message.clear();
-  }
-
   _setIsPresenter = function(){
     this.props.setIsPresenter(true);
   }
@@ -351,63 +246,19 @@ _renderRow = function(rowData, rowId){
         }
 
         return (
-          
-      
           <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
-            <Animated.View style={{height: this.viewHeight}}>
-              <View style={styles.chatContainer}>
-                <TouchableHighlight
-                      onPress={this._setIsPresenter.bind(this)}
-                      style={{width:200, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10, height: 0}}>
-                      <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Set Presenter</Text>
-                  </TouchableHighlight>
-                <View style={styles.listViewContainer}>
-                  <ListView
-                    renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                    dataSource={this.props.chatMessages}
-                    enableEmptySections={true}
-                    renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
-                    />
-                  </View>
-                  <View style={styles.chatInputGroup}>
-                    <TextInput
-                      ref='message'
-                      keyboardAppearance='dark'
-                      autoCorrect={false}
-                      style={{flex:3, height: 40, borderColor: 'gray', borderWidth: 1}}
-                      onChangeText={(text) => this._messageTextChanged(text)}
-                      value={this.props.currentMessage}
-                    />
-                    <TouchableHighlight
-                      onPress={this._sendMessage.bind(this)}
-                      style={{flex:1, justifyContent: 'center', backgroundColor: 'blue', margin: 5, borderRadius:10}}>
-                      <Text style={{textAlign: 'center', justifyContent: 'center', color:'white'}}>Send</Text>
-                  </TouchableHighlight>
-                  </View>
-                    { ((this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) > -1 && this.props.webrtc.usersTyping.length > 1) || (this.props.webrtc.usersTyping.indexOf(this.props.user.user.name) == -1 && this.props.webrtc.usersTyping.length > 0)) &&
-                        <View><Text>Someone is typing</Text></View>
-                    }
-              </View>
-            </Animated.View>
+            <Chat />
           </RTCView>
         );
   }
 }
 
-const ds = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2
-});
-
 
 const mapStateToProps = (state) => {
-    console.log(state);
-    //Re-order rows for inverted List View
-    var rowIds = state.webrtc.chatMessages.map((row, index) => index).reverse();
     return {
         user: state.user,
-        chatMessages: ds.cloneWithRows(state.webrtc.chatMessages, rowIds),
-        currentMessage: state.webrtc.currentMessage,
-        webrtc: state.webrtc
+        webrtc: state.webrtc,
+        chat: state.chat
     }
 };
 

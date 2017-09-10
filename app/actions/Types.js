@@ -4,30 +4,21 @@ export const LOGIN = 'LOGIN';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT = 'LOGOUT';
 
+//Properties
+export const UPDATE_PROPERTIES_LIST = 'UPDATE_PROPERTIES_LIST';
+export const UPDATE_CURRENT_PROPERTY = 'UPDATE_CURRENT_PROPERTY';
+
 //Navigation
 export const GOTO_SCREEN = 'GOTO_SCREEN';
 export const GOTO_GUEST_TAB_BAR = 'GOTO_GUEST_TAB_BAR';
+export const UPDATE_CURRENT_PROPERTY_VIEWINGS = 'UPDATE_CURRENT_PROPERTY_VIEWINGS';
 
 //Section Changed
 export const GOTO_SECTION = 'GOTO_SECTION';
 
-//WebRTC
-export const CONNECT = 'CONNECT';
-export const UPDATE_CONNECTION_STATUS = 'UPDATE_CONNECTION_STATUS';
-export const SWITCH_CAMERA = 'SWITCH_CAMERA';
-export const SET_VIDEO_SOURCE = 'SET_VIDEO_SOURCE';
-export const UPDATE_TEXT_ROOM_DATA = 'UPDATE_TEXT_ROOM_DATA';
-export const UPDATE_INFO = 'UPDATE_INFO';
-export const UPDATE_CHANNEL_LIST = 'UPDATE_CHANNEL_LIST';
-export const SET_TEXT_ROOM_CONNECTED_STATE = 'SET_TEXT_ROOM_CONNECTED_STATE';
-export const SET_ROOM = 'SET_ROOM';
-export const SET_ROOM_ID = 'SET_ROOM_ID';
-export const REMOVE_PEER = 'REMOVE_PEER';
 
-//Socket.io
+//Sockets
 export const SERVER_CONNECT = 'server/connect';
-export const SERVER_MESSAGE = 'server/message';
-export const CLIENT_MESSAGE = 'client/message';
 export const SERVER_DISCONNECT = 'server/disconnect';
 export const SERVER_JOIN_ROOM = 'server/joinRoom';
 export const SERVER_USER_IS_TYPING = 'server/userIsTyping';
@@ -41,7 +32,10 @@ export const CLIENT_VIEWER_RESPONSE = 'viewerResponse';
 export const CHAT_MESSAGE_CHANGED = 'CHAT_MESSAGE_CHANGED';
 export const SET_IS_PRESENTER = 'IS_PRESENTER';
 export const SET_SOCKET_ERROR = 'SOCKET_ERROR';
-
+export const CLIENT_MESSAGE = 'client/message';
+export const SERVER_MESSAGE = 'server/message';
 
 //WebRTC
-export const CREATE_PEER_CONNECTION = 'CREATE_PEER_CONNECTION';
+export const PRESENTER_IS_READY = 'client/presenterResponse';
+export const UPDATE_CONNECTION_STATUS = 'UPDATE_CONNECTION_STATUS';
+
