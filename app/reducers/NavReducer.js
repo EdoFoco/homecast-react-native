@@ -15,7 +15,6 @@ export default function guestTabBar(state,action) {
   }
 }
 
-
 export function guestHomeNav(state,action) {
     console.log('GuestHomeNav');
     console.log(state);

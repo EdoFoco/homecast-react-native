@@ -1,4 +1,12 @@
 import * as types from './Types';
+import TntApi from '../libs/services/TntApi';
+
+export function updateRoomId(roomId){
+    return {
+        type: types.UPDATE_ROOM_ID,
+        roomId: roomId
+    }
+}
 
 export function message(data){
     return {
@@ -48,4 +56,22 @@ export function setIsPresenter(isPresenter){
         type: types.SET_IS_PRESENTER,
         isPresenter: isPresenter
     }
+}
+
+export function errorFethingViewing(error){
+    console.log(error);
+    //Todo: Do something
+}
+
+export function getViewing(viewingId){
+    return (dispatch, getState) => {
+        
+        return TntApi.get('viewings/' + viewingId)
+            .then(resp => {
+                console.log(resp);
+                dispatch(updateRoomId(resp.room.unique_id));
+            }).catch( (ex) => {
+                dispatch(errorFethingViewing(ex));
+            });
+      }
 }

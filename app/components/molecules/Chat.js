@@ -123,7 +123,9 @@ class Chat extends Component{
 
     
     componentWillUnmount(){
-        //this.props.disconnect({ roomId: this.props.chat.roomId });
+        this.keyboardDidShowSub.remove();
+        this.keyboardDidHideSub.remove();
+        this.props.disconnect({ roomId: this.props.chat.roomId });
     }
 
     keyboardDidShow = event => {
@@ -131,7 +133,6 @@ class Chat extends Component{
             duration: 150,
             toValue:   Dimensions.get('window').height - event.endCoordinates.height - 70,
         }).start();
-        
     }
 
     keyboardDidHide = e => {
@@ -166,7 +167,7 @@ class Chat extends Component{
 
     _sendMessage = function(){
         console.log('sending message:' + this.props.currentMessage);
-        this.props.message({ roomId: this.props.chat.roomId, username: this.props.user.user.name, message: this.props.currentMessage });
+        this.props.message({ roomId: this.props.chat.roomId, username: this.props.user.user.user.name, message: this.props.currentMessage });
         this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
         this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
         this.refs.message.clear();

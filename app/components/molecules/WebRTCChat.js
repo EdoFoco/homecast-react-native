@@ -124,8 +124,7 @@ class WebRTCChat extends Component{
   }
 
   componentWillUnmount(){
-    this.keyboardWillShowSub.remove();
-    this.keyboardWillHideSub.remove();
+    
   }
 
   componentWillUpdate(){

@@ -57,21 +57,20 @@ class PropertyScreen extends Component{
 
   componentWillMount(){
    
-    //this.props.updateCurrentProperty(this.props.navigation.state.params.property);
     this.props.getPropertyViewings(this.props.currentProperty.id);
   }
 
-  _onPress(id){
-      console.log(id);
+  _onPress(viewing){
+      console.log(viewing);
       //this.props.goToScreen('Viewings');
-      //this.props.navigation.navigate('Other');
-  }
+      this.props.navigation.navigate('Other', { viewing : viewing });
+    }
 
   _renderRow = function(rowData, rowId){
     var date = new Date(rowData.date_time);
     var month = date.toLocaleString("en-gb", { month: "long" });
     return (
-            <TouchableHighlight onPress={() => this._onPress(rowData.id)}>
+            <TouchableHighlight onPress={() => this._onPress(rowData)}>
                 <View style={{backgroundColor: 'white', margin:10, padding:10, height: 60}}>
                     <Text style={{color:'black'}}>{date.getHours() + ':' + date.getMinutes()}</Text>
                     <Text style={{color:'black'}}>{date.getDay() + ' ' + month + ' ' + date.getFullYear()}</Text>

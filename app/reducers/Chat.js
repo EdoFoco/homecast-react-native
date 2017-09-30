@@ -7,7 +7,7 @@
       currentMessage: '',
       userIsTyping: false,
       usersTyping: [],
-      roomId: 'test123'
+      roomId: ''
  }
 
  export default function chat(state = initalChatState, action) {
@@ -25,6 +25,8 @@
             return { ...state,  subscribedUsers: action.data.subscribedUsers };
         case types.CLIENT_CONNECTED:
             return { ...state,  socketId: action.data.socketId };
+        case types.UPDATE_ROOM_ID:
+            return { ...state,  roomId: action.roomId };
         default:
             return state;
     }

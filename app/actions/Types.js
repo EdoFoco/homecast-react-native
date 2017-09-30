@@ -4,6 +4,11 @@ export const LOGIN = 'LOGIN';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT = 'LOGOUT';
 
+//User
+export const UPDATE_USER_INFO = 'UPDATE_INFO_USER';
+export const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
+export const UNAUTHORIZED_USER = 'UNAUTHORIZED_USER';
+
 //Properties
 export const UPDATE_PROPERTIES_LIST = 'UPDATE_PROPERTIES_LIST';
 export const UPDATE_CURRENT_PROPERTY = 'UPDATE_CURRENT_PROPERTY';
@@ -34,6 +39,7 @@ export const SET_IS_PRESENTER = 'IS_PRESENTER';
 export const SET_SOCKET_ERROR = 'SOCKET_ERROR';
 export const CLIENT_MESSAGE = 'client/message';
 export const SERVER_MESSAGE = 'server/message';
+export const UPDATE_ROOM_ID = 'UPDATE_ROOM_ID';
 
 //WebRTC
 export const PRESENTER_IS_READY = 'client/presenterResponse';

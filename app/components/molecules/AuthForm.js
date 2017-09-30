@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as t from 'tcomb-form-native'
 import LoginStatusMessage from '../atoms/LoginStatusMessage';
 import Loader from '../atoms/Loader';
+var _ = require('lodash');
 
 import { 
   View,
@@ -14,32 +15,72 @@ import {
   StyleSheet,
   AsyncStorage,
   TextInput,
+  Dimensions,
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback,
   Text } from 'react-native';
 
 var Form = t.form.Form;
 
 var Person = t.struct({
-    username: t.String,              
+    email: t.String,              
     password: t.String,  
 });
+
+const formStylesheet = _.cloneDeep(t.form.Form.stylesheet);
+formStylesheet.textbox.normal.color = 'white';
+
+formStylesheet.textbox.normal.borderWidth = 0;
+formStylesheet.textbox.error.borderWidth = 0;
+formStylesheet.textbox.normal.marginBottom = 0;
+formStylesheet.textbox.error.marginBottom = 0;
+
+formStylesheet.textboxView.normal.borderWidth = 0;
+formStylesheet.textboxView.error.borderWidth = 0;
+formStylesheet.textboxView.normal.borderRadius = 0;
+formStylesheet.textboxView.error.borderRadius = 0;
+formStylesheet.textboxView.normal.borderBottomWidth = 1;
+formStylesheet.textboxView.error.borderBottomWidth = 1;
+formStylesheet.textboxView.normal.borderColor = "white";
+
+formStylesheet.textbox.normal.marginBottom = 5;
+formStylesheet.textbox.error.marginBottom = 5;
+formStylesheet.textbox.normal.borderColor = "white";
 
 var options = {
     auto:'placeholders',
     fields: {
         password: {
             password: true,
-            secureTextEntry: true
-        }   
+            secureTextEntry: true,
+            stylesheet: formStylesheet,
+            placeholderTextColor: 'white'
+        },
+        email: {
+            stylesheet: formStylesheet,
+            placeholderTextColor: 'white'
+        }      
     }
 }; 
 
+
+
 var styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    marginTop: 0,
-    padding: 0,
-    backgroundColor: '#ffffff',
-    width:300
+    flex: 1,
+    backgroundColor: '#20A4F3',
+    //justifyContent: 'center',
+    flexDirection: 'column',
+    alignSelf: 'stretch'
+  },
+  loaderContainer: {
+      flex: 1,
+      backgroundColor: '#20A4F3',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      alignSelf: 'stretch'
   },
   title: {
     fontSize: 30,
@@ -51,67 +92,89 @@ var styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
-  button: {
+  loginBtn: {
     height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    backgroundColor: '#20A4F3',
+    borderColor: '#20A4F3',
     borderWidth: 1,
-    borderRadius: 8,
+    //borderRadius: 8,
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center',
-    width: 100
+  },
+  signupBtn: {
+    height: 36,
+    backgroundColor: '#FF3366',
+    backgroundColor: '#FF3366',
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 1,
+    //borderRadius: 8,
+    marginBottom: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+  },
+  formContainer: {
+    width: 300,
+    padding: 30,
+    marginTop: 100
+  },
+  opaqueLayer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    alignSelf: 'stretch',
+    alignItems: 'center'
+  },
+  formTitle: {
+      fontSize: 25,
+      alignSelf: 'center',
+      marginBottom: 20,
+      color: 'white'
+  },
+  backgroundImage: {
+      alignSelf: 'stretch',
+      width: null,
+      height: null,
+      resizeMode:"cover",
+      flex: 1,
+      alignItems: 'center'
+      
   },
   form: {
-      
+      color: 'white'
+  },
+  logo:{
+      width: 130,
+      resizeMode: 'contain',
+      alignSelf: 'center'
   }
 });
+
+var WINDOW_HEIGHT = Dimensions.get('window').height;
 
 class AuthForm extends Component{
 
  componentWillMount(){
-    if(!this.props.isLoggedIn){
-      this._getAuthToken();
-    }
-    
+    AsyncStorage.getItem('@AuthToken:key')
+    .then((token) => {
+        if(!token){
+            throw new Error();
+        }
+
+        this.props.updateAuthToken(token, false);
+    })
+    .then(() => {
+        this.props.getLoggedInUser();
+    })
   }
 
   componentDidUpdate(){
-    if(this.props.isLoggedIn){
-        /*const navigateAction = NavigationActions.navigate({
-            params: {},
-            action: NavigationActions.navigate({ routeName: 'Home'}) 
-        })*/
-        //this.props.nav.dispatch(navigateAction)
-       
-    }
      if(!this.props.isAuthenticating){
-        this.refs.form.getComponent('username').refs.input.focus();
+      //  this.refs.form.getComponent('email').refs.input.focus();
     }
   }
 
- async _getAuthToken(){
- 
-        const token = await AsyncStorage.getItem('@AuthToken:key')
-        .then(function(token){
-        if(token != null){
-            return token;
-        }
-        else{
-            throw Error("Token not found");
-        }
-        })
-        .then(this.props.getUser)
-        .catch(this.props.actionNotAuthenticating);
-
-
- }
-
   _login(credentials){
-      console.log(credentials);
-     this.props.loginUser(credentials).then(function(){
-         //Do something
-      });
+     this.props.login(credentials);
    }
 
   _onPress() {
@@ -123,20 +186,34 @@ class AuthForm extends Component{
 
   render() {
         if (this.props.isAuthenticating) {
-            return( <Loader />);
+            return(  <View style={styles.loaderContainer}><Loader /></View>);
         }
         
         return (
             <View style={styles.container}>
-                <Form style={styles.form}
-                ref="form"
-                type={Person}
-                options={options}
-                />
-                <TouchableHighlight style={styles.button} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableHighlight>
-                <LoginStatusMessage />
+                <Image style={styles.backgroundImage} source={require('../../img/luxury-home-bg.jpg')}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
+                    <View style={styles.opaqueLayer}>
+
+                        <View style={styles.formContainer}>
+                            <Image style={styles.logo} source={require('../../img/logo.png')} />
+                            <Form style={styles.form}
+                                ref="form"
+                                type={Person}
+                                options={options}
+                            />
+                            <TouchableHighlight style={styles.loginBtn} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
+                                <Text style={styles.buttonText}>Login</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight style={styles.signupBtn} onPress={console.log('Sign up')} underlayColor='#99d9f4'>
+                                <Text style={styles.buttonText}>Create Account</Text>
+                            </TouchableHighlight>
+                            <LoginStatusMessage />
+                        </View>
+                    </View>
+                    </TouchableWithoutFeedback>
+                </Image>
             </View>
         );
      

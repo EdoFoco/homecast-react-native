@@ -23,25 +23,35 @@ const styles = StyleSheet.create({
 
 class OtherScreen extends Component{
 
-  render(){
-    return(
+  componentWillMount(){
+    this.props.getViewing(this.props.navigation.state.params.viewing.id);
+  }
 
-        <View style={styles.container}>
-          <WebRTCChat />
-        </View>
-    );
+  render(){
+    if(this.props.chat.roomId){
+      return(
+          <View style={styles.container}>
+            <WebRTCChat />
+          </View>
+      );
+    }
+    else{
+      return (<Text>Loading webrtc</Text>);
+    }
   }
   
 }
 
-OtherScreen.navigationOptions = {
-  title: 'Other Screen',
-};
+OtherScreen.navigationOptions = ({ navigation }) => ({
+  title: `Room - ${navigation.state.params.viewing.property.name}`,
+});
 
-const mapStateToProps = (state) => {
+
+const mapStateToProps = ( state, navigation ) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
+        chat: state.chat
     }
 };
 

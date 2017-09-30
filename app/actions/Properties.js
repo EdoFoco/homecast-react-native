@@ -1,5 +1,7 @@
 import * as types from './Types';
-import TntApi from '../libs/services/TntApi';
+import * as errorHandler from './ErrorHandler';
+import ApiService from '../libs/services/ApiService';
+
 
 export function updatePropertiesList(properties){
     return {
@@ -22,20 +24,18 @@ export function updateCurrentPropertyVieiwngs(viewings){
     }
 };
 
-export function errorFetchingProperties(error){
-    console.log(error);
-    //Todo: Do something
-}
-
 export function getPropertyViewings(propertyId){
     return (dispatch, getState) => {
-        
-        return TntApi.get('properties/' + propertyId + '/viewings')
+        return ApiService.getPropertyViewings(propertyId)
             .then(resp => {
-                console.log(resp);
-                dispatch(updateCurrentPropertyVieiwngs(resp.viewings));
-            }).catch( (ex) => {
-                dispatch(errorFetchingProperties(ex));
+                dispatch(updateCurrentPropertyVieiwngs(resp.data.viewings));
+            }).catch((error) => {
+                if(error.response.status == 401){
+                    dispatch(errorHandler.handleUnauthorized());
+                 }
+                 else{
+                     console.error('Auth Error - handle error');
+                 }
             });
       }
 }
@@ -43,12 +43,18 @@ export function getPropertyViewings(propertyId){
 export function getProperties() {
     return (dispatch, getState) => {
       
-      return TntApi.get('properties')
+      return ApiService.getProperties()
           .then(resp => {
-              console.log(resp);
-              dispatch(updatePropertiesList(resp.properties));
-          }).catch( (ex) => {
-              dispatch(errorFetchingProperties(ex));
+              dispatch(updatePropertiesList(resp.data.properties));
+          }).catch((error) => {
+            if(error.response.status == 401){
+                dispatch(errorHandler.handleUnauthorized());
+             }
+             else{
+                dispatch(errorHandler.handleUnauthorized());
+                
+                 console.error('Auth Error - handle error');
+             }
           });
     }
   }

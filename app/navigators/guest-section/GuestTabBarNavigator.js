@@ -8,11 +8,11 @@ import OptionsScreen  from '../../components/templates/shared/OptionsScreen';
 
 
 const routeConfiguration = {
-  HomeTab: {
-    screen: GuestHomeNavigator
-  },
   Viewings: { 
     screen: GuestViewingsNavigator
+  },
+  HomeTab: {
+    screen: GuestHomeNavigator
   },
   Options: {
     screen: OptionsScreen
@@ -21,7 +21,7 @@ const routeConfiguration = {
 
 const tabBarConfiguration = {
   headerMode: 'screen',
-  backBehavior: 'none'
+  backBehavior: 'none',
 }
 
 export const GuestTabBarNavigator = TabNavigator(routeConfiguration,tabBarConfiguration);
