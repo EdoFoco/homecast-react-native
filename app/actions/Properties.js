@@ -17,10 +17,17 @@ export function updateCurrentProperty(property){
     }
 };
 
-export function updateCurrentPropertyVieiwngs(viewings){
+export function updateCurrentPropertyViewings(viewings){
     return {
         type: types.UPDATE_CURRENT_PROPERTY_VIEWINGS,
         viewings: viewings
+    }
+};
+
+export function updateViewingsLoaded(loaded){
+    return {
+        type: types.UPDATE_VIEWINGS_LOADED,
+        loaded: loaded
     }
 };
 
@@ -28,7 +35,8 @@ export function getPropertyViewings(propertyId){
     return (dispatch, getState) => {
         return ApiService.getPropertyViewings(propertyId)
             .then(resp => {
-                dispatch(updateCurrentPropertyVieiwngs(resp.data.viewings));
+                dispatch(updateCurrentPropertyViewings(resp.data.viewings));
+                return resp.data.viewings;
             }).catch((error) => {
                 if(error.response.status == 401){
                     dispatch(errorHandler.handleUnauthorized());

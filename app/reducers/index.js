@@ -10,6 +10,7 @@ import section from './Section';
 import webrtc from './NewWebRTC';
 import chat from './Chat';
 import properties from './Properties';
+import propertyScreen from './PropertyScreen';
 
 import devToolsEnhancer from 'remote-redux-devtools';
 
@@ -28,7 +29,8 @@ const AppReducer = combineReducers({
   section,
   webrtc,
   chat,
-  properties
+  properties,
+  propertyScreen
 }, devToolsEnhancer());
 
 export default AppReducer;

@@ -8,7 +8,8 @@ const initialPropertiesState = {
          city: "",
          postcode: ""
      },
-     currentPropertyViewings: []
+     currentPropertyViewings: [],
+     viewingsLoaded: false
 }
 
 export default function properties(state = initialPropertiesState, action) {
@@ -20,6 +21,8 @@ export default function properties(state = initialPropertiesState, action) {
         return {...state, currentProperty: action.property}
      case types.UPDATE_CURRENT_PROPERTY_VIEWINGS:
         return {...state, currentPropertyViewings: action.viewings}
+     case types.UPDATE_VIEWINGS_LOADED:
+        return {...state, viewingsLoaded: action.loaded}
     default:
         return state;
    }

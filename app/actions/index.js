@@ -4,6 +4,7 @@ import * as SectionActions from './Section';
 import * as WebRTC from './WebRTC';
 import * as Chat from './Chat';
 import * as Properties from './Properties';
+import * as PropertyScreen from './PropertyScreen';
 
 export const ActionCreators = Object.assign({},
   //AuthActions,
@@ -12,5 +13,6 @@ export const ActionCreators = Object.assign({},
   SectionActions,
   WebRTC,
   Chat,
-  Properties
+  Properties,
+  PropertyScreen
 );
