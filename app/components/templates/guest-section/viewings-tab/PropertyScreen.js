@@ -12,7 +12,9 @@ import {
   ListView,
   ListViewDataSource,
   TouchableHighlight,
-  Image
+  Image,
+  FlatList,
+  Dimensions
 } from 'react-native';
 
 
@@ -36,14 +38,16 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     height: 200
   },
-  viewingsContainer:{
+  tabContainer:{
       flex: 1,
       alignSelf: 'stretch',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      //backgroundColor: 'blue'
   },
   viewingsList: {
     //  height: 80
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
+    flex: 1
   },
   liveViewingsTitle: {
       backgroundColor: "rgba(246,67,74,1)", 
@@ -55,17 +59,40 @@ const styles = StyleSheet.create({
     },
     viewingContainer: {
       backgroundColor: Colors.AQUA_GREEN, 
-      margin:10, 
-      padding:10, 
-      height: 60,
-      width: 60,
-      flex: 1
+      margin:5, 
+      height: 150,
+      width: (Dimensions.get('window').width - 39) / 3,
+      padding: 5,
+      paddingTop: 10
     },
-    time: {
-      color: 'white'
+    viewingTitle: {
+      alignSelf: 'center',
+      color: 'white',
+      fontSize: 14,
+      fontWeight: 'bold'
     },
-    date: {
-      color: 'white'
+    viewingMonth: {
+      color: 'white',
+      marginTop: 10,
+      alignSelf: 'center',
+      fontSize: 18
+    },
+    viewingDay: {
+      color: 'white',
+      alignSelf: 'center',
+      fontSize: 30,
+      fontWeight: 'bold'
+    },
+    viewingTime:{
+      color: 'white',
+      alignSelf: 'center',
+      fontSize: 18
+    },
+    viewingRemainingSlots:{
+      color: 'white',
+      fontSize: 12,
+      alignSelf: 'center',
+      marginTop: 10
     },
     menuContainer: {
       flexDirection: 'row',
@@ -127,7 +154,8 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: 'green',
       margin: 20,
-      height: 100
+      height: 100,
+      width: 20
     },
     viewingWrapper: {
       height: 60,
@@ -148,6 +176,8 @@ class PropertyScreen extends Component{
 
   componentWillMount(){
    
+    this.props.updateCurrentProperty(this.props.currentProperty);
+    
     this.props.getPropertyViewings(this.props.currentProperty.id)
     .then((viewings) => {
       var sorted = viewings.sort(function(a, b) {
@@ -156,32 +186,6 @@ class PropertyScreen extends Component{
         return a<b ? -1 : a>b ? 1 : 0;
       });
 
-      var byMonth = [];
-
-      sorted.forEach(function(viewing, key){
-        var date = new Date(viewing.date_time);
-        var month = date.toLocaleString('en-gb', { month: "long" });
-       
-        if(byMonth.length == 0){
-          byMonth.push({
-            month: month,
-            viewings: [ viewing ]
-          });
-        }
-        else{
-          var monthlyViewings = byMonth.find( m => m.month == month);
-          if(monthlyViewings){
-            monthlyViewings.viewings.push(viewing);
-          }
-          else{
-            byMonth.push({
-              month: month,
-              viewings: [ viewing ]
-            });
-          }
-        }
-      })
-      
       this.props.updateCurrentPropertyViewings(sorted);
       this.props.updateViewingsLoaded(true);
     })
@@ -196,45 +200,58 @@ class PropertyScreen extends Component{
       this.props.navigation.navigate('Other', { viewing : viewing });
     }
 
-  _renderViewing(viewing){
-    return <View style={styles.viewingContainer}/>
-  }
-  _renderViewings(viewings){
-      
-
-      return(
-        <View style={styles.viewingWrapper}>
-        { 
-          
-          viewings.forEach((viewing) => {
-            this._renderViewing(viewing);
-            
-            })
-          /*viewings.map((viewing) => {
-                <TouchableHighlight style={styles.viewingButton} onPress={() => this._onPress(viewing)}>
-                  <View style={styles.viewingContainer}>
-                      <Text style={styles.time}>{new Date(viewing.date_time).getHours() + ':' + new Date(viewing.date_time).getMinutes()}</Text>
-                      <Text style={styles.date}>{new Date(viewing.date_time).getDay() + ' ' +  ' ' + new Date(viewing.date_time).getFullYear()}</Text>
-                  </View>
-            </TouchableHighlight>
-          })*/
-        }
-        </View>
-      );
-  }
-
-  _renderRow = function(monthlyViewings, rowId){
-   // var date = new Date(viewing.date_time);
-    //var month = date.toLocaleString("en-gb", { month: "long" });
+  _keyExtractor = (item, index) => index;
+  
+  _renderItem = ({item}) => {
+    let viewing = item;
     return (
-          <View style={styles.viewingsListContainer}>
-            {
-             this._renderViewings(monthlyViewings.viewings)
-            }
-          </View>
-        )
+      <TouchableHighlight style={styles.viewingContainer}>
+        <View>
+            <Text style={styles.viewingTitle}>{new Date(viewing.date_time).toLocaleString('en-us', {  weekday: 'long' })}</Text>
+            <Text style={styles.viewingMonth}>{new Date(viewing.date_time).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
+            <Text style={styles.viewingDay}>{new Date(viewing.date_time).getDate()}</Text>
+            <Text style={styles.viewingTime}>{new Date(viewing.date_time).getHours() + ':' + new Date(viewing.date_time).getMinutes()}</Text>
+            <Text style={styles.viewingRemainingSlots}>Only 10 slots left</Text>
+        </View>
+      </TouchableHighlight>
+    )
+  };
+
+  _renderUserTab(){
+    return (
+      <View style={styles.tabContainer}>
+          <Text>User</Text>
+      </View>
+    )
   }
 
+  _renderInfoTab(){
+    return (
+      <View style={styles.tabContainer}>
+        <Text>Info</Text>
+      </View>
+    )
+  }
+
+  _renderViewingsTab(){
+    return (
+      <View style={styles.tabContainer}>
+      { 
+        !this.props.properties.viewingsLoaded ? null :
+          <FlatList style={{margin:5}}
+           data={this.props.properties.currentPropertyViewings}
+           keyExtractor={this._keyExtractor}
+           numColumns={3}
+           renderItem={this._renderItem} 
+           extraData={this.props.properties}
+
+         />
+    
+      }
+    </View>
+    )
+  }
+  
   render() {
     return (
       <View style={styles.container}>
@@ -264,19 +281,18 @@ class PropertyScreen extends Component{
                 </View>
               </TouchableHighlight>
          </View>
-         <View style={styles.viewingsContainer}>
-           { 
-             !this.props.properties.viewingsLoaded ? null :
+         {{
+          1: (
+            this._renderInfoTab()
+          ),
+          2: (
+            this._renderViewingsTab()
+          ),
+          3: (
+            this._renderUserTab()
+          )
+        }[this.props.propertyScreen.activeTab]}
 
-            <ListView
-                dataSource={this.props.viewings}
-                enableEmptySections={true}
-                style={styles.viewingsList}
-                renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
-            />
-           }
-         </View>
-         
       </View>
 
     )
@@ -294,9 +310,6 @@ const ds = new ListView.DataSource({
 });
 
 const mapStateToProps = (state, navigation) => {
-    console.log('PropertyScreen');
-    console.log(state);
-    console.log(navigation);
     var rowIds = state.properties.currentPropertyViewings.map((row, index) => index);
     
     return {
