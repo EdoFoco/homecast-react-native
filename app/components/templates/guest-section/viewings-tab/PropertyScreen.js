@@ -4,7 +4,9 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../../helpers/ColorPallette';
+import MapView from 'react-native-maps';
 import {
   StyleSheet,
   Text,
@@ -14,7 +16,8 @@ import {
   TouchableHighlight,
   Image,
   FlatList,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from 'react-native';
 
 
@@ -41,8 +44,9 @@ const styles = StyleSheet.create({
   tabContainer:{
       flex: 1,
       alignSelf: 'stretch',
-      justifyContent: 'center',
-      //backgroundColor: 'blue'
+      alignContent: 'flex-start',
+      //flexDirection: 'row',
+      padding: 10
   },
   viewingsList: {
     //  height: 80
@@ -169,6 +173,62 @@ const styles = StyleSheet.create({
       backgroundColor: 'orange',
       height: 40,
       width: 40
+    },
+    priceBadge:{
+      backgroundColor: '#2EC4B6',
+      top: 150,
+      color: 'white',
+      position: 'relative',
+      left: 0,
+      fontSize: 16,
+      fontWeight: 'bold',
+      lineHeight: 35,
+      paddingLeft: 10,
+      paddingRight: 10,
+      width: 150
+    },
+    propertyTitle: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      alignSelf: 'flex-start',
+      color: Colors.DARK_GREY
+    },
+    servicesContainer: {
+      flexDirection: 'row',
+      alignSelf: 'stretch',
+      marginTop: 15,
+     /* borderTopWidth: 1,
+      borderTopColor: Colors.DARK_GREY,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.DARK_GREY
+      paddingTop: 10,
+      paddingBottom: 10*/
+    },
+    serviceItem: {
+      flex: 1,
+      alignSelf: 'flex-start',
+      alignItems: 'center'
+    },
+    serviceIcon: {
+      fontSize: 26,
+      color: Colors.DARK_GREY
+    },
+    serviceText: {
+      fontSize: 14,
+      color: Colors.DARK_GREY
+    },
+    descriptionContainer: {
+      marginTop: 15
+    },
+    subTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: Colors.DARK_GREY
+    },
+    propertyDescription: {
+      marginTop: 10,
+      fontSize: 14,
+      color: Colors.DARK_GREY
     }
 });
 
@@ -228,8 +288,34 @@ class PropertyScreen extends Component{
   _renderInfoTab(){
     return (
       <View style={styles.tabContainer}>
-        <Text>Info</Text>
+        <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
+        <View style={styles.servicesContainer}>
+                <View style={styles.serviceItem}>
+                    <FontAwesomeIcon name="bed" style={styles.serviceIcon} />
+                    <Text style={styles.serviceText}>{this.props.currentProperty.rooms} beds</Text> 
+                </View>
+                <View style={styles.serviceItem}>
+                  <MaterialIcons name="sofa" style={styles.serviceIcon}/>
+                  <Text style={styles.serviceText}>{this.props.currentProperty.living_rooms} rooms</Text> 
+              </View>
+              <View style={styles.serviceItem}>
+                <FontAwesomeIcon name="bath" style={styles.serviceIcon} />
+                <Text style={styles.serviceText}>{this.props.currentProperty.bathrooms} bath</Text> 
+              </View>
+         </View>
+         <View style={styles.descriptionContainer}>
+            <Text style={styles.subTitle}>Info</Text>
+            <Text style={styles.propertyDescription}>{this.props.currentProperty.description}</Text>
+         </View>
       </View>
+    )
+  }
+  
+  _renderMapTab(){
+    return (
+      <View style={styles.tabContainer}>
+      hi
+    </View>
     )
   }
 
@@ -254,47 +340,60 @@ class PropertyScreen extends Component{
   
   render() {
     return (
-      <View style={styles.container}>
-          <View style={{flexDirection: 'row'}} >
-                <Image source={{uri: this.props.currentProperty.thumbnail}} style={styles.backgroundImage} />
+      <ScrollView style={{backgroundColor: 'white'}}>
+          <View style={styles.container}>
+              <View style={{flexDirection: 'row'}} >
+                    <Image source={{uri: this.props.currentProperty.thumbnail}} style={styles.backgroundImage} >
+                      <Text style={styles.priceBadge}>£ {Math.round(this.props.currentProperty.price)} p/m</Text>
+                    </Image>
+                </View>
+            <View style={styles.menuContainer}>
+                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(1)}}>
+                    <View style={styles.menuItem}>
+                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
+                        <Text style={this.props.propertyScreen.activeTab == 1 ? styles.menuTextActive : styles.menuText}>Info</Text> 
+                        { this.props.propertyScreen.activeTab == 1 ? <View style={styles.triangle} /> : null }
+                    </View>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(2)}}>
+                    <View style={styles.menuItem}> 
+                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="map" />
+                        <Text style={this.props.propertyScreen.activeTab == 2 ? styles.menuTextActive : styles.menuText}>Map</Text> 
+                        { this.props.propertyScreen.activeTab == 2 ? <View style={styles.triangle} /> : null }
+                    </View>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(3)}}>
+                    <View style={styles.menuItem}> 
+                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
+                        <Text style={this.props.propertyScreen.activeTab == 3 ? styles.menuTextActive : styles.menuText}>Live Streams</Text> 
+                        { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
+                    </View>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(4)}}>
+                    <View style={styles.menuItem}>
+                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="user" />
+                        <Text style={this.props.propertyScreen.activeTab == 3 ? styles.menuTextActive : styles.menuText}>Landlord</Text> 
+                        { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
+                    </View>
+                  </TouchableHighlight>
             </View>
-         <View style={styles.menuContainer}>
-              <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(1)}}>
-                <View style={styles.menuItem}>
-                    <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
-                    <Text style={this.props.propertyScreen.activeTab == 1 ? styles.menuTextActive : styles.menuText}>Info</Text> 
-                    { this.props.propertyScreen.activeTab == 1 ? <View style={styles.triangle} /> : null }
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(2)}}>
-                <View style={styles.menuItem}> 
-                    <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
-                    <Text style={this.props.propertyScreen.activeTab == 2 ? styles.menuTextActive : styles.menuText}>Live Streams</Text> 
-                    { this.props.propertyScreen.activeTab == 2 ? <View style={styles.triangle} /> : null }
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(3)}}>
-                <View style={styles.menuItem}>
-                    <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="user" />
-                    <Text style={this.props.propertyScreen.activeTab == 3 ? styles.menuTextActive : styles.menuText}>Landlord</Text> 
-                    { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
-                </View>
-              </TouchableHighlight>
-         </View>
-         {{
-          1: (
-            this._renderInfoTab()
-          ),
-          2: (
-            this._renderViewingsTab()
-          ),
-          3: (
-            this._renderUserTab()
-          )
-        }[this.props.propertyScreen.activeTab]}
+            {{
+              1: (
+                this._renderInfoTab()
+              ),
+              2: (
+                this._renderMapTab()
+              ),
+              3: (
+                this._renderViewingsTab()
+              ),
+              4: (
+                this._renderUserTab()
+              )
+            }[this.props.propertyScreen.activeTab]}
 
-      </View>
-
+          </View>
+      </ScrollView>
     )
   }
   

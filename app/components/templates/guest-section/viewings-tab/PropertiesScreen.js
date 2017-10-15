@@ -4,6 +4,7 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import * as Colors from '../../../helpers/ColorPallette';
 import {
   StyleSheet,
   Text,
@@ -78,12 +79,12 @@ const styles = StyleSheet.create({
   descriptionIcon: {
     fontSize: 16,
     marginRight: 10,
-    color: '#9E9E9E'
+    color: Colors.LIGHT_GRAY
   },
   iconText: {
     marginLeft: 5,
     marginRight:10,
-    color: '#9E9E9E'
+    color: Colors.LIGHT_GRAY
   }
 });
 
