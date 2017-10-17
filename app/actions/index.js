@@ -5,6 +5,7 @@ import * as WebRTC from './WebRTC';
 import * as Chat from './Chat';
 import * as Properties from './Properties';
 import * as PropertyScreen from './PropertyScreen';
+import * as ErrorHandler from './ErrorHandler';
 
 export const ActionCreators = Object.assign({},
   //AuthActions,
@@ -14,5 +15,6 @@ export const ActionCreators = Object.assign({},
   WebRTC,
   Chat,
   Properties,
-  PropertyScreen
+  PropertyScreen,
+  ErrorHandler
 );

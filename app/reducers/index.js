@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
 import { GuestHomeNavigator } from '../navigators/guest-section/HomeNavigator';
-import { GuestViewingsNavigator } from '../navigators/guest-section/ViewingsNavigator';
+import { GuestPropertiesNavigator } from '../navigators/guest-section/PropertiesNavigator';
 import { LandlordTabBarNavigator } from '../navigators/landlord-section/LandlordTabBarNavigator';
 import { LandlordHomeNavigator } from '../navigators/landlord-section/HomeNavigator';
 
@@ -18,7 +18,7 @@ const AppReducer = combineReducers({
   //Guest Navigators
   guestTabBar: (state,action) => GuestTabBarNavigator.router.getStateForAction(action,state),
   guestHomeNav: (state,action) => GuestHomeNavigator.router.getStateForAction(action,state),
-  guestViewingsNav: (state,action) => GuestViewingsNavigator.router.getStateForAction(action,state),
+  guestPropertiesNav: (state,action) => GuestPropertiesNavigator.router.getStateForAction(action,state),
 
   //Landlord Navigators
   landlordTabBar: (state,action) => LandlordTabBarNavigator.router.getStateForAction(action,state),

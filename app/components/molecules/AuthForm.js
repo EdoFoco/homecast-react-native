@@ -4,8 +4,8 @@ import { NavigationActions } from 'react-navigation';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 import * as t from 'tcomb-form-native'
-import LoginStatusMessage from '../atoms/LoginStatusMessage';
 import Loader from '../atoms/Loader';
+import * as errorHandler from '../../actions/ErrorHandler';
 var _ = require('lodash');
 
 import { 
@@ -105,7 +105,6 @@ var styles = StyleSheet.create({
   signupBtn: {
     height: 36,
     backgroundColor: '#FF3366',
-    backgroundColor: '#FF3366',
     borderColor: 'rgba(0,0,0,0)',
     borderWidth: 1,
     //borderRadius: 8,
@@ -160,19 +159,23 @@ class AuthForm extends Component{
             throw new Error();
         }
 
-        this.props.updateAuthToken(token, false);
+        return this.props.updateAuthToken(token, false);
     })
     .then(() => {
-        this.props.getLoggedInUser();
+        return this.props.getLoggedInUser();
     })
+    .catch((error) => {
+        if(!error.response){
+            if(error.response.status == 401){
+                this.props.handleUnauthorized();
+            }
+        }
+       //console.error('API Error - handle error');
+       this.props.handleUnauthorized();
+    });
   }
 
-  componentDidUpdate(){
-     if(!this.props.isAuthenticating){
-      //  this.refs.form.getComponent('email').refs.input.focus();
-    }
-  }
-
+  
   _login(credentials){
      this.props.login(credentials);
    }
@@ -209,7 +212,6 @@ class AuthForm extends Component{
                             <TouchableHighlight style={styles.signupBtn} onPress={console.log('Sign up')} underlayColor='#99d9f4'>
                                 <Text style={styles.buttonText}>Create Account</Text>
                             </TouchableHighlight>
-                            <LoginStatusMessage />
                         </View>
                     </View>
                     </TouchableWithoutFeedback>

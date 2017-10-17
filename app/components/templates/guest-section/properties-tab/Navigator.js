@@ -1,9 +1,9 @@
 import React from 'react';
 import { addNavigationHelpers } from 'react-navigation';
-import { GuestViewingsNavigator } from '../../../../navigators/guest-section/ViewingsNavigator';
+import { GuestPropertiesNavigator } from '../../../../navigators/guest-section/PropertiesNavigator';
 import { connect } from 'react-redux';
 
-class GuestViewingsTab extends React.Component {
+class GuestProperitesTab extends React.Component {
     
     static navigationOptions = {
         tabBarLabel: 'Properties'
@@ -14,7 +14,7 @@ class GuestViewingsTab extends React.Component {
         const { navigationState, dispatch } = this.props;
         
         return (
-            <GuestViewingsNavigator  
+            <GuestPropertiesNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
@@ -27,8 +27,8 @@ class GuestViewingsTab extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.guestViewingsNav
+        navigationState: state.guestPropertiesNav
     }
 }
 
-export default connect(mapStateToProps)(GuestViewingsTab)
+export default connect(mapStateToProps)(GuestProperitesTab)

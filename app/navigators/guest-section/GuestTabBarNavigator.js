@@ -2,14 +2,14 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import GuestHomeNavigator  from '../../components/templates/guest-section/home-tab/Navigator';
-import GuestViewingsNavigator  from '../../components/templates/guest-section/viewings-tab/Navigator';
+import GuestPropertiesTab  from '../../components/templates/guest-section/properties-tab/Navigator';
 import OptionsScreen  from '../../components/templates/shared/OptionsScreen';
 
 
 
 const routeConfiguration = {
-  Viewings: { 
-    screen: GuestViewingsNavigator
+  Properties: { 
+    screen: GuestPropertiesTab
   },
   HomeTab: {
     screen: GuestHomeNavigator

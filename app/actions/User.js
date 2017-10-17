@@ -1,6 +1,5 @@
 import * as types from './Types';
 import ApiService from '../libs/services/ApiService';
-import * as errorHandler from './ErrorHandler';
 import { AsyncStorage } from 'react-native';
 
 export function updateUserInfo(user){
@@ -33,15 +32,6 @@ export function login(credentials){
             })
             .then((token) => {
                 dispatch(updateAuthToken(token, true));
-            })
-            .catch((error) => {
-                if(!error.response){
-                    if(error.response.status == 401){
-                        dispatch(errorHandler.handleUnauthorized());
-                    }
-                }
-               console.error('API Error - handle error');
-               dispatch(errorHandler.handleUnauthorized());
             });
     }
 }
@@ -51,16 +41,6 @@ export function getLoggedInUser(){
         return ApiService.getLoggedInUser()
             .then((resp) => {
                 dispatch(updateUserInfo(resp.data));
-            })
-            .catch((error) => {
-                if(!error.response){
-                    if(error.response.status == 401){
-                        dispatch(errorHandler.handleUnauthorized());
-                    }
-                }
-               console.log(error);
-               //console.error('API Error - handle error');
-               dispatch(errorHandler.handleUnauthorized());
             });
     }
 }

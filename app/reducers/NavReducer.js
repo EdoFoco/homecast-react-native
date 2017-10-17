@@ -1,6 +1,6 @@
 import { GuestHomeNavigator } from '../navigators/guest-section/HomeNavigator';
 import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
-import { GuestViewingsNavigator } from '../navigators/guest-section/ViewingsNavigator';
+import { GuestPropertiesNavigator } from '../navigators/guest-section/ViewingsNavigator';
 
 import { NavigationActions } from 'react-navigation';
 import * as types from '../actions/Types';
@@ -21,10 +21,10 @@ export function guestHomeNav(state,action) {
     return GuestHomeNavigator.router.getStateForAction(action, state);
 }
 
-export function guestViewingsNav(state,action) {
-    console.log('GuestViewingsNav');
+export function guestPropertiesNav(state,action) {
+    console.log('GuestPropertiesNav');
     console.log(state);
-    return GuestViewingsNavigator.router.getStateForAction(action, state);
+    return GuestPropertiesNavigator.router.getStateForAction(action, state);
 }
 /*export function guestHomeNav(state, action) {
   let nextState;

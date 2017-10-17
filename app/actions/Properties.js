@@ -37,13 +37,6 @@ export function getPropertyViewings(propertyId){
             .then(resp => {
                 dispatch(updateCurrentPropertyViewings(resp.data.viewings));
                 return resp.data.viewings;
-            }).catch((error) => {
-                if(error.response.status == 401){
-                    dispatch(errorHandler.handleUnauthorized());
-                 }
-                 else{
-                     console.error('Auth Error - handle error');
-                 }
             });
       }
 }
@@ -54,15 +47,6 @@ export function getProperties() {
       return ApiService.getProperties()
           .then(resp => {
               dispatch(updatePropertiesList(resp.data.properties));
-          }).catch((error) => {
-            if(error.response.status == 401){
-                dispatch(errorHandler.handleUnauthorized());
-             }
-             else{
-                dispatch(errorHandler.handleUnauthorized());
-                
-                 console.error('Auth Error - handle error');
-             }
           });
     }
   }
