@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
       alignSelf: 'stretch',
       alignContent: 'flex-start',
       //flexDirection: 'row',
-      padding: 10
+      padding: 10,
+      //paddingTop: 0
   },
   viewingsList: {
     //  height: 80
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
       color: Colors.DARK_GREY
     },
     descriptionContainer: {
-      marginTop: 15
+      marginTop: 15,
     },
     subTitle: {
       fontSize: 18,
@@ -277,19 +278,11 @@ class PropertyScreen extends Component{
     )
   };
 
-  _renderUserTab(){
-    return (
-      <View style={styles.tabContainer}>
-          <Text>User</Text>
-      </View>
-    )
-  }
-
   _renderInfoTab(){
     return (
       <View style={styles.tabContainer}>
         <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
-        <View style={styles.servicesContainer}>
+       <View style={styles.servicesContainer}>
                 <View style={styles.serviceItem}>
                     <FontAwesomeIcon name="bed" style={styles.serviceIcon} />
                     <Text style={styles.serviceText}>{this.props.currentProperty.rooms} beds</Text> 
@@ -314,8 +307,15 @@ class PropertyScreen extends Component{
   _renderMapTab(){
     return (
       <View style={styles.tabContainer}>
-      hi
-    </View>
+         <MapView
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+      </View>
     )
   }
 
@@ -369,13 +369,6 @@ class PropertyScreen extends Component{
                         { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
                     </View>
                   </TouchableHighlight>
-                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(4)}}>
-                    <View style={styles.menuItem}>
-                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="user" />
-                        <Text style={this.props.propertyScreen.activeTab == 3 ? styles.menuTextActive : styles.menuText}>Landlord</Text> 
-                        { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
-                    </View>
-                  </TouchableHighlight>
             </View>
             {{
               1: (
@@ -386,9 +379,6 @@ class PropertyScreen extends Component{
               ),
               3: (
                 this._renderViewingsTab()
-              ),
-              4: (
-                this._renderUserTab()
               )
             }[this.props.propertyScreen.activeTab]}
 
