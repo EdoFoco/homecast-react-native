@@ -1,24 +1,28 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
-import LandlordHomeNavigator  from '../../components/templates/landlord-section/home-tab/Navigator';
-import PropertiesScreen  from '../../components/templates/landlord-section/properties-tab/PropertiesScreen';
-
-
+import PropertiesNavigator  from '../../components/templates/landlord-section/properties-tab/Navigator';
+import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
+import * as Colors from '../../components/helpers/ColorPallette';
 
 const routeConfiguration = {
-  HomeTab: {
-    screen: LandlordHomeNavigator
-  },
   Properties: { 
-    screen: PropertiesScreen
-    
+    screen: PropertiesNavigator
+  },
+  Options: {
+    screen: OptionsTab
   }
 }
 
 const tabBarConfiguration = {
   headerMode: 'screen',
-  backBehavior: 'none'
+  backBehavior: 'none',
+  tabBarOptions: {
+    activeTintColor: Colors.PINK,
+		style:{
+      backgroundColor: 'white',
+    } 
+  }
 }
 
 export const LandlordTabBarNavigator = TabNavigator(routeConfiguration,tabBarConfiguration);

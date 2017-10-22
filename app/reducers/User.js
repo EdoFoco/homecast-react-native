@@ -12,7 +12,7 @@ export default function user(state = initialAuthState, action) {
     case types.LOGIN:
       return { ...state, isLoggedIn: action.isLoggedIn, user: action.user, isAuthenticating: action.isAuthenticating };
     case types.LOGOUT:
-      return { ...state, isLoggedIn: action.isLoggedIn, user: action.user, isAuthenticating: action.isAuthenticating  };
+      return { ...state, ...initialAuthState };
     case types.LOGIN_FAILED:
         return { ...state, isLoggedIn: action.isLoggedIn, user: action.user, error: action.error, isAuthenticating: action.isAuthenticating };
     case types.AUTHENTICATING:

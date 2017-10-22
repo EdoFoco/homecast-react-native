@@ -2,25 +2,24 @@ import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FavouritesScreen from './FavouritesScreen';
-
+import OptionsScreen from './OptionsScreen';
 
 const routeConfiguration = {
-    FavouritesHome: { screen: FavouritesScreen }
+    OptionsHome: { screen: OptionsScreen }
 }
 
 const stackConfiguration = {
-  initialRoute: 'FavouritesHome',
+  initialRoute: 'OptionsHome',
 }
 
-export const GuestFavouritesNavigator = StackNavigator(routeConfiguration, stackConfiguration);
+export const OptionsNavigator = StackNavigator(routeConfiguration, stackConfiguration);
 
-class GuestFavouritesTab extends React.Component {
+class OptionsTab extends React.Component {
     
     static navigationOptions = {
-        tabBarLabel: 'Favourites',
+        tabBarLabel: 'Options',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="heart" size={22} color={tintColor} />
+            <Icon name="cog" size={22} color={tintColor} />
           )
     }
 
@@ -28,7 +27,7 @@ class GuestFavouritesTab extends React.Component {
         const { navigationState, dispatch } = this.props;
         
         return (
-            <GuestFavouritesNavigator  
+            <OptionsNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
@@ -41,8 +40,8 @@ class GuestFavouritesTab extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.guestFavouritesNav
+        navigationState: state.optionsNav
     }
 }
 
-export default connect(mapStateToProps)(GuestFavouritesTab)
+export default connect(mapStateToProps)(OptionsTab)

@@ -4,6 +4,7 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../../helpers/ColorPallette';
 import {
   StyleSheet,
@@ -85,6 +86,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight:10,
     color: Colors.LIGHT_GRAY
+  },
+  favouriteIconContainer:{
+    position: 'absolute',
+    top: 0,
+    right: 0
+  },
+  favouriteIcon:{
+    color: Colors.PINK,
+    fontSize: 34
   }
 });
 
@@ -101,12 +111,39 @@ _onPress(property){
     this.props.navigation.navigate('PropertyScreen', { property : property});
 }
 
-  _renderRow = function(rowData, rowId){
+_addToFavourites(userId, propertyId){
+  this.props.addToFavourites(userId, propertyId)
+  .then(() => {
+    return this.props.getProperties();
+  })
+  .catch((error) => {
+    console.error("Unahndled when adding to favourites");
+  });
+}
+
+_removeFromFavourites(userId, propertyId){
+  this.props.removeFromFavourites(userId, propertyId)
+  .then(() => {
+    return this.props.getProperties();
+  })
+  .catch((error) => {
+    console.error("Unahndled when removing from favourites");
+  });
+}
+
+ _renderRow = function(rowData, rowId){
     console.log(rowData.name);
     return (
-            <TouchableHighlight style={styles.propertyButton} onPress={() => this._onPress(rowData)}>
+            <TouchableHighlight style={styles.propertyButton} onPress={() => this._onPress(rowData)} underlayColor='rgba(0,0,0,0)'>
               <View style={styles.propertContainer}>
                 <Image source={{uri: rowData.thumbnail}} style={styles.backgroundImage} >
+                  <View style={styles.favouriteIconContainer}>
+                    <MaterialCommunityIcon.Button 
+                      name={rowData.isFavourite ? 'heart': 'heart-outline'} 
+                      backgroundColor='rgba(0,0,0,0)' 
+                      iconStyle={styles.favouriteIcon} 
+                      onPress={ rowData.isFavourite ? () => {this._removeFromFavourites(this.props.user.info.id, rowData.id) } : () => { this._addToFavourites(this.props.user.info.id, rowData.id)}} /> 
+                  </View>
                   <Text style={styles.priceBadge}>£ {Math.round(rowData.price)} p/m</Text>
                 </Image>
                 <View style={{flex:1, flexDirection: 'column'}}>

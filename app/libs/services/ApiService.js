@@ -16,52 +16,32 @@ class ApiService {
     }
 
     static login(credentials){
-        return new Promise(function(resolve, reject){
-            apiClient.post('api/auth/login', credentials)
-            .then( resp => {
-                resolve(resp)
-            })
-            .catch( ex => {
-                reject(ex);
-            });
-        });
+        return apiClient.post('api/auth/login', credentials);
     }
 
     static getLoggedInUser(){
-        return new Promise(function(resolve, reject){
-            apiClient.get('api/users/me')
-            .then( resp => {
-                resolve(resp)
-            })
-            .catch( ex => {
-                reject(ex);
-            });
-        });
+        return apiClient.get('api/users/me');
     }
 
     static getProperties(){
-        return new Promise(function(resolve, reject){
-            apiClient.get('api/properties')
-            .then( resp => {
-                resolve(resp)
-            })
-            .catch( ex => {
-                reject(ex);
-            });
-        });
+        return apiClient.get('api/properties');
+    }
+
+    static getUserProperties(userId){
+       return apiClient.get(`api/users/${userId}/properties`);
     }
 
     static getPropertyViewings(propertyId){
-        return new Promise(function(resolve, reject){
-            apiClient.get(`api/properties/${ propertyId }/viewings`)
-            .then( resp => {
-                resolve(resp)
-            })
-            .catch( ex => {
-                reject(ex);
-            });
-        });
+       return apiClient.get(`api/properties/${ propertyId }/viewings`)
     }
+
+    static addToFavourites(userId, propertyId){
+       return apiClient.post(`api/users/${ userId }/favourites`, { property_id: propertyId});
+    }
+
+    static removeFromFavourites(userId, propertyId){
+        return apiClient.delete(`api/users/${ userId }/favourites?property_id=${propertyId}`);
+     }
 }
 
 export default ApiService

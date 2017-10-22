@@ -10,6 +10,7 @@
     "axios": "^0.16.2",
     "kurento-client": "^6.6.0",
     "loadash": "^1.0.0",
+    "prop-types": "^15.6.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-native-animatable": "^1.2.3",

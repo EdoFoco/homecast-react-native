@@ -4,12 +4,10 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropertiesScreen from './PropertiesScreen';
 import PropertyScreen from './PropertyScreen';
-import ViewingsScreen from './ViewingsScreen';
 import OtherScreen from './OtherScreen';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
-    ViewingsScreen: { screen: ViewingsScreen },
     Other: { screen: OtherScreen },
     PropertyScreen: { screen: PropertyScreen }
 }
@@ -25,7 +23,7 @@ class GuestProperitesTab extends React.Component {
     static navigationOptions = {
         tabBarLabel: 'Properties',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="home" size={30} color={tintColor} />
+            <Icon name="home" size={22} color={tintColor} />
           )
     }
 

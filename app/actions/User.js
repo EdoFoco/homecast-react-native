@@ -9,11 +9,8 @@ export function updateUserInfo(user){
     }
 }
 
-export function updateAuthToken(token, isNew){
-    if(isNew){
-        AsyncStorage.setItem('@AuthToken:key', token);
-    }
-
+export function updateAuthToken(token){
+    AsyncStorage.setItem('@AuthToken:key', token);
     ApiService.setAuthToken(token);
 
     return {
@@ -26,13 +23,15 @@ export function login(credentials){
     return (dispatch, getState) => {
         return ApiService.login(credentials)
             .then((resp) => {
-                let user = resp.data.user;
-                dispatch(updateUserInfo(user))
-                return resp.data.token;
-            })
-            .then((token) => {
-                dispatch(updateAuthToken(token, true));
+                return resp.data;
             });
+    }
+}
+
+export function logout(){
+    return {
+        type: types.LOGOUT,
+        data: null
     }
 }
 
@@ -40,7 +39,7 @@ export function getLoggedInUser(){
     return (dispatch, getState) => {
         return ApiService.getLoggedInUser()
             .then((resp) => {
-                dispatch(updateUserInfo(resp.data));
+                dispatch(updateUserInfo(resp.data.user));
             });
     }
 }

@@ -1,26 +1,25 @@
 import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import FavouritesScreen from './FavouritesScreen';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ViewingsScreen from './ViewingsScreen';
 
 const routeConfiguration = {
-    FavouritesHome: { screen: FavouritesScreen }
+    ViewingsHome: { screen: ViewingsScreen },
 }
 
 const stackConfiguration = {
-  initialRoute: 'FavouritesHome',
+  initialRoute: 'ViewingsHome',
 }
 
-export const GuestFavouritesNavigator = StackNavigator(routeConfiguration, stackConfiguration);
+export const GuestViewingsNavigator = StackNavigator(routeConfiguration, stackConfiguration);
 
-class GuestFavouritesTab extends React.Component {
+class GuestViewingsTab extends React.Component {
     
     static navigationOptions = {
-        tabBarLabel: 'Favourites',
+        tabBarLabel: 'Viewings',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="heart" size={22} color={tintColor} />
+            <Icon name="calendar-clock" size={22} color={tintColor} />
           )
     }
 
@@ -28,7 +27,7 @@ class GuestFavouritesTab extends React.Component {
         const { navigationState, dispatch } = this.props;
         
         return (
-            <GuestFavouritesNavigator  
+            <GuestViewingsNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
@@ -41,8 +40,8 @@ class GuestFavouritesTab extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.guestFavouritesNav
+        navigationState: state.guestViewingsNav
     }
 }
 
-export default connect(mapStateToProps)(GuestFavouritesTab)
+export default connect(mapStateToProps)(GuestViewingsTab)

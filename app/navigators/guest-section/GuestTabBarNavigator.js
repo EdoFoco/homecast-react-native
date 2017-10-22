@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
+import * as Colors from '../../components/helpers/ColorPallette';
 import FavouritesNavigator  from '../../components/templates/guest-section/favourites-tab/Navigator';
 import PropertiesNavigator  from '../../components/templates/guest-section/properties-tab/Navigator';
-import OptionsScreen  from '../../components/templates/shared/OptionsScreen';
-
-
+import GuestViewingsTab from '../../components/templates/guest-section/viewings-tab/Navigator';
+import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 
 const routeConfiguration = {
   Properties: { 
@@ -14,14 +14,23 @@ const routeConfiguration = {
   FavouritesTab: {
     screen: FavouritesNavigator
   },
+  ViewingsTab: {
+    screen: GuestViewingsTab
+  },
   Options: {
-    screen: OptionsScreen
+    screen: OptionsTab
   }
 }
 
 const tabBarConfiguration = {
   headerMode: 'screen',
   backBehavior: 'none',
+  tabBarOptions: {
+    activeTintColor: Colors.PINK,
+		style:{
+      backgroundColor: 'white',
+    } 
+  }
 }
 
 export const GuestTabBarNavigator = TabNavigator(routeConfiguration,tabBarConfiguration);

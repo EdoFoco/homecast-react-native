@@ -31,6 +31,19 @@ export function updateViewingsLoaded(loaded){
     }
 };
 
+
+export function addToFavourites(userId, propertyId){
+    return (dispatch, getState) => {
+        return ApiService.addToFavourites(userId, propertyId);
+      }
+}
+
+export function removeFromFavourites(userId, propertyId){
+    return (dispatch, getState) => {
+        return ApiService.removeFromFavourites(userId, propertyId);
+      }
+}
+
 export function getPropertyViewings(propertyId){
     return (dispatch, getState) => {
         return ApiService.getPropertyViewings(propertyId)
@@ -45,6 +58,16 @@ export function getProperties() {
     return (dispatch, getState) => {
       
       return ApiService.getProperties()
+          .then(resp => {
+              dispatch(updatePropertiesList(resp.data.properties));
+          });
+    }
+  }
+
+export function getUserProperties(userId) {
+    return (dispatch, getState) => {
+      
+      return ApiService.getUserProperties(userId)
           .then(resp => {
               dispatch(updatePropertiesList(resp.data.properties));
           });

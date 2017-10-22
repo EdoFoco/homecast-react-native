@@ -3,8 +3,12 @@ import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNav
 import { GuestHomeNavigator } from '../navigators/guest-section/HomeNavigator';
 import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
 import { GuestFavouritesNavigator } from '../components/templates/guest-section/favourites-tab/Navigator';
+import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
+import { OptionsNavigator } from '../components/templates/shared/options-tab/Navigator';
+
 import { LandlordTabBarNavigator } from '../navigators/landlord-section/LandlordTabBarNavigator';
 import { LandlordHomeNavigator } from '../navigators/landlord-section/HomeNavigator';
+import { LandlordPropertiesNavigator } from '../components/templates/landlord-section/properties-tab/Navigator';
 
 import user from './User';
 import section from './Section';
@@ -21,11 +25,14 @@ const AppReducer = combineReducers({
   guestHomeNav: (state,action) => GuestHomeNavigator.router.getStateForAction(action,state),
   guestPropertiesNav: (state,action) => GuestPropertiesNavigator.router.getStateForAction(action,state),
   guestFavouritesNav: (state, action) => GuestFavouritesNavigator.router.getStateForAction(action,state),
+  guestViewingsNav: (state, action) => GuestViewingsNavigator.router.getStateForAction(action,state),
+  optionsNav: (state, action) => OptionsNavigator.router.getStateForAction(action,state),
+  
   //Landlord Navigators
   landlordTabBar: (state,action) => LandlordTabBarNavigator.router.getStateForAction(action,state),
   landlordHomeNav: (state,action) => LandlordHomeNavigator.router.getStateForAction(action,state),
-
-
+  landlordPropertiesNav: (state,action) => LandlordPropertiesNavigator.router.getStateForAction(action,state),
+  
   user,
   section,
   webrtc,

@@ -2,25 +2,26 @@ import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FavouritesScreen from './FavouritesScreen';
-
+import PropertiesScreen from './PropertiesScreen';
+import PropertyScreen from './PropertyScreen';
 
 const routeConfiguration = {
-    FavouritesHome: { screen: FavouritesScreen }
+    PropertiesHome: { screen: PropertiesScreen },
+    PropertyScreen: { screen: PropertyScreen }
 }
 
 const stackConfiguration = {
-  initialRoute: 'FavouritesHome',
+  initialRoute: 'PropertiesHome',
 }
 
-export const GuestFavouritesNavigator = StackNavigator(routeConfiguration, stackConfiguration);
+export const LandlordPropertiesNavigator = StackNavigator(routeConfiguration, stackConfiguration);
 
-class GuestFavouritesTab extends React.Component {
+class LandlordProperitesTab extends React.Component {
     
     static navigationOptions = {
-        tabBarLabel: 'Favourites',
+        tabBarLabel: 'Properties',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="heart" size={22} color={tintColor} />
+            <Icon name="home" size={22} color={tintColor} />
           )
     }
 
@@ -28,7 +29,7 @@ class GuestFavouritesTab extends React.Component {
         const { navigationState, dispatch } = this.props;
         
         return (
-            <GuestFavouritesNavigator  
+            <LandlordPropertiesNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
@@ -41,8 +42,8 @@ class GuestFavouritesTab extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.guestFavouritesNav
+        navigationState: state.landlordPropertiesNav
     }
 }
 
-export default connect(mapStateToProps)(GuestFavouritesTab)
+export default connect(mapStateToProps)(LandlordProperitesTab)

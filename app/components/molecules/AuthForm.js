@@ -156,7 +156,7 @@ class AuthForm extends Component{
     AsyncStorage.getItem('@AuthToken:key')
     .then((token) => {
         if(!token){
-            throw new Error();
+           throw new Error("No auth token");
         }
 
         return this.props.updateAuthToken(token, false);
@@ -165,7 +165,8 @@ class AuthForm extends Component{
         return this.props.getLoggedInUser();
     })
     .catch((error) => {
-        if(!error.response){
+        console.warn(error);
+        if(typeof error.response !== 'undefined'){
             if(error.response.status == 401){
                 this.props.handleUnauthorized();
             }
@@ -175,15 +176,18 @@ class AuthForm extends Component{
     });
   }
 
-  
-  _login(credentials){
-     this.props.login(credentials);
-   }
 
   _onPress() {
-    var value = this.refs.form.getValue();
-    if (value) { // if validation fails, value will be null
-      this._login(value);
+    var credentials = this.refs.form.getValue();
+    if (credentials) { // if validation fails, value will be null
+      this.props.login(credentials)
+        .then((user) => {
+            this.props.updateAuthToken(user.token);
+            this.props.updateUserInfo(user);
+        })
+        .catch((error) => {
+            this.props.handleUnauthorized();
+        });
     }
   }
 
