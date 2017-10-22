@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
 import {
   StyleSheet,
@@ -21,80 +20,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white'
-  },
-  propertyButton:{
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    height: 200
-  },
-  propertContainer: {
-    flex: 1,
-    alignSelf: 'stretch'
-  },
-  propertyDescriptionWrapper: {
-      alignSelf: 'stretch',
-      height: 100,
-      padding: 20,
-      paddingTop: 10
-    },
-  propertyTitle: {
-    color: '#011627',
-    fontSize: 18
-  },
-  descriptionText: {
-    color: '#9E9E9E'
-  },
-  priceBadge:{
-    backgroundColor: '#2EC4B6',
-    top: 150,
-    color: 'white',
-    position: 'relative',
-    left: 0,
-    fontSize: 16,
-    fontWeight: 'bold',
-    lineHeight: 35,
-    paddingLeft: 10,
-    paddingRight: 10,
-    width: 150
-  },
-  profilePicture: {
-    width: 80,
-    height: 80,
-    position: 'absolute',
-    top: -40,
-    right: 10,
-    alignSelf: 'flex-end',
-    borderRadius: 40,
-    backgroundColor: 'blue'
-  },
-  iconsContainer: {
-    marginTop: 10,
-    flexDirection: 'row',
-    flex: 1
-  },
-  descriptionIcon: {
-    fontSize: 16,
-    marginRight: 10,
-    color: Colors.LIGHT_GRAY
-  },
-  iconText: {
-    marginLeft: 5,
-    marginRight:10,
-    color: Colors.LIGHT_GRAY
-  },
-  favouriteIconContainer:{
-    position: 'absolute',
-    top: 0,
-    right: 0
-  },
-  favouriteIcon:{
-    color: Colors.PINK,
-    fontSize: 34
   }
 });
 
@@ -104,64 +29,39 @@ class PropertiesScreen extends Component{
     this.props.getProperties();
   }
 
-  
-_onPress(property){
-    //this.props.goToScreen('Viewings');
-    console.log(property);
-    this.props.navigation.navigate('PropertyScreen', { property : property});
-}
+  _onPress(property){
+      this.props.navigation.navigate('PropertyScreen', { property : property});
+  }
 
-_addToFavourites(userId, propertyId){
-  this.props.addToFavourites(userId, propertyId)
-  .then(() => {
-    return this.props.getProperties();
-  })
-  .catch((error) => {
-    console.error("Unahndled when adding to favourites");
-  });
-}
+  _addToFavourites(userId, propertyId){
+    this.props.addToFavourites(userId, propertyId)
+    .then(() => {
+      return this.props.getProperties();
+    })
+    .catch((error) => {
+      console.error("Unahndled when adding to favourites");
+    });
+  }
 
-_removeFromFavourites(userId, propertyId){
-  this.props.removeFromFavourites(userId, propertyId)
-  .then(() => {
-    return this.props.getProperties();
-  })
-  .catch((error) => {
-    console.error("Unahndled when removing from favourites");
-  });
-}
+  _removeFromFavourites(userId, propertyId){
+    this.props.removeFromFavourites(userId, propertyId)
+    .then(() => {
+      return this.props.getProperties();
+    })
+    .catch((error) => {
+      console.error("Unahndled when removing from favourites");
+    });
+  }
 
- _renderRow = function(rowData, rowId){
-    console.log(rowData.name);
+ _renderRow = function(property){
     return (
-            <TouchableHighlight style={styles.propertyButton} onPress={() => this._onPress(rowData)} underlayColor='rgba(0,0,0,0)'>
-              <View style={styles.propertContainer}>
-                <Image source={{uri: rowData.thumbnail}} style={styles.backgroundImage} >
-                  <View style={styles.favouriteIconContainer}>
-                    <MaterialCommunityIcon.Button 
-                      name={rowData.isFavourite ? 'heart': 'heart-outline'} 
-                      backgroundColor='rgba(0,0,0,0)' 
-                      iconStyle={styles.favouriteIcon} 
-                      onPress={ rowData.isFavourite ? () => {this._removeFromFavourites(this.props.user.info.id, rowData.id) } : () => { this._addToFavourites(this.props.user.info.id, rowData.id)}} /> 
-                  </View>
-                  <Text style={styles.priceBadge}>£ {Math.round(rowData.price)} p/m</Text>
-                </Image>
-                <View style={{flex:1, flexDirection: 'column'}}>
-                    <View style={{flex:1}}/>
-                    <Image source={{uri: rowData.user.profile_picture}} style={styles.profilePicture}/>
-                    <View style={styles.propertyDescriptionWrapper}>
-                        <Text style={styles.propertyTitle}>{rowData.name}</Text>
-                        <Text style={styles.descriptionText}>{rowData.address}</Text>
-                        <View style={styles.iconsContainer}>
-                          <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                          <Text style={styles.iconText}>{rowData.rooms}</Text>
-                          <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                          <Text style={styles.iconText}>{rowData.bathrooms}</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            </TouchableHighlight>
+            <PropertyRow 
+              property= {property}
+              user = {this.props.user.info}
+              onPress = { (property) => { this._onPress(property) }}
+              onAddToFavourites = { (userId, propertyId) => { this._addToFavourites(userId, propertyId) }}
+              onRemoveFromFavourites = { (userId, propertyId) => { this._removeFromFavourites(userId, propertyId) }} 
+            />
         )
   }
 

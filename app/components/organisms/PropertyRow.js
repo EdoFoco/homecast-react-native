@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
+import * as Colors from '../helpers/ColorPallette';
 import {
     StyleSheet,
     TouchableHighlight,
@@ -94,7 +95,7 @@ export default class PropertyRow extends Component{
 
   render() {
     return (
-        <TouchableHighlight style={styles.propertyButton} onPress={() => this._onPress(this.props.property)} underlayColor='rgba(0,0,0,0)'>
+        <TouchableHighlight style={styles.propertyButton} onPress={() => this.props.onPress(this.props.property)} underlayColor='rgba(0,0,0,0)'>
             <View style={styles.propertContainer}>
             <Image source={{uri: this.props.property.thumbnail}} style={styles.backgroundImage} >
                 <View style={styles.favouriteIconContainer}>
@@ -102,7 +103,7 @@ export default class PropertyRow extends Component{
                     name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
                     backgroundColor='rgba(0,0,0,0)' 
                     iconStyle={styles.favouriteIcon} 
-                    onPress={ this.props.property.isFavourite ? () => {this._removeFromFavourites(this.props.userId, this.props.property.id) } : () => { this._addToFavourites(this.props.userId, this.props.property.id)}} /> 
+                    onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
                 </View>
                 <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
             </Image>
@@ -128,9 +129,9 @@ export default class PropertyRow extends Component{
 
 PropertyRow.propTypes = {
     property: PropTypes.object,
-    userId: PropTypes.integer,
+    user: PropTypes.object,
     onPress: PropTypes.func,
-    onAddFavourite: PropTypes.func,
-    onRemoveFavourite: PropTypes.func
+    onAddToFavourites: PropTypes.func,
+    onRemoveFromFavourites: PropTypes.func
 }  
 
