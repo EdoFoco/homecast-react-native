@@ -9,8 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ListView,
-  ListViewDataSource,
+  FlatList,
   TouchableHighlight,
   Image
 } from 'react-native';
@@ -44,6 +43,7 @@ class PropertiesScreen extends Component{
   }
 
   _removeFromFavourites(userId, propertyId){
+   
     this.props.removeFromFavourites(userId, propertyId)
     .then(() => {
       return this.props.getProperties();
@@ -53,12 +53,14 @@ class PropertiesScreen extends Component{
     });
   }
 
- _renderRow = function(property){
+ _renderRow = function({item}){
+    let property = item;
     return (
             <PropertyRow 
-              property= {property}
+              property = {property}
               user = {this.props.user.info}
               onPress = { (property) => { this._onPress(property) }}
+              enableFavourites={true}
               onAddToFavourites = { (userId, propertyId) => { this._addToFavourites(userId, propertyId) }}
               onRemoveFromFavourites = { (userId, propertyId) => { this._removeFromFavourites(userId, propertyId) }} 
             />
@@ -68,10 +70,11 @@ class PropertiesScreen extends Component{
   render() {
     return (
       <View style={styles.container}>
-         <ListView
-            dataSource={this.props.properties}
-            enableEmptySections={true}
-            renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
+          <FlatList
+            data={this.props.properties}
+            renderItem={(property) => this._renderRow(property)}
+            keyExtractor={(item, index) => index}
+            removeClippedSubviews={false}
           />
       </View>
 
@@ -84,20 +87,12 @@ PropertiesScreen.navigationOptions = {
   title: 'Properties',
 };
 
-const ds = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2
-});
-
 const mapStateToProps = (state) => {
-   console.log('PropertiesScreen');
-    console.log(state);
-
-    var rowIds = state.properties.propertiesList.map((row, index) => index);
-    
+     
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        properties: ds.cloneWithRows(state.properties.propertiesList, rowIds),
+        properties: state.properties.propertiesList
     }
 };
 

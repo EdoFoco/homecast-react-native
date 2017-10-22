@@ -256,8 +256,6 @@ class PropertyScreen extends Component{
   }
 
   _onPress(viewing){
-      console.log(viewing);
-      //this.props.goToScreen('Viewings');
       this.props.navigation.navigate('Other', { viewing : viewing });
     }
 

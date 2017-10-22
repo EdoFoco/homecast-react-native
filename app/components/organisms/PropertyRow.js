@@ -98,13 +98,15 @@ export default class PropertyRow extends Component{
         <TouchableHighlight style={styles.propertyButton} onPress={() => this.props.onPress(this.props.property)} underlayColor='rgba(0,0,0,0)'>
             <View style={styles.propertContainer}>
             <Image source={{uri: this.props.property.thumbnail}} style={styles.backgroundImage} >
-                <View style={styles.favouriteIconContainer}>
-                <MaterialCommunityIcon.Button 
-                    name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
-                    backgroundColor='rgba(0,0,0,0)' 
-                    iconStyle={styles.favouriteIcon} 
-                    onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
-                </View>
+                { !this.props.enableFavourites ? null :
+                    <View style={styles.favouriteIconContainer}>
+                    <MaterialCommunityIcon.Button 
+                        name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
+                        backgroundColor='rgba(0,0,0,0)' 
+                        iconStyle={styles.favouriteIcon} 
+                        onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
+                    </View>
+                }
                 <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
             </Image>
             <View style={{flex:1, flexDirection: 'column'}}>
@@ -131,6 +133,7 @@ PropertyRow.propTypes = {
     property: PropTypes.object,
     user: PropTypes.object,
     onPress: PropTypes.func,
+    enableFavourites: PropTypes.bool,
     onAddToFavourites: PropTypes.func,
     onRemoveFromFavourites: PropTypes.func
 }  

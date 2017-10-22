@@ -9,8 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ListView,
-  ListViewDataSource,
+  FlatList,
   TouchableHighlight,
   Image
 } from 'react-native';
@@ -49,12 +48,14 @@ class FavouritesScreen extends Component{
     });
   }
 
- _renderRow = function(property){
+ _renderRow = function({item}){
+    let property = item;
     return (
-            <PropertyRow 
+            <PropertyRow
               property= {property}
               user = {this.props.user.info}
               onPress = { (property) => { this._onPress(property) }}
+              enableFavourites={true}
               onAddToFavourites = { (userId, propertyId) => { this._addToFavourites(userId, propertyId) }}
               onRemoveFromFavourites = { (userId, propertyId) => { this._removeFromFavourites(userId, propertyId) }} 
             />
@@ -64,11 +65,12 @@ class FavouritesScreen extends Component{
   render() {
     return (
       <View style={styles.container}>
-         <ListView
-            dataSource={this.props.properties}
-            enableEmptySections={true}
-            renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
-          />
+        <FlatList
+          data={this.props.properties}
+          renderItem={(property) => this._renderRow(property)}
+          keyExtractor={(item, index) => index}
+          removeClippedSubviews={false}
+        />
       </View>
 
     )
@@ -80,24 +82,16 @@ FavouritesScreen.navigationOptions = {
   title: 'Favourites',
 };
 
-const ds = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2
-});
-
 const mapStateToProps = (state) => {
-   console.log('PropertiesScreen');
-    console.log(state);
-
-    var rowIds = state.properties.propertiesList
+    let properties = state.properties.propertiesList
     .filter(function(property){
       return property.isFavourite;
-    })
-    .map((row, index) => index);
-    
+    });
+
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        properties: ds.cloneWithRows(state.properties.propertiesList, rowIds),
+        properties: properties
     }
 };
 

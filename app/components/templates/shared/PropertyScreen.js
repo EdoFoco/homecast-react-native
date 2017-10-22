@@ -1,11 +1,11 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../../../../actions';
+import { ActionCreators } from '../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as Colors from '../../../helpers/ColorPallette';
+import * as Colors from '../../helpers/ColorPallette';
 import MapView from 'react-native-maps';
 import {
   StyleSheet,
@@ -256,8 +256,6 @@ class PropertyScreen extends Component{
   }
 
   _onPress(viewing){
-      console.log(viewing);
-      //this.props.goToScreen('Viewings');
       this.props.navigation.navigate('Other', { viewing : viewing });
     }
 
@@ -332,7 +330,6 @@ class PropertyScreen extends Component{
            extraData={this.props.properties}
 
          />
-    
       }
     </View>
     )

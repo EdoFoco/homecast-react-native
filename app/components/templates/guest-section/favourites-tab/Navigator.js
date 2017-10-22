@@ -3,10 +3,11 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FavouritesScreen from './FavouritesScreen';
-
+import PropertyScreen from '../../shared/PropertyScreen';
 
 const routeConfiguration = {
-    FavouritesHome: { screen: FavouritesScreen }
+    FavouritesHome: { screen: FavouritesScreen },
+    PropertyScreen: { screen: PropertyScreen }
 }
 
 const stackConfiguration = {
