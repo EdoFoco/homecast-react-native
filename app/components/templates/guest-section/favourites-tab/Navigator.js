@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FavouritesScreen from './FavouritesScreen';
 import PropertyScreen from '../../shared/PropertyScreen';
+import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     FavouritesHome: { screen: FavouritesScreen },
@@ -12,6 +13,12 @@ const routeConfiguration = {
 
 const stackConfiguration = {
   initialRoute: 'FavouritesHome',
+  navigationOptions: {
+    headerTintColor: Colors.RED,
+    headerStyle: {
+      backgroundColor: 'white'
+    }
+  }
 }
 
 export const GuestFavouritesNavigator = StackNavigator(routeConfiguration, stackConfiguration);

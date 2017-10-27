@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center'
     },
     viewingContainer: {
-      backgroundColor: Colors.AQUA_GREEN, 
+      backgroundColor: Colors.LIGHT_RED, 
       margin:5, 
       height: 150,
       width: (Dimensions.get('window').width - 39) / 3,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
       alignSelf: 'stretch',
       padding: 15,
       borderBottomWidth: 3,
-      borderBottomColor: Colors.AQUA_GREEN,
+     // borderBottomColor: Colors.LIGHT_RED,
       alignItems: 'center',
     },
     menuItemContainer: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
       marginBottom: 5
     },
     menuIconActive: {
-      color: Colors.AQUA_GREEN,
+      color: Colors.LIGHT_RED,
       fontSize: 20,
       marginBottom: 5
     },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
       fontSize: 14
     },
     menuTextActive: {
-      color: Colors.AQUA_GREEN,
+      color: Colors.LIGHT_RED,
       fontSize: 14
     },
     triangle: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: 7,
       borderLeftColor: 'transparent',
       borderRightColor: 'transparent',
-      borderBottomColor: Colors.AQUA_GREEN,
+      borderBottomColor: 'transparent',
       position: 'absolute',
       bottom: -15
     },
@@ -211,20 +211,21 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     serviceIcon: {
-      fontSize: 26,
-      color: Colors.DARK_GREY
+      fontSize: 20,
+      color: Colors.LIGHT_GRAY
     },
     serviceText: {
       fontSize: 14,
       color: Colors.DARK_GREY
     },
     descriptionContainer: {
-      marginTop: 15,
+      marginTop: 0,
     },
     subTitle: {
       fontSize: 18,
       fontWeight: 'bold',
-      color: Colors.DARK_GREY
+      color: Colors.DARK_GREY,
+      marginTop: 15
     },
     propertyDescription: {
       marginTop: 10,
@@ -263,13 +264,14 @@ class PropertyScreen extends Component{
   
   _renderItem = ({item}) => {
     let viewing = item;
+    console.log(viewing.date_time);
     return (
       <TouchableHighlight style={styles.viewingContainer}>
         <View>
-            <Text style={styles.viewingTitle}>{new Date(viewing.date_time).toLocaleString('en-us', {  weekday: 'long' })}</Text>
-            <Text style={styles.viewingMonth}>{new Date(viewing.date_time).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
-            <Text style={styles.viewingDay}>{new Date(viewing.date_time).getDate()}</Text>
-            <Text style={styles.viewingTime}>{new Date(viewing.date_time).getHours() + ':' + new Date(viewing.date_time).getMinutes()}</Text>
+            <Text style={styles.viewingTitle}>{new Date(`${viewing.date_time} UTC`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
+            <Text style={styles.viewingMonth}>{new Date(`${viewing.date_time} UTC`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
+            <Text style={styles.viewingDay}>{new Date(`${viewing.date_time} UTC`).getDate()}</Text>
+            <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).getHours() + ':' + new Date(`${viewing.date_time} UTC`).getMinutes()}</Text>
             <Text style={styles.viewingRemainingSlots}>Only 10 slots left</Text>
         </View>
       </TouchableHighlight>
@@ -283,7 +285,7 @@ class PropertyScreen extends Component{
        <View style={styles.servicesContainer}>
                 <View style={styles.serviceItem}>
                     <FontAwesomeIcon name="bed" style={styles.serviceIcon} />
-                    <Text style={styles.serviceText}>{this.props.currentProperty.rooms} beds</Text> 
+                    <Text style={styles.serviceText}>{this.props.currentProperty.bedrooms} beds</Text> 
                 </View>
                 <View style={styles.serviceItem}>
                   <MaterialIcons name="sofa" style={styles.serviceIcon}/>
@@ -295,8 +297,17 @@ class PropertyScreen extends Component{
               </View>
          </View>
          <View style={styles.descriptionContainer}>
-            <Text style={styles.subTitle}>Info</Text>
-            <Text style={styles.propertyDescription}>{this.props.currentProperty.description}</Text>
+             { 
+               this.props.currentProperty.description_sections.map((section, index) => {
+                 return ( 
+                    <View key={index}>
+                       <Text style={styles.subTitle}>{section.title}</Text>
+                        <Text style={styles.propertyDescription}>{section.description}</Text>
+                    </View>
+                  )
+              })
+             }
+           
          </View>
       </View>
     )

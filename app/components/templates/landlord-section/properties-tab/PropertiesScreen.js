@@ -4,6 +4,7 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as Colors from '../../../helpers/ColorPallette';
 import {
   StyleSheet,
@@ -19,6 +20,53 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white'
+  },
+  addPropertyBtn: {
+    backgroundColor: Colors.RED,
+    //alignSelf: 'stretch',
+    height: 40,
+    width: 350,
+    justifyContent: 'center',
+    margin: 10
+  },
+  addPropertyTxt: {
+    color: 'white',
+    fontSize: 16,
+    alignSelf: 'center'
+  },
+  listingCell: {
+    flexDirection: 'row',
+    flex: 1,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.WHITE_SMOKE
+  },
+  listingDescription: {
+    flex: 0.5
+  },
+  iconsContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    flex: 1
+  },
+  descriptionIcon: {
+    fontSize: 16,
+    marginRight: 10,
+    color: Colors.LIGHT_GRAY
+  },
+  iconText: {
+      marginLeft: 5,
+      marginRight:10,
+      color: Colors.LIGHT_GRAY
+  },
+  listingImage: {
+    height: 120,
+    width: 180,
+    alignSelf: 'flex-end',
+    right: 0
+  },
+  listingTitle: {
+    fontSize: 20
   }
 });
 
@@ -29,41 +77,31 @@ class PropertiesScreen extends Component{
   }
 
   _onPress(property){
-      this.props.navigation.navigate('PropertyScreen', { property : property});
+      this.props.navigation.navigate('EditPropertyScreen', { property : property});
   }
 
-  _addToFavourites(userId, propertyId){
-    this.props.addToFavourites(userId, propertyId)
-    .then(() => {
-      return this.props.getProperties();
-    })
-    .catch((error) => {
-      console.error("Unahndled when adding to favourites");
-    });
+  _addProperty(){
+    this.props.navigation.navigate('AddPropertyScreen');
   }
-
-  _removeFromFavourites(userId, propertyId){
-   
-    this.props.removeFromFavourites(userId, propertyId)
-    .then(() => {
-      return this.props.getProperties();
-    })
-    .catch((error) => {
-      console.error("Unahndled when removing from favourites");
-    });
-  }
-
+  
  _renderRow = function({item}){
     let property = item;
     return (
-            <PropertyRow 
-              property = {property}
-              user = {this.props.user.info}
-              onPress = { (property) => { this._onPress(property) }}
-              enableFavourites={false}
-              onAddToFavourites = { (userId, propertyId) => { this._addToFavourites(userId, propertyId) }}
-              onRemoveFromFavourites = { (userId, propertyId) => { this._removeFromFavourites(userId, propertyId) }} 
-            />
+        <TouchableHighlight onPress={() => {this._onPress(property)}}>
+          <View style={styles.listingCell}>
+            <View style={styles.listingDescription}>
+              <Text style={styles.listingTitle}>{property.name}</Text>
+              <View style={styles.iconsContainer}>
+                <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
+                <Text style={styles.iconText}>{property.bedrooms}</Text>
+                <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
+                <Text style={styles.iconText}>{property.bathrooms}</Text>
+              </View>
+            </View>
+              <Image style={styles.listingImage} source={{url: property.thumbnail}}/>
+          </View>
+        </TouchableHighlight>
+          
         )
   }
 
@@ -76,15 +114,17 @@ class PropertiesScreen extends Component{
             keyExtractor={(item, index) => index}
             removeClippedSubviews={false}
           />
+          <TouchableHighlight style={styles.addPropertyBtn} onPress={() => { this._addProperty()}}>
+            <Text style={styles.addPropertyTxt}>Add a listing</Text>
+          </TouchableHighlight>
       </View>
-
     )
   }
   
 }
 
 PropertiesScreen.navigationOptions = {
-  title: 'Properties',
+  title: 'Listings'
 };
 
 const mapStateToProps = (state) => {

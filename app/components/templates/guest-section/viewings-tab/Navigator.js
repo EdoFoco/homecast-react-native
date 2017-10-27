@@ -3,6 +3,7 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewingsScreen from './ViewingsScreen';
+import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     ViewingsHome: { screen: ViewingsScreen },
@@ -10,6 +11,12 @@ const routeConfiguration = {
 
 const stackConfiguration = {
   initialRoute: 'ViewingsHome',
+  navigationOptions: {
+    headerTintColor: Colors.RED,
+    headerStyle: {
+      backgroundColor: 'white'
+    }
+  }
 }
 
 export const GuestViewingsNavigator = StackNavigator(routeConfiguration, stackConfiguration);

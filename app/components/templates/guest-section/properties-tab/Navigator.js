@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import PropertiesScreen from './PropertiesScreen';
 import PropertyScreen from '../../shared/PropertyScreen';
 import OtherScreen from './OtherScreen';
+import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
@@ -14,6 +15,12 @@ const routeConfiguration = {
 
 const stackConfiguration = {
   initialRoute: 'PropertiesHome',
+  navigationOptions: {
+    headerTintColor: Colors.RED,
+    headerStyle: {
+      backgroundColor: 'white'
+    }
+  }
 }
 
 export const GuestPropertiesNavigator = StackNavigator(routeConfiguration, stackConfiguration);

@@ -123,10 +123,6 @@ class WebRTCChat extends Component{
 		});
   }
 
-  componentWillUnmount(){
-    
-  }
-
   componentWillUpdate(){
     
     if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){

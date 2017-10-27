@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     width: 150,
     height: 40,
-    backgroundColor: Colors.PINK
+    backgroundColor: Colors.RED
   }
 });
 

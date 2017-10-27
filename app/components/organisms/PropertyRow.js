@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         right: 0
     },
     favouriteIcon:{
-        color: Colors.PINK,
+        color: Colors.RED,
         fontSize: 34
     }
 });
@@ -117,7 +117,7 @@ export default class PropertyRow extends Component{
                     <Text style={styles.descriptionText}>{this.props.property.address}</Text>
                     <View style={styles.iconsContainer}>
                         <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                        <Text style={styles.iconText}>{this.props.property.rooms}</Text>
+                        <Text style={styles.iconText}>{this.props.property.bedrooms}</Text>
                         <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
                         <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
                     </View>

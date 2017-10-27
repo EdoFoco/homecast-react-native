@@ -18,7 +18,7 @@ const tabBarConfiguration = {
   headerMode: 'screen',
   backBehavior: 'none',
   tabBarOptions: {
-    activeTintColor: Colors.PINK,
+    activeTintColor: Colors.RED,
 		style:{
       backgroundColor: 'white',
     } 
