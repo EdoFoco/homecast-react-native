@@ -5,6 +5,7 @@ import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 import * as t from 'tcomb-form-native'
 import Loader from '../atoms/Loader';
+import * as FontSizes from '../helpers/FontSizes';
 import * as errorHandler from '../../actions/ErrorHandler';
 var _ = require('lodash');
 
@@ -83,12 +84,12 @@ var styles = StyleSheet.create({
       alignSelf: 'stretch'
   },
   title: {
-    fontSize: 30,
+    fontSize: FontSizes.BIG,
     alignSelf: 'center',
     marginBottom: 30
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: FontSizes.DEFAULT,
     color: 'white',
     alignSelf: 'center'
   },
@@ -124,7 +125,7 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   formTitle: {
-      fontSize: 25,
+      fontSize: FontSizes.BIG,
       alignSelf: 'center',
       marginBottom: 20,
       color: 'white'

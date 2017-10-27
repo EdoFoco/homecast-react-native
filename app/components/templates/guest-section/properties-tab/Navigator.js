@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropertiesScreen from './PropertiesScreen';
 import PropertyScreen from '../../shared/PropertyScreen';
+import ViewingScreen from '../../shared/ViewingScreen';
 import OtherScreen from './OtherScreen';
 import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
     Other: { screen: OtherScreen },
-    PropertyScreen: { screen: PropertyScreen }
+    PropertyScreen: { screen: PropertyScreen },
+    ViewingScreen: { screen: ViewingScreen }
 }
 
 const stackConfiguration = {

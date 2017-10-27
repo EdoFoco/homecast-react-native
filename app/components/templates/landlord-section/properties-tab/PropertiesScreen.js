@@ -6,6 +6,8 @@ import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as Colors from '../../../helpers/ColorPallette';
+import * as FontSizes from '../../../helpers/FontSizes';
+
 import {
   StyleSheet,
   Text,
@@ -31,7 +33,7 @@ const styles = StyleSheet.create({
   },
   addPropertyTxt: {
     color: 'white',
-    fontSize: 16,
+    fontSize: FontSizes.DEFAULT,
     alignSelf: 'center'
   },
   listingCell: {
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
     right: 0
   },
   listingTitle: {
-    fontSize: 20
+    fontSize: FontSizes.DEFAULT
   }
 });
 

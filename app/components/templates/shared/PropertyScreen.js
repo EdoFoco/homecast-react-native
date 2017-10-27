@@ -6,16 +6,16 @@ import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../helpers/ColorPallette';
+import * as FontSizes from '../../helpers/FontSizes';
 import MapView from 'react-native-maps';
+import DateCell from './DateCell';
 import {
   StyleSheet,
   Text,
   View,
-  ListView,
-  ListViewDataSource,
+  FlatList,
   TouchableHighlight,
   Image,
-  FlatList,
   Dimensions,
   ScrollView
 } from 'react-native';
@@ -29,10 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   propertyDescriptionWrapper: {
-    //flex: 1,
-    //flexDirection: 'row',
     alignSelf: 'stretch',
-    //height: 80,
     backgroundColor: "rgba(0,0,0,0.6)",
     justifyContent: 'center'
   },
@@ -49,6 +46,11 @@ const styles = StyleSheet.create({
       padding: 10,
       //paddingTop: 0
   },
+  viewingsTabContainer:{
+    flex: 1,
+    alignSelf: 'stretch',
+    alignContent: 'flex-start',
+  },
   viewingsList: {
     //  height: 80
     backgroundColor: 'blue',
@@ -58,46 +60,37 @@ const styles = StyleSheet.create({
       backgroundColor: "rgba(246,67,74,1)", 
       alignSelf: 'stretch', 
       color:'white',
-      fontSize: 20,
+      fontSize: FontSizes.DEFAULT,
       padding: 10, 
       justifyContent: 'center'
     },
-    viewingContainer: {
-      backgroundColor: Colors.LIGHT_RED, 
-      margin:5, 
-      height: 150,
-      width: (Dimensions.get('window').width - 39) / 3,
-      padding: 5,
-      paddingTop: 10
+    viewingRow:{
+      flex: 1,
+      alignSelf: 'stretch',
+      paddingBottom: 10,
+      paddingTop: 10,
+      borderBottomColor: Colors.LIGHT_GRAY,
+      //borderBottomWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
-    viewingTitle: {
-      alignSelf: 'center',
-      color: 'white',
-      fontSize: 14,
-      fontWeight: 'bold'
+    viewingDateCell: {
+      width: 100,
+      alignSelf: 'flex-start',
     },
-    viewingMonth: {
-      color: 'white',
-      marginTop: 10,
-      alignSelf: 'center',
-      fontSize: 18
-    },
-    viewingDay: {
-      color: 'white',
-      alignSelf: 'center',
-      fontSize: 30,
-      fontWeight: 'bold'
+    viewingCapacity: {
+      color: Colors.RED,
+      fontSize: FontSizes.SMALL_TEXT,
+      textAlign: 'right',
+      flex: 1
     },
     viewingTime:{
-      color: 'white',
-      alignSelf: 'center',
-      fontSize: 18
-    },
-    viewingRemainingSlots:{
-      color: 'white',
-      fontSize: 12,
-      alignSelf: 'center',
-      marginTop: 10
+      flex: 0.7,
+      fontSize: FontSizes.TITLE,
+      textAlign: 'right',
+      color: Colors.DARK_GREY,
+      paddingRight: 10
     },
     menuContainer: {
       flexDirection: 'row',
@@ -120,21 +113,21 @@ const styles = StyleSheet.create({
     },
     menuIcon: {
       color: 'white',
-      fontSize: 20,
+      fontSize: FontSizes.DEFAULT,
       marginBottom: 5
     },
     menuIconActive: {
       color: Colors.LIGHT_RED,
-      fontSize: 20,
+      fontSize: FontSizes.DEFAULT,
       marginBottom: 5
     },
     menuText: {
       color: 'white',
-      fontSize: 14
+      fontSize: FontSizes.SMALL_TEXT
     },
     menuTextActive: {
       color: Colors.LIGHT_RED,
-      fontSize: 14
+      fontSize: FontSizes.SMALL_TEXT
     },
     triangle: {
       width: 0,
@@ -153,7 +146,7 @@ const styles = StyleSheet.create({
     viewingMonthHeader: {
       borderBottomWidth: 2,
       flex: 1,
-      fontSize: 16
+      fontSize: FontSizes.SMALL_TEXT
     },
     viewingsListContainer: {
       flex: 1,
@@ -181,7 +174,7 @@ const styles = StyleSheet.create({
       color: 'white',
       position: 'relative',
       left: 0,
-      fontSize: 16,
+      fontSize: FontSizes.SMALL_TEXT,
       fontWeight: 'bold',
       lineHeight: 35,
       paddingLeft: 10,
@@ -189,7 +182,7 @@ const styles = StyleSheet.create({
       width: 150
     },
     propertyTitle: {
-      fontSize: 28,
+      fontSize: FontSizes.BIG,
       fontWeight: 'bold',
       alignSelf: 'flex-start',
       color: Colors.DARK_GREY
@@ -211,25 +204,25 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     serviceIcon: {
-      fontSize: 20,
+      fontSize: FontSizes.DEFAULT,
       color: Colors.LIGHT_GRAY
     },
     serviceText: {
-      fontSize: 14,
+      fontSize: FontSizes.SMALL_TEXT,
       color: Colors.DARK_GREY
     },
     descriptionContainer: {
       marginTop: 0,
     },
     subTitle: {
-      fontSize: 18,
+      fontSize: FontSizes.DEFAULT,
       fontWeight: 'bold',
       color: Colors.DARK_GREY,
       marginTop: 15
     },
     propertyDescription: {
       marginTop: 10,
-      fontSize: 14,
+      fontSize: FontSizes.DEFAULT,
       color: Colors.DARK_GREY
     }
 });
@@ -256,8 +249,9 @@ class PropertyScreen extends Component{
     });
   }
 
-  _onPress(viewing){
-      this.props.navigation.navigate('Other', { viewing : viewing });
+  _goToViewing(viewing){
+      //this.props.navigation.navigate('Other', { viewing : viewing });
+      this.props.navigation.navigate('ViewingScreen', { viewing : viewing });
     }
 
   _keyExtractor = (item, index) => index;
@@ -266,13 +260,13 @@ class PropertyScreen extends Component{
     let viewing = item;
     console.log(viewing.date_time);
     return (
-      <TouchableHighlight style={styles.viewingContainer}>
-        <View>
-            <Text style={styles.viewingTitle}>{new Date(`${viewing.date_time} UTC`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
-            <Text style={styles.viewingMonth}>{new Date(`${viewing.date_time} UTC`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
-            <Text style={styles.viewingDay}>{new Date(`${viewing.date_time} UTC`).getDate()}</Text>
-            <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).getHours() + ':' + new Date(`${viewing.date_time} UTC`).getMinutes()}</Text>
-            <Text style={styles.viewingRemainingSlots}>Only 10 slots left</Text>
+      <TouchableHighlight onPress={() => {this._goToViewing(viewing)}}>
+        <View style={styles.viewingRow}>
+          <View style={styles.viewingDateCell} >
+            <DateCell dateTime={viewing.date_time} />
+          </View>
+          <Text style={styles.viewingCapacity}>Only 10 spots left</Text>
+          <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
         </View>
       </TouchableHighlight>
     )
@@ -330,13 +324,12 @@ class PropertyScreen extends Component{
 
   _renderViewingsTab(){
     return (
-      <View style={styles.tabContainer}>
+      <View style={styles.viewingsTabContainer}>
       { 
         !this.props.properties.viewingsLoaded ? null :
           <FlatList style={{margin:5}}
            data={this.props.properties.currentPropertyViewings}
            keyExtractor={this._keyExtractor}
-           numColumns={3}
            renderItem={this._renderItem} 
            extraData={this.props.properties}
 
@@ -402,17 +395,13 @@ PropertyScreen.navigationOptions = ({ navigation }) => ({
   });
   
 
-const ds = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2
-});
-
 const mapStateToProps = (state, navigation) => {
     var rowIds = state.properties.currentPropertyViewings.map((row, index) => index);
     
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        viewings: ds.cloneWithRows(state.properties.currentPropertyViewings, rowIds),
+        viewings: state.properties.currentPropertyViewings,
         currentProperty: navigation.navigation.state.params.property,
         propertyScreen: state.propertyScreen,
         properties: state.properties

@@ -5,6 +5,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import * as Colors from '../helpers/ColorPallette';
+import * as FontSizes from '../helpers/FontSizes';
 import {
     StyleSheet,
     TouchableHighlight,
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     },
     propertyTitle: {
         color: '#011627',
-        fontSize: 18
+        fontSize: FontSizes.DEFAULT
     },
     descriptionText: {
         color: '#9E9E9E'
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
         color: 'white',
         position: 'relative',
         left: 0,
-        fontSize: 16,
+        fontSize: FontSizes.DEFAULT,
         fontWeight: 'bold',
         lineHeight: 35,
         paddingLeft: 10,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     descriptionIcon: {
-        fontSize: 16,
+        fontSize: FontSizes.DEFAULT,
         marginRight: 10,
         color: Colors.LIGHT_GRAY
     },

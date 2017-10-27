@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import * as FontSizes from '../helpers/FontSizes';
 import {
   Button,
   StyleSheet,
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: FontSizes.DEFAULT,
     textAlign: 'center',
     margin: 10,
   },

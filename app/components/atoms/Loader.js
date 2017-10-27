@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import * as FontSizes from '../helpers/FontSizes';
 import { connect } from 'react-redux';
 import {
   StyleSheet,
@@ -8,7 +9,7 @@ import {
 
 const styles = StyleSheet.create({
   message: {
-    fontSize: 20,
+    fontSize: FontSizes.DEFAULT,
     textAlign: 'center',
     margin: 10,
     color: '#F6F7F8'

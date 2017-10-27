@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
+import * as FontSizes from '../../../helpers/FontSizes';
+
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 import {
@@ -22,10 +24,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    //padding: 10
   },
   viewTitle: {
-      fontSize: 20,
+      fontSize: FontSizes.DEFAULT,
       color: Colors.DARK_GREY
   },
   propertyThumbnail: {
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   photosBtn:{
     color: 'white',
     alignSelf: 'center',
-    fontSize: 18
+    fontSize: FontSizes.DEFAULT
   },
   propertyDetailCell: {
       flexDirection: 'row',
@@ -59,11 +60,11 @@ const styles = StyleSheet.create({
       flexWrap: 'wrap',
   },
   sectionTitle: {
-      //fontSize: 12,
+      fontSize: FontSizes.SMALL_TEXT,
       color: Colors.LIGHT_GRAY
   },
   sectionValue: {
-      fontSize: 16,
+      fontSize: FontSizes.DEFAULT,
       color: Colors.DARK_GREY,
       flex: 1,
       flexWrap: 'wrap',
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   editSectionTxt: {
       color: Colors.RED,
       alignSelf: 'flex-end',
-      fontSize: 18
+      fontSize: FontSizes.DEFAULT
   },
   detailColumn: {
       flex: 0.9
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   descriptionIcon: {
-    fontSize: 16,
+    fontSize: FontSizes.SMALL_TEXT,
     marginRight: 10,
     color: Colors.LIGHT_GRAY
   },

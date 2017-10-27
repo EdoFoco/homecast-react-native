@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
+import * as FontSizes from '../../../helpers/FontSizes';
 import {
   StyleSheet,
   Text,
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: FontSizes.DEFAULT,
     textAlign: 'center',
     margin: 10,
   },
