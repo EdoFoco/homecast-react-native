@@ -30,6 +30,10 @@ class ApiService {
     static getUserProperties(userId){
        return apiClient.get(`api/users/${userId}/properties`);
     }
+    
+    static getViewing(viewingId){
+        return apiClient.get(`api/viewings/${ viewingId }`)
+    }
 
     static getPropertyViewings(propertyId){
        return apiClient.get(`api/properties/${ propertyId }/viewings`)
@@ -51,9 +55,10 @@ class ApiService {
         return apiClient.delete(`api/users/${ userId }/viewing-reservations/${viewingId}`);
      }
 
-    static getViewing(viewingId){
-        return apiClient.get(`api/viewings/${ viewingId }`)
+    static getViewingReservations(userId){
+        return apiClient.get(`api/users/${userId}/viewing-reservations`)
      }
+    
 }
 
 export default ApiService

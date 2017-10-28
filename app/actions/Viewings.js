@@ -26,6 +26,13 @@ export function updateCurrentViewing(viewing){
     }
 }
 
+export function updateViewingReservations(reservations){
+    return {
+        type: types.UPDATE_VIEWING_RESERVATIONS,
+        reservations: reservations
+    }
+}
+
 export function removeFromFavourites(userId, propertyId){
     return (dispatch, getState) => {
         return ApiService.removeFromFavourites(userId, propertyId);
@@ -59,6 +66,16 @@ export function getViewing(viewingId){
         return ApiService.getViewing(viewingId)
         .then((resp) => {
             dispatch(updateCurrentViewing(resp.data));
+            return resp.data;
+        })
+      }
+}
+
+export function getViewingReservations(userId){
+    return (dispatch, getState) => {
+        return ApiService.getViewingReservations(userId)
+        .then((resp) => {
+            dispatch(updateViewingReservations(resp.data.viewing_reservations));
             return resp.data;
         })
       }

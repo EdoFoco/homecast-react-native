@@ -136,6 +136,9 @@ class ViewingScreen extends Component{
     .then(() => {
         return this.props.getViewing(this.props.viewing.id);
     })
+    .then(() => {
+        return this.props.getViewingReservations(this.props.user.info.id);
+    })
     .catch((error) => {
         console.error(error);
     });
@@ -145,6 +148,9 @@ class ViewingScreen extends Component{
     this.props.cancelViewingReservation(userId, reservationId)
     .then(() => {
         return this.props.getViewing(this.props.viewing.id);
+    })
+    .then(() => {
+        return this.props.getViewingReservations(this.props.user.info.id);
     })
     .catch((error) => {
         console.error(error);
