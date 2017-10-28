@@ -73,6 +73,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.AQUA_GREEN,
     padding: 10,
   },
+  cancelReservationBtn: {
+    alignSelf: 'flex-end',
+    backgroundColor: Colors.RED,
+    padding: 10,
+  },
   secureBtnText: {
     fontSize: FontSizes.DEFAULT,
     color: 'white',
@@ -103,14 +108,21 @@ const styles = StyleSheet.create({
       alignSelf: 'stretch',
       justifyContent: 'center'
   },
-  joinCastBtn: {
+  ctaBtnRed: {
     backgroundColor: Colors.RED,
     height: 40,
     width: 350,
     margin: 10,
     justifyContent: 'center'
   },
-  joinCastTxt: {
+  ctaBtnGreen: {
+    backgroundColor: Colors.AQUA_GREEN,
+    height: 40,
+    width: 350,
+    margin: 10,
+    justifyContent: 'center'
+  },
+  ctaText: {
       color: 'white',
       textAlign: 'center',
       fontSize: FontSizes.DEFAULT
@@ -118,6 +130,49 @@ const styles = StyleSheet.create({
 });
 
 class ViewingScreen extends Component{
+
+  _reserveSpot(userId, viewingId){
+    this.props.createViewingReservation(userId, viewingId)
+    .then(() => {
+        return this.props.getViewing(this.props.viewing.id);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+  }
+
+  _cancelReservation(userId, reservationId){
+    this.props.cancelViewingReservation(userId, reservationId)
+    .then(() => {
+        return this.props.getViewing(this.props.viewing.id);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+  }
+
+  _renderCTA(){
+    
+    if(false){
+        return ( 
+        <TouchableHighlight style={styles.ctaBtnRed}>
+            <Text style={styles.ctaText}>
+                Join Live Cast
+            </Text>
+        </TouchableHighlight>)
+    }
+    
+    if(this.props.viewing.viewing_reservation){
+        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this._cancelReservation(this.props.user.info.id, this.props.viewing.viewing_reservation.id)}}>
+            <Text style={styles.ctaText}>Cancel Reservation </Text>
+        </TouchableHighlight>)
+    }
+    else{
+        return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this._reserveSpot(this.props.user.info.id, this.props.viewing.id)}}>
+            <Text style={styles.ctaText}>Reserve Spot</Text>
+        </TouchableHighlight>)
+    }
+  }
 
   render() {
     return(
@@ -136,10 +191,7 @@ class ViewingScreen extends Component{
                     <View style={styles.sectionContainer}>
                         <Text style={styles.availabilityTitle}>Availability</Text>
                         <View style={styles.availabilityContainer}> 
-                            <Text style={styles.availabilityValue}>Only 10 spots left</Text>
-                            <TouchableHighlight style={styles.secureSpotBtn}>
-                                <Text style={styles.secureBtnText}>Reserve Spot</Text>
-                            </TouchableHighlight>
+                            <Text style={styles.availabilityValue}>Only {this.props.viewing.capacity} spots left</Text>
                     </View>
                     </View>
                     <View style={styles.sectionContainer}>
@@ -153,11 +205,7 @@ class ViewingScreen extends Component{
                 </View>
             </ScrollView>
             <View style={styles.joinCastContainer}>
-                <TouchableHighlight style={styles.joinCastBtn}>
-                    <Text style={styles.joinCastTxt}>
-                        Join Live Cast
-                    </Text>
-                </TouchableHighlight>
+               {this._renderCTA()}
             </View>
         </View>
     )
@@ -173,7 +221,7 @@ ViewingScreen.navigationOptions = ({ navigation }) => ({
 const mapStateToProps = (state, {navigation}) => {
     return {
         viewings: state.properties.currentPropertyViewings,
-        viewing: navigation.state.params.viewing,
+        viewing: state.properties.currentPropertyViewings.find(v => v.id === navigation.state.params.viewing.id),
         user: state.user
     }
 };

@@ -23,6 +23,12 @@ export default function properties(state = initialPropertiesState, action) {
         return {...state, currentPropertyViewings: action.viewings}
      case types.UPDATE_VIEWINGS_LOADED:
         return {...state, viewingsLoaded: action.loaded}
+     case types.UPDATE_VIEWING: {
+         let viewings = [...state.currentPropertyViewings];
+         let index = viewings.findIndex( v => v.id === action.viewing.id)
+         viewings[index] = action.viewing;
+         return {...state, currentPropertyViewings: viewings}
+     }
     default:
         return state;
    }

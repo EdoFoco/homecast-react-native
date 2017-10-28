@@ -17,21 +17,6 @@ export function updateCurrentProperty(property){
     }
 };
 
-export function updateCurrentPropertyViewings(viewings){
-    return {
-        type: types.UPDATE_CURRENT_PROPERTY_VIEWINGS,
-        viewings: viewings
-    }
-};
-
-export function updateViewingsLoaded(loaded){
-    return {
-        type: types.UPDATE_VIEWINGS_LOADED,
-        loaded: loaded
-    }
-};
-
-
 export function addToFavourites(userId, propertyId){
     return (dispatch, getState) => {
         return ApiService.addToFavourites(userId, propertyId);
@@ -41,16 +26,6 @@ export function addToFavourites(userId, propertyId){
 export function removeFromFavourites(userId, propertyId){
     return (dispatch, getState) => {
         return ApiService.removeFromFavourites(userId, propertyId);
-      }
-}
-
-export function getPropertyViewings(propertyId){
-    return (dispatch, getState) => {
-        return ApiService.getPropertyViewings(propertyId)
-            .then(resp => {
-                dispatch(updateCurrentPropertyViewings(resp.data.viewings));
-                return resp.data.viewings;
-            });
       }
 }
 

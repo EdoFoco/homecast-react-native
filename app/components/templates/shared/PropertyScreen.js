@@ -249,9 +249,15 @@ class PropertyScreen extends Component{
     });
   }
 
-  _goToViewing(viewing){
+  _goToViewing(viewingId){
       //this.props.navigation.navigate('Other', { viewing : viewing });
-      this.props.navigation.navigate('ViewingScreen', { viewing : viewing });
+      this.props.getViewing(viewingId)
+      .then((viewing) => {
+          this.props.navigation.navigate('ViewingScreen', { viewing : viewing });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
 
   _keyExtractor = (item, index) => index;
@@ -260,12 +266,12 @@ class PropertyScreen extends Component{
     let viewing = item;
     console.log(viewing.date_time);
     return (
-      <TouchableHighlight onPress={() => {this._goToViewing(viewing)}}>
+      <TouchableHighlight onPress={() => {this._goToViewing(viewing.id)}}>
         <View style={styles.viewingRow}>
           <View style={styles.viewingDateCell} >
             <DateCell dateTime={viewing.date_time} />
           </View>
-          <Text style={styles.viewingCapacity}>Only 10 spots left</Text>
+          <Text style={styles.viewingCapacity}>Only {viewing.capacity} spots left</Text>
           <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
         </View>
       </TouchableHighlight>

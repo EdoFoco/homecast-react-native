@@ -42,6 +42,18 @@ class ApiService {
     static removeFromFavourites(userId, propertyId){
         return apiClient.delete(`api/users/${ userId }/favourites?property_id=${propertyId}`);
      }
+
+    static createViewingReservation(userId, viewingId){
+        return apiClient.post(`api/users/${ userId }/viewing-reservations`, { viewing_id: viewingId});
+     }
+
+    static deleteViewingReservation(userId, viewingId){
+        return apiClient.delete(`api/users/${ userId }/viewing-reservations/${viewingId}`);
+     }
+
+    static getViewing(viewingId){
+        return apiClient.get(`api/viewings/${ viewingId }`)
+     }
 }
 
 export default ApiService

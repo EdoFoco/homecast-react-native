@@ -182,9 +182,9 @@ class AuthForm extends Component{
     var credentials = this.refs.form.getValue();
     if (credentials) { // if validation fails, value will be null
       this.props.login(credentials)
-        .then((user) => {
-            this.props.updateAuthToken(user.token);
-            this.props.updateUserInfo(user);
+        .then((resp) => {
+            this.props.updateAuthToken(resp.token);
+            this.props.updateUserInfo(resp.user);
         })
         .catch((error) => {
             this.props.handleUnauthorized();
