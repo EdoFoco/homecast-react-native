@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   viewingTime:{
-    flex: 0.6,
-    fontSize: FontSizes.TITLE,
+    flex: 0.7,
+    fontSize: FontSizes.DEFAULT,
     textAlign: 'right',
     color: Colors.DARK_GREY,
     paddingRight: 10
@@ -69,7 +69,7 @@ class ViewingsScreen extends Component{
               <DateCell dateTime={reservation.viewing.date_time} />
             </View>
             <Text style={styles.propertyName}>{reservation.viewing.property.name}</Text>
-            <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
+            <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
         </View>
       )
   }

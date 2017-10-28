@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
   
     viewingCell: {
         flex: 1,
-        backgroundColor: Colors.RED,
-        paddingTop: 10,
-        paddingBottom: 10
+        backgroundColor: Colors.AQUA_GREEN,
+        paddingTop: 5,
+        paddingBottom: 5
     },
     viewingTitle:{
         color: 'white',
@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
     viewingMonth: {
         color: 'white',
         alignSelf: 'center',
-        fontSize: FontSizes.DEFAULT
+        fontSize: FontSizes.SMALL_TEXT
       },
     viewingDay: {
         color: 'white',
         alignSelf: 'center',
-        fontSize: FontSizes.BIG,
+        fontSize: FontSizes.DEFAULT,
         fontWeight: 'bold'
       },
     viewingTime:{
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
             <Text style={this.props.monthStyle ? [styles.viewingMonth, this.props.monthStyle]  : styles.viewingMonth}>{new Date(`${this.props.dateTime} UTC`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
             {
                 !this.props.showTime ? null :
-                <Text style={this.props.timeStyle ? [styles.viewingTime, this.props.timeStyle]  : styles.viewingTime}>{new Date(`${this.props.dateTime} UTC`).toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</Text>
+                <Text style={this.props.timeStyle ? [styles.viewingTime, this.props.timeStyle]  : styles.viewingTime}>{new Date(`${this.props.dateTime} UTC`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
             }
         </View>
     )

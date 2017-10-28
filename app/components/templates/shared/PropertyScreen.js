@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     viewingDateCell: {
-      width: 100,
+      width: 80,
       alignSelf: 'flex-start',
     },
     viewingCapacity: {
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     },
     viewingTime:{
       flex: 0.7,
-      fontSize: FontSizes.TITLE,
+      fontSize: FontSizes.DEFAULT,
       textAlign: 'right',
       color: Colors.DARK_GREY,
       paddingRight: 10
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
       marginBottom: 5
     },
     menuIconActive: {
-      color: Colors.LIGHT_RED,
+      color: Colors.AQUA_GREEN,
       fontSize: FontSizes.DEFAULT,
       marginBottom: 5
     },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
       fontSize: FontSizes.SMALL_TEXT
     },
     menuTextActive: {
-      color: Colors.LIGHT_RED,
+      color: Colors.AQUA_GREEN,
       fontSize: FontSizes.SMALL_TEXT
     },
     triangle: {
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: 'green',
       margin: 20,
-      height: 100,
+      height: 80,
       width: 20
     },
     viewingWrapper: {
@@ -264,7 +264,6 @@ class PropertyScreen extends Component{
   
   _renderItem = ({item}) => {
     let viewing = item;
-    console.log(viewing.date_time);
     return (
       <TouchableHighlight onPress={() => {this._goToViewing(viewing.id)}}>
         <View style={styles.viewingRow}>
@@ -272,7 +271,7 @@ class PropertyScreen extends Component{
             <DateCell dateTime={viewing.date_time} />
           </View>
           <Text style={styles.viewingCapacity}>Only {viewing.capacity} spots left</Text>
-          <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
+          <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit',  hour12: true}).toUpperCase()}</Text>
         </View>
       </TouchableHighlight>
     )
