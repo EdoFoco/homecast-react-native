@@ -27,6 +27,10 @@ class ApiService {
         return apiClient.get('api/properties');
     }
 
+    static getProperty(propertyid){
+        return apiClient.get(`api/properties/${propertyid}`);
+    }
+
     static getUserProperties(userId){
        return apiClient.get(`api/users/${userId}/properties`);
     }

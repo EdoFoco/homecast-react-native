@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../actions';
 import { bindActionCreators } from 'redux';
 import DateCell from './DateCell';
+import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import {
@@ -48,6 +49,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     marginTop: 20,
+  },
+  goToPropertyBtn:{
+    flex: 1,
+    alignSelf: 'stretch',
+    backgroundColor: Colors.DARK_BLUE,
+    justifyContent: 'center',
+    height: 80
+  },
+  goToPropertyTxt: {
+    fontSize: FontSizes.DEFAULT,
+    color: 'white',
+    alignSelf: 'center',
+    textAlign: 'center'
   },
   availabilityContainer: {
     flexDirection: 'row',
@@ -129,7 +143,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class ViewingScreen extends Component{
+export default class ViewingScreen extends Component{
 
   _reserveSpot(userId, viewingId){
     this.props.createViewingReservation(userId, viewingId)
@@ -137,7 +151,7 @@ class ViewingScreen extends Component{
         return this.props.getViewing(this.props.viewing.id);
     })
     .then(() => {
-        return this.props.getViewingReservations(this.props.user.info.id);
+        return this.props.getViewingReservations(userId);
     })
     .catch((error) => {
         console.error(error);
@@ -145,21 +159,22 @@ class ViewingScreen extends Component{
   }
 
   _cancelReservation(userId, reservationId){
-    this.props.cancelViewingReservation(userId, reservationId)
-    .then(() => {
-        return this.props.getViewing(this.props.viewing.id);
-    })
-    .then(() => {
-        return this.props.getViewingReservations(this.props.user.info.id);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+    return this.props.cancelViewingReservation(userId, reservationId)
+        .then(() => {
+            return this.props.getViewing(this.props.viewing.id);
+        })
+        .then(() => {
+            return this.props.getViewingReservations(userId);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    
   }
 
   _renderCTA(){
     
-    if(false){
+    if(this.props.viewing.isLive){
         return ( 
         <TouchableHighlight style={styles.ctaBtnRed}>
             <Text style={styles.ctaText}>
@@ -169,7 +184,7 @@ class ViewingScreen extends Component{
     }
     
     if(this.props.viewing.viewing_reservation){
-        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this._cancelReservation(this.props.user.info.id, this.props.viewing.viewing_reservation.id)}}>
+        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.viewing.viewing_reservation.id, this.props.navigation)}}>
             <Text style={styles.ctaText}>Cancel Reservation </Text>
         </TouchableHighlight>)
     }
@@ -180,6 +195,7 @@ class ViewingScreen extends Component{
     }
   }
 
+ 
   render() {
     return(
         <View style={{backgroundColor: 'white', flex: 1}}>
@@ -193,6 +209,16 @@ class ViewingScreen extends Component{
                         monthStyle={styles.viewingMonth}
                         timeStyle={styles.viewingTime}/>
                     </View>
+                {
+                    !this.props.showViewPropertyBtn ? null :
+                    <TouchableHighlight style={styles.goToPropertyBtn} onPress={() => {this.props.goToProperty()}}>
+                        <View>
+                            <Text style={styles.goToPropertyTxt}>View</Text>
+                            <Text style={styles.goToPropertyTxt}>{this.props.viewing.property.name}</Text>
+                        </View>
+                    </TouchableHighlight>
+                }
+               
                 <View style={styles.container}>
                     <View style={styles.sectionContainer}>
                         <Text style={styles.availabilityTitle}>Availability</Text>
@@ -218,22 +244,11 @@ class ViewingScreen extends Component{
   }
 }
 
-
-ViewingScreen.navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.viewing.property.name}`,
-});
-
-
-const mapStateToProps = (state, {navigation}) => {
-    return {
-        viewings: state.properties.currentPropertyViewings,
-        viewing: state.properties.currentPropertyViewings.find(v => v.id === navigation.state.params.viewing.id),
-        user: state.user
-    }
-};
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
+ViewingScreen.PropTypes = {
+    viewing: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    cancelViewingReservation: PropTypes.func.isRequired,
+    createViewingReservation: PropTypes.func.isRequired,
+    goToProperty: PropTypes.func.isRequired,
+    showViewPropertyBtn: PropTypes.bool.isRequired,
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(ViewingScreen);

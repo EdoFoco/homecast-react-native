@@ -253,7 +253,7 @@ class PropertyScreen extends Component{
       //this.props.navigation.navigate('Other', { viewing : viewing });
       this.props.getViewing(viewingId)
       .then((viewing) => {
-          this.props.navigation.navigate('ViewingScreen', { viewing : viewing });
+          this.props.navigation.navigate('Viewing', { viewing : viewing });
       })
       .catch((error) => {
         console.error(error);
@@ -333,7 +333,7 @@ class PropertyScreen extends Component{
       { 
         !this.props.properties.viewingsLoaded ? null :
           <FlatList style={{margin:5}}
-           data={this.props.properties.currentPropertyViewings}
+           data={this.props.properties.currentProperty.viewings}
            keyExtractor={this._keyExtractor}
            renderItem={this._renderItem} 
            extraData={this.props.properties}
@@ -401,12 +401,10 @@ PropertyScreen.navigationOptions = ({ navigation }) => ({
   
 
 const mapStateToProps = (state, navigation) => {
-    var rowIds = state.properties.currentPropertyViewings.map((row, index) => index);
     
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        viewings: state.properties.currentPropertyViewings,
         currentProperty: navigation.navigation.state.params.property,
         propertyScreen: state.propertyScreen,
         properties: state.properties

@@ -41,10 +41,19 @@ export function getProperties() {
 
 export function getUserProperties(userId) {
     return (dispatch, getState) => {
-      
       return ApiService.getUserProperties(userId)
           .then(resp => {
               dispatch(updatePropertiesList(resp.data.properties));
           });
     }
+  }
+
+export function getProperty(propertyId){
+    return (dispatch, getState) => {
+        return ApiService.getProperty(propertyId)
+            .then(resp => {
+                dispatch(updateCurrentProperty(resp.data));
+                return resp.data;
+            });
+      }
   }

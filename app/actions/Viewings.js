@@ -2,9 +2,6 @@ import * as types from './Types';
 import * as errorHandler from './ErrorHandler';
 import ApiService from '../libs/services/ApiService';
 
-
-
-
 export function updateCurrentPropertyViewings(viewings){
     return {
         type: types.UPDATE_CURRENT_PROPERTY_VIEWINGS,

@@ -61,16 +61,28 @@ class ViewingsScreen extends Component{
     })
   }
 
+  _goToViewing(viewingId){
+    this.props.getViewing(viewingId)
+    .then((viewing) => {
+        this.props.navigation.navigate('Viewing', { viewing : viewing });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
   _renderRow = function({item}){
     let reservation = item;
     return (
-        <View style={styles.viewingRow}>
-            <View style={styles.viewingDateCell} >
-              <DateCell dateTime={reservation.viewing.date_time} />
+        <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing.id)}}>
+            <View style={styles.viewingRow}> 
+              <View style={styles.viewingDateCell} >
+                <DateCell dateTime={reservation.viewing.date_time} />
+              </View>
+              <Text style={styles.propertyName}>{reservation.viewing.property.name}</Text>
+              <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
             </View>
-            <Text style={styles.propertyName}>{reservation.viewing.property.name}</Text>
-            <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
-        </View>
+        </TouchableHighlight>
       )
   }
 

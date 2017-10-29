@@ -6,7 +6,9 @@ const initialPropertiesState = {
          name: "",
          address: "",
          city: "",
-         postcode: ""
+         postcode: "",
+         description_sections: [],
+         viewings: []
      },
      currentPropertyViewings: [],
      viewingsLoaded: false
@@ -20,7 +22,9 @@ export default function properties(state = initialPropertiesState, action) {
      case types.UPDATE_CURRENT_PROPERTY:
         return {...state, currentProperty: action.property}
      case types.UPDATE_CURRENT_PROPERTY_VIEWINGS:
-        return {...state, currentPropertyViewings: action.viewings}
+        let property = {...state.currentProperty};
+        property.viewings = action.viewings;
+        return {...state, currentProperty: property}
      case types.UPDATE_VIEWINGS_LOADED:
         return {...state, viewingsLoaded: action.loaded}
      case types.UPDATE_VIEWING: {

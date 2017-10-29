@@ -12,7 +12,7 @@ const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
     Other: { screen: OtherScreen },
     PropertyScreen: { screen: PropertyScreen },
-    ViewingScreen: { screen: ViewingScreen }
+    //ViewingScreen: { screen: ViewingScreen }
 }
 
 const stackConfiguration = {
