@@ -53,3 +53,7 @@ export const UPDATE_ROOM_ID = 'UPDATE_ROOM_ID';
 export const PRESENTER_IS_READY = 'client/presenterResponse';
 export const UPDATE_CONNECTION_STATUS = 'UPDATE_CONNECTION_STATUS';
 
+//Navigation
+export const GO_TO_PROPERTIES_TAB_VIEWING = 'Navigation/GO_TO_PROPERTIES_TAB_VIEWING';
+export const PROPERTIES_TAB_GO_BACK = 'Navigation/PROPERTIES_TAB_GO_BACK';
+export const PROPERTIES_TAB_GO_TO_PROPERTY = 'Navigation/PROPERTIES_TAB_GO_TO_PROPERTY';

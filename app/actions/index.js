@@ -7,6 +7,7 @@ import * as Properties from './Properties';
 import * as Viewings from './Viewings';
 import * as PropertyScreen from './PropertyScreen';
 import * as ErrorHandler from './ErrorHandler';
+import * as NavActions from './NavActions';
 
 export const ActionCreators = Object.assign({},
   UserActions,
@@ -17,5 +18,6 @@ export const ActionCreators = Object.assign({},
   Properties,
   PropertyScreen,
   ErrorHandler,
-  Viewings
+  Viewings,
+  NavActions
 );

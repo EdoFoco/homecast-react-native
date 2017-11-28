@@ -7,13 +7,23 @@ import { NavigationActions } from 'react-navigation';
 
 class ViewingContainer extends Component{
 
+_reserveSpot(userId, viewingId){
+    return this.props.createViewingReservation(userId, viewingId)
+    .then(() => {
+        return this.props.getViewing(this.props.viewing.id);
+    })
+    .then(() => {
+        return this.props.getViewingReservations(userId);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+}
+    
  _cancelViewingReservation(userId, reservationId, navigation){
     return this.props.cancelViewingReservation(userId, reservationId)
     .then(() => {
-        return this.props.getViewingReservations(this.props.user.info.id);
-    })
-    .then(() => {
-        return this.props.resetViewingsTab();
+        return this.props.navigation.goBack();
     })
     .catch((error) => {
         console.error(error);
@@ -21,10 +31,9 @@ class ViewingContainer extends Component{
  }
   
   _goToProperty(){
-  
-    this.props.getProperty(this.props.viewing.property.id)
+    return this.props.getProperty(this.props.viewing.property.id)
     .then((property) => {
-        this.props.navigation.navigate('ViewingProperty', { property : property});
+        this.props.navigation.goBack();
     })
     .catch((error) => {
         console.error(error);
@@ -36,9 +45,10 @@ class ViewingContainer extends Component{
        <ViewingScreen 
             viewing={this.props.viewing}
             user={this.props.user}
-            cancelViewingReservation={(userId, reservationId, navigation) =>{this._cancelViewingReservation(userId, reservationId, navigation)}}
+            cancelViewingReservation={(userId, reservationId) => {this._cancelViewingReservation(userId, reservationId)}}
+            createViewingReservation={(userId, viewingId) => {this._reserveSpot(userId, viewingId)} }
             goToProperty={() => { this._goToProperty() }}
-            showViewPropertyBtn={this.props.nav.index > 1 ? false : true}
+            showViewPropertyBtn={true}
        />
     )
   }
@@ -52,9 +62,8 @@ ViewingContainer.navigationOptions = ({ navigation }) => ({
 
 const mapStateToProps = (state, {navigation}) => {
     return {
-        viewing: navigation.state.params.viewing,
-        user: state.user,
-        nav: state.guestViewingsNav
+        viewing: state.properties.currentPropertyViewings.find(v => v.id === navigation.state.params.viewing.id),
+        user: state.user
     }
 };
 

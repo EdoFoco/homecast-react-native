@@ -145,33 +145,7 @@ const styles = StyleSheet.create({
 
 export default class ViewingScreen extends Component{
 
-  _reserveSpot(userId, viewingId){
-    this.props.createViewingReservation(userId, viewingId)
-    .then(() => {
-        return this.props.getViewing(this.props.viewing.id);
-    })
-    .then(() => {
-        return this.props.getViewingReservations(userId);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-  }
-
-  _cancelReservation(userId, reservationId){
-    return this.props.cancelViewingReservation(userId, reservationId)
-        .then(() => {
-            return this.props.getViewing(this.props.viewing.id);
-        })
-        .then(() => {
-            return this.props.getViewingReservations(userId);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    
-  }
-
+  
   _renderCTA(){
     
     if(this.props.viewing.isLive){
@@ -189,7 +163,7 @@ export default class ViewingScreen extends Component{
         </TouchableHighlight>)
     }
     else{
-        return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this._reserveSpot(this.props.user.info.id, this.props.viewing.id)}}>
+        return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.createViewingReservation(this.props.user.info.id, this.props.viewing.id)}}>
             <Text style={styles.ctaText}>Reserve Spot</Text>
         </TouchableHighlight>)
     }

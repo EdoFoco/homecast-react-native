@@ -3,16 +3,16 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropertiesScreen from './PropertiesScreen';
-import PropertyScreen from '../../shared/PropertyScreen';
-import ViewingScreen from '../../shared/ViewingScreen';
+import PropertyContainer from './PropertyContainer';
+import ViewingContainer from './ViewingContainer';
 import OtherScreen from './OtherScreen';
 import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
     Other: { screen: OtherScreen },
-    PropertyScreen: { screen: PropertyScreen },
-    //ViewingScreen: { screen: ViewingScreen }
+    PropertiesTabPropertyScreen: { screen: PropertyContainer },
+    PropertiesTabViewing: { screen: ViewingContainer }
 }
 
 const stackConfiguration = {

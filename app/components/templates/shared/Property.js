@@ -9,6 +9,7 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import MapView from 'react-native-maps';
 import DateCell from './DateCell';
+import PropTypes from 'prop-types';
 import {
   StyleSheet,
   Text,
@@ -227,45 +228,14 @@ const styles = StyleSheet.create({
     }
 });
 
-class PropertyScreen extends Component{
-
-  componentWillMount(){
-   
-    this.props.updateCurrentProperty(this.props.currentProperty);
-    
-    this.props.getPropertyViewings(this.props.currentProperty.id)
-    .then((viewings) => {
-      var sorted = viewings.sort(function(a, b) {
-        a = new Date(a.date_time);
-        b = new Date(b.date_time);
-        return a<b ? -1 : a>b ? 1 : 0;
-      });
-
-      this.props.updateCurrentPropertyViewings(sorted);
-      this.props.updateViewingsLoaded(true);
-    })
-    .catch((error) => {
-      console.warn(error);
-    });
-  }
-
-  _goToViewing(viewingId){
-      //this.props.navigation.navigate('Other', { viewing : viewing });
-      this.props.getViewing(viewingId)
-      .then((viewing) => {
-          this.props.navigation.navigate('Viewing', { viewing : viewing });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    }
+export default class Property extends Component{
 
   _keyExtractor = (item, index) => index;
   
   _renderItem = ({item}) => {
     let viewing = item;
     return (
-      <TouchableHighlight onPress={() => {this._goToViewing(viewing.id)}}>
+      <TouchableHighlight onPress={() => {this.props.goToViewing(viewing.id)}}>
         <View style={styles.viewingRow}>
           <View style={styles.viewingDateCell} >
             <DateCell dateTime={viewing.date_time} />
@@ -328,13 +298,12 @@ class PropertyScreen extends Component{
   }
 
   _renderViewingsTab(){
-    console.log(this.props.navigation);
     return (
       <View style={styles.viewingsTabContainer}>
       { 
         !this.props.properties.viewingsLoaded ? null :
           <FlatList style={{margin:5}}
-           data={this.props.properties.currentProperty.viewings}
+           data={this.props.properties.currentPropertyViewings}
            keyExtractor={this._keyExtractor}
            renderItem={this._renderItem} 
            extraData={this.props.properties}
@@ -395,23 +364,11 @@ class PropertyScreen extends Component{
   
 }
 
-PropertyScreen.navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.property.name}`,
-  });
-  
-
-const mapStateToProps = (state, navigation) => {
-    return {
-        isLoggedIn: state.user.isLoggedIn,
-        user: state.user,
-        currentProperty: navigation.navigation.state.params.property,
-        propertyScreen: state.propertyScreen,
-        properties: state.properties
-    }
-};
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
+Property.PropTypes = {
+    currentProperty: PropTypes.object.isRequired,
+    viewings: PropTypes.array.isRequired,
+    propertyScreen: PropTypes.object.isRequired,
+    properties: PropTypes.object.isRequired,
+    updatePropertyActiveTab: PropTypes.func.isRequired,
+    goToViewing: PropTypes.func.isRequired
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(PropertyScreen);

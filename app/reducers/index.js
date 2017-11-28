@@ -8,6 +8,11 @@ import { OptionsNavigator } from '../components/templates/shared/options-tab/Nav
 import { LandlordTabBarNavigator } from '../navigators/landlord-section/LandlordTabBarNavigator';
 import { LandlordPropertiesNavigator } from '../components/templates/landlord-section/properties-tab/Navigator';
 
+import { guestViewingsNav  } from './NavReducer';
+import { guestTabBar }from './NavReducer';
+import { guestPropertiesNav }from './NavReducer';
+
+
 import user from './User';
 import section from './Section';
 import webrtc from './NewWebRTC';
@@ -20,10 +25,10 @@ import devToolsEnhancer from 'remote-redux-devtools';
 
 const AppReducer = combineReducers({
   //Guest Navigators
-  guestTabBar: (state,action) => GuestTabBarNavigator.router.getStateForAction(action,state),
-  guestPropertiesNav: (state,action) => GuestPropertiesNavigator.router.getStateForAction(action,state),
+  guestTabBar,
+  guestPropertiesNav,
   guestFavouritesNav: (state, action) => GuestFavouritesNavigator.router.getStateForAction(action,state),
-  guestViewingsNav: (state, action) => GuestViewingsNavigator.router.getStateForAction(action,state),
+  guestViewingsNav,
   optionsNav: (state, action) => OptionsNavigator.router.getStateForAction(action,state),
   
   //Landlord Navigators

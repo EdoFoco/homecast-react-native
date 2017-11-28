@@ -22,9 +22,7 @@ export default function properties(state = initialPropertiesState, action) {
      case types.UPDATE_CURRENT_PROPERTY:
         return {...state, currentProperty: action.property}
      case types.UPDATE_CURRENT_PROPERTY_VIEWINGS:
-        let property = {...state.currentProperty};
-        property.viewings = action.viewings;
-        return {...state, currentProperty: property}
+        return {...state, currentPropertyViewings: action.viewings}
      case types.UPDATE_VIEWINGS_LOADED:
         return {...state, viewingsLoaded: action.loaded}
      case types.UPDATE_VIEWING: {

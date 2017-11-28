@@ -29,7 +29,7 @@ class PropertiesScreen extends Component{
   }
 
   _onPress(property){
-      this.props.navigation.navigate('PropertyScreen', { property : property});
+      this.props.navigation.navigate('PropertiesTabPropertyScreen', { property : property});
   }
 
   _addToFavourites(userId, propertyId){

@@ -1,43 +1,65 @@
-import { GuestHomeNavigator } from '../navigators/guest-section/HomeNavigator';
 import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
-import { GuestPropertiesNavigator } from '../navigators/guest-section/ViewingsNavigator';
-
+import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
+import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
 import { NavigationActions } from 'react-navigation';
 import * as types from '../actions/Types';
 
-export default function guestTabBar(state,action) {
-  if (action.type === 'JUMP_TO_TAB') {
-    return { ...state, index:0 }
-  } else {
-    console.log('GuestTabBar');
-    console.log(state);
-    return GuestTabBarNavigator.router.getStateForAction(action, state);
-  }
-}
+const initalGuestTabNavigatorState = GuestTabBarNavigator.router.getStateForAction(GuestTabBarNavigator.router.getActionForPathAndParams('Properties'));
+const initialViewingsNavigatorState = GuestViewingsNavigator.router.getStateForAction(GuestViewingsNavigator.router.getActionForPathAndParams('ViewingsHome'));
+const initalGuestPropertiesState =  GuestPropertiesNavigator.router.getStateForAction(GuestPropertiesNavigator.router.getActionForPathAndParams('PropertiesHome'));
 
-export function guestHomeNav(state,action) {
-    console.log('GuestHomeNav');
-    console.log(state);
-    return GuestHomeNavigator.router.getStateForAction(action, state);
-}
+export const guestTabBar = (state = initalGuestTabNavigatorState, action) => {
+  const nextState = GuestTabBarNavigator.router.getStateForAction(action, state);
 
-export function guestPropertiesNav(state,action) {
-    console.log('GuestPropertiesNav');
-    console.log(state);
-    return GuestPropertiesNavigator.router.getStateForAction(action, state);
-}
-/*export function guestHomeNav(state, action) {
-  let nextState;
-  switch (action.type) {
-    case types.GOTO_SCREEN:
-      nextState = GuestHomeNavigator.router.getStateForAction(NavigationActions.navigate({routeName: action.routeName}))
-      break;
-   
+  switch(action.type){
+    case 'Navigation/GO_TO_PROPERTY_SCREEN':
+      return initalGuestTabNavigatorState;
     default:
-      nextState = GuestHomeNavigator.router.getStateForAction(action, state);
-      break;
+      return nextState || state;
   }
+};
 
-  return nextState || state;
-}*/
+export const guestPropertiesNav = (state = initalGuestPropertiesState, action) => {
+  const nextState = GuestPropertiesNavigator.router.getStateForAction(action, state);
+
+  switch(action.type){
+    case types.PROPERTIES_TAB_GO_TO_PROPERTY:
+      return GuestPropertiesNavigator.router.getStateForAction(
+        NavigationActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'PropertiesHome'}),
+            NavigationActions.navigate({ routeName: 'PropertyScreen', params: {property: action.property}})
+          ]
+        }));
+
+      case types.GO_TO_PROPERTIES_TAB_VIEWING:
+        return GuestPropertiesNavigator.router.getStateForAction(
+          NavigationActions.navigate(
+            {
+              routeName: 'ViewingScreen',
+              params: { viewing: action.viewing }
+            }
+        ));
+
+      case types.PROPERTIES_TAB_GO_BACK:
+        return GuestPropertiesNavigator.router.getStateForAction(
+          NavigationActions.back({key: null}));
+        
+    default:
+      return nextState || state;
+  }
+};
+
+
+export const guestViewingsNav = (state = initialViewingsNavigatorState, action) => {
+  const nextState = GuestViewingsNavigator.router.getStateForAction(action, state);
+
+  switch(action.type){
+    case 'Navigation/RESET_VIEWING_TAB':
+      return initialViewingsNavigatorState;
+    default:
+      return nextState || state;
+  }
+};
 
