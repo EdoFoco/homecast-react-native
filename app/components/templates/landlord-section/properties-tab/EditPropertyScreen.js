@@ -12,7 +12,9 @@ class EditPropertyScreen extends Component{
     return (
         <EditPropertyForm 
         user={this.props.user}
-        property={this.props.property}/>
+        property={this.props.property}
+        updateProperty={this.props.updateProperty}
+        user={this.props.user}/>
     )
   }
 }
@@ -24,7 +26,7 @@ EditPropertyScreen.navigationOptions = {
 const mapStateToProps = (state, navigation) => {
     return {
         user: state.user,
-        property: navigation.navigation.state.params.property,
+        property: state.properties.propertiesList.find(p => p.id == navigation.navigation.state.params.property.id),
     }
 };
 

@@ -1,6 +1,10 @@
 import React, { Component} from 'react';
 import PropertyRow from '../../organisms/PropertyRow';
 import DropdownControl from './DropdownControl';
+import TextControl from './TextControl';
+import NumericUnitControl from './NumericUnitControl';
+import RoomsControl from './RoomsControl';
+import DescriptionSectionsControl from './DescriptionSectionsControl';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
@@ -25,33 +29,134 @@ export default class EditPropertyForm extends Component{
     this.state = { 
         property: this.props.property,
         showForm: false,
-        formTarget: null, 
-        formType: null
+        formTarget: null
      };
   }
 
-  _showForm(shouldShow, type, formTarget){
+  _updateProperty(){
+    this.props.updateProperty(this.state.property, this.props.user.info.id)
+    .then((property) => {
+        console.log('success updating property');
+        this._hideForm();
+    })
+    .catch((e) => {
+        console.error(e);
+    });
+  }
+
+  _cancelChanges(){
+      this.setState({property: this.props.property, showForm: false, formTarget: null});
+  }
+
+  _hideForm(){
+      this.setState({showForm: false, formTarget: null});
+  }
+
+  _handleChangeActive(value) {
+      this.setState({property: {...this.state.property, listing_active: value}}, this._updateProperty);
+      /*this.props.updateProperty({...this.state.property, listing_active: value}, this.props.user.info.id)
+      .then((property) => {
+          console.log('success updating property');
+          this._hideForm();
+      })
+      .catch((e) => {
+          console.error(e);
+      });*/
+  }
+
+  _showForm(shouldShow, formTarget){
     if(shouldShow){
-        this.setState({ showForm: true, formType: type, formTarget: formTarget });
+        this.setState({ showForm: true, formTarget: formTarget });
     }
     else{
-        this.setState({ showForm: false, formType: null, formTarget: null });
+        this._hideForm();
     }
   }
 
   _showControl(){
-    switch(this.state.formType){
-        case 'dropdown':
-            if(this.state.formTarget == 'type'){
-                return(
-                    <DropdownControl 
-                        optionsList={['Rent', 'Buy']} 
-                        value={this.state.property.type} handleChange={(value) => { this.setState({property: {...this.state.property, type: value}})}}
-                        title="Property Type"
-                        description="Choose whether this property is up for rent or to be bought"/>
-                )
-            }
-            return null;
+    switch(this.state.formTarget){
+       case 'type': {
+            return(
+                <DropdownControl 
+                    optionsList={['Rent', 'Buy']} 
+                    value={this.state.property.type} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, type: value}})}}
+                    title="Property Type"
+                    description="Choose whether this property is up for rent or to be bought"/>
+            )
+        }
+        case 'name': {
+            return (
+                <TextControl 
+                    value={this.state.property.name} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, name: value}})}} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
+                    title="Name"
+                    description="Give a name to your property"
+                />
+             )
+        }
+        case 'description': {
+            return (
+                <DescriptionSectionsControl 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, description_sections: value}})}} 
+                    property={this.state.property}
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    title="Description"
+                    description="Tell us more about your property. (e.g. Key Features, Stations, Nearby Shops)"
+                />
+             )
+        }
+        case 'price': {
+            return (
+                <NumericUnitControl 
+                    value={this.state.property.price} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, price: value}})}} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
+                    unit="£/m"
+                    title="Price"
+                    description="What's the monthly cost of your property"
+                />
+            )
+        }
+        case 'rooms': {
+            return (
+                <RoomsControl 
+                    property={this.state.property} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    handleChangeBedrooms={(value) => { this.setState({property: {...this.state.property, bedrooms: value}})}} 
+                    handleChangeLivingrooms={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}} 
+                    handleChangeBathrooms={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}} 
+                    title="Rooms"
+                    description="How many rooms do your flat have?"
+                />
+            )
+        }
+        case 'minimum_rental_period': {
+            return (
+                <NumericUnitControl 
+                    value={this.state.property.minimum_rental_period} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, minimum_rental_period: value}})}} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
+                    unit="Months"
+                    title="Rental Period"
+                    description="What's the minimum rental period (leave blank if none)"
+                />
+            )
+        }
         default:
             return null;
     };
@@ -73,7 +178,7 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.sectionValue}>Unlisted</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Switch onValueChange = {this.props.toggleSwitch1} value = {true}/>
+                            <Switch onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -82,34 +187,34 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.sectionValue}>{this.state.property.type}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'dropdown', 'type')}}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'type')}}>Edit</Text>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
-                            <Text style={styles.sectionTitle}>Title</Text>
-                            <Text style={styles.sectionValue}>{this.props.property.name}</Text>
+                            <Text style={styles.sectionTitle}>Name</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.name}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'name')}}>Edit</Text>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Description</Text>
-                            <Text style={styles.sectionValue}>{this.props.property.description_sections[0].description}</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.description_sections[0].description}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'description')}}>Edit</Text>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Price</Text>
-                            <Text style={styles.sectionValue}>{this.props.property.price} £/m</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.price} £/m</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'price')}}>Edit</Text>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -117,13 +222,13 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.sectionTitle}>Rooms</Text>
                             <View style={styles.iconsContainer}>
                                 <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                                <Text style={styles.iconText}>{this.props.property.bedrooms}</Text>
+                                <Text style={styles.iconText}>{this.state.property.bedrooms}</Text>
                                 <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                                <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
+                                <Text style={styles.iconText}>{this.state.property.bathrooms}</Text>
                         </View>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'rooms')}}>Edit</Text>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -138,23 +243,24 @@ export default class EditPropertyForm extends Component{
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Minimum Rental Period</Text>
-                            <Text style={styles.sectionValue}>3 Months</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.minimum_rental_period} Months</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'minimum_rental_period')}}>Edit</Text>
                         </View>
                     </View>
                 </View>
             </ScrollView>
                 {
                     !this.state.showForm ? null :
-                    <TouchableHighlight style={styles.formOverlay} onPress={() => {this.setState({showForm: false})}}>
-                        <View style={styles.formContainer}>
+                    <View>
+                        <TouchableHighlight style={styles.formOverlay} onPress={() => {this._cancelChanges()}}><Text></Text></TouchableHighlight>
+                        <View style={styles.formContainer} onPress={() => {console.log('do nothing')}}>
                             {
                                 this._showControl()
                             }
+                        </View>
                     </View>
-                    </TouchableHighlight>
                     
                 }
         </View>
@@ -163,7 +269,9 @@ export default class EditPropertyForm extends Component{
 }
 
 EditPropertyForm.PropTypes = {
-    property: PropTypes.object.isRequired
+    property: PropTypes.object.isRequired,
+    updateProperty: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -246,7 +354,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignSelf: 'center',
         height:  Dimensions.get('window').height,
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
+        backgroundColor: 'rgba(0,0,0,0.6)'
     },
     formContainer: {
         position: 'absolute',

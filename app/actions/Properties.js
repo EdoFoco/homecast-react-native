@@ -57,3 +57,13 @@ export function getProperty(propertyId){
             });
       }
   }
+
+  export function updateProperty(property, userId){
+    return (dispatch, getState) => {
+        return ApiService.updateProperty(property)
+            .then(resp => {
+                dispatch(getUserProperties(userId));
+                return resp.data;
+            });
+      }
+  }

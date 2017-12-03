@@ -3,22 +3,23 @@ import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-
+import EditPropertyActions from './EditPropertyActions';
 import {
-    Picker,
+    TextInput,
     StyleSheet,
     View,
-    Text
+    Text,
+    Dimensions
   } from 'react-native';
 
-export default class DropdownControl extends Component{
+export default class TextControl extends Component{
 
   constructor(props) {
     super(props);
 
     this.state = {
         value: this.props.value,
-        optionsList: this.props.optionsList
+        originalProperty: this.props.originalProperty
     }
    }
 
@@ -27,32 +28,35 @@ export default class DropdownControl extends Component{
         <View style={styles.container}>
             <Text style={styles.title}>{this.props.title}</Text>
             <Text style={styles.description}>{this.props.description}</Text>
-            <Picker
-                selectedValue={this.props.value}
-                onValueChange={(itemValue, itemIndex) => { this.props.handleChange(itemValue) } }>
-                {
-                    this.state.optionsList.map((option) => {
-                        return (<Picker.Item key={option} label={option} value={option} />)
-                    })
-                }
-            </Picker>
+            <TextInput style={styles.textInput}
+                multiline={true} 
+                value={this.props.value}
+                onChangeText={(text) => {this.props.handleChange(text)}}
+            />
+
+            <EditPropertyActions 
+                property={this.props.property}
+                updateProperty={() => {this.props.updateProperty()}}
+                cancelChanges={() => {this.props.cancelChanges()}}
+            />
         </View>
     )
   }
 }
 
-DropdownControl.PropTypes ={
+TextControl.PropTypes ={
     value: PropTypes.string.isRequired,
-    optionsList: PropTypes.array.isRequired,
     property: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    handleChange: PropTypes.func.isRequired
+    updateProperty: PropTypes.func.isRequired,
+    hideForm: PropTypes.func.isRequired,
+    cancelChanges: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10
+        margin: 10,
     },
     title: {
         fontSize: FontSizes.TITLE,
@@ -61,5 +65,12 @@ const styles = StyleSheet.create({
     description: {
         fontSize: FontSizes.DEFAULT,
         color: Colors.LIGHT_GREY
+    },
+    textInput: {
+        marginTop: 20,
+        height: 50,
+        fontSize: FontSizes.TITLE,
+        borderWidth: 1,
+        borderColor: Colors.LIGHT_GREY
     }
 })    
