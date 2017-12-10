@@ -51,14 +51,24 @@ export default class DescriptionSectionsControl extends Component{
         <ScrollView style={styles.container}>
             <Text style={styles.title}>{this.props.title}</Text>
             <Text style={styles.description}>{this.props.description}</Text>
+
+            <View style={styles.sectionContainer}>
+                <Text style={styles.sectionsTitle}>{`Sections`}</Text>
+                <TouchableHighlight style={styles.addSectionBtn} onPress={() => {this._addDescriptionSection()}}>
+                    <Text style={styles.addSectionTxt}>+</Text>
+                </TouchableHighlight>
+            </View>
             {
                 this.props.property.description_sections.map((section, index) => {
                     return(
                         <View key={index}>
+                            <Text style={styles.sectionKey}>Section {index + 1}</Text>
+                            <Text style={styles.label}>Title</Text>
                             <TextInput 
                                 style={styles.titleInput} 
                                 value={section.title}
                                 onChangeText={(text) => { this._handleSectionChange(index, {...section, title: text}) }} />
+                            <Text style={styles.label}>Content</Text>
                             <TextInput style={styles.textInput}
                                 multiline={true} 
                                 value={section.description}
@@ -68,10 +78,7 @@ export default class DescriptionSectionsControl extends Component{
                     )
                 })
             }
-            <TouchableHighlight style={styles.addSectionBtn} onPress={() => {this._addDescriptionSection()}}>
-                <Text style={styles.addSectionTxt}>+</Text>
-            </TouchableHighlight>
-
+            
             <EditPropertyActions 
                 property={this.props.property}
                 updateProperty={this.props.updateProperty}
@@ -103,34 +110,57 @@ const styles = StyleSheet.create({
         color: Colors.DARK_GREY
     },
     description: {
-        fontSize: FontSizes.DEFAULT,
-        color: Colors.LIGHT_GREY
+        fontSize: FontSizes.SMALL_TEXT,
+        color: Colors.LIGHT_GRAY,
     },
     titleInput: {
-        marginTop: 20,
+        paddingLeft: 10,
+        marginTop: 5,
         height: 50,
-        fontSize: FontSizes.TITLE,
-        borderWidth: 1
+        fontSize: FontSizes.DEFAULT,
+        borderWidth: 1,
+        borderColor: Colors.LIGHT_GRAY,
+        borderRadius: 10,
+        marginBottom: 10,
     },
     textInput: {
+        paddingLeft: 10,
         marginTop: 5,
         height: 200,
         fontSize: FontSizes.DEFAULT,
         borderWidth: 1,
-        borderColor: Colors.LIGHT_GREY
+        borderColor: Colors.LIGHT_GRAY,
+        borderRadius: 10
     },
     addSectionBtn: {
-        alignSelf: 'center',
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        backgroundColor: Colors.PINK,
+        width: 40,
+        alignSelf: 'flex-end',
         justifyContent: 'center',
         marginTop: 10
     },
     addSectionTxt: {
-        fontSize: FontSizes.BIG,
-        color: 'white',
+        fontSize: 40,
+        color: Colors.RED,
         alignSelf: 'center'
+    },
+    sectionsTitle: {
+        fontSize: FontSizes.TITLE,
+        marginTop: 20,
+        alignSelf: 'flex-start',
+        flex: 0.8
+    },
+    label: {
+        fontSize: FontSizes.SMALL_TEXT,
+        color: Colors.LIGHT_GRAY
+    },
+    sectionKey: {
+        fontSize: FontSizes.SMALL_TEXT,
+        color: Colors.LIGHT_GRAY,
+        alignSelf: 'flex-end',
+        marginTop: 10
+    },
+    sectionContainer: {
+        flexDirection: 'row',
+        flex: 1,
     }
 })    

@@ -43,7 +43,7 @@ export default class NumericUnitControl extends Component{
                 onChangeText={(text) => {this.props.handleChange(this._toInteger(text))}}
                 keyboardType="numeric"
             />
-            <Text>{this.props.unit}</Text>
+            <Text style={styles.unit}>{this.props.unit}</Text>
 
             <EditPropertyActions 
                 property={this.props.property}
@@ -77,14 +77,19 @@ const styles = StyleSheet.create({
         color: Colors.DARK_GREY
     },
     description: {
-        fontSize: FontSizes.DEFAULT,
-        color: Colors.LIGHT_GREY
+        fontSize: FontSizes.SMALL_TEXT,
+        color: Colors.LIGHT_GRAY
     },
     textInput: {
         marginTop: 20,
         height: 50,
-        fontSize: FontSizes.TITLE,
         borderWidth: 1,
-        borderColor: Colors.LIGHT_GREY
+        borderColor: Colors.LIGHT_GREY,
+        borderRadius: 10,
+        paddingLeft: 10
+    },
+    unit: {
+        alignSelf: 'flex-end',
+        marginRight: 10
     }
 })    

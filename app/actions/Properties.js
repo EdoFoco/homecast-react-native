@@ -67,3 +67,13 @@ export function getProperty(propertyId){
             });
       }
   }
+
+  export function importProperty(propertyId, userId, url){
+    return (dispatch, getState) => {
+        return ApiService.importProperty(propertyId, url)
+            .then(resp => {
+                dispatch(getUserProperties(userId));
+                return resp.data;
+            });
+      }
+  }

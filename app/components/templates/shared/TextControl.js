@@ -29,7 +29,6 @@ export default class TextControl extends Component{
             <Text style={styles.title}>{this.props.title}</Text>
             <Text style={styles.description}>{this.props.description}</Text>
             <TextInput style={styles.textInput}
-                multiline={true} 
                 value={this.props.value}
                 onChangeText={(text) => {this.props.handleChange(text)}}
             />
@@ -63,14 +62,15 @@ const styles = StyleSheet.create({
         color: Colors.DARK_GREY
     },
     description: {
-        fontSize: FontSizes.DEFAULT,
-        color: Colors.LIGHT_GREY
+        fontSize: FontSizes.SMALL_TEXT,
+        color: Colors.LIGHT_GRAY,
     },
     textInput: {
-        marginTop: 20,
-        height: 50,
-        fontSize: FontSizes.TITLE,
         borderWidth: 1,
-        borderColor: Colors.LIGHT_GREY
+        height: 50,
+        marginTop: 20,
+        borderColor: Colors.LIGHT_GRAY,
+        borderRadius: 10,
+        paddingLeft: 10,
     }
 })    

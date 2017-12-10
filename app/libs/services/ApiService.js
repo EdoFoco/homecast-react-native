@@ -60,11 +60,19 @@ class ApiService {
      }
 
     static getViewingReservations(userId){
-        return apiClient.get(`api/users/${userId}/viewing-reservations`)
+        return apiClient.get(`api/users/${userId}/viewing-reservations`);
      }
 
     static updateProperty(property){
-        return apiClient.put(`api/properties/${property.id}`, property)
+        return apiClient.put(`api/properties/${property.id}`, property);
+    }
+
+    static getScrapers(){
+        return apiClient.get(`api/scrapers`);
+    }
+
+    static importProperty(id, url){
+        return apiClient.post(url, { property_id: id });
     }
     
 }

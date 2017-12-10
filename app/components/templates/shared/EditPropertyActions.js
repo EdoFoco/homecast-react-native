@@ -6,7 +6,8 @@ import {
     TouchableHighlight,
     StyleSheet,
     View,
-    Text
+    Text,
+    Dimensions
 } from 'react-native';
 
 export default class EditPropertyActions extends Component{
@@ -19,11 +20,11 @@ export default class EditPropertyActions extends Component{
   render() {
     return (
         <View style={styles.container}>
-            <TouchableHighlight style={styles.cancelButton} onPress={() => {this.props.cancelChanges()}}>
-                <Text style={styles.buttonTextDark}>Cancel Changes</Text>
-            </TouchableHighlight>
             <TouchableHighlight style={styles.saveButton} onPress={() => { this.props.updateProperty() }}>
                 <Text style={styles.buttonTextLight}>Save Changes</Text>
+            </TouchableHighlight>
+            <TouchableHighlight style={styles.cancelButton} onPress={() => {this.props.cancelChanges()}}>
+                <Text style={styles.buttonTextDark}>Cancel Changes</Text>
             </TouchableHighlight>
         </View>
         
@@ -40,14 +41,19 @@ EditPropertyActions.PropTypes ={
 const styles = StyleSheet.create({
     container: {
         margin: 10,
-        flexDirection: 'row'
+        flexDirection: 'column'
     },
     cancelButton: {
-        flex: 0.5,
         margin: 10,
         backgroundColor: 'white',
         alignSelf: 'center',
-        borderWidth: 1
+        borderWidth: 1,
+        height: 50,
+        justifyContent: 'center',
+        paddingRight: 10,
+        paddingLeft: 10,
+        borderColor: Colors.LIGHT_GRAY,
+        width: Dimensions.get('window').width - 20,
     },
     buttonTextDark:{
         color: Colors.DARK_GREY,
@@ -57,14 +63,18 @@ const styles = StyleSheet.create({
     buttonTextLight:{
         color: 'white',
         fontSize: FontSizes.DEFAULT,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     saveButton: {
-        flex: 0.5,
         margin: 10,
+        marginBottom: 0,
         backgroundColor: Colors.RED,
+        height: 50,
+        paddingRight: 20,
+        paddingLeft: 20,
         alignSelf: 'center',
-        borderWidth: 1
+        justifyContent: 'center',
+        width: Dimensions.get('window').width - 20
     }
   
 })    

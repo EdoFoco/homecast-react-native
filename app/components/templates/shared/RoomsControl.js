@@ -37,29 +37,31 @@ export default class RoomsControl extends Component{
         <View style={styles.container}>
             <Text style={styles.title}>{this.props.title}</Text>
             <Text style={styles.description}>{this.props.description}</Text>
-            <View style={styles.roomContainer}>
-                <Text style={styles.roomTitle}>Bedrooms</Text>
-                <TextInput style={styles.textInput}
-                    value={ this.props.property.bedrooms > 0 ? this.props.property.bedrooms.toString() : ""}
-                    onChangeText={(text) => {this.props.handleChangeBedrooms(this._toInteger(text))}}
-                    keyboardType="numeric"
-                />
-            </View>
-            <View style={styles.roomContainer}>
-                <Text style={styles.roomTitle}>Living Rooms</Text>
-                <TextInput style={styles.textInput}
-                    value={ this.props.property.living_rooms > 0 ? this.props.property.living_rooms.toString() : ""}
-                    onChangeText={(text) => {this.props.handleChangeLivingrooms(this._toInteger(text))}}
-                    keyboardType="numeric"
-                />
-            </View>
-            <View style={styles.roomContainer}>
-                <Text style={styles.roomTitle}>Bathrooms</Text>
-                <TextInput style={styles.textInput}
-                    value={ this.props.property.bathrooms > 0 ? this.props.property.bathrooms.toString() : ""}
-                    onChangeText={(text) => {this.props.handleChangeBathrooms(this._toInteger(text))}}
-                    keyboardType="numeric"
-                />
+            <View style={styles.roomsWrapper}>
+                <View style={styles.roomContainer}>
+                    <Text style={styles.roomTitle}>Bedrooms</Text>
+                    <TextInput style={styles.textInput}
+                        value={ this.props.property.bedrooms > 0 ? this.props.property.bedrooms.toString() : ""}
+                        onChangeText={(text) => {this.props.handleChangeBedrooms(this._toInteger(text))}}
+                        keyboardType="numeric"
+                    />
+                </View>
+                <View style={styles.roomContainer}>
+                    <Text style={styles.roomTitle}>Living Rooms</Text>
+                    <TextInput style={styles.textInput}
+                        value={ this.props.property.living_rooms > 0 ? this.props.property.living_rooms.toString() : ""}
+                        onChangeText={(text) => {this.props.handleChangeLivingrooms(this._toInteger(text))}}
+                        keyboardType="numeric"
+                    />
+                </View>
+                <View style={styles.roomContainer}>
+                    <Text style={styles.roomTitle}>Bathrooms</Text>
+                    <TextInput style={styles.textInput}
+                        value={ this.props.property.bathrooms > 0 ? this.props.property.bathrooms.toString() : ""}
+                        onChangeText={(text) => {this.props.handleChangeBathrooms(this._toInteger(text))}}
+                        keyboardType="numeric"
+                    />
+                </View>
             </View>
             <EditPropertyActions 
                 property={this.props.property}
@@ -92,20 +94,31 @@ const styles = StyleSheet.create({
         color: Colors.DARK_GREY
     },
     description: {
-        fontSize: FontSizes.DEFAULT,
-        color: Colors.LIGHT_GREY
+        fontSize: FontSizes.SMALL_TEXT,
+        color: Colors.LIGHT_GRAY
     },
     roomContainer: {
-        marginTop: 20
+        marginTop: 20,
+        flex: 0.3,
+        margin: 10
     },
     roomTitle: {
-        fontSize: FontSizes.DEFAULT
+        fontSize: FontSizes.SMALL_TEXT,
+        color: Colors.LIGHT_GRAY,
+        alignSelf: 'center'
     },
     textInput: {
-        marginTop: 20,
+        marginTop: 5,
         height: 50,
-        fontSize: FontSizes.TITLE,
         borderWidth: 1,
-        borderColor: Colors.LIGHT_GREY
+        borderColor: Colors.LIGHT_GREY,
+        borderRadius: 10,
+        paddingLeft: 10,
+        width: 75,
+        alignSelf: 'center',
+        alignItems: 'center'
+    },
+    roomsWrapper: {
+        flexDirection: 'row'
     }
 })    

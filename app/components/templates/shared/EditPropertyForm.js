@@ -9,6 +9,7 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
     StyleSheet,
@@ -75,16 +76,6 @@ export default class EditPropertyForm extends Component{
 
   _showControl(){
     switch(this.state.formTarget){
-       case 'type': {
-            return(
-                <DropdownControl 
-                    optionsList={['Rent', 'Buy']} 
-                    value={this.state.property.type} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, type: value}})}}
-                    title="Property Type"
-                    description="Choose whether this property is up for rent or to be bought"/>
-            )
-        }
         case 'name': {
             return (
                 <TextControl 
@@ -138,7 +129,7 @@ export default class EditPropertyForm extends Component{
                     handleChangeLivingrooms={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}} 
                     handleChangeBathrooms={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}} 
                     title="Rooms"
-                    description="How many rooms do your flat have?"
+                    description="How many rooms does your flat have?"
                 />
             )
         }
@@ -178,16 +169,7 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.sectionValue}>Unlisted</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Switch onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/>
-                        </View>
-                    </View>
-                    <View style={styles.propertyDetailCell}>
-                        <View style={styles.detailColumn}>
-                            <Text style={styles.sectionTitle}>Type</Text>
-                            <Text style={styles.sectionValue}>{this.state.property.type}</Text>
-                        </View>
-                        <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'type')}}>Edit</Text>
+                            <Switch style={styles.activeSwitch} onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -224,6 +206,8 @@ export default class EditPropertyForm extends Component{
                                 <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
                                 <Text style={styles.iconText}>{this.state.property.bedrooms}</Text>
                                 <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
+                                <Text style={styles.iconText}>{this.state.property.bathrooms}</Text>
+                                <MaterialIcons name="sofa" style={styles.descriptionIconBig}/>
                                 <Text style={styles.iconText}>{this.state.property.bathrooms}</Text>
                         </View>
                         </View>
@@ -341,11 +325,15 @@ const styles = StyleSheet.create({
     },
     descriptionIcon: {
       fontSize: FontSizes.SMALL_TEXT,
-      marginRight: 10,
+      marginRight: 5,
       color: Colors.LIGHT_GRAY
     },
+    descriptionIconBig: {
+        fontSize: FontSizes.DEFAULT,
+        marginRight: 4,
+        color: Colors.LIGHT_GRAY,
+      },
     iconText: {
-        marginLeft: 5,
         marginRight:10,
         color: Colors.LIGHT_GRAY
     },
@@ -364,7 +352,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         height:  Dimensions.get('window').height - 200,
         width: Dimensions.get('window').width,
-        borderRadius: 10
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10
+    },
+    activeSwitch: {
+        alignSelf: 'flex-end',
+        marginTop: 15
     }
   });
 
