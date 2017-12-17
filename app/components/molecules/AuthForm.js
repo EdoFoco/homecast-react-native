@@ -187,6 +187,7 @@ class AuthForm extends Component{
             this.props.updateUserInfo(resp.user);
         })
         .catch((error) => {
+            console.log(error);
             this.props.handleUnauthorized();
         });
     }

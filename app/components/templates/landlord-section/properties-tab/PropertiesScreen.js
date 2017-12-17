@@ -17,19 +17,79 @@ import {
   Image
 } from 'react-native';
 
+class PropertiesScreen extends Component{
+
+  componentWillMount(){
+    this.props.getUserProperties(this.props.user.info.id);
+  }
+
+  _onPress(property){
+      this.props.navigation.navigate('EditPropertyScreen', { property : property});
+  }
+
+ _renderRow = function({item}){
+    let property = item;
+    return (
+        <TouchableHighlight onPress={() => {this._onPress(property)}}>
+          <View style={styles.listingCell}>
+            <View style={styles.listingDescription}>
+              <Text style={styles.listingTitle}>{property.name}</Text>
+              <View style={styles.iconsContainer}>
+                <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
+                <Text style={styles.iconText}>{property.bedrooms}</Text>
+                <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
+                <Text style={styles.iconText}>{property.bathrooms}</Text>
+              </View>
+            </View>
+              <Image style={styles.listingImage} source={{url: property.thumbnail}}/>
+          </View>
+        </TouchableHighlight>
+          
+        )
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+          <FlatList
+            data={this.props.properties}
+            renderItem={(property) => this._renderRow(property)}
+            keyExtractor={(item, index) => index}
+            removeClippedSubviews={false}
+          />
+      </View>
+    )
+  }
+}
+
+PropertiesScreen.navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Listings',
+      headerRight: <TouchableHighlight onPress={() => { navigation.navigate('AddPropertyScreen')}}><Text style={{fontSize: 30, color: Colors.RED, marginRight: 20}}>+</Text></TouchableHighlight>,
+  }
+  
+};
+
+
+const mapStateToProps = (state) => {
+     
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+        user: state.user,
+        properties: state.properties.propertiesList
+    }
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PropertiesScreen);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white'
-  },
-  addPropertyBtn: {
-    backgroundColor: Colors.RED,
-    //alignSelf: 'stretch',
-    height: 40,
-    width: 350,
-    justifyContent: 'center',
-    margin: 10
   },
   addPropertyTxt: {
     color: 'white',
@@ -71,75 +131,3 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.DEFAULT
   }
 });
-
-class PropertiesScreen extends Component{
-
-  componentWillMount(){
-    this.props.getUserProperties(this.props.user.info.id);
-  }
-
-  _onPress(property){
-      this.props.navigation.navigate('EditPropertyScreen', { property : property});
-  }
-
-  _addProperty(){
-    this.props.navigation.navigate('AddPropertyScreen');
-  }
-  
- _renderRow = function({item}){
-    let property = item;
-    return (
-        <TouchableHighlight onPress={() => {this._onPress(property)}}>
-          <View style={styles.listingCell}>
-            <View style={styles.listingDescription}>
-              <Text style={styles.listingTitle}>{property.name}</Text>
-              <View style={styles.iconsContainer}>
-                <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                <Text style={styles.iconText}>{property.bedrooms}</Text>
-                <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                <Text style={styles.iconText}>{property.bathrooms}</Text>
-              </View>
-            </View>
-              <Image style={styles.listingImage} source={{url: property.thumbnail}}/>
-          </View>
-        </TouchableHighlight>
-          
-        )
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-          <FlatList
-            data={this.props.properties}
-            renderItem={(property) => this._renderRow(property)}
-            keyExtractor={(item, index) => index}
-            removeClippedSubviews={false}
-          />
-          <TouchableHighlight style={styles.addPropertyBtn} onPress={() => { this._addProperty()}}>
-            <Text style={styles.addPropertyTxt}>Add a listing</Text>
-          </TouchableHighlight>
-      </View>
-    )
-  }
-  
-}
-
-PropertiesScreen.navigationOptions = {
-  title: 'Listings'
-};
-
-const mapStateToProps = (state) => {
-     
-    return {
-        isLoggedIn: state.user.isLoggedIn,
-        user: state.user,
-        properties: state.properties.propertiesList
-    }
-};
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PropertiesScreen);
