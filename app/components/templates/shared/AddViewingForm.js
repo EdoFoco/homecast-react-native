@@ -5,6 +5,7 @@ import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EditPropertyActions from './EditPropertyActions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateCell from './DateCell';
 
 import {
     TextInput,
@@ -13,7 +14,8 @@ import {
     TouchableOpacity,
     View,
     Text,
-    Dimensions
+    Dimensions,
+    FlatList
   } from 'react-native';
 
 export default class AddViewingForm extends Component{
@@ -51,16 +53,46 @@ export default class AddViewingForm extends Component{
       this.props.showModal(false);
   }
 
+  _createViewing(){
+    let viewingInfo = {
+        date_time: this.state.viewingDateTime
+    }
+    return this.props.createViewing(this.props.propertyId, this.props.userId, viewingInfo)
+    .then(() => {
+        this.props.showModal(false);
+    });
+  }
+
+  _renderRow = function({item}){
+    let viewing = item;
+    return (
+        <TouchableHighlight onPress={() => {this._goToViewing(viewing.id)}}>
+            <View style={styles.viewingRow}> 
+              <View style={styles.viewingDateCell} >
+                <DateCell dateTime={ viewing.date_time } />
+              </View>
+              <Text style={styles.viewingCapacity}>{10 - viewing.capacity} participants</Text>
+              <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+            </View>
+        </TouchableHighlight>
+      )
+  }
+
   render() {
     return (
         <View style={styles.container}>
-            
             {
-                this.props.viewings.length == 0 ? null :
+                this.props.viewings.length == 0 ?
                 <Text style={styles.noViewingsText}>
                     Add a viewing slots and start live streaming your flat.
-                </Text>
-            }
+                </Text> :
+                <FlatList
+                    data={this.props.viewings}
+                    renderItem={(viewing) => this._renderRow(viewing)}
+                    keyExtractor={(item, index) => index}
+                    removeClippedSubviews={false}
+                />
+                }
             
             {
                 !this.props.isModalVisible ? null :
@@ -68,8 +100,8 @@ export default class AddViewingForm extends Component{
                     <TouchableHighlight style={styles.formOverlay} onPress={() => {this._cancelChanges()}}><Text></Text></TouchableHighlight>
                     <View style={styles.formContainer} onPress={() => {console.log('do nothing')}}>
                         <View style={styles.formWrapper}>
-                            <Text style={styles.modalTitle}>Add a viewing</Text>
-                            <Text style={styles.modalSubtitle}>Add a viewing slot to let people know when you will live stream this property.</Text>
+                            <Text style={styles.modalTitle}>Create a viewing slot</Text>
+                            <Text style={styles.modalSubtitle}>Create a viewing slot to let people know when you will live stream this property.</Text>
 
                             <View style={styles.pickerContainer}>
                                 <TouchableOpacity style={styles.pickerBtn} onPress={this._showDatePicker}>
@@ -105,8 +137,8 @@ export default class AddViewingForm extends Component{
                             />
                         </View>
                         <View style={styles.actionsContainer}>
-                            <TouchableHighlight style={styles.saveButton} onPress={() => { this.props.createViewing() }}>
-                                <Text style={styles.buttonTextLight}>Create Viewing</Text>
+                            <TouchableHighlight style={styles.saveButton} onPress={() => { this._createViewing() }}>
+                                <Text style={styles.buttonTextLight}>Create Slot</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
@@ -122,13 +154,14 @@ AddViewingForm.PropTypes ={
     userId: PropTypes.number.isRequired,
     viewings: PropTypes.array.isRequired,
     isModalVisible: PropTypes.bool.isRequired,
-    showModal: PropTypes.func.isRequired
+    showModal: PropTypes.func.isRequired,
+    createViewing: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: Dimensions.get('window').height,
         backgroundColor: 'white',
+        flex: 1
     },
     noViewingsText: {
         marginTop: 50,
@@ -142,29 +175,32 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         alignSelf: 'center',
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
+        height:  Dimensions.get('window').height
     },
     formOverlay: {
         position: 'absolute',
         bottom: 0,
         alignSelf: 'center',
         height:  Dimensions.get('window').height,
+        flex: 1,
         width: Dimensions.get('window').width,
         backgroundColor: 'rgba(0,0,0,0.6)'
     },
     formContainer: {
-        padding: 10,
         position: 'absolute',
         bottom: 0,
         backgroundColor: 'white',
         alignSelf: 'center',
-        height:  Dimensions.get('window').height - 50,
+        height:  400,
         width: Dimensions.get('window').width,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
+        flex: 1
     },
     formWrapper: {
-        backgroundColor: 'blue'
+        flex: 0.8,
+        margin: 10,
     },
     modalTitle: {
         color: Colors.DARK_GREY,
@@ -178,7 +214,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         justifyContent: 'center',
         alignSelf: 'flex-start',
-        width: Dimensions.get('window').width
+      //  width: Dimensions.get('window').width
     },
     pickerBtn: {
         flexDirection: 'row',
@@ -196,27 +232,14 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingTop: 10,
         height: 50,
-        width: Dimensions.get('window').width - 100,
+        width: 300,
         borderRadius: 10,
         textAlign: 'center',
         textAlignVertical: 'center',
     },
     actionsContainer:{
-        position: 'absolute',
-        bottom: 170,
-        backgroundColor: 'pink'
-    },
-    cancelButton: {
-        margin: 10,
-        backgroundColor: 'white',
-        alignSelf: 'center',
-        borderWidth: 1,
-        height: 50,
-        justifyContent: 'center',
-        paddingRight: 10,
-        paddingLeft: 10,
-        borderColor: Colors.LIGHT_GRAY,
-        width: Dimensions.get('window').width - 20,
+        flex: 0.2,
+        backgroundColor: Colors.RED
     },
     buttonTextDark:{
         color: Colors.DARK_GREY,
@@ -229,14 +252,40 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     saveButton: {
-        margin: 10,
-        marginBottom: 0,
         backgroundColor: Colors.RED,
-        height: 50,
-        paddingRight: 20,
-        paddingLeft: 20,
-        alignSelf: 'center',
+        flex: 1, 
         justifyContent: 'center',
-        width: Dimensions.get('window').width - 20
-    }
+    },
+    viewingRow:{
+        flex: 1,
+        alignSelf: 'stretch',
+        paddingBottom: 10,
+        paddingTop: 10,
+        borderBottomColor: Colors.LIGHT_GRAY,
+        //borderBottomWidth: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      viewingDateCell: {
+        width: 100,
+        alignSelf: 'flex-start',
+      },
+      propertyName: {
+        fontSize: FontSizes.DEFAULT,
+        textAlign: 'left',
+        flex: 1,
+        paddingLeft: 10,
+      },
+      viewingTime:{
+        flex: 0.7,
+        fontSize: FontSizes.DEFAULT,
+        textAlign: 'right',
+        color: Colors.DARK_GREY,
+        paddingRight: 10
+      },
+      viewingCapacity: {
+          fontSize: FontSizes.DEFAULT,
+          color: Colors.DARK_GREY
+      }
 })    

@@ -23,9 +23,6 @@ export default class EditPropertyActions extends Component{
             <TouchableHighlight style={styles.saveButton} onPress={() => { this.props.updateProperty() }}>
                 <Text style={styles.buttonTextLight}>Save Changes</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={styles.cancelButton} onPress={() => {this.props.cancelChanges()}}>
-                <Text style={styles.buttonTextDark}>Cancel Changes</Text>
-            </TouchableHighlight>
         </View>
         
     )
@@ -40,11 +37,10 @@ EditPropertyActions.PropTypes ={
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        flex: 1
     },
     cancelButton: {
-        margin: 10,
         backgroundColor: 'white',
         alignSelf: 'center',
         borderWidth: 1,
@@ -66,15 +62,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     saveButton: {
-        margin: 10,
-        marginBottom: 0,
         backgroundColor: Colors.RED,
-        height: 50,
+        flex: 1,
         paddingRight: 20,
         paddingLeft: 20,
         alignSelf: 'center',
         justifyContent: 'center',
-        width: Dimensions.get('window').width - 20
+        width: Dimensions.get('window').width
     }
   
 })    

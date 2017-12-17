@@ -55,6 +55,10 @@ class ApiService {
         return apiClient.post(`api/users/${ userId }/viewing-reservations`, { viewing_id: viewingId});
      }
 
+     static createViewing(propertyId, viewingInfo){
+        return apiClient.post(`api/properties/${ propertyId }/viewings`, viewingInfo);
+     }
+
     static deleteViewingReservation(userId, viewingId){
         return apiClient.delete(`api/users/${ userId }/viewing-reservations/${viewingId}`);
      }

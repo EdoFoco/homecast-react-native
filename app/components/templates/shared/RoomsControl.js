@@ -35,39 +35,43 @@ export default class RoomsControl extends Component{
   render() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{this.props.title}</Text>
-            <Text style={styles.description}>{this.props.description}</Text>
-            <View style={styles.roomsWrapper}>
-                <View style={styles.roomContainer}>
-                    <Text style={styles.roomTitle}>Bedrooms</Text>
-                    <TextInput style={styles.textInput}
-                        value={ this.props.property.bedrooms > 0 ? this.props.property.bedrooms.toString() : ""}
-                        onChangeText={(text) => {this.props.handleChangeBedrooms(this._toInteger(text))}}
-                        keyboardType="numeric"
-                    />
-                </View>
-                <View style={styles.roomContainer}>
-                    <Text style={styles.roomTitle}>Living Rooms</Text>
-                    <TextInput style={styles.textInput}
-                        value={ this.props.property.living_rooms > 0 ? this.props.property.living_rooms.toString() : ""}
-                        onChangeText={(text) => {this.props.handleChangeLivingrooms(this._toInteger(text))}}
-                        keyboardType="numeric"
-                    />
-                </View>
-                <View style={styles.roomContainer}>
-                    <Text style={styles.roomTitle}>Bathrooms</Text>
-                    <TextInput style={styles.textInput}
-                        value={ this.props.property.bathrooms > 0 ? this.props.property.bathrooms.toString() : ""}
-                        onChangeText={(text) => {this.props.handleChangeBathrooms(this._toInteger(text))}}
-                        keyboardType="numeric"
-                    />
+            <View style={{flex: 0.8}}>
+                <Text style={styles.title}>{this.props.title}</Text>
+                <Text style={styles.description}>{this.props.description}</Text>
+                <View style={styles.roomsWrapper}>
+                    <View style={styles.roomContainer}>
+                        <Text style={styles.roomTitle}>Bedrooms</Text>
+                        <TextInput style={styles.textInput}
+                            value={ this.props.property.bedrooms > 0 ? this.props.property.bedrooms.toString() : ""}
+                            onChangeText={(text) => {this.props.handleChangeBedrooms(this._toInteger(text))}}
+                            keyboardType="numeric"
+                        />
+                    </View>
+                    <View style={styles.roomContainer}>
+                        <Text style={styles.roomTitle}>Living Rooms</Text>
+                        <TextInput style={styles.textInput}
+                            value={ this.props.property.living_rooms > 0 ? this.props.property.living_rooms.toString() : ""}
+                            onChangeText={(text) => {this.props.handleChangeLivingrooms(this._toInteger(text))}}
+                            keyboardType="numeric"
+                        />
+                    </View>
+                    <View style={styles.roomContainer}>
+                        <Text style={styles.roomTitle}>Bathrooms</Text>
+                        <TextInput style={styles.textInput}
+                            value={ this.props.property.bathrooms > 0 ? this.props.property.bathrooms.toString() : ""}
+                            onChangeText={(text) => {this.props.handleChangeBathrooms(this._toInteger(text))}}
+                            keyboardType="numeric"
+                        />
+                    </View>
                 </View>
             </View>
-            <EditPropertyActions 
-                property={this.props.property}
-                updateProperty={() => {this.props.updateProperty()}}
-                cancelChanges={() => {this.props.cancelChanges()}}
-            />
+            <View style={{flex: 0.2}}>
+                <EditPropertyActions 
+                    property={this.props.property}
+                    updateProperty={() => {this.props.updateProperty()}}
+                    cancelChanges={() => {this.props.cancelChanges()}}
+                />
+            </View>
         </View>
     )
   }
@@ -88,6 +92,7 @@ RoomsControl.PropTypes ={
 const styles = StyleSheet.create({
     container: {
         margin: 10,
+        flex: 1
     },
     title: {
         fontSize: FontSizes.TITLE,
@@ -120,5 +125,8 @@ const styles = StyleSheet.create({
     },
     roomsWrapper: {
         flexDirection: 'row'
+    },
+    actions: {
+        alignSelf: 'flex-end',
     }
 })    

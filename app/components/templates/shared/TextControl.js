@@ -26,18 +26,22 @@ export default class TextControl extends Component{
   render() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{this.props.title}</Text>
-            <Text style={styles.description}>{this.props.description}</Text>
-            <TextInput style={styles.textInput}
-                value={this.props.value}
-                onChangeText={(text) => {this.props.handleChange(text)}}
-            />
+            <View style={{flex: 0.8, margin: 10}}>
+                <Text style={styles.title}>{this.props.title}</Text>
+                <Text style={styles.description}>{this.props.description}</Text>
+                <TextInput style={styles.textInput}
+                    value={this.props.value}
+                    onChangeText={(text) => {this.props.handleChange(text)}}
+                />
 
-            <EditPropertyActions 
-                property={this.props.property}
-                updateProperty={() => {this.props.updateProperty()}}
-                cancelChanges={() => {this.props.cancelChanges()}}
-            />
+            </View>
+            <View style={{flex: 0.2}}>
+                <EditPropertyActions 
+                    property={this.props.property}
+                    updateProperty={() => {this.props.updateProperty()}}
+                    cancelChanges={() => {this.props.cancelChanges()}}
+                />
+            </View>
         </View>
     )
   }
@@ -55,7 +59,7 @@ TextControl.PropTypes ={
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10,
+        flex: 1,
     },
     title: {
         fontSize: FontSizes.TITLE,
@@ -72,5 +76,8 @@ const styles = StyleSheet.create({
         borderColor: Colors.LIGHT_GRAY,
         borderRadius: 10,
         paddingLeft: 10,
+    },
+    actions: {
+        alignSelf: 'flex-end',
     }
 })    

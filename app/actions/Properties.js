@@ -68,6 +68,16 @@ export function getProperty(propertyId){
       }
   }
 
+
+export function createViewing(propertyId, userId, viewingInfo){
+    return (dispatch, getState) => {
+        return ApiService.createViewing(propertyId, viewingInfo)
+        .then(() => {
+            dispatch(getUserProperties(userId))
+        });
+      }
+}
+
   export function importProperty(propertyId, userId, url){
     return (dispatch, getState) => {
         return ApiService.importProperty(propertyId, url)

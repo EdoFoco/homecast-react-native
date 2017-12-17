@@ -36,20 +36,23 @@ export default class NumericUnitControl extends Component{
   render() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{this.props.title}</Text>
-            <Text style={styles.description}>{this.props.description}</Text>
-            <TextInput style={styles.textInput}
-                value={ this.props.value > 0 ? this.props.value.toString() : ""}
-                onChangeText={(text) => {this.props.handleChange(this._toInteger(text))}}
-                keyboardType="numeric"
-            />
-            <Text style={styles.unit}>{this.props.unit}</Text>
-
-            <EditPropertyActions 
-                property={this.props.property}
-                updateProperty={() => {this.props.updateProperty()}}
-                cancelChanges={() => {this.props.cancelChanges()}}
-            />
+            <View style={{flex: 0.8}}>
+                <Text style={styles.title}>{this.props.title}</Text>
+                <Text style={styles.description}>{this.props.description}</Text>
+                <TextInput style={styles.textInput}
+                    value={ this.props.value > 0 ? this.props.value.toString() : ""}
+                    onChangeText={(text) => {this.props.handleChange(this._toInteger(text))}}
+                    keyboardType="numeric"
+                />
+                <Text style={styles.unit}>{this.props.unit}</Text>
+            </View>
+            <View style={{flex: 0.2}}>
+                <EditPropertyActions 
+                    property={this.props.property}
+                    updateProperty={() => {this.props.updateProperty()}}
+                    cancelChanges={() => {this.props.cancelChanges()}}
+                />
+            </View>
         </View>
     )
   }
@@ -70,6 +73,7 @@ NumericUnitControl.PropTypes ={
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         margin: 10,
     },
     title: {

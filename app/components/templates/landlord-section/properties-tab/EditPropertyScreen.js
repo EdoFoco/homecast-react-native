@@ -25,7 +25,7 @@ class EditPropertyScreen extends Component{
 
   render() {
     return (
-        <View>
+        <View style={{flex: 1}}>
           <View style={styles.tabContainer}>
               <TouchableHighlight style={this.state.tabIndex == 1 ? styles.activeTab : styles.tab } onPress={() => {this.setState({tabIndex: 1}); this.props.navigation.setParams({tabIndex: 1})}}>
                 <Text style={this.state.tabIndex == 1 ? styles.activeTabText : styles.tabText}>Details</Text>
@@ -34,20 +34,23 @@ class EditPropertyScreen extends Component{
                 <Text style={this.state.tabIndex == 2 ? styles.activeTabText : styles.tabText}>Viewings</Text>
               </TouchableHighlight>
           </View>
-          {
-            this.state.tabIndex == 1 ?
-              <EditPropertyForm 
-              user={this.props.user}
-              property={this.props.property}
-              updateProperty={this.props.updateProperty}
-              user={this.props.user}/> :
-              <AddViewingForm 
-              propertyId={this.props.property.id} 
-              userId={this.props.user.info.id} 
-              viewings={this.props.property.viewings}
-              isModalVisible={this.props.navigation.state.params.showAddViewingModal}
-              showModal={(showModal) => { this._showAddViewingModal(showModal)}}/>
-          }
+          <View style={styles.tabContent}>
+              {
+                this.state.tabIndex == 1 ?
+                  <EditPropertyForm 
+                  user={this.props.user}
+                  property={this.props.property}
+                  updateProperty={this.props.updateProperty}
+                  user={this.props.user}/> :
+                  <AddViewingForm 
+                  propertyId={this.props.property.id} 
+                  userId={this.props.user.info.id} 
+                  viewings={this.props.property.viewings}
+                  isModalVisible={this.props.navigation.state.params.showAddViewingModal}
+                  showModal={(showModal) => { this._showAddViewingModal(showModal)}}
+                  createViewing={(propertyId, userId, viewingInfo) => this.props.createViewing(propertyId, userId, viewingInfo)}/>
+              }
+          </View>
         </View>
     )
   }
@@ -84,11 +87,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(EditPropertyScreen);
 var styles = StyleSheet.create({
     tabContainer: {
       backgroundColor: 'white',
-      flexDirection: 'row'
+      flexDirection: 'row',
+      flex: 0.1,
+      backgroundColor: 'blue'
     },
     activeTab: {
       flex: 0.5, 
-      height: 50,
       backgroundColor: Colors.DARK_BLUE,
       justifyContent: 'center'
     },
@@ -96,11 +100,9 @@ var styles = StyleSheet.create({
       fontSize: FontSizes.DEFAULT,
       color: Colors.AQUA_GREEN,
       alignSelf: 'center',
-      fontWeight: 'bold'
     },
     tab: {
       flex: 0.5,
-      height: 50,
       backgroundColor: Colors.DARK_BLUE,
       justifyContent: 'center',
     },
@@ -108,6 +110,9 @@ var styles = StyleSheet.create({
       fontSize: FontSizes.DEFAULT,
       color: 'white',
       alignSelf: 'center',
-      fontWeight: 'bold'
+    },
+    tabContent: {
+      flex: 0.8,
+      backgroundColor: 'green'
     }
 });

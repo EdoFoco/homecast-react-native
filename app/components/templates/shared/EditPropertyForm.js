@@ -155,8 +155,8 @@ export default class EditPropertyForm extends Component{
 
   render() {
     return (
-        <View>
-            <ScrollView style={{backgroundColor: 'white'}}>
+        <View style={{flex: 1}}>
+            <ScrollView style={{backgroundColor: 'white', flex: 1}}>
                 <View style={styles.container}>
                     <Image style={styles.propertyThumbnail} source={{url: this.props.property.thumbnail}}>
                         <TouchableHighlight style={styles.opaqueLayer}>
@@ -260,7 +260,7 @@ EditPropertyForm.PropTypes = {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,    
+      flex: 0.2,    
       backgroundColor: 'white',
     },
     viewTitle: {
@@ -341,6 +341,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         alignSelf: 'center',
+        flex: 1,
         height:  Dimensions.get('window').height,
         width: Dimensions.get('window').width,
         backgroundColor: 'rgba(0,0,0,0.6)'
@@ -350,7 +351,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: 'white',
         alignSelf: 'center',
-        height:  Dimensions.get('window').height - 200,
+        flex: 1,
+        height:  400,
         width: Dimensions.get('window').width,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10
