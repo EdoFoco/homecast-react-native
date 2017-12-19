@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     saveButton: {
-        backgroundColor: Colors.RED,
+        backgroundColor: Colors.AQUA_GREEN,
         flex: 1,
         paddingRight: 20,
         paddingLeft: 20,

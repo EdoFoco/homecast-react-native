@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         color: '#9E9E9E'
     },
     priceBadge:{
-        backgroundColor: '#2EC4B6',
+        backgroundColor: Colors.AQUA_GREEN,
         top: 150,
         color: 'white',
         position: 'relative',
@@ -62,8 +62,7 @@ const styles = StyleSheet.create({
         top: -40,
         right: 10,
         alignSelf: 'flex-end',
-        borderRadius: 40,
-        backgroundColor: 'blue'
+        borderRadius: 40
     },
     iconsContainer: {
         marginTop: 10,

@@ -120,20 +120,17 @@ const styles = StyleSheet.create({
   joinCastContainer: {
       backgroundColor: 'white',
       alignSelf: 'stretch',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      flex: 0.15
   },
   ctaBtnRed: {
     backgroundColor: Colors.RED,
-    height: 40,
-    width: 350,
-    margin: 10,
+    flex: 1,
     justifyContent: 'center'
   },
   ctaBtnGreen: {
     backgroundColor: Colors.AQUA_GREEN,
-    height: 40,
-    width: 350,
-    margin: 10,
+    flex: 1,
     justifyContent: 'center'
   },
   ctaText: {
@@ -173,7 +170,7 @@ export default class ViewingScreen extends Component{
   render() {
     return(
         <View style={{backgroundColor: 'white', flex: 1}}>
-            <ScrollView style={{backgroundColor: 'white'}}>
+            <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
                 <View style={styles.viewingDate}>
                         <DateCell style={styles.viewingDate} 
                         dateTime={this.props.viewing.date_time} 

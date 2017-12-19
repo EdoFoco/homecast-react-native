@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
         flex: 0.5
     },
     editSectionTxt: {
-        color: Colors.RED,
+        color: Colors.AQUA_GREEN,
         alignSelf: 'flex-end',
         fontSize: FontSizes.DEFAULT
     },

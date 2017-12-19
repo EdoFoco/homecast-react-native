@@ -1,7 +1,8 @@
 export const DARK_BLUE = '#272838';
 //export const PINK = '#FF3366';
 export const PINK = '#F44336';
-export const AQUA_GREEN = '#2EC4B6';
+//export const AQUA_GREEN = '#2EC4B6';
+export const AQUA_GREEN = '#26A69A';
 export const RED = '#F44336';
 export const LIGHT_RED = '#FF5252';
 export const LIGHT_BLUE = '#20A4F3';

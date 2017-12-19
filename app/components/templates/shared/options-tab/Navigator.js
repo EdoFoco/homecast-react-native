@@ -3,6 +3,7 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OptionsScreen from './OptionsScreen';
+import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     OptionsHome: { screen: OptionsScreen }
@@ -10,6 +11,12 @@ const routeConfiguration = {
 
 const stackConfiguration = {
   initialRoute: 'OptionsHome',
+  navigationOptions: {
+    headerTintColor: Colors.RED,
+    headerStyle: {
+      backgroundColor: 'white',
+    }
+  }
 }
 
 export const OptionsNavigator = StackNavigator(routeConfiguration, stackConfiguration);

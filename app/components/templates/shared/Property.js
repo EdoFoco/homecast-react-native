@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
       width: 40
     },
     priceBadge:{
-      backgroundColor: '#2EC4B6',
+      backgroundColor: Colors.AQUA_GREEN,
       top: 150,
       color: 'white',
       position: 'relative',
