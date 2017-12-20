@@ -49,8 +49,8 @@ class OptionsScreen extends Component{
             
               {
                 this.props.section.sectionName == 'guest' ?
-                <Text style={styles.sectionTitle}>Admin Section</Text>:
-                <Text style={styles.sectionTitle}>Guest Section</Text>
+                <Text style={styles.sectionTitle}>Owners Section</Text>:
+                <Text style={styles.sectionTitle}>Guests Section</Text>
               }
             <FontAwesomeIcon name="refresh" style={styles.sectionIcon} /> 
           </View>
@@ -95,16 +95,13 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   sectionContainer: {
-    paddingTop: 60,
+    paddingTop: 40,
   },
   buttonWrapper: {
     flexDirection: 'row'
   },
   section: {
-    paddingRight: 40,
-    paddingLeft: 50,
-    paddingTop: 40,
-    paddingBottom: 40
+    padding: 40
   },
   sectionTitle: {
     alignSelf: 'flex-start',

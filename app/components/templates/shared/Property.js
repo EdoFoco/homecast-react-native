@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    height: 200
+    height: 250
   },
   tabContainer:{
       flex: 1,
       alignSelf: 'stretch',
       alignContent: 'flex-start',
       //flexDirection: 'row',
-      padding: 10,
+      //padding: 10,
       //paddingTop: 0
   },
   viewingsTabContainer:{
@@ -91,58 +91,41 @@ const styles = StyleSheet.create({
       fontSize: FontSizes.DEFAULT,
       textAlign: 'right',
       color: Colors.DARK_GREY,
-      paddingRight: 10
+      paddingRight: 5
     },
     menuContainer: {
       flexDirection: 'row',
-      backgroundColor: Colors.DARK_BLUE,
-      alignSelf: 'stretch',
-      padding: 15,
-      borderBottomWidth: 3,
-     // borderBottomColor: Colors.LIGHT_RED,
-      alignItems: 'center',
+      alignSelf: 'flex-end',
+      alignItems: 'flex-end',
     },
     menuItemContainer: {
-      alignItems: 'center',
-      alignSelf: 'center',
-      height: 40,
-      flex: 1
+      alignSelf: 'flex-end',
+      padding: 20,
+      marginRight: 4
     },
     menuItem: {
       alignItems: 'center',
-      alignSelf: 'center',
     },
     menuIcon: {
       color: 'white',
-      fontSize: FontSizes.DEFAULT,
+      fontSize: FontSizes.TITLE,
       marginBottom: 5
     },
     menuIconActive: {
       color: Colors.AQUA_GREEN,
-      fontSize: FontSizes.DEFAULT,
+      fontSize: FontSizes.TITLE,
       marginBottom: 5
     },
     menuText: {
-      color: 'white',
-      fontSize: FontSizes.SMALL_TEXT
+      color: Colors.AQUA_GREEN,
+      fontSize: FontSizes.DEFAULT,
+      flex: 0.7,
+      alignSelf: 'center',
+      marginLeft: 10
     },
     menuTextActive: {
-      color: Colors.AQUA_GREEN,
+      color: Colors.RED,
       fontSize: FontSizes.SMALL_TEXT
-    },
-    triangle: {
-      width: 0,
-      height: 0,
-      backgroundColor: 'transparent',
-      borderStyle: 'solid',
-      borderLeftWidth: 7,
-      borderRightWidth: 7,
-      borderBottomWidth: 7,
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
-      borderBottomColor: 'transparent',
-      position: 'absolute',
-      bottom: -15
     },
     viewingMonthHeader: {
       borderBottomWidth: 2,
@@ -186,12 +169,14 @@ const styles = StyleSheet.create({
       fontSize: FontSizes.BIG,
       fontWeight: 'bold',
       alignSelf: 'flex-start',
-      color: Colors.DARK_GREY
+      color: Colors.DARK_GREY,
+      padding: 10
     },
     servicesContainer: {
       flexDirection: 'row',
       alignSelf: 'stretch',
       marginTop: 15,
+      
      /* borderTopWidth: 1,
       borderTopColor: Colors.DARK_GREY,
       borderBottomWidth: 1,
@@ -214,6 +199,7 @@ const styles = StyleSheet.create({
     },
     descriptionContainer: {
       marginTop: 0,
+      padding: 10
     },
     subTitle: {
       fontSize: FontSizes.DEFAULT,
@@ -250,6 +236,11 @@ export default class Property extends Component{
   _renderInfoTab(){
     return (
       <View style={styles.tabContainer}>
+        <View style={{flexDirection: 'row', marginBottom: 20}} >
+            <Image source={{uri: this.props.currentProperty.thumbnail}} style={styles.backgroundImage} >
+              <Text style={styles.priceBadge}>£ {Math.round(this.props.currentProperty.price)} p/m</Text>
+            </Image>
+        </View>
         <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
        <View style={styles.servicesContainer}>
                 <View style={styles.serviceItem}>
@@ -317,33 +308,30 @@ export default class Property extends Component{
     return (
       <ScrollView style={{backgroundColor: 'white'}}>
           <View style={styles.container}>
-              <View style={{flexDirection: 'row'}} >
-                    <Image source={{uri: this.props.currentProperty.thumbnail}} style={styles.backgroundImage} >
-                      <Text style={styles.priceBadge}>£ {Math.round(this.props.currentProperty.price)} p/m</Text>
-                    </Image>
+            <View style={{flexDirection: 'row',flex: 1, backgroundColor: Colors.DARK_BLUE, width: Dimensions.get('window').width}}>
+              {this.props.propertyScreen.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
+              {this.props.propertyScreen.activeTab == 2 ?<Text style={styles.menuText}>Map</Text> : null }
+              {this.props.propertyScreen.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null }
+              <View style={styles.menuContainer}>
+                      <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(1)}}>
+                        <View style={styles.menuItem}>
+                            <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
+                            { this.props.propertyScreen.activeTab == 1 ? <View style={styles.triangle} /> : null }
+                        </View>
+                      </TouchableHighlight>
+                      <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(2)}}>
+                        <View style={styles.menuItem}> 
+                            <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="map" />
+                            { this.props.propertyScreen.activeTab == 2 ? <View style={styles.triangle} /> : null }
+                        </View>
+                      </TouchableHighlight>
+                      <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(3)}}>
+                        <View style={styles.menuItem}> 
+                            <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
+                            { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
+                        </View>
+                      </TouchableHighlight>
                 </View>
-            <View style={styles.menuContainer}>
-                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(1)}}>
-                    <View style={styles.menuItem}>
-                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
-                        <Text style={this.props.propertyScreen.activeTab == 1 ? styles.menuTextActive : styles.menuText}>Info</Text> 
-                        { this.props.propertyScreen.activeTab == 1 ? <View style={styles.triangle} /> : null }
-                    </View>
-                  </TouchableHighlight>
-                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(2)}}>
-                    <View style={styles.menuItem}> 
-                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="map" />
-                        <Text style={this.props.propertyScreen.activeTab == 2 ? styles.menuTextActive : styles.menuText}>Map</Text> 
-                        { this.props.propertyScreen.activeTab == 2 ? <View style={styles.triangle} /> : null }
-                    </View>
-                  </TouchableHighlight>
-                  <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(3)}}>
-                    <View style={styles.menuItem}> 
-                        <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
-                        <Text style={this.props.propertyScreen.activeTab == 3 ? styles.menuTextActive : styles.menuText}>Live Streams</Text> 
-                        { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
-                    </View>
-                  </TouchableHighlight>
             </View>
             {{
               1: (

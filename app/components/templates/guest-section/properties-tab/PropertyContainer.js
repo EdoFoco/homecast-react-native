@@ -4,6 +4,7 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import Property from '../../shared/Property';
+import * as Colors from '../../../helpers/ColorPallette';
 import {
   Text,
   View,
@@ -64,6 +65,8 @@ class PropertyContainer extends Component{
 
 PropertyContainer.navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.property.name}`,
+    headerTintColor: Colors.RED,
+    headerStyle: {  borderBottomWidth: 0, backgroundColor: 'white', shadowColor: 'white' }
   });
   
 
