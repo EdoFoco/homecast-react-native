@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     },
     actionsContainer:{
         flex: 0.2,
-        backgroundColor: Colors.RED
+        backgroundColor: Colors.AQUA_GREEN
     },
     buttonTextDark:{
         color: Colors.DARK_GREY,
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     saveButton: {
-        backgroundColor: Colors.RED,
+        backgroundColor: Colors.AQUA_GREEN,
         flex: 1, 
         justifyContent: 'center',
     },

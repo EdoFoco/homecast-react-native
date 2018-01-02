@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let apiClient = axios.create({
-    baseURL: 'http://192.168.1.76:8111',
+    baseURL: 'http://localhost:8111',
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

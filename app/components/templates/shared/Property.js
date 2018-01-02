@@ -20,6 +20,7 @@ import {
   Dimensions,
   ScrollView
 } from 'react-native';
+import { DEFAULT } from '../../helpers/FontSizes';
 
 
 const styles = StyleSheet.create({
@@ -153,24 +154,28 @@ const styles = StyleSheet.create({
       width: 40
     },
     priceBadge:{
-      backgroundColor: Colors.AQUA_GREEN,
-      top: 150,
-      color: 'white',
-      position: 'relative',
-      left: 0,
-      fontSize: FontSizes.SMALL_TEXT,
+      //backgroundColor: Colors.AQUA_GREEN,
+      //bottom: 0,
+      color: Colors.AQUA_GREEN,
+      //position: 'absolute',
+      fontSize: FontSizes.DEFAULT,
       fontWeight: 'bold',
-      lineHeight: 35,
-      paddingLeft: 10,
-      paddingRight: 10,
-      width: 150
+      alignSelf: 'center',
+      //lineHeight: 35,
+      //paddingLeft: 10,
+      //paddingRight: 10,
+      //paddingTop: 10,
+      //paddingRight: 20
+      //width: 150
     },
     propertyTitle: {
       fontSize: FontSizes.BIG,
       fontWeight: 'bold',
       alignSelf: 'flex-start',
       color: Colors.DARK_GREY,
-      padding: 10
+      padding: 10,
+      paddingTop: 0,
+      flex: 0.7
     },
     servicesContainer: {
       flexDirection: 'row',
@@ -238,10 +243,15 @@ export default class Property extends Component{
       <View style={styles.tabContainer}>
         <View style={{flexDirection: 'row', marginBottom: 20}} >
             <Image source={{uri: this.props.currentProperty.thumbnail}} style={styles.backgroundImage} >
-              <Text style={styles.priceBadge}>£ {Math.round(this.props.currentProperty.price)} p/m</Text>
             </Image>
         </View>
-        <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+          <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
+          <View style={{alignItems: 'center', paddingRight: 20}}>
+            <Text style={styles.priceBadge}>£ {Math.round(this.props.currentProperty.price)}</Text>
+            <Text style={{color: Colors.AQUA_GREEN, fontSize: FontSizes.DEFAULT, alignSelf: 'center'}}>month</Text>
+          </View>
+         </View>
        <View style={styles.servicesContainer}>
                 <View style={styles.serviceItem}>
                     <FontAwesomeIcon name="bed" style={styles.serviceIcon} />
