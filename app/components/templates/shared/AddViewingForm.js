@@ -66,7 +66,7 @@ export default class AddViewingForm extends Component{
   _renderRow = function({item}){
     let viewing = item;
     return (
-        <TouchableHighlight onPress={() => {this._goToViewing(viewing.id)}}>
+        <TouchableHighlight onPress={() => {this.props.goToViewing(viewing)}}>
             <View style={styles.viewingRow}> 
               <View style={styles.viewingDateCell} >
                 <DateCell dateTime={ viewing.date_time } />
@@ -155,7 +155,8 @@ AddViewingForm.PropTypes ={
     viewings: PropTypes.array.isRequired,
     isModalVisible: PropTypes.bool.isRequired,
     showModal: PropTypes.func.isRequired,
-    createViewing: PropTypes.func.isRequired
+    createViewing: PropTypes.func.isRequired,
+    gotToViewing: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
