@@ -232,7 +232,7 @@ export default class Property extends Component{
             <DateCell dateTime={viewing.date_time} />
           </View>
           <Text style={styles.viewingCapacity}>Only {viewing.capacity} spots left</Text>
-          <Text style={styles.viewingTime}>{new Date(`${viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit',  hour12: true}).toUpperCase()}</Text>
+          <Text style={styles.viewingTime}>{new Date(`${viewing.date_time}`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit',  hour12: true}).toUpperCase()}</Text>
         </View>
       </TouchableHighlight>
     )

@@ -56,7 +56,7 @@ _reserveSpot(userId, viewingId){
 
 
 ViewingContainer.navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.viewing.property.name}`,
+    title: `Viewing - ${navigation.state.params.viewing.property.name}`,
 });
 
 

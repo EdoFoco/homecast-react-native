@@ -6,6 +6,8 @@ import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+
 import {
   StyleSheet,
   Text,
@@ -13,8 +15,105 @@ import {
   View,
   ScrollView,
   Button,
-  Image
+  Image,
+  Dimensions
 } from 'react-native';
+
+export default class ViewingScreen extends Component{
+
+  
+  _renderCTA(){
+    
+    if(this.props.viewing.isLive){
+        return ( 
+        <TouchableHighlight style={styles.ctaBtnRed}>
+            <Text style={styles.ctaText}>
+                Join Live Cast
+           </Text>
+        </TouchableHighlight>)
+    }
+    
+    if(this.props.viewing.viewing_reservation){
+        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.viewing.viewing_reservation.id, this.props.navigation)}}>
+            <Text style={styles.ctaText}>Cancel Reservation </Text>
+        </TouchableHighlight>)
+    }
+    else{
+        return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.createViewingReservation(this.props.user.info.id, this.props.viewing.id)}}>
+            <Text style={styles.ctaText}>Reserve Slot</Text>
+        </TouchableHighlight>)
+    }
+  }
+
+ 
+  render() {
+    return(
+        <View style={{backgroundColor: 'white', flex: 1}}>
+              <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', padding: 20 }}>
+                  <Text style={styles.availabilityTitle}>Availability</Text>
+                  <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
+              </View>
+            <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
+                <Image style={styles.propertyImage} source={{url: this.props.viewing.property.thumbnail}} />
+                <View style={styles.imageOverlay}>
+                  <View style={styles.dateContainer}>
+                    <Text style={styles.weekDayStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
+                    <Text style={styles.dayStyle} >{new Date(`${this.props.viewing.date_time}`).getDate()}</Text>
+                    <Text style={styles.monthStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
+                    <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+                  </View>
+                </View>
+
+                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
+                    <View style={styles.buttonTextContainer}>
+                        <Text style={styles.buttonText}>View Property</Text>
+                        <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
+                    <View style={styles.buttonTextContainer}>
+                        <Text style={styles.buttonText}>Contact Agent</Text>
+                        <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
+                    </View>
+                </TouchableHighlight>
+                {/* {
+                    !this.props.showViewPropertyBtn ? null :
+                    <TouchableHighlight style={styles.goToPropertyBtn} onPress={() => {this.props.goToProperty()}}>
+                        <View>
+                            <Text style={styles.goToPropertyTxt}>View</Text>
+                            <Text style={styles.goToPropertyTxt}>{this.props.viewing.property.name}</Text>
+                        </View>
+                    </TouchableHighlight>
+                } */}
+               
+                {/* <View style={styles.container}>
+                    <View style={styles.sectionContainer}>
+                        <Text style={styles.availabilityTitle}>Presenter</Text>
+                        <View style={styles.userDetails}> 
+                            <Text style={styles.userName}>{this.props.user.info.name}</Text>
+                            <Image style={styles.userImage} source={{url: this.props.user.info.profile_picture}}/>
+                            <Text style={styles.userAbout}>{this.props.user.info.about}</Text>
+                    </View>
+                    </View>
+                </View> */}
+            </ScrollView>
+            <View style={styles.joinCastContainer}>
+               {this._renderCTA()}
+            </View>
+        </View>
+    )
+  }
+}
+
+ViewingScreen.PropTypes = {
+    viewing: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    cancelViewingReservation: PropTypes.func.isRequired,
+    createViewingReservation: PropTypes.func.isRequired,
+    goToProperty: PropTypes.func.isRequired,
+    showViewPropertyBtn: PropTypes.bool.isRequired,
+}
+
 
 
 const styles = StyleSheet.create({
@@ -50,18 +149,31 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginTop: 20,
   },
-  goToPropertyBtn:{
+  buttonContainer:{
     flex: 1,
     alignSelf: 'stretch',
-    backgroundColor: Colors.DARK_BLUE,
     justifyContent: 'center',
-    height: 80
   },
-  goToPropertyTxt: {
+  buttonTextContainer: {
+    flexDirection: 'row',
+    padding: 20
+  },
+  buttonText: {
     fontSize: FontSizes.DEFAULT,
-    color: 'white',
-    alignSelf: 'center',
-    textAlign: 'center'
+    flex: 0.5
+  },
+  buttonText: {
+    alignSelf: 'flex-start',
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.DARK_GREY,
+    flex: 0.9
+  },
+  buttonIcon: {
+    color: Colors.AQUA_GREEN,
+    alignSelf: 'flex-end',
+    flex: 0.1,
+    fontSize: 28,
+    fontWeight: '100'
   },
   availabilityContainer: {
     flexDirection: 'row',
@@ -71,16 +183,14 @@ const styles = StyleSheet.create({
   },
   availabilityTitle:{
     textAlign: 'left',
-    color: Colors.DARK_GREY,
+    color: Colors.AQUA_GREEN,
     fontSize: FontSizes.DEFAULT,
-    fontWeight: 'bold',
   },
   availabilityValue: {
     fontSize: FontSizes.DEFAULT,
     flex: 0.6,
-    textAlign: 'left',
-    color: Colors.DARK_GREY,
-    padding: 10
+    textAlign: 'right',
+    color: 'white',
   },
   secureSpotBtn: {
     alignSelf: 'flex-end',
@@ -137,89 +247,47 @@ const styles = StyleSheet.create({
       color: 'white',
       textAlign: 'center',
       fontSize: FontSizes.DEFAULT
+  },
+  propertyImage: {
+    flex: 1,
+    height: 250
+  },
+  imageOverlay:{
+    position: 'absolute',
+    top: 0,
+    width: Dimensions.get('window').width,
+    height: 250,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center'
+  },
+  weekDayStyle: {
+    color: 'white',
+    fontSize: FontSizes.TITLE,
+  },
+  dayStyle: {
+    color: 'white',
+    fontSize: FontSizes.TITLE,
+  },
+  weekStyle: {
+    color: 'white',
+    fontSize: FontSizes.TITLE,
+  },
+  timeStyle: {
+    color: 'white',
+    fontSize: FontSizes.TITLE,
+  },
+  monthStyle: {
+    color: 'white',
+    fontSize: FontSizes.TITLE,
+  },
+  dateContainer: {
+    alignSelf: 'center',
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 75,
+    padding: 20
   }
 });
-
-export default class ViewingScreen extends Component{
-
-  
-  _renderCTA(){
-    
-    if(this.props.viewing.isLive){
-        return ( 
-        <TouchableHighlight style={styles.ctaBtnRed}>
-            <Text style={styles.ctaText}>
-                Join Live Cast
-            </Text>
-        </TouchableHighlight>)
-    }
-    
-    if(this.props.viewing.viewing_reservation){
-        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.viewing.viewing_reservation.id, this.props.navigation)}}>
-            <Text style={styles.ctaText}>Cancel Reservation </Text>
-        </TouchableHighlight>)
-    }
-    else{
-        return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.createViewingReservation(this.props.user.info.id, this.props.viewing.id)}}>
-            <Text style={styles.ctaText}>Reserve Spot</Text>
-        </TouchableHighlight>)
-    }
-  }
-
- 
-  render() {
-    return(
-        <View style={{backgroundColor: 'white', flex: 1}}>
-            <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
-                <View style={styles.viewingDate}>
-                        <DateCell style={styles.viewingDate} 
-                        dateTime={this.props.viewing.date_time} 
-                        showTime={true}
-                        titleStyle={styles.viewingTitle}
-                        dayStyle={styles.viewingDay}
-                        monthStyle={styles.viewingMonth}
-                        timeStyle={styles.viewingTime}/>
-                    </View>
-                {
-                    !this.props.showViewPropertyBtn ? null :
-                    <TouchableHighlight style={styles.goToPropertyBtn} onPress={() => {this.props.goToProperty()}}>
-                        <View>
-                            <Text style={styles.goToPropertyTxt}>View</Text>
-                            <Text style={styles.goToPropertyTxt}>{this.props.viewing.property.name}</Text>
-                        </View>
-                    </TouchableHighlight>
-                }
-               
-                <View style={styles.container}>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.availabilityTitle}>Availability</Text>
-                        <View style={styles.availabilityContainer}> 
-                            <Text style={styles.availabilityValue}>Only {this.props.viewing.capacity} spots left</Text>
-                    </View>
-                    </View>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.availabilityTitle}>Presenter</Text>
-                        <View style={styles.userDetails}> 
-                            <Text style={styles.userName}>{this.props.user.info.name}</Text>
-                            <Image style={styles.userImage} source={{url: this.props.user.info.profile_picture}}/>
-                            <Text style={styles.userAbout}>{this.props.user.info.about}</Text>
-                    </View>
-                    </View>
-                </View>
-            </ScrollView>
-            <View style={styles.joinCastContainer}>
-               {this._renderCTA()}
-            </View>
-        </View>
-    )
-  }
-}
-
-ViewingScreen.PropTypes = {
-    viewing: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    cancelViewingReservation: PropTypes.func.isRequired,
-    createViewingReservation: PropTypes.func.isRequired,
-    goToProperty: PropTypes.func.isRequired,
-    showViewPropertyBtn: PropTypes.bool.isRequired,
-}

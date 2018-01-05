@@ -80,7 +80,7 @@ class ViewingsScreen extends Component{
                 <DateCell dateTime={reservation.viewing.date_time} />
               </View>
               <Text style={styles.propertyName}>{reservation.viewing.property.name}</Text>
-              <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time} UTC`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+              <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time}`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
             </View>
         </TouchableHighlight>
       )

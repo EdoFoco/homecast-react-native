@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
   render() {
     return(
         <View style={styles.viewingCell}>
-            <Text style={this.props.titleStyle ? [styles.viewingTitle, this.props.titleStyle] : styles.viewingTitle}>{new Date(`${this.props.dateTime} UTC`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
-            <Text style={this.props.dayStyle ? [styles.viewingDay, this.props.dayStyle] : styles.viewingDay} >{new Date(`${this.props.dateTime} UTC`).getDate()}</Text>
-            <Text style={this.props.monthStyle ? [styles.viewingMonth, this.props.monthStyle]  : styles.viewingMonth}>{new Date(`${this.props.dateTime} UTC`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
+            <Text style={this.props.titleStyle ? [styles.viewingTitle, this.props.titleStyle] : styles.viewingTitle}>{new Date(`${this.props.dateTime}`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
+            <Text style={this.props.dayStyle ? [styles.viewingDay, this.props.dayStyle] : styles.viewingDay} >{new Date(`${this.props.dateTime}`).getDate()}</Text>
+            <Text style={this.props.monthStyle ? [styles.viewingMonth, this.props.monthStyle]  : styles.viewingMonth}>{new Date(`${this.props.dateTime}`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
             {
                 !this.props.showTime ? null :
-                <Text style={this.props.timeStyle ? [styles.viewingTime, this.props.timeStyle]  : styles.viewingTime}>{new Date(`${this.props.dateTime} UTC`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+                <Text style={this.props.timeStyle ? [styles.viewingTime, this.props.timeStyle]  : styles.viewingTime}>{new Date(`${this.props.dateTime}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
             }
         </View>
     )
