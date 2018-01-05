@@ -22,217 +22,29 @@ import {
 } from 'react-native';
 import { DEFAULT } from '../../helpers/FontSizes';
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  propertyDescriptionWrapper: {
-    alignSelf: 'stretch',
-    backgroundColor: "rgba(0,0,0,0.6)",
-    justifyContent: 'center'
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    height: 250
-  },
-  tabContainer:{
-      flex: 1,
-      alignSelf: 'stretch',
-      alignContent: 'flex-start',
-      //flexDirection: 'row',
-      //padding: 10,
-      //paddingTop: 0
-  },
-  viewingsTabContainer:{
-    flex: 1,
-    alignSelf: 'stretch',
-    alignContent: 'flex-start',
-  },
-  viewingsList: {
-    //  height: 80
-    backgroundColor: 'blue',
-    flex: 1
-  },
-  liveViewingsTitle: {
-      backgroundColor: "rgba(246,67,74,1)", 
-      alignSelf: 'stretch', 
-      color:'white',
-      fontSize: FontSizes.DEFAULT,
-      padding: 10, 
-      justifyContent: 'center'
-    },
-    viewingRow:{
-      flex: 1,
-      alignSelf: 'stretch',
-      paddingBottom: 10,
-      paddingTop: 10,
-      borderBottomColor: Colors.LIGHT_GRAY,
-      //borderBottomWidth: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    viewingDateCell: {
-      width: 80,
-      alignSelf: 'flex-start',
-    },
-    viewingCapacity: {
-      color: Colors.RED,
-      fontSize: FontSizes.SMALL_TEXT,
-      textAlign: 'right',
-      flex: 1
-    },
-    viewingTime:{
-      flex: 0.7,
-      fontSize: FontSizes.DEFAULT,
-      textAlign: 'right',
-      color: Colors.DARK_GREY,
-      paddingRight: 5
-    },
-    menuContainer: {
-      flexDirection: 'row',
-      alignSelf: 'flex-end',
-      alignItems: 'flex-end',
-    },
-    menuItemContainer: {
-      alignSelf: 'flex-end',
-      padding: 20,
-      marginRight: 4
-    },
-    menuItem: {
-      alignItems: 'center',
-    },
-    menuIcon: {
-      color: 'white',
-      fontSize: FontSizes.TITLE,
-      marginBottom: 5
-    },
-    menuIconActive: {
-      color: Colors.AQUA_GREEN,
-      fontSize: FontSizes.TITLE,
-      marginBottom: 5
-    },
-    menuText: {
-      color: Colors.AQUA_GREEN,
-      fontSize: FontSizes.DEFAULT,
-      flex: 0.7,
-      alignSelf: 'center',
-      marginLeft: 10
-    },
-    menuTextActive: {
-      color: Colors.RED,
-      fontSize: FontSizes.SMALL_TEXT
-    },
-    viewingMonthHeader: {
-      borderBottomWidth: 2,
-      flex: 1,
-      fontSize: FontSizes.SMALL_TEXT
-    },
-    viewingsListContainer: {
-      flex: 1,
-      backgroundColor: 'green',
-      margin: 20,
-      height: 80,
-      width: 20
-    },
-    viewingWrapper: {
-      height: 60,
-      backgroundColor: 'yellow',
-      margin: 10,
-      alignSelf: 'stretch',
-      flex: 1
-    },
-    viewingButton: {
-      flex: 1,
-      backgroundColor: 'orange',
-      height: 40,
-      width: 40
-    },
-    priceBadge:{
-      //backgroundColor: Colors.AQUA_GREEN,
-      //bottom: 0,
-      color: Colors.AQUA_GREEN,
-      //position: 'absolute',
-      fontSize: FontSizes.DEFAULT,
-      fontWeight: 'bold',
-      alignSelf: 'center',
-      //lineHeight: 35,
-      //paddingLeft: 10,
-      //paddingRight: 10,
-      //paddingTop: 10,
-      //paddingRight: 20
-      //width: 150
-    },
-    propertyTitle: {
-      fontSize: FontSizes.BIG,
-      fontWeight: 'bold',
-      alignSelf: 'flex-start',
-      color: Colors.DARK_GREY,
-      padding: 10,
-      paddingTop: 0,
-      flex: 0.7
-    },
-    servicesContainer: {
-      flexDirection: 'row',
-      alignSelf: 'stretch',
-      marginTop: 15,
-      
-     /* borderTopWidth: 1,
-      borderTopColor: Colors.DARK_GREY,
-      borderBottomWidth: 1,
-      borderBottomColor: Colors.DARK_GREY
-      paddingTop: 10,
-      paddingBottom: 10*/
-    },
-    serviceItem: {
-      flex: 1,
-      alignSelf: 'flex-start',
-      alignItems: 'center'
-    },
-    serviceIcon: {
-      fontSize: FontSizes.DEFAULT,
-      color: Colors.LIGHT_GRAY
-    },
-    serviceText: {
-      fontSize: FontSizes.SMALL_TEXT,
-      color: Colors.DARK_GREY
-    },
-    descriptionContainer: {
-      marginTop: 0,
-      padding: 10
-    },
-    subTitle: {
-      fontSize: FontSizes.DEFAULT,
-      fontWeight: 'bold',
-      color: Colors.DARK_GREY,
-      marginTop: 15
-    },
-    propertyDescription: {
-      marginTop: 10,
-      fontSize: FontSizes.DEFAULT,
-      color: Colors.DARK_GREY
-    }
-});
-
 export default class Property extends Component{
 
   _keyExtractor = (item, index) => index;
   
+  _toDateString(date){
+    let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
+    let day = new Date(`${date}`).getDate();
+    let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
+    let year = new Date(`${date}`).toLocaleString('en-us', {  year: 'numeric' });
+
+    return `${weekday}, ${day} ${month} ${year}`;
+  }
+
   _renderItem = ({item}) => {
     let viewing = item;
     return (
       <TouchableHighlight onPress={() => {this.props.goToViewing(viewing.id)}}>
         <View style={styles.viewingRow}>
-          <View style={styles.viewingDateCell} >
-            <DateCell dateTime={viewing.date_time} />
-          </View>
-          <Text style={styles.viewingCapacity}>Only {viewing.capacity} spots left</Text>
-          <Text style={styles.viewingTime}>{new Date(`${viewing.date_time}`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit',  hour12: true}).toUpperCase()}</Text>
+            <View style={styles.viewingDateContainer}>
+              <Text style={styles.viewingTime}>{new Date(`${viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+              <Text style={styles.dateStyle}>{this._toDateString(viewing.date_time)}</Text>
+            </View>
+          <Text style={styles.viewingCapacity}>{viewing.capacity} slots left</Text>
         </View>
       </TouchableHighlight>
     )
@@ -370,3 +182,212 @@ Property.PropTypes = {
     updatePropertyActiveTab: PropTypes.func.isRequired,
     goToViewing: PropTypes.func.isRequired
 }
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  propertyDescriptionWrapper: {
+    alignSelf: 'stretch',
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: 'center'
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    height: 250
+  },
+  tabContainer:{
+      flex: 1,
+      alignSelf: 'stretch',
+      alignContent: 'flex-start',
+      //flexDirection: 'row',
+      //padding: 10,
+      //paddingTop: 0
+  },
+  viewingsTabContainer:{
+    flex: 1,
+    alignSelf: 'stretch',
+    alignContent: 'flex-start',
+  },
+  viewingsList: {
+    //  height: 80
+    backgroundColor: 'blue',
+    flex: 1
+  },
+  liveViewingsTitle: {
+      backgroundColor: "rgba(246,67,74,1)", 
+      alignSelf: 'stretch', 
+      color:'white',
+      fontSize: FontSizes.DEFAULT,
+      padding: 10, 
+      justifyContent: 'center'
+    },
+    viewingRow:{
+      flex: 1,
+      alignSelf: 'stretch',
+      padding: 20,
+      borderBottomColor: Colors.LIGHT_GRAY,
+      borderBottomWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    viewingDateCell: {
+      width: 80,
+      alignSelf: 'flex-start',
+    },
+    viewingCapacity: {
+      color: Colors.RED,
+      fontSize: FontSizes.DEFAULT,
+      textAlign: 'left',
+      borderWidth: 1,
+      borderColor: Colors.RED,
+      padding: 5,
+      borderRadius: 10,
+      alignSelf: 'flex-end'
+    },
+    viewingDateContainer: {
+      flex: 0.7,
+    },
+    viewingTime:{
+      fontSize: FontSizes.DEFAULT,
+      textAlign: 'left',
+      color: Colors.DARK_GREY,
+      paddingRight: 5
+    },
+    menuContainer: {
+      flexDirection: 'row',
+      alignSelf: 'flex-end',
+      alignItems: 'flex-end',
+    },
+    menuItemContainer: {
+      alignSelf: 'flex-end',
+      padding: 20,
+      marginRight: 4
+    },
+    menuItem: {
+      alignItems: 'center',
+    },
+    menuIcon: {
+      color: 'white',
+      fontSize: FontSizes.TITLE,
+      marginBottom: 5
+    },
+    menuIconActive: {
+      color: Colors.AQUA_GREEN,
+      fontSize: FontSizes.TITLE,
+      marginBottom: 5
+    },
+    menuText: {
+      color: Colors.AQUA_GREEN,
+      fontSize: FontSizes.DEFAULT,
+      flex: 0.7,
+      alignSelf: 'center',
+      marginLeft: 10
+    },
+    menuTextActive: {
+      color: Colors.RED,
+      fontSize: FontSizes.SMALL_TEXT
+    },
+    viewingMonthHeader: {
+      borderBottomWidth: 2,
+      flex: 1,
+      fontSize: FontSizes.SMALL_TEXT
+    },
+    viewingsListContainer: {
+      flex: 1,
+      backgroundColor: 'green',
+      margin: 20,
+      height: 80,
+      width: 20
+    },
+    viewingWrapper: {
+      height: 60,
+      backgroundColor: 'yellow',
+      margin: 10,
+      alignSelf: 'stretch',
+      flex: 1
+    },
+    viewingButton: {
+      flex: 1,
+      backgroundColor: 'orange',
+      height: 40,
+      width: 40
+    },
+    priceBadge:{
+      //backgroundColor: Colors.AQUA_GREEN,
+      //bottom: 0,
+      color: Colors.AQUA_GREEN,
+      //position: 'absolute',
+      fontSize: FontSizes.DEFAULT,
+      fontWeight: 'bold',
+      alignSelf: 'center',
+      //lineHeight: 35,
+      //paddingLeft: 10,
+      //paddingRight: 10,
+      //paddingTop: 10,
+      //paddingRight: 20
+      //width: 150
+    },
+    propertyTitle: {
+      fontSize: FontSizes.BIG,
+      fontWeight: 'bold',
+      alignSelf: 'flex-start',
+      color: Colors.DARK_GREY,
+      padding: 10,
+      paddingTop: 0,
+      flex: 0.7
+    },
+    servicesContainer: {
+      flexDirection: 'row',
+      alignSelf: 'stretch',
+      marginTop: 15,
+      
+     /* borderTopWidth: 1,
+      borderTopColor: Colors.DARK_GREY,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.DARK_GREY
+      paddingTop: 10,
+      paddingBottom: 10*/
+    },
+    serviceItem: {
+      flex: 1,
+      alignSelf: 'flex-start',
+      alignItems: 'center'
+    },
+    serviceIcon: {
+      fontSize: FontSizes.DEFAULT,
+      color: Colors.LIGHT_GRAY
+    },
+    serviceText: {
+      fontSize: FontSizes.SMALL_TEXT,
+      color: Colors.DARK_GREY
+    },
+    descriptionContainer: {
+      marginTop: 0,
+      padding: 10
+    },
+    subTitle: {
+      fontSize: FontSizes.DEFAULT,
+      fontWeight: 'bold',
+      color: Colors.DARK_GREY,
+      marginTop: 15
+    },
+    propertyDescription: {
+      marginTop: 10,
+      fontSize: FontSizes.DEFAULT,
+      color: Colors.DARK_GREY
+    },
+    dateStyle:{
+      fontSize: FontSizes.DEFAULT,
+      color: Colors.VERY_LIGHT_GRAY,
+      flex: 1,
+      textAlign: 'left'
+    }
+});
