@@ -32,8 +32,8 @@ export default class ViewingScreen extends Component{
         </TouchableHighlight>)
     }
     
-    if(this.props.viewing.viewing_reservation){
-        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.viewing.viewing_reservation.id, this.props.navigation)}}>
+    if(this.props.reservation){
+        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>
             <Text style={styles.ctaText}>Cancel Reservation </Text>
         </TouchableHighlight>)
     }
@@ -61,7 +61,7 @@ export default class ViewingScreen extends Component{
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
-                <Image style={styles.propertyImage} source={{url: this.props.viewing.property.thumbnail}} />
+                <Image style={styles.propertyImage} source={{url: this.props.property.thumbnail}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
@@ -92,6 +92,8 @@ export default class ViewingScreen extends Component{
 
 ViewingScreen.PropTypes = {
     viewing: PropTypes.object.isRequired,
+    property: PropTypes.object.isRequired,
+    reservation: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     cancelViewingReservation: PropTypes.func.isRequired,
     createViewingReservation: PropTypes.func.isRequired,
@@ -250,10 +252,6 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.DEFAULT,
   },
   dayStyle: {
-    color: 'white',
-    fontSize: FontSizes.DEFAULT,
-  },
-  weekStyle: {
     color: 'white',
     fontSize: FontSizes.DEFAULT,
   },

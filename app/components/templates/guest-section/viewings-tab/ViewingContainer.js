@@ -10,10 +10,10 @@ class ViewingContainer extends Component{
  _cancelViewingReservation(userId, reservationId, navigation){
     return this.props.cancelViewingReservation(userId, reservationId)
     .then(() => {
-        return this.props.getViewingReservations(this.props.user.info.id);
+        return this.props.getProperty(this.props.property.id);
     })
     .then(() => {
-        return this.props.resetViewingsTab();
+        return this.props.navigation.goBack();
     })
     .catch((error) => {
         console.error(error);
@@ -22,7 +22,7 @@ class ViewingContainer extends Component{
   
   _goToProperty(){
   
-    this.props.getProperty(this.props.viewing.property.id)
+    this.props.getProperty(this.props.property.id)
     .then((property) => {
         this.props.navigation.navigate('ViewingProperty', { property : property});
     })
@@ -35,6 +35,8 @@ class ViewingContainer extends Component{
     return(
        <ViewingScreen 
             viewing={this.props.viewing}
+            property={this.props.property}
+            reservation={this.props.reservation}
             user={this.props.user}
             cancelViewingReservation={(userId, reservationId, navigation) =>{this._cancelViewingReservation(userId, reservationId, navigation)}}
             goToProperty={() => { this._goToProperty() }}
@@ -46,13 +48,16 @@ class ViewingContainer extends Component{
 
 
 ViewingContainer.navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.viewing.property.name}`,
+    title: `Viewing - ${navigation.state.params.property.name}`,
 });
 
 
 const mapStateToProps = (state, {navigation}) => {
+    let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.property.id);
     return {
-        viewing: navigation.state.params.viewing,
+        property: property,
+        viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
+        reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewingId),
         user: state.user,
         nav: state.guestViewingsNav
     }

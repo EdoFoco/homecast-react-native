@@ -21,39 +21,16 @@ class PropertyContainer extends Component{
   componentWillMount(){
    
     this.props.updateCurrentProperty(this.props.currentProperty);
-    
-    this.props.getPropertyViewings(this.props.currentProperty.id)
-    .then((viewings) => {
-      var sorted = viewings.sort(function(a, b) {
-        a = new Date(a.date_time);
-        b = new Date(b.date_time);
-        return a<b ? -1 : a>b ? 1 : 0;
-      });
-
-      this.props.updateCurrentPropertyViewings(sorted);
-      this.props.updateViewingsLoaded(true);
-    })
-    .catch((error) => {
-      console.warn(error);
-    });
   }
 
   _goToViewing(viewingId){
-      //this.props.navigation.navigate('Other', { viewing : viewing });
-      return this.props.getViewing(viewingId)
-      .then((viewing) => {
-          this.props.navigation.navigate('PropertiesTabViewing', { viewing : viewing });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      this.props.navigation.navigate('Viewing', { viewingId: viewingId, property: this.props.currentProperty});
     }
   
   render() {
     return (
         <Property 
             currentProperty={this.props.currentProperty}
-            viewings={this.props.currentPropertyViewings}
             properties={this.props.properties}
             propertyScreen={this.props.propertyScreen}
             goToViewing={(viewingId) => { return this._goToViewing(viewingId)}}
@@ -74,8 +51,8 @@ const mapStateToProps = (state, navigation) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        currentProperty: navigation.navigation.state.params.property,
-        currentPropertyViewings: state.currentPropertyViewings,
+        currentProperty: state.properties.propertiesList.find(p => p.id === navigation.navigation.state.params.property.id),
+        currentPropertyViewings: state.properties.propertiesList.find(p => p.id === navigation.navigation.state.params.property.id).viewings,
         propertyScreen: state.propertyScreen,
         properties: state.properties
     }

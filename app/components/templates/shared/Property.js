@@ -114,15 +114,14 @@ export default class Property extends Component{
   _renderViewingsTab(){
     return (
       <View style={styles.viewingsTabContainer}>
-      { 
-        !this.props.properties.viewingsLoaded ? null :
+      
           <FlatList style={{margin:5, flex: 1}}
-           data={this.props.properties.currentPropertyViewings}
+           data={this.props.currentProperty.viewings}
            keyExtractor={this._keyExtractor}
            renderItem={this._renderItem} 
            extraData={this.props.properties}
          />
-      }
+      
     </View>
     )
   }
@@ -182,7 +181,6 @@ export default class Property extends Component{
 
 Property.PropTypes = {
     currentProperty: PropTypes.object.isRequired,
-    viewings: PropTypes.array.isRequired,
     propertyScreen: PropTypes.object.isRequired,
     properties: PropTypes.object.isRequired,
     goToViewing: PropTypes.func.isRequired

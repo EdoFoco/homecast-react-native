@@ -36,11 +36,12 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     propertyTitle: {
-        color: '#011627',
+        color: Colors.DARK_GREY,
         fontSize: FontSizes.DEFAULT
     },
     descriptionText: {
-        color: '#9E9E9E'
+        color: Colors.VERY_LIGHT_GRAY,
+        fontSize: FontSizes.SMALL_TEXT
     },
     priceBadge:{
         backgroundColor: Colors.AQUA_GREEN,

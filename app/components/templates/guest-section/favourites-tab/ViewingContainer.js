@@ -7,7 +7,7 @@ import { NavigationActions } from 'react-navigation';
 
 class ViewingContainer extends Component{
 
- _reserveSpot(userId, viewingId){
+_reserveSpot(userId, viewingId){
     return this.props.createViewingReservation(userId, viewingId)
     .then(() => {
         return this.props.getProperty(this.props.property.id);
@@ -15,8 +15,7 @@ class ViewingContainer extends Component{
     .catch((error) => {
         console.error(error);
     });
- }
-        
+}
     
  _cancelViewingReservation(userId, reservationId, navigation){
     return this.props.cancelViewingReservation(userId, reservationId)
