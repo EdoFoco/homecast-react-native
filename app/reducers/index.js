@@ -18,7 +18,6 @@ import section from './Section';
 import webrtc from './NewWebRTC';
 import chat from './Chat';
 import properties from './Properties';
-import propertyScreen from './PropertyScreen';
 import viewings from './Viewings';
 import scrapers from './Scrapers';
 
@@ -41,7 +40,6 @@ const AppReducer = combineReducers({
   webrtc,
   chat,
   properties,
-  propertyScreen,
   viewings,
   scrapers
 }, devToolsEnhancer());

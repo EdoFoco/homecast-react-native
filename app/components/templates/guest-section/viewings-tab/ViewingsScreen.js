@@ -6,6 +6,7 @@ import { NavigationActions } from 'react-navigation';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import DateCell from '../../shared/DateCell';
+import ViewingRow from '../../shared/ViewingRow';
 import {
   StyleSheet,
   Text,
@@ -74,15 +75,7 @@ class ViewingsScreen extends Component{
   _renderRow = function({item}){
     let reservation = item;
     return (
-        <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing.id)}}>
-            <View style={styles.viewingRow}> 
-              <View style={styles.viewingDateCell} >
-                <DateCell dateTime={reservation.viewing.date_time} />
-              </View>
-              <Text style={styles.propertyName}>{reservation.viewing.property.name}</Text>
-              <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time}`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
-            </View>
-        </TouchableHighlight>
+        <ViewingRow viewing={reservation.viewing} goToViewing={(viewingId) => {this._goToViewing(reservation.viewing.id)} } />
       )
   }
 

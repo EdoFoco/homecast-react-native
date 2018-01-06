@@ -10,6 +10,7 @@ import * as FontSizes from '../../helpers/FontSizes';
 import MapView from 'react-native-maps';
 import DateCell from './DateCell';
 import PropTypes from 'prop-types';
+import ViewingRow from './ViewingRow';
 import {
   StyleSheet,
   Text,
@@ -24,6 +25,14 @@ import { DEFAULT } from '../../helpers/FontSizes';
 
 export default class Property extends Component{
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        activeTab: 1
+    }
+   }
+   
   _keyExtractor = (item, index) => index;
   
   _toDateString(date){
@@ -38,21 +47,13 @@ export default class Property extends Component{
   _renderItem = ({item}) => {
     let viewing = item;
     return (
-      <TouchableHighlight onPress={() => {this.props.goToViewing(viewing.id)}}>
-        <View style={styles.viewingRow}>
-            <View style={styles.viewingDateContainer}>
-              <Text style={styles.viewingTime}>{new Date(`${viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
-              <Text style={styles.dateStyle}>{this._toDateString(viewing.date_time)}</Text>
-            </View>
-          <Text style={styles.viewingCapacity}>{viewing.capacity} slots left</Text>
-        </View>
-      </TouchableHighlight>
+      <ViewingRow viewing={viewing} goToViewing={(viewingId) => {this.props.goToViewing(viewingId)}} />
     )
   };
 
   _renderInfoTab(){
     return (
-      <View style={styles.tabContainer}>
+      <ScrollView style={styles.tabContainer}>
         <View style={{flexDirection: 'row', marginBottom: 20}} >
             <Image source={{uri: this.props.currentProperty.thumbnail}} style={styles.backgroundImage} >
             </Image>
@@ -91,7 +92,7 @@ export default class Property extends Component{
              }
            
          </View>
-      </View>
+      </ScrollView>
     )
   }
   
@@ -115,7 +116,7 @@ export default class Property extends Component{
       <View style={styles.viewingsTabContainer}>
       { 
         !this.props.properties.viewingsLoaded ? null :
-          <FlatList style={{margin:5}}
+          <FlatList style={{margin:5, flex: 1}}
            data={this.props.properties.currentPropertyViewings}
            keyExtractor={this._keyExtractor}
            renderItem={this._renderItem} 
@@ -128,50 +129,55 @@ export default class Property extends Component{
   
   render() {
     return (
-      <ScrollView style={{backgroundColor: 'white'}}>
-          <View style={styles.container}>
-            <View style={{flexDirection: 'row',flex: 1, backgroundColor: Colors.DARK_BLUE, width: Dimensions.get('window').width}}>
-              {this.props.propertyScreen.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
-              {this.props.propertyScreen.activeTab == 2 ?<Text style={styles.menuText}>Map</Text> : null }
-              {this.props.propertyScreen.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null }
-              <View style={styles.menuContainer}>
-                      <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(1)}}>
-                        <View style={styles.menuItem}>
-                            <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
-                            { this.props.propertyScreen.activeTab == 1 ? <View style={styles.triangle} /> : null }
-                        </View>
-                      </TouchableHighlight>
-                      <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(2)}}>
-                        <View style={styles.menuItem}> 
-                            <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="map" />
-                            { this.props.propertyScreen.activeTab == 2 ? <View style={styles.triangle} /> : null }
-                        </View>
-                      </TouchableHighlight>
-                      <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.props.updatePropertyActiveTab(3)}}>
-                        <View style={styles.menuItem}> 
-                            <FontAwesomeIcon style={this.props.propertyScreen.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
-                            { this.props.propertyScreen.activeTab == 3 ? <View style={styles.triangle} /> : null }
-                        </View>
-                      </TouchableHighlight>
-                </View>
-            </View>
-            {{
-              1: (
-                this._renderInfoTab()
-              ),
-              2: (
-                this._renderMapTab()
-              ),
-              3: (
-                this._renderViewingsTab()
-              )
-            }[this.props.propertyScreen.activeTab]}
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View style={styles.container}>
+              <View style={{flexDirection: 'row', backgroundColor: Colors.DARK_BLUE, width: Dimensions.get('window').width}}>
+                {this.state.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
+                {this.state.activeTab == 2 ?<Text style={styles.menuText}>Map</Text> : null }
+                {this.state.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null }
+                <View style={styles.menuContainer}>
+                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 1})}}>
+                          <View style={styles.menuItem}>
+                              <FontAwesomeIcon style={this.state.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
+                              { this.state.activeTab == 1 ? <View style={styles.triangle} /> : null }
+                          </View>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 2})}}>
+                          <View style={styles.menuItem}> 
+                              <FontAwesomeIcon style={this.state.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="map" />
+                              { this.state.activeTab == 2 ? <View style={styles.triangle} /> : null }
+                          </View>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 3})}}>
+                          <View style={styles.menuItem}> 
+                              <FontAwesomeIcon style={this.state.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
+                              { this.state.activeTab == 3 ? <View style={styles.triangle} /> : null }
+                          </View>
+                        </TouchableHighlight>
+                  </View>
+              </View>
+              {{
+                1: (
+                  this._renderInfoTab()
+                ),
+                2: (
+                  this._renderMapTab()
+                ),
+                3: (
+                  this._renderViewingsTab()
+                )
+              }[this.state.activeTab]}
 
-          </View>
-      </ScrollView>
+            </View>
+        {
+          // this.state.activeTab != 3 ? null :
+          // <TouchableHighlight style={styles.requestViewingButton}>
+          //     <Text style={styles.requestViewingButtonTxt}>Request alternative viewing</Text>
+          // </TouchableHighlight>
+        }
+      </View>
     )
   }
-  
 }
 
 Property.PropTypes = {
@@ -179,11 +185,8 @@ Property.PropTypes = {
     viewings: PropTypes.array.isRequired,
     propertyScreen: PropTypes.object.isRequired,
     properties: PropTypes.object.isRequired,
-    updatePropertyActiveTab: PropTypes.func.isRequired,
     goToViewing: PropTypes.func.isRequired
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -227,39 +230,6 @@ const styles = StyleSheet.create({
       fontSize: FontSizes.DEFAULT,
       padding: 10, 
       justifyContent: 'center'
-    },
-    viewingRow:{
-      flex: 1,
-      alignSelf: 'stretch',
-      padding: 20,
-      borderBottomColor: Colors.LIGHT_GRAY,
-      borderBottomWidth: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    viewingDateCell: {
-      width: 80,
-      alignSelf: 'flex-start',
-    },
-    viewingCapacity: {
-      color: Colors.RED,
-      fontSize: FontSizes.DEFAULT,
-      textAlign: 'left',
-      borderWidth: 1,
-      borderColor: Colors.RED,
-      padding: 5,
-      borderRadius: 10,
-      alignSelf: 'flex-end'
-    },
-    viewingDateContainer: {
-      flex: 0.7,
-    },
-    viewingTime:{
-      fontSize: FontSizes.DEFAULT,
-      textAlign: 'left',
-      color: Colors.DARK_GREY,
-      paddingRight: 5
     },
     menuContainer: {
       flexDirection: 'row',
@@ -321,19 +291,10 @@ const styles = StyleSheet.create({
       width: 40
     },
     priceBadge:{
-      //backgroundColor: Colors.AQUA_GREEN,
-      //bottom: 0,
       color: Colors.AQUA_GREEN,
-      //position: 'absolute',
       fontSize: FontSizes.DEFAULT,
       fontWeight: 'bold',
       alignSelf: 'center',
-      //lineHeight: 35,
-      //paddingLeft: 10,
-      //paddingRight: 10,
-      //paddingTop: 10,
-      //paddingRight: 20
-      //width: 150
     },
     propertyTitle: {
       fontSize: FontSizes.BIG,
@@ -348,13 +309,6 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignSelf: 'stretch',
       marginTop: 15,
-      
-     /* borderTopWidth: 1,
-      borderTopColor: Colors.DARK_GREY,
-      borderBottomWidth: 1,
-      borderBottomColor: Colors.DARK_GREY
-      paddingTop: 10,
-      paddingBottom: 10*/
     },
     serviceItem: {
       flex: 1,
@@ -384,10 +338,15 @@ const styles = StyleSheet.create({
       fontSize: FontSizes.DEFAULT,
       color: Colors.DARK_GREY
     },
-    dateStyle:{
+    requestViewingButton: {
+      flex: 0.1,
+      backgroundColor: Colors.AQUA_GREEN,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    requestViewingButtonTxt: {
+      alignItems: 'center',
       fontSize: FontSizes.DEFAULT,
-      color: Colors.VERY_LIGHT_GRAY,
-      flex: 1,
-      textAlign: 'left'
+      color: 'white'
     }
 });

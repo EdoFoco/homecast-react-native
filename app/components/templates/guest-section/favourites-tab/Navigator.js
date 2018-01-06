@@ -3,12 +3,12 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FavouritesScreen from './FavouritesScreen';
-import PropertyScreen from '../../shared/PropertyScreen';
+import PropertyContainer from './PropertyContainer';
 import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     FavouritesHome: { screen: FavouritesScreen },
-    PropertyScreen: { screen: PropertyScreen }
+    PropertyScreen: { screen: PropertyContainer }
 }
 
 const stackConfiguration = {

@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewingsScreen from './ViewingsScreen';
 import ViewingContainer from './ViewingContainer';
-import PropertyScreen from '../../shared/PropertyScreen';
+import PropertyContainer from './PropertyContainer';
 import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     ViewingsHome: { screen: ViewingsScreen },
     Viewing: { screen: ViewingContainer },
-    ViewingProperty: { screen: PropertyScreen}
+    ViewingProperty: { screen: PropertyContainer}
 }
 
 const stackConfiguration = {

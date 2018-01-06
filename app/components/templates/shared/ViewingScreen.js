@@ -23,7 +23,6 @@ export default class ViewingScreen extends Component{
 
   
   _renderCTA(){
-    
     if(this.props.viewing.isLive){
         return ( 
         <TouchableHighlight style={styles.ctaBtnRed}>
@@ -45,6 +44,14 @@ export default class ViewingScreen extends Component{
     }
   }
 
+  _toDateString(date){
+    let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
+    let day = new Date(`${date}`).getDate();
+    let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
+    let year = new Date(`${date}`).toLocaleString('en-us', {  year: 'numeric' });
+
+    return `${weekday}, ${day} ${month}`;
+  }
  
   render() {
     return(
@@ -57,10 +64,8 @@ export default class ViewingScreen extends Component{
                 <Image style={styles.propertyImage} source={{url: this.props.viewing.property.thumbnail}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
-                    <Text style={styles.weekDayStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
-                    <Text style={styles.dayStyle} >{new Date(`${this.props.viewing.date_time}`).getDate()}</Text>
-                    <Text style={styles.monthStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+                    <Text style={styles.weekDayStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                   </View>
                 </View>
 
@@ -76,26 +81,6 @@ export default class ViewingScreen extends Component{
                         <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
-                {/* {
-                    !this.props.showViewPropertyBtn ? null :
-                    <TouchableHighlight style={styles.goToPropertyBtn} onPress={() => {this.props.goToProperty()}}>
-                        <View>
-                            <Text style={styles.goToPropertyTxt}>View</Text>
-                            <Text style={styles.goToPropertyTxt}>{this.props.viewing.property.name}</Text>
-                        </View>
-                    </TouchableHighlight>
-                } */}
-               
-                {/* <View style={styles.container}>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.availabilityTitle}>Presenter</Text>
-                        <View style={styles.userDetails}> 
-                            <Text style={styles.userName}>{this.props.user.info.name}</Text>
-                            <Image style={styles.userImage} source={{url: this.props.user.info.profile_picture}}/>
-                            <Text style={styles.userAbout}>{this.props.user.info.about}</Text>
-                    </View>
-                    </View>
-                </View> */}
             </ScrollView>
             <View style={styles.joinCastContainer}>
                {this._renderCTA()}
@@ -257,37 +242,40 @@ const styles = StyleSheet.create({
     top: 0,
     width: Dimensions.get('window').width,
     height: 250,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center'
   },
   weekDayStyle: {
     color: 'white',
-    fontSize: FontSizes.TITLE,
+    fontSize: FontSizes.DEFAULT,
   },
   dayStyle: {
     color: 'white',
-    fontSize: FontSizes.TITLE,
+    fontSize: FontSizes.DEFAULT,
   },
   weekStyle: {
     color: 'white',
-    fontSize: FontSizes.TITLE,
+    fontSize: FontSizes.DEFAULT,
   },
   timeStyle: {
     color: 'white',
     fontSize: FontSizes.TITLE,
+    marginTop: 10,
+    fontWeight: 'bold',
   },
   monthStyle: {
     color: 'white',
-    fontSize: FontSizes.TITLE,
+    fontSize: FontSizes.DEFAULT,
   },
   dateContainer: {
     alignSelf: 'center',
-    width: 150,
+    width: 180,
+    height: 180,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: 'white',
-    borderRadius: 75,
-    padding: 20
+    borderRadius: 90,
+    padding: 20,
   }
 });
