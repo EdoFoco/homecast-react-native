@@ -38,6 +38,10 @@ class ViewingContainer extends Component{
     });
   }
 
+  _joinLiveCast(){
+    this.props.navigation.navigate('LiveCast', { viewing: this.props.viewing});
+  }
+
   render() {
     return(
        <ViewingScreen 
@@ -49,6 +53,7 @@ class ViewingContainer extends Component{
             createViewingReservation={(userId, viewingId) => {this._reserveSpot(userId, viewingId)} }
             goToProperty={() => { this._goToProperty() }}
             showViewPropertyBtn={true}
+            joinLiveCast={() => {this._joinLiveCast()}}
        />
     )
   }

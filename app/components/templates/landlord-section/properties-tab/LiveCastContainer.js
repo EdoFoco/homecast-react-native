@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   
 });
 
-class OtherScreen extends Component{
+class LiveCastContainer extends Component{
 
   componentWillMount(){
     this.props.getViewing(this.props.navigation.state.params.viewing.id)
@@ -46,7 +46,7 @@ class OtherScreen extends Component{
   
 }
 
-OtherScreen.navigationOptions = ({ navigation }) => ({
+LiveCastContainer.navigationOptions = ({ navigation }) => ({
   title: `Room - ${navigation.state.params.viewing.id}`,
 });
 

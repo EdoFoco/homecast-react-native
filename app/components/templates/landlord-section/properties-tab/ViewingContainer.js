@@ -7,6 +7,7 @@ import PropertyRow from '../../../organisms/PropertyRow';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
+import AdminViewingScreen from '../../shared/AdminViewingScreen';
 
 import {
   StyleSheet,
@@ -17,14 +18,16 @@ import {
 class ViewingScreen extends Component{
   
   componentWillMount(){
-      this.props.getViewing(this.props.navigation.navigation.state.params.viewing.id);
+      this.props.getViewing(this.props.viewing.id);
   }
   
   render() {
     return (
-      <View style={styles.container}>
-          <Text>This is viewing</Text>
-      </View>
+      <AdminViewingScreen 
+            viewing={this.props.viewing}
+            property={this.props.property}
+            user={this.props.user}
+       />
     )
   }
 }
@@ -33,13 +36,16 @@ ViewingScreen.navigationOptions = ({ navigation }) => {
     return {
       title: 'Viewing'
   }
-  
 };
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, {navigation}) => {
      
-    return {
+  let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.property.id);
+  return {
+      property: property,
+      viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
+      user: state.user
     }
 };
 

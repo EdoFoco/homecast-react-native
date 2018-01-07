@@ -30,29 +30,29 @@ export default function webrtc(state = initialConferenceState, action) {
     case types.SET_SOCKET_ERROR:
         return { ...state,  hasError: action.data.hasError, error: action.data.error };
     case 'viewer':
-        var viewer = state.viewer;
+        var viewer = {...state.viewer};
         viewer.sdpOffer = action.data.sdpOffer;
         return { ...state,  viewer: viewer };
 
     case 'setViewerReadyToStream':
-        var viewer = state.viewer;
+        var viewer = {...state.viewer};
         viewer.isProcessingAnswer = false,
         viewer.isReady = true;
         return { ...state,  viewer: viewer };
 
     case types.CLIENT_VIEWER_RESPONSE:
-        var viewer = state.viewer;
+        var viewer = {...state.viewer};
         viewer.isProcessingAnswer = true,
         viewer.sdpAnswer = action.data.sdpAnswer
         return { ...state, viewer: viewer};
 
     case 'updateStreamUrl':
-        var viewer = state.viewer;
+        var viewer = {...state.viewer};
         viewer.isReady = false;
         viewer.streamUrl = action.url
         return { ...state, viewer: viewer};
     case 'iceCandidate':
-        var viewer = state.viewer;
+        var viewer = {...state.viewer};
         var index = viewer.iceCandidates.indexOf(action.data.candidate);
         if(index == -1){
             viewer.iceCandidates.push(action.data.candidate);
@@ -62,12 +62,15 @@ export default function webrtc(state = initialConferenceState, action) {
         if(action.data.response != 'accepted'){
             return state
         }
-        var presenter = state.presenter;
+        var presenter = {...state.presenter};
         presenter.isReady = true;
         return { ...state, presenter: presenter};
         
     case types.UPDATE_CONNECTION_STATUS:
         return { ...state, status: action.status };
+
+    case types.SERVER_DISCONNECT:
+        return initialConferenceState;
     default:
       return state;
   }

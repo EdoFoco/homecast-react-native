@@ -44,7 +44,7 @@
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
-			<key>test3KurentoLoadBalancer-1181578519.eu-west-1.elb.amazonaws.com/kurento</key>
+			<key>test4KurentoLoadBalancer-1926753556.eu-west-1.elb.amazonaws.com</key>
 			<dict/>
 			<key>NSExceptionAllowsInsecureHTTPLoads</key>
 			<true/>

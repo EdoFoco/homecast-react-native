@@ -49,8 +49,8 @@ class EditPropertyScreen extends Component{
                   isModalVisible={this.props.navigation.state.params.showAddViewingModal}
                   showModal={(showModal) => { this._showAddViewingModal(showModal)}}
                   createViewing={(propertyId, userId, viewingInfo) => this.props.createViewing(propertyId, userId, viewingInfo)}
-                  goToViewing={(viewing) => { this.props.navigation.navigate('ViewingScreen', { viewing : viewing}) }}
-                  />
+                  goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property}) }}
+                />
               }
           </View>
         </View>

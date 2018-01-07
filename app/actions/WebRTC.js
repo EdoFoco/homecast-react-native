@@ -62,21 +62,6 @@ export function setTextRoomState( textRoomConnected ){
     }
 }
 
-
-export function setRoom( textRoomValue ){
-    return {
-        type: types.SET_ROOM,
-        textRoomValue: textRoomValue
-    }
-}
-
-export function setRoomId( roomID ){
-    return {
-        type: types.SET_ROOM_ID,
-        roomID: roomID
-    }
-}
-
 export function removePeer( peerId ){
     return {
         type: types.REMOVE_PEER,

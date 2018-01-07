@@ -10,7 +10,7 @@ import * as Colors from '../../../helpers/ColorPallette';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
-    Other: { screen: OtherScreen },
+    LiveCast: { screen: OtherScreen },
     PropertiesTabPropertyScreen: { screen: PropertyContainer },
     PropertiesTabViewing: { screen: ViewingContainer }
 }

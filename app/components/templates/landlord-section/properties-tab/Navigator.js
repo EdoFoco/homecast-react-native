@@ -6,13 +6,13 @@ import * as Colors from '../../../helpers/ColorPallette';
 import PropertiesScreen from './PropertiesScreen';
 import AddPropertyScreen from './AddPropertyScreen';
 import EditPropertyScreen from './EditPropertyScreen';
-import ViewingScreen from './ViewingScreen';
+import ViewingContainer from './ViewingContainer';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
     EditPropertyScreen: { screen: EditPropertyScreen },
     AddPropertyScreen: { screen: AddPropertyScreen },
-    ViewingScreen: { screen: ViewingScreen }
+    ViewingScreen: { screen: ViewingContainer }
 }
 
 const stackConfiguration = {

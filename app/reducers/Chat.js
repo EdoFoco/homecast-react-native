@@ -1,6 +1,6 @@
  import * as types from '../actions/Types';
  
- const initalChatState = {
+ const initialChatState = {
       socketId: '',
       subscribedUsers: [],
       chatMessages: [],
@@ -10,7 +10,7 @@
       roomId: ''
  }
 
- export default function chat(state = initalChatState, action) {
+ export default function chat(state = initialChatState, action) {
   
   switch(action.type){
       case types.CLIENT_MESSAGE:
@@ -27,6 +27,8 @@
             return { ...state,  socketId: action.data.socketId };
         case types.UPDATE_ROOM_ID:
             return { ...state,  roomId: action.roomId };
+        case types.SERVER_DISCONNECT:
+            return initialChatState;
         default:
             return state;
     }

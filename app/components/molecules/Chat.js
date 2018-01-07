@@ -123,8 +123,8 @@ class Chat extends Component{
 
     
     componentWillUnmount(){
-        this.keyboardDidShowSub.remove();
-        this.keyboardDidHideSub.remove();
+        //this.keyboardDidShowSub.remove();
+        //this.keyboardDidHideSub.remove();
         this.props.disconnect({ roomId: this.props.chat.roomId });
     }
 
@@ -155,26 +155,26 @@ class Chat extends Component{
 
     _messageTextChanged = function(text){
         if(text){
-            this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: text, userIsTyping: true, username: this.props.user.user.name } );
-            this.props.chatTextChanged( { currentMessage: text, userIsTyping: true, username: this.props.user.user.name } );
+            this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: text, userIsTyping: true, username: this.props.user.info.name } );
+            this.props.chatTextChanged( { currentMessage: text, userIsTyping: true, username: this.props.user.info.name } );
         }
         else{
-            this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
-            this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
+            this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
+            this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
         }
 
       }
 
     _sendMessage = function(){
         console.log('sending message:' + this.props.currentMessage);
-        this.props.message({ roomId: this.props.chat.roomId, username: this.props.user.user.user.name, message: this.props.currentMessage });
-        this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
-        this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.user.name } );
+        this.props.message({ roomId: this.props.chat.roomId, username: this.props.user.info.name, message: this.props.currentMessage });
+        this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
+        this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
         this.refs.message.clear();
     }
 
     render() {
-        /*{ ((this.props.chat.usersTyping.indexOf(this.props.user.user.name) > -1 && this.props.chat.usersTyping.length > 1) || (this.props.chat.usersTyping.indexOf(this.props.user.user.name) == -1 && this.props.chat.usersTyping.length > 0)) &&
+        /*{ ((this.props.chat.usersTyping.indexOf(this.props.user.info.name) > -1 && this.props.chat.usersTyping.length > 1) || (this.props.chat.usersTyping.indexOf(this.props.user.info.name) == -1 && this.props.chat.usersTyping.length > 0)) &&
                             <View><Text>Someone is typing</Text></View>
                     }*/
         return (

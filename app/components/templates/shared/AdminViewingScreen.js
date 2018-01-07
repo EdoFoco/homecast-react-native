@@ -19,29 +19,17 @@ import {
   Dimensions
 } from 'react-native';
 
-export default class ViewingScreen extends Component{
+export default class AdminViewingScreen extends Component{
 
   
   _renderCTA(){
-    //if(this.props.viewing.isLive){
-        return ( 
-        <TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.joinLiveCast()}}>
+    return ( 
+        <TouchableHighlight style={styles.ctaBtnGreen}>
             <Text style={styles.ctaText}>
-                Join Live Cast
+                Start Live Cast
            </Text>
-        </TouchableHighlight>)
-    //}
-    
-    if(this.props.reservation){
-        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>
-            <Text style={styles.ctaText}>Cancel Reservation </Text>
-        </TouchableHighlight>)
-    }
-    else{
-        return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.createViewingReservation(this.props.user.info.id, this.props.viewing.id)}}>
-            <Text style={styles.ctaText}>Reserve Slot</Text>
-        </TouchableHighlight>)
-    }
+        </TouchableHighlight>
+        )
   }
 
   _toDateString(date){
@@ -69,15 +57,16 @@ export default class ViewingScreen extends Component{
                   </View>
                 </View>
 
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
+                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.deleteViewing()}}>
                     <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>View Property</Text>
-                        <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
+                        <Text style={styles.buttonText}>Delete Viewing</Text>
+                        <FontAwesomeIcon name="trash-o" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
+
                 <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
                     <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>Contact Agent</Text>
+                        <Text style={styles.buttonText}>Contact Viewers</Text>
                         <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
@@ -90,16 +79,10 @@ export default class ViewingScreen extends Component{
   }
 }
 
-ViewingScreen.PropTypes = {
+AdminViewingScreen.PropTypes = {
     viewing: PropTypes.object.isRequired,
     property: PropTypes.object.isRequired,
-    reservation: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    cancelViewingReservation: PropTypes.func.isRequired,
-    createViewingReservation: PropTypes.func.isRequired,
-    goToProperty: PropTypes.func.isRequired,
-    showViewPropertyBtn: PropTypes.bool.isRequired,
-    joinLiveCast: PropTypes.func.isRequired
 }
 
 

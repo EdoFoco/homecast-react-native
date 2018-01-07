@@ -33,9 +33,7 @@ PropertyScreen.navigationOptions = ({ navigation }) => {
     return {
       title: 'Property'
   }
-  
 };
-
 
 const mapStateToProps = (state) => {
      

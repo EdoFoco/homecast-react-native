@@ -2,6 +2,7 @@ import * as types from './../../actions/Types';
 import * as socketCluster from 'socketcluster-client';
 
 //var options = { host: '35.176.192.208:8000' };
+//var options = { host: 'localhost:8000' };
 var options = { host: '192.168.1.76:8000' };
 
 
@@ -48,7 +49,7 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
             }
 
             if(action.type === types.SERVER_DISCONNECT){
-                socket.disconnect({ roomId: action.data.roomId });
+                //socket.disconnect({ roomId: action.data.roomId });
                 socket = null;
                 return next(action);
             }

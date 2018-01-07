@@ -6,6 +6,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EditPropertyActions from './EditPropertyActions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import DateCell from './DateCell';
+import ViewingRow from './ViewingRow';
 
 import {
     TextInput,
@@ -66,15 +67,7 @@ export default class AddViewingForm extends Component{
   _renderRow = function({item}){
     let viewing = item;
     return (
-        <TouchableHighlight onPress={() => {this.props.goToViewing(viewing)}}>
-            <View style={styles.viewingRow}> 
-              <View style={styles.viewingDateCell} >
-                <DateCell dateTime={ viewing.date_time } />
-              </View>
-              <Text style={styles.viewingCapacity}>{10 - viewing.capacity} participants</Text>
-              <Text style={styles.viewingTime}>{new Date(`${viewing.date_time}`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
-            </View>
-        </TouchableHighlight>
+        <ViewingRow viewing={viewing} goToViewing={(viewing) => { this.props.goToViewing(viewing)}} />
       )
   }
 
