@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
-import WebRTCChat from '../../../molecules/WebRTCChat';
+import AdminWebRTCChat from '../../../molecules/AdminWebRTCChat';
 import {
   StyleSheet,
   Text,
@@ -35,7 +35,7 @@ class LiveCastContainer extends Component{
     if(this.props.chat.roomId){
       return(
           <View style={styles.container}>
-            <WebRTCChat />
+            <AdminWebRTCChat />
           </View>
       );
     }
@@ -63,4 +63,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OtherScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LiveCastContainer);

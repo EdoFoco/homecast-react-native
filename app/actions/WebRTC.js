@@ -84,17 +84,17 @@ export function startViewer(data){
     }
 }
 
-export function sendOnIceCandidate(data){
+export function startPresenter(data){
     return {
-        type: 'onIceCandidate',
+        type: 'presenter',
         data: data
     }
 }
 
-export function setViewerReadyToStream(data, success){
+export function sendOnIceCandidate(data){
     return {
-        type: 'setViewerReadyToStream',
-        isReady: true
+        type: 'onIceCandidate',
+        data: data
     }
 }
 

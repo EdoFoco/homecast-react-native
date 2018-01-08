@@ -30,8 +30,9 @@ class GuestViewingsTab extends React.Component {
     static navigationOptions = {
         tabBarLabel: 'Viewings',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="calendar-clock" size={22} color={tintColor} />
-          )
+            <Icon name="calendar-clock" size={22} color={tintColor} style={{height: 22, width: 22}} />
+          ),
+        showIcon: true
     }
 
     render(){

@@ -39,6 +39,9 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
                         if(event.type === 'viewerResponse'){
                             dispatch(event);
                         }
+                        if(event.type === 'presenterResponse'){
+                            dispatch(event);
+                        }
                         if(event.type === 'iceCandidate'){
                             dispatch(event);
                         }
@@ -59,7 +62,7 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
                 socket.publish(action.data.roomId, action);
             }
 
-            if(socket && (action.type === 'viewer' || action.type === 'onIceCandidate')){
+            if(socket && (action.type === 'viewer' || action.type === 'presenter' || action.type === 'onIceCandidate')){
                 socket.publish(action.data.roomId, action);
             }
         

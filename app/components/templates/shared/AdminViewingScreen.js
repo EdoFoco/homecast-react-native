@@ -24,7 +24,7 @@ export default class AdminViewingScreen extends Component{
   
   _renderCTA(){
     return ( 
-        <TouchableHighlight style={styles.ctaBtnGreen}>
+        <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
             <Text style={styles.ctaText}>
                 Start Live Cast
            </Text>
@@ -83,6 +83,7 @@ AdminViewingScreen.PropTypes = {
     viewing: PropTypes.object.isRequired,
     property: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
+    joinLiveCast: PropTypes.object.isRequired
 }
 
 

@@ -48,7 +48,6 @@ export const SERVER_MESSAGE = 'server/message';
 export const UPDATE_ROOM_ID = 'UPDATE_ROOM_ID';
 
 //WebRTC
-export const PRESENTER_IS_READY = 'client/presenterResponse';
 export const UPDATE_CONNECTION_STATUS = 'UPDATE_CONNECTION_STATUS';
 
 //Navigation
