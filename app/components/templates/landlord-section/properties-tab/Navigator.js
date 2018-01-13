@@ -7,12 +7,14 @@ import PropertiesScreen from './PropertiesScreen';
 import AddPropertyScreen from './AddPropertyScreen';
 import EditPropertyScreen from './EditPropertyScreen';
 import ViewingContainer from './ViewingContainer';
+import LiveCastContainer from './LiveCastContainer';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
     EditPropertyScreen: { screen: EditPropertyScreen },
     AddPropertyScreen: { screen: AddPropertyScreen },
-    ViewingScreen: { screen: ViewingContainer }
+    ViewingScreen: { screen: ViewingContainer },
+    LiveCastScreen: { screen: LiveCastContainer }
 }
 
 const stackConfiguration = {
@@ -32,7 +34,7 @@ class LandlordProperitesTab extends React.Component {
     static navigationOptions = {
         tabBarLabel: 'Properties',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="home" size={22} color={tintColor} />
+            <Icon name="home" size={22} color={tintColor} style={{height: 22, width: 22}} />
           )
     }
 

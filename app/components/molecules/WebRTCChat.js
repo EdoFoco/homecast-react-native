@@ -117,6 +117,7 @@ class WebRTCChat extends Component{
 
 			console.log('Viewer about to generate offer');
 			this.generateOffer(function(error, offer){
+          console.log(error);
           self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
           self._startWebRtcAsViewer();
       });

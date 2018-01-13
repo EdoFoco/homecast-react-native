@@ -39,7 +39,7 @@ class GuestProperitesTab extends React.Component {
     static navigationOptions = {
         tabBarLabel: 'Properties',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="home" size={22} color={tintColor} />
+            <Icon name="home" size={22} color={tintColor} style={{height: 22, width: 22}} />
           )
     }
 

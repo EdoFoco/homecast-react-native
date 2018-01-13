@@ -20,6 +20,10 @@ class ViewingScreen extends Component{
   componentWillMount(){
       this.props.getViewing(this.props.viewing.id);
   }
+
+  _joinLiveCast(){
+    this.props.navigation.navigate('LiveCastScreen', {viewing: this.props.viewing})
+  }
   
   render() {
     return (
@@ -27,6 +31,7 @@ class ViewingScreen extends Component{
             viewing={this.props.viewing}
             property={this.props.property}
             user={this.props.user}
+            joinLiveCast={() => {this._joinLiveCast()}}
        />
     )
   }

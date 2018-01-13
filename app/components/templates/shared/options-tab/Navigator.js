@@ -26,7 +26,7 @@ class OptionsTab extends React.Component {
     static navigationOptions = {
         tabBarLabel: 'Options',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="cog" size={22} color={tintColor} />
+            <Icon name="cog" size={22} color={tintColor} style={{height: 22, width: 22}} />
           )
     }
 
