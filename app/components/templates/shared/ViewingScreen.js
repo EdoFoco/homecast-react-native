@@ -25,7 +25,7 @@ export default class ViewingScreen extends Component{
   _renderCTA(){
     //if(this.props.viewing.isLive){
         return ( 
-        <TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.joinLiveCast()}}>
+        <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
             <Text style={styles.ctaText}>
                 Join Live Cast
            </Text>

@@ -48,8 +48,8 @@ class AdminWebRTCChat extends Component{
             onicecandidate : function (event, error) {
                 console.log('onicecandidate', event.candidate);
                 if (event.candidate) {
-                  console.log("3. Presenter - Ice Candidate Received")
-                  self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event.candidate});
+                  console.log("3. Presenter - Sending Ice Cnadidate")
+                  self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
                 }
             }
         }
