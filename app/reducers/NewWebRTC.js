@@ -47,6 +47,12 @@ export default function webrtc(state = initialConferenceState, action) {
         viewer.isProcessingAnswer = true,
         viewer.sdpAnswer = action.data.sdpAnswer
         return { ...state, viewer: viewer};
+    
+    case types.CLIENT_PRESENTER_RESPONSE:
+        var presenter = {...state.presenter};
+        presenter.isProcessingAnswer = true,
+        presenter.sdpAnswer = action.data.sdpAnswer
+        return { ...state, presenter: presenter};
 
     case 'updateStreamUrl':
         var viewer = {...state.viewer};
@@ -59,9 +65,15 @@ export default function webrtc(state = initialConferenceState, action) {
         if(index == -1){
             viewer.iceCandidates.push(action.data.candidate);
         }
-        return { ...state, viewer: viewer};
+
+        var presenter = {...state.presenter};
+        var presenterIndex = presenter.iceCandidates.indexOf(action.data.candidate);
+        if(presenterIndex == -1){
+            presenter.iceCandidates.push(action.data.candidate);
+        }
+        return { ...state, viewer: viewer, presenter: presenter};
     
-        case types.UPDATE_CONNECTION_STATUS:
+    case types.UPDATE_CONNECTION_STATUS:
         return { ...state, status: action.status };
 
     case types.SERVER_DISCONNECT:

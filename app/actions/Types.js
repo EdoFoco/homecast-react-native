@@ -37,7 +37,8 @@ export const CLIENT_UPDATE_TYPING_USERS = 'client/updateTypingUsers';
 export const CLIENT_USERS_UPDATED = 'client/usersUpdated'; //Either joined or left room
 export const CLIENT_CONNECTED = 'connect';
 export const CLIENT_RECONNECTED = 'reconnect';
-export const CLIENT_VIEWER_RESPONSE = 'viewerResponse'; 
+export const CLIENT_VIEWER_RESPONSE = 'viewerResponse';
+export const CLIENT_PRESENTER_RESPONSE = 'presenterResponse';
 
 //Chat
 export const CHAT_MESSAGE_CHANGED = 'CHAT_MESSAGE_CHANGED';

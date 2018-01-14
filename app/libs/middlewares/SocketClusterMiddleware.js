@@ -40,6 +40,8 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
                             dispatch(event);
                         }
                         if(event.type === 'presenterResponse'){
+                            console.log('4. Got presenter response');
+                            console.log(event);
                             dispatch(event);
                         }
                         if(event.type === 'iceCandidate'){

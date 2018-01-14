@@ -31,73 +31,101 @@ var kurentoPeer;
 
 class AdminWebRTCChat extends Component{
  
+  constructor(props) {
+    super(props);
+    this.state = { 
+        sdpAnswerLoaded: false
+     };
+  }
+
   componentWillMount(){
     var self = this;
 
     this._getLocalStream(true, function(stream) {
-            localStream = stream;
-          
-            var options = {
-                videoStream: localStream,
-                onicecandidate : function (event, error) {
-                    console.log('onicecandidate', event.candidate);
-                    if (event.candidate) {
-                    console.log("5. Ice Candidate Received")
-                    self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
-                    }
-                },
-		    	mediaConstraints: {
-			    	audio: true,
-                    video:
-                    {
-                        mandatory:
-                        {
-                            maxWidth: 800,
-                            maxFrameRate: 45,
-                            minFrameRate: 15
-                            
-                        }
-                    }
-				}
-			}
-	
+        localStream = stream;
+        var options = {
+            videoStream: localStream,
+            onicecandidate : function (event, error) {
+                console.log('onicecandidate', event.candidate);
+                if (event.candidate) {
+                  console.log("3. Presenter - Ice Candidate Received")
+                  self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event.candidate});
+                }
+            }
+        }
 
-		kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
-			if(error) return onError(error);
+        kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
+          if(error) return onError(error);
 
-			this.generateOffer(function(error, offer){
-                self.props.startPresenter({roomId: self.props.chat.roomId, sdpOffer: offer});
-                self._startWebRtcAsPresenter();
-            });
-		});
-  
+          console.log('1. Presenter - Generating offer');
+          this.generateOffer(function(error, offer){
+              console.log('2. Presenter - Offer generated')
+              self.props.startPresenter({roomId: self.props.chat.roomId, sdpOffer: offer});
+              self._startWebRtcAsPresenter();
+          });
+        });
     });
-
-    
-    
-    
   }
 
   componentWillUpdate(){
     
-    if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){
-      iceCandidatesCount = this.props.webrtc.viewer.iceCandidates.length;
-      console.log("6. Adding Ice Candidate")
-      pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.viewer.iceCandidates[iceCandidatesCount -1]));
+    if(this.props.webrtc.presenter.iceCandidates.length > 0){
+      iceCandidatesCount = this.props.webrtc.presenter.iceCandidates.length;
+      //console.log("4. Presenter - Adding Ice Candidate")
+      pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.presenter.iceCandidates[iceCandidatesCount -1]));
     }
 
-    if(this.props.webrtc.viewer.sdpAnswer){
-      	kurentoPeer.processAnswer(this.props.webrtc.viewer.sdpAnswer, function(){
-			    console.log('hi');
-		    });
-    }
+    if(this.props.webrtc.presenter.sdpAnswer){
+        if(!this.state.sdpAnswerLoaded){
+            console.log('5. Presenter - Processing Presenter Answer');
+            kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
+              console.log('hi presenter');
+            });
+            this.setState({sdpAnswerLoaded: true});
+        }
+      }
+     
+    // if(this.props.webrtc.viewer.sdpAnswer){
+    //     console.log('6. Presenter - Processing Viewer Response');
+    //     kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
+    //       console.log('hi viewer');
+    //     });
+    //   }
   }
 
   _getLocalStream(isFront, callback) {
 
     let videoSourceId;
 
-    try{
+    if (Platform.OS === 'ios') {
+      MediaStreamTrack.getSources(sourceInfos => {
+        console.log("sourceInfos: ", sourceInfos);
+  
+        for (const i = 0; i < sourceInfos.length; i++) {
+          const sourceInfo = sourceInfos[i];
+          if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
+            videoSourceId = sourceInfo.id;
+          }
+        }
+      });
+    }
+    getUserMedia({
+      audio: true,
+      video: {
+        mandatory: {
+          maxWidth: 800,
+          maxFrameRate: 45,
+          minFrameRate: 30
+        }
+      }
+    }, function (stream) {
+      console.log('getUserMedia success', stream);
+      callback(stream);
+    }, function(error){
+      console.log(error)
+    });
+
+    /*try{
         MediaStreamTrack
         .getSources()
         .then(sourceInfos => {
@@ -132,7 +160,7 @@ class AdminWebRTCChat extends Component{
     }
     catch(ex){
         console.error(ex);
-    }
+    }*/
     
 }
 
@@ -140,7 +168,7 @@ class AdminWebRTCChat extends Component{
 
       var self = this;
       pc = kurentoPeer.peerConnection;
-      console.log("1. Creating Peer Connection.")
+      //console.log("1. Creating Peer Connection.")
       
       function logError(error){
         console.log(error);
@@ -165,17 +193,20 @@ class AdminWebRTCChat extends Component{
             }, 1000);
           }
           if (event.target.iceConnectionState === 'connected') {
+            console.log('Connected!!!');
             //createDataChannel();
           }
       };
       
-    //   pc.onaddstream = function (event) {
-    //       self.props.updateStreamUrl(event.stream.toURL());
-    //         console.log("8. Stream has been added");
+      // pc.onaddstream = function (event) {
+      //     self.props.updateStreamUrl(event.stream.toURL());
+      //       console.log("8. Stream has been added");
 
-    //         console.log('onaddstream', event.stream);
-    //         console.log(event.stream.toURL());
-    //    };
+      //       console.log('onaddstream', event.stream);
+      //       console.log(event.stream.toURL());
+      //  };
+
+      self.props.updateStreamUrl(localStream.toURL());
 
        pc.addStream(localStream);
  }
