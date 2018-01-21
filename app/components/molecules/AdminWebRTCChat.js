@@ -93,6 +93,11 @@ class AdminWebRTCChat extends Component{
     //   }
   }
 
+  componentWillUnmount(){
+    localStream.getTracks().forEach(t => t.stop());
+    localStream.release();
+  }
+
   _getLocalStream(isFront, callback) {
 
     let videoSourceId;
@@ -124,44 +129,6 @@ class AdminWebRTCChat extends Component{
     }, function(error){
       console.log(error)
     });
-
-    /*try{
-        MediaStreamTrack
-        .getSources()
-        .then(sourceInfos => {
-          console.log(sourceInfos);
-          let videoSourceId;
-          for (let i = 0; i < sourceInfos.length; i++) {
-            const sourceInfo = sourceInfos[i];
-            if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
-              videoSourceId = sourceInfo.id;
-            }
-          }
-          return getUserMedia({
-            audio: true,
-            video: {
-              mandatory: {
-                minWidth: 500, // Provide your own width, height and frame rate here
-                minHeight: 300,
-                minFrameRate: 30
-              },
-              facingMode: (isFront ? "user" : "environment"),
-              optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
-            }
-          });
-        })
-        .then(stream => {
-          console.log('Got stream', stream);
-          callback(stream);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
-    catch(ex){
-        console.error(ex);
-    }*/
-    
 }
 
  _startWebRtcAsPresenter  = function(){

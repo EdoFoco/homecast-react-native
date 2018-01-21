@@ -4,19 +4,17 @@ import * as socketCluster from 'socketcluster-client';
 //var options = { host: '35.176.192.208:8000' };
 //var options = { host: 'localhost:8000' };
 var options = { host: '192.168.1.76:8000' };
-
-
+var socket;
+var iceCounter = 0;
 export default function createSocketMiddleware(callsToServerPrefix = 'server/', callsToClientPrefix = 'client/') {
-    
-    var socket;
 
     return ({ dispatch }) => {
 
      return next => (action) => {
             if(action.type === types.SERVER_CONNECT){
-                console.log(action);
                 socket = socketCluster.connect(options);
-                
+                console.log('Creating new socket, ' + socket.id);
+
                 socket.on('error', function (err) {
                     console.log(err);
                     return next({ type: types.SET_SOCKET_ERROR, data: { hasError: true, error: err }});
@@ -26,6 +24,7 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
                     var room = socket.subscribe(action.data.roomId);
 
                     socket.on('subscribe', function(){
+                        var subs = socket.subscriptions();
                         console.log('subscribed' + socket.id);
                         console.log(action.data.roomId);
                         socket.publish(action.data.roomId, {type: 'server/joinRoom', data: {socketId: socket.id, username: action.data.username, isPresenter: action.data.isPresenter, roomId: action.data.roomId} });
@@ -45,17 +44,34 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
                             dispatch(event);
                         }
                         if(event.type === 'iceCandidate'){
-                            dispatch(event);
+                            if(event.data.socketId === socket.id){
+                                iceCounter++;
+                                console.log('iceCandidate RECEIVED', iceCounter + ' ');
+                                console.log(event);
+                                dispatch(event);
+                            }
+                            
                         }
                     });
-
+                
                     return next({ type: types.SET_SOCKET_ERROR, data: { hasError: false, error: null } });
                 })
             }
 
             if(action.type === types.SERVER_DISCONNECT){
-                //socket.disconnect({ roomId: action.data.roomId });
-                socket = null;
+                console.log(action);
+                iceCounter = 0;
+               //socket.publish(action.data.roomId, {type: 'server/disconnect', data: {socketId: socket.id} });
+                if(socket){
+                    socket.destroyChannel(action.data.roomId);
+                    socket.disconnect();
+                    socket.off('connect');
+                    socket.off('subscribe');
+                    socket.off('error');
+                   // socketCluster.destroy();
+                    socket = null;
+                }
+
                 return next(action);
             }
             
@@ -65,6 +81,7 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
             }
 
             if(socket && (action.type === 'viewer' || action.type === 'presenter' || action.type === 'onIceCandidate')){
+                console.log('sending on ice candidate');
                 socket.publish(action.data.roomId, action);
             }
         

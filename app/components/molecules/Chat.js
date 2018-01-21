@@ -118,6 +118,7 @@ class Chat extends Component{
             }
         });
     
+        console.log('About to connect!!');
         this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
     }
 
@@ -125,7 +126,7 @@ class Chat extends Component{
     componentWillUnmount(){
         //this.keyboardDidShowSub.remove();
         //this.keyboardDidHideSub.remove();
-        this.props.disconnect({ roomId: this.props.chat.roomId });
+       // this.props.disconnect({ roomId: this.props.chat.roomId });
     }
 
     keyboardDidShow = event => {

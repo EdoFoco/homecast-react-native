@@ -22,6 +22,159 @@ import {
 
 import kurentoUtils from 'react-native-kurento-utils-js';
 
+var pc;
+var iceCandidatesCount = 0;
+var localStream;
+var kurentoPeer;
+var counter = 0;
+
+class WebRTCChat extends Component{
+ 
+  constructor(props) {
+    super(props);
+    this.state = { 
+        sdpAnswerLoaded: false
+     };
+  }
+  
+  componentWillMount(){
+  
+    var self = this;
+    
+    var kurentoOptions = {
+          onicecandidate: function (event, error) {
+            console.log('onicecandidate', event.candidate);
+            if (event.candidate) {
+              console.log("5. Ice Candidate Received")
+              self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
+            }
+          }
+      }
+
+    kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(kurentoOptions, function(error) {
+			if(error) return onError(error);
+
+			console.log('Viewer about to generate offer');
+			this.generateOffer(function(error, offer){
+          console.log(error);
+          self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
+          self._startWebRtcAsViewer();
+      });
+		});
+  }
+
+  componentWillUpdate(){
+    if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){
+      iceCandidatesCount = this.props.webrtc.viewer.iceCandidates.length;
+      console.log("6. Adding Ice Candidate")
+      console.log(counter);
+      counter++;
+      if(pc) pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.viewer.iceCandidates[iceCandidatesCount -1]));
+    }
+
+    if(this.props.webrtc.viewer.sdpAnswer){
+      if(!this.state.sdpAnswerLoaded){
+       // console.log('5. Presenter - Processing Presenter Answer');
+        this.setState({sdpAnswerLoaded: true});
+        kurentoPeer.processAnswer(this.props.webrtc.viewer.sdpAnswer, function(){
+          console.log('hi viewer');
+        });
+    }
+    }
+  }
+
+  componentWillUnmount(){
+    this.props.disconnect({ roomId: this.props.chat.roomId });
+    iceCandidatesCount = 0;
+    kurentoPeer.dispose();
+    pc = null;
+    counter = 0;
+  }
+
+ _startWebRtcAsViewer  = function(){
+
+      var self = this;
+      pc = kurentoPeer.peerConnection;
+      console.log("1. Creating Peer Connection.")
+      
+      function logError(error){
+        console.log(error);
+      }
+
+      pc.onnegotiationneeded = function () {
+        console.log('onnegotiationneeded');
+          console.log("2. Negotiation needed, lets create an offer.")
+      }
+
+      pc.oniceconnectionstatechange = function(event) {
+            console.log("7. Ice Connection State Changed - get stats")
+
+          console.log('oniceconnectionstatechange', event.target.iceConnectionState);
+          if (event.target.iceConnectionState === 'completed') {
+            
+          }
+          if (event.target.iceConnectionState === 'connected') {
+            //createDataChannel();
+          }
+      };
+      
+      pc.onaddstream = function (event) {
+          self.props.updateStreamUrl(event.stream.toURL());
+        console.log("8. Stream has been added");
+
+        console.log('onaddstream', event.stream);
+        console.log(event.stream.toURL());
+       
+       };
+
+       function getStats() {
+          if(pc){
+            console.log(pc.iceConnectionState);
+          } 
+      }
+
+      setTimeout(() => {
+        getStats();
+      }, 100);
+      
+      
+  }
+
+  _setIsPresenter = function(){
+    this.props.setIsPresenter(true);
+  }
+
+  render() {
+    
+       if(this.props.webrtc.hasError){
+          return <View>
+            <Text>There was an error connecting to the socket. Go Back and try again</Text>
+          </View>
+        }
+        
+        return (
+          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
+            <Chat />
+          </RTCView>
+        );
+  }
+}
+
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        webrtc: state.webrtc,
+        chat: state.chat
+    }
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WebRTCChat);
+
 
 var styles = StyleSheet.create({
   container: {
@@ -86,180 +239,3 @@ var styles = StyleSheet.create({
      flexDirection: 'column'
   }
 });
-
-var pc;
-var iceCandidatesCount = 0;
-var localStream;
-var kurentoPeer;
-
-class WebRTCChat extends Component{
- 
-  componentWillMount(){
-    /*this._getLocalStream(true, function(stream) {
-          localStream = stream;
-          self._startWebRtcAsViewer();
-    });*/
-
-    var self = this;
-    
-    var kurentoOptions = {
-          onicecandidate: function (event, error) {
-            console.log('onicecandidate', event.candidate);
-            if (event.candidate) {
-              console.log("5. Ice Candidate Received")
-              self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
-            }
-          }
-      }
-
-    kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(kurentoOptions, function(error) {
-			if(error) return onError(error);
-
-			console.log('Viewer about to generate offer');
-			this.generateOffer(function(error, offer){
-          console.log(error);
-          self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
-          self._startWebRtcAsViewer();
-      });
-		});
-  }
-
-  componentWillUpdate(){
-    
-    if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){
-      iceCandidatesCount = this.props.webrtc.viewer.iceCandidates.length;
-      console.log("6. Adding Ice Candidate")
-      pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.viewer.iceCandidates[iceCandidatesCount -1]));
-    }
-
-    if(this.props.webrtc.viewer.sdpAnswer){
-      	kurentoPeer.processAnswer(this.props.webrtc.viewer.sdpAnswer, function(){
-			    console.log('hi');
-		    });
-    }
-  }
-
-  _getLocalStream(isFront, callback) {
-
-  let videoSourceId;
-
-  // on android, you don't have to specify sourceId manually, just use facingMode
-  // uncomment it if you want to specify
-  if (Platform.OS === 'ios') {
-    MediaStreamTrack.getSources(sourceInfos => {
-      console.log("sourceInfos: ", sourceInfos);
-
-      for (const i = 0; i < sourceInfos.length; i++) {
-        const sourceInfo = sourceInfos[i];
-        if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
-          videoSourceId = sourceInfo.id;
-        }
-      }
-    });
-  }
-  getUserMedia({
-    audio: true,
-    video: false,
-  }, function (stream) {
-    console.log('getUserMedia success', stream);
-    callback(stream);
-  }, function(error){console.log(error)});
-}
-
- _startWebRtcAsViewer  = function(){
-
-      var self = this;
-      pc = kurentoPeer.peerConnection;
-      console.log("1. Creating Peer Connection.")
-      
-      function logError(error){
-        console.log(error);
-      }
-
-      /*pc.onicecandidate = function (event) {
-        console.log('onicecandidate', event.candidate);
-        if (event.candidate) {
-          console.log("5. Ice Candidate Received")
-          self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: candidate});
-        }
-      };*/
-
-      /*function createOffer() {
-        pc.createOffer(function(desc) {
-          console.log("3. Creating Offer.")
-          console.log('createOffer', desc);
-          pc.setLocalDescription(desc, function () {
-          console.log("4. Setting local description.")
-            console.log('setLocalDescription', pc.localDescription);
-            self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: pc.localDescription.sdp});
-          }, logError);
-        }, logError);
-      }*/
-
-      pc.onnegotiationneeded = function () {
-        console.log('onnegotiationneeded');
-       // if (isOffer) {
-          console.log("2. Negotiation needed, lets create an offer.")
-
-          //createOffer();
-       // }
-      }
-
-      pc.oniceconnectionstatechange = function(event) {
-            console.log("7. Ice Connection State Changed - get stats")
-
-          console.log('oniceconnectionstatechange', event.target.iceConnectionState);
-          if (event.target.iceConnectionState === 'completed') {
-            setTimeout(() => {
-              //getStats();
-            }, 1000);
-          }
-          if (event.target.iceConnectionState === 'connected') {
-            //createDataChannel();
-          }
-      };
-      
-      pc.onaddstream = function (event) {
-          self.props.updateStreamUrl(event.stream.toURL());
-        console.log("8. Stream has been added");
-
-        console.log('onaddstream', event.stream);
-        console.log(event.stream.toURL());
-       };
-
-       //pc.addStream(localStream);
- }
-
-  _setIsPresenter = function(){
-    this.props.setIsPresenter(true);
-  }
-
-  render() {
-       if(this.props.webrtc.hasError){
-          return <View>
-            <Text>There was an error connecting to the socket. Go Back and try again</Text>
-          </View>
-        }
-
-        return (
-          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
-            <Chat />
-          </RTCView>
-        );
-  }
-}
-
-
-const mapStateToProps = (state) => {
-    return {
-        user: state.user,
-        webrtc: state.webrtc,
-        chat: state.chat
-    }
-};
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(WebRTCChat);

@@ -60,24 +60,23 @@ export default function webrtc(state = initialConferenceState, action) {
         return { ...state, viewer: viewer};
     
     case 'iceCandidate':
-        var viewer = {...state.viewer};
-        var index = viewer.iceCandidates.indexOf(action.data.candidate);
+        var candidates = [...state.viewer.iceCandidates]
+
+        var index = candidates.indexOf(action.data.candidate);
         if(index == -1){
-            viewer.iceCandidates.push(action.data.candidate);
+            candidates.push(action.data.candidate);
         }
 
-        var presenter = {...state.presenter};
-        var presenterIndex = presenter.iceCandidates.indexOf(action.data.candidate);
-        if(presenterIndex == -1){
-            presenter.iceCandidates.push(action.data.candidate);
-        }
+        var presenter = {...state.presenter, iceCandidates: candidates};
+        var viewer = {...state.viewer, iceCandidates: candidates};
+        
         return { ...state, viewer: viewer, presenter: presenter};
     
     case types.UPDATE_CONNECTION_STATUS:
         return { ...state, status: action.status };
 
     case types.SERVER_DISCONNECT:
-        return initialConferenceState;
+        return {...initialConferenceState};
     default:
       return state;
   }
