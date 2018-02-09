@@ -76,3 +76,10 @@ export function getViewing(viewingId){
       }
 }
 
+export function getRoomStatus(roomId){
+    return {
+        type: types.SERVER_ROOM_STATUS,
+        roomId: roomId
+    }
+}
+

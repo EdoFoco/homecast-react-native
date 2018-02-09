@@ -10,17 +10,6 @@ import {
   View,
 } from 'react-native';
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  
-});
-
 class OtherScreen extends Component{
 
   componentWillMount(){
@@ -28,10 +17,24 @@ class OtherScreen extends Component{
     .then((resp) => {
       console.log('room id is: ' + resp.id);
       return this.props.updateRoomId(resp.id);
+    })
+    .then(() => {
+      console.log('About to connect!!');
+      this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
     });
   }
 
+  componentWillUnmount(){
+    this.props.disconnect({ roomId: this.props.chat.roomId });
+  }
+
   render(){
+    if(!this.props.webrtc.roomStatus.presenterConnected){
+      return <View>
+        <Text>Waiting for presenter...</Text>
+      </View>
+    }
+
     if(this.props.chat.roomId){
       return(
           <View style={styles.container}>
@@ -55,7 +58,8 @@ const mapStateToProps = ( state, navigation ) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        chat: state.chat
+        chat: state.chat,
+        webrtc: state.webrtc
     }
 };
 
@@ -64,3 +68,15 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OtherScreen);
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    //justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  
+});

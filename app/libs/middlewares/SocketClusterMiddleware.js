@@ -6,6 +6,7 @@ import * as socketCluster from 'socketcluster-client';
 var options = { host: '192.168.1.76:8000' };
 var socket;
 var iceCounter = 0;
+var poller;
 export default function createSocketMiddleware(callsToServerPrefix = 'server/', callsToClientPrefix = 'client/') {
 
     return ({ dispatch }) => {
@@ -22,6 +23,11 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
             
                 socket.on('connect', function(){
                     var room = socket.subscribe(action.data.roomId);
+
+                    poller = setInterval(() => { 
+                        socket.publish(action.data.roomId, { type: types.SERVER_ROOM_STATUS, data: { roomId: action.data.roomId }});
+                     }, 3000);
+                           
 
                     socket.on('subscribe', function(){
                         var subs = socket.subscriptions();
@@ -61,6 +67,7 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
             if(action.type === types.SERVER_DISCONNECT){
                 console.log(action);
                 iceCounter = 0;
+                clearInterval(poller);
                //socket.publish(action.data.roomId, {type: 'server/disconnect', data: {socketId: socket.id} });
                 if(socket){
                     socket.destroyChannel(action.data.roomId);
@@ -68,7 +75,6 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
                     socket.off('connect');
                     socket.off('subscribe');
                     socket.off('error');
-                   // socketCluster.destroy();
                     socket = null;
                 }
 
@@ -76,7 +82,7 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
             }
             
             
-            if(socket && action.type.indexOf(callsToServerPrefix) > -1){
+            if(socket && action.type && action.type.indexOf(callsToServerPrefix) > -1){
                 socket.publish(action.data.roomId, action);
             }
 

@@ -23,78 +23,6 @@ import {
   Keyboard,
   Text} from 'react-native';
 
-var styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0)',
-  },
-  title: {
-    fontSize: 30,
-    alignSelf: 'center',
-    marginBottom: 30
-  },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    width: 100
-  },
-  listViewContainer: {
-    marginTop: 0,
-    paddingTop: 40,
-    backgroundColor: 'rgba(0,0,0,0)',
-    alignSelf: 'stretch',
-    flex: 1
-  },
-  chatContainer: {
-    marginTop: 0,
-    paddingLeft: 20,
-    paddingRight: 20,
-    backgroundColor: 'rgba(0,0,0,0)',
-    alignSelf: 'stretch',
-    flex: 1
-  },
-  messageInput:{
-      flex:3, 
-      height: 35, 
-      borderColor: 'rgba(255,255,255, 0.6)', 
-      borderWidth: 1,
-      borderRadius: 15,
-      color: 'white',
-      paddingLeft: 15,
-      paddingRight: 15,
-      fontSize: 16
-  },
-  chatInputGroup: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignSelf: 'stretch',
-    backgroundColor: 'rgba(0,0,0,0)'
-  },
-  sendMessageButton: {
-      flex:1, 
-      justifyContent: 'center', 
-      backgroundColor: 'rgba(0,0,0,0)', 
-      borderRadius:10
-    },
-   messageUsername: {
-       flex: 1, 
-       color:'#B0BEC5', 
-       fontSize: 12
-    }
-});
-
 const textBoxOffset = 120;
 
 class Chat extends Component{
@@ -117,9 +45,6 @@ class Chat extends Component{
             },
             }
         });
-    
-        console.log('About to connect!!');
-        this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
     }
 
     
@@ -232,3 +157,75 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+
+var styles = StyleSheet.create({
+    container: {
+      justifyContent: 'center',
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0)',
+    },
+    title: {
+      fontSize: 30,
+      alignSelf: 'center',
+      marginBottom: 30
+    },
+    buttonText: {
+      fontSize: 18,
+      color: 'white',
+      alignSelf: 'center'
+    },
+    button: {
+      height: 36,
+      backgroundColor: '#48BBEC',
+      borderColor: '#48BBEC',
+      borderWidth: 1,
+      borderRadius: 8,
+      marginBottom: 10,
+      alignSelf: 'stretch',
+      justifyContent: 'center',
+      width: 100
+    },
+    listViewContainer: {
+      marginTop: 0,
+      paddingTop: 40,
+      backgroundColor: 'rgba(0,0,0,0)',
+      alignSelf: 'stretch',
+      flex: 1
+    },
+    chatContainer: {
+      marginTop: 0,
+      paddingLeft: 20,
+      paddingRight: 20,
+      backgroundColor: 'rgba(0,0,0,0)',
+      alignSelf: 'stretch',
+      flex: 1
+    },
+    messageInput:{
+        flex:3, 
+        height: 35, 
+        borderColor: 'rgba(255,255,255, 0.6)', 
+        borderWidth: 1,
+        borderRadius: 15,
+        color: 'white',
+        paddingLeft: 15,
+        paddingRight: 15,
+        fontSize: 16
+    },
+    chatInputGroup: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignSelf: 'stretch',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    sendMessageButton: {
+        flex:1, 
+        justifyContent: 'center', 
+        backgroundColor: 'rgba(0,0,0,0)', 
+        borderRadius:10
+      },
+     messageUsername: {
+         flex: 1, 
+         color:'#B0BEC5', 
+         fontSize: 12
+      }
+  });

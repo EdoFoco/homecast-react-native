@@ -38,7 +38,6 @@ class WebRTCChat extends Component{
   }
   
   componentWillMount(){
-  
     var self = this;
     
     var kurentoOptions = {
@@ -84,7 +83,6 @@ class WebRTCChat extends Component{
   }
 
   componentWillUnmount(){
-    this.props.disconnect({ roomId: this.props.chat.roomId });
     iceCandidatesCount = 0;
     kurentoPeer.dispose();
     pc = null;
@@ -110,12 +108,7 @@ class WebRTCChat extends Component{
             console.log("7. Ice Connection State Changed - get stats")
 
           console.log('oniceconnectionstatechange', event.target.iceConnectionState);
-          if (event.target.iceConnectionState === 'completed') {
-            
-          }
-          if (event.target.iceConnectionState === 'connected') {
-            //createDataChannel();
-          }
+          self.props.updateConnectionStatus(event.target.iceConnectionState);
       };
       
       pc.onaddstream = function (event) {
@@ -152,6 +145,10 @@ class WebRTCChat extends Component{
           </View>
         }
         
+        if(this.props.webrtc.status != 'completed'){
+          return <Text>{this.props.webrtc.status}</Text>
+        }
+
         return (
           <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
             <Chat />

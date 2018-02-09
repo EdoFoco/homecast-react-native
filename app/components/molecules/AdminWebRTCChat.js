@@ -39,6 +39,9 @@ class AdminWebRTCChat extends Component{
   }
 
   componentWillMount(){
+    console.log('About to connect!!');
+    this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
+
     var self = this;
 
     this._getLocalStream(true, function(stream) {
@@ -96,6 +99,10 @@ class AdminWebRTCChat extends Component{
   componentWillUnmount(){
     localStream.getTracks().forEach(t => t.stop());
     localStream.release();
+    this.props.disconnect({ roomId: this.props.chat.roomId });
+    iceCandidatesCount = 0;
+    kurentoPeer.dispose();
+    pc = null;
   }
 
   _getLocalStream(isFront, callback) {

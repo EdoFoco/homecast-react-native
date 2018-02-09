@@ -2,13 +2,13 @@ import * as types from '../actions/Types';
 
 const initialConferenceState = { 
       info: 'Initializing',
-      status: 'init',
+      status: 'Connecting',
       isFront: false,
       selfViewSrc: null,
-      
       isPresenter: false,
       hasError: false,
       error: null,
+      connectionState: null,
       viewer: {
         sdpOffer: '',
         sdpAnswer: '',
@@ -22,6 +22,11 @@ const initialConferenceState = {
         candidate: '',
         streamUrl: '',
         iceCandidates: []
+      },
+      roomStatus: {
+          id: '',
+          presenterConnected: false,
+          viewers: []
       }
 };
 
@@ -54,13 +59,21 @@ export default function webrtc(state = initialConferenceState, action) {
         presenter.sdpAnswer = action.data.sdpAnswer
         return { ...state, presenter: presenter};
 
+    case types.CLIENT_ROOM_STATUS:
+        if(!action.data.roomStatus.presenterConnected){
+            return {...initialConferenceState};
+        }
+
+        return {...state, roomStatus: action.data.roomStatus }
+      
     case 'updateStreamUrl':
         var viewer = {...state.viewer};
         viewer.streamUrl = action.url
         return { ...state, viewer: viewer};
     
     case 'iceCandidate':
-        var candidates = [...state.viewer.iceCandidates]
+        var viewer = {...state.viewer};
+        var candidates = viewer.iceCandidates;
 
         var index = candidates.indexOf(action.data.candidate);
         if(index == -1){
@@ -68,7 +81,7 @@ export default function webrtc(state = initialConferenceState, action) {
         }
 
         var presenter = {...state.presenter, iceCandidates: candidates};
-        var viewer = {...state.viewer, iceCandidates: candidates};
+        //var viewer = {...state.viewer, iceCandidates: candidates};
         
         return { ...state, viewer: viewer, presenter: presenter};
     
