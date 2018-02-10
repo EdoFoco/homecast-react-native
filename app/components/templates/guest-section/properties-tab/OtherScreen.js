@@ -38,7 +38,19 @@ class OtherScreen extends Component{
     if(this.props.chat.roomId){
       return(
           <View style={styles.container}>
-            <WebRTCChat />
+              <WebRTCChat 
+                user={this.props.user} 
+                chat={this.props.chat}
+                webrtc={this.props.webrtc}
+                connect={(data) => {this.props.connect(data)}}
+                disconnect={(data) => {this.props.disconnect(data)}}
+                sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}
+                startViewer={(data) => {this.props.startViewer(data)}}
+                sendOnIceCandidate={(data) => {this.props.sendOnIceCandidate(data)}}
+                updateStreamUrl={(data) => {this.props.updateStreamUrl(data)}}
+                updateConnectionStatus={(data) => {this.props.updateConnectionStatus(data)}}
+                navigation={this.props.navigation}
+              />
           </View>
       );
     }
@@ -50,8 +62,9 @@ class OtherScreen extends Component{
 }
 
 OtherScreen.navigationOptions = ({ navigation }) => ({
-  title: `Room - ${navigation.state.params.viewing.id}`,
+  header: null
 });
+
 
 
 const mapStateToProps = ( state, navigation ) => {

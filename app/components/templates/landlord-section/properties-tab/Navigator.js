@@ -14,7 +14,7 @@ const routeConfiguration = {
     EditPropertyScreen: { screen: EditPropertyScreen },
     AddPropertyScreen: { screen: AddPropertyScreen },
     ViewingScreen: { screen: ViewingContainer },
-    LiveCastScreen: { screen: LiveCastContainer }
+    LiveCastScreen: { screen: LiveCastContainer, navigationOptions: { tabBarVisible: false, header: null } }
 }
 
 const stackConfiguration = {

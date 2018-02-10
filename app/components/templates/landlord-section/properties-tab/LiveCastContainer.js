@@ -35,7 +35,18 @@ class LiveCastContainer extends Component{
     if(this.props.chat.roomId){
       return(
           <View style={styles.container}>
-            <AdminWebRTCChat />
+            <AdminWebRTCChat 
+              user={this.props.user} 
+              chat={this.props.chat}
+              webrtc={this.props.webrtc}
+              connect={(data) => {this.props.connect(data)}}
+              disconnect={(data) => {this.props.disconnect(data)}}
+              sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}
+              startPresenter={(data) => {this.props.startPresenter(data)}}
+              sendOnIceCandidate={(data) => {this.props.sendOnIceCandidate(data)}}
+              updateStreamUrl={(data) => {this.props.updateStreamUrl(data)}}
+              navigation={this.props.navigation}
+              />
           </View>
       );
     }
@@ -47,15 +58,15 @@ class LiveCastContainer extends Component{
 }
 
 LiveCastContainer.navigationOptions = ({ navigation }) => ({
-  title: `Room - ${navigation.state.params.viewing.id}`,
+  header: null
 });
-
 
 const mapStateToProps = ( state, navigation ) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        chat: state.chat
+        chat: state.chat,
+        webrtc: state.webrtc
     }
 };
 

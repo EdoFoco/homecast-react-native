@@ -61,6 +61,8 @@ export default function webrtc(state = initialConferenceState, action) {
 
     case types.CLIENT_ROOM_STATUS:
         if(!action.data.roomStatus.presenterConnected){
+            initialConferenceState.viewer.iceCandidates = [];
+            initialConferenceState.presenter.iceCandidates = [];
             return {...initialConferenceState};
         }
 
@@ -89,6 +91,8 @@ export default function webrtc(state = initialConferenceState, action) {
         return { ...state, status: action.status };
 
     case types.SERVER_DISCONNECT:
+        initialConferenceState.viewer.iceCandidates = [];
+        initialConferenceState.presenter.iceCandidates = [];
         return {...initialConferenceState};
     default:
       return state;

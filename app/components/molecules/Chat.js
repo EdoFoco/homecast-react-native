@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { ActionCreators } from '../../actions';
@@ -7,7 +8,7 @@ import * as Animatable from 'react-native-animatable';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-
+import * as Colors from '../helpers/ColorPallette'
 import { 
   View,
   TouchableOpacity,
@@ -21,17 +22,29 @@ import {
   KeyboardAvoidingView,
   Animated,
   Keyboard,
+  FlatList,
   Text} from 'react-native';
 
 const textBoxOffset = 120;
 
-class Chat extends Component{
+
+export default class Chat extends Component{
+
+    constructor(props) {
+        super(props);
+        this.state = { 
+            currentMessage: ""
+         };
+      }
+    
+    ds = new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2
+    });
 
     componentWillMount(){
         this.keyboardHeight = new Animated.Value(0);
         this.viewHeight = new Animated.Value(Dimensions.get('window').height - textBoxOffset);
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardDidShow);
-        //this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
         this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardDidHide);
         
         Animatable.initializeRegistryWithDefinitions(
@@ -45,13 +58,6 @@ class Chat extends Component{
             },
             }
         });
-    }
-
-    
-    componentWillUnmount(){
-        //this.keyboardDidShowSub.remove();
-        //this.keyboardDidHideSub.remove();
-       // this.props.disconnect({ roomId: this.props.chat.roomId });
     }
 
     keyboardDidShow = event => {
@@ -81,35 +87,36 @@ class Chat extends Component{
 
     _messageTextChanged = function(text){
         if(text){
-            this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: text, userIsTyping: true, username: this.props.user.info.name } );
-            this.props.chatTextChanged( { currentMessage: text, userIsTyping: true, username: this.props.user.info.name } );
+            this.setState({ currentMessage: text });
         }
         else{
-            this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
-            this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
+            this.setState({ currentMessage: '' });
         }
 
       }
 
     _sendMessage = function(){
-        console.log('sending message:' + this.props.currentMessage);
-        this.props.message({ roomId: this.props.chat.roomId, username: this.props.user.info.name, message: this.props.currentMessage });
-        this.props.chatTextChanged( { currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
-        this.props.userIsTyping({ roomId: this.props.chat.roomId, currentMessage: '', userIsTyping: false, username: this.props.user.info.name } );
+        console.log('sending message:' + this.state.currentMessage);
+        this.props.sendMessage({ roomId: this.props.chat.roomId, username: this.props.user.info.name, message: this.state.currentMessage });
+        this.setState({currentMessage: ''});
         this.refs.message.clear();
     }
 
     render() {
-        /*{ ((this.props.chat.usersTyping.indexOf(this.props.user.info.name) > -1 && this.props.chat.usersTyping.length > 1) || (this.props.chat.usersTyping.indexOf(this.props.user.info.name) == -1 && this.props.chat.usersTyping.length > 0)) &&
-                            <View><Text>Someone is typing</Text></View>
-                    }*/
         return (
             <Animated.View style={{height: this.viewHeight}}>
                 <View style={styles.chatContainer}>
                     <View style={styles.listViewContainer}>
+                    {/* <FlatList
+                        inverted
+                        data={this.props.chat.chatMessages}
+                        renderItem={(message) => this._renderRow(message)}
+                        keyExtractor={(item, index) => index}
+                        removeClippedSubviews={false}
+                        /> */}
                         <ListView
                             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                            dataSource={this.props.chatMessages}
+                            dataSource={this.ds.cloneWithRows(this.props.chat.chatMessages, this.props.chat.chatMessages.map((row, index) => index).reverse())}
                             enableEmptySections={true}
                             renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
                             />
@@ -122,7 +129,7 @@ class Chat extends Component{
                         autoCorrect={false}
                         style={styles.messageInput}
                         onChangeText={(text) => this._messageTextChanged(text)}
-                        value={this.props.currentMessage}
+                        value={this.state.currentMessage}
                         />
                         <FontAwesomeIcon.Button name="send-o" onPress={this._sendMessage.bind(this)}
                             style={styles.sendMessageButton} backgroundColor="rgba(0,0,0,0)">
@@ -131,32 +138,14 @@ class Chat extends Component{
                 </View>
             </Animated.View>
         );
-    
     }
 }
 
-const ds = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2
-});
-
-
-const mapStateToProps = (state) => {
-    //Reorder row for inverted list view
-    var rowIds = state.chat.chatMessages.map((row, index) => index).reverse();
-
-    return {
-        chatMessages: ds.cloneWithRows(state.chat.chatMessages, rowIds),
-        currentMessage: state.chat.currentMessage,
-        chat: state.chat,
-        user: state.user
-    }
-};
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
+Chat.PropTypes = {
+    sendMessage: PropTypes.func.isRequired,
+    chat: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 
 var styles = StyleSheet.create({
     container: {
@@ -187,7 +176,6 @@ var styles = StyleSheet.create({
     },
     listViewContainer: {
       marginTop: 0,
-      paddingTop: 40,
       backgroundColor: 'rgba(0,0,0,0)',
       alignSelf: 'stretch',
       flex: 1
@@ -196,6 +184,7 @@ var styles = StyleSheet.create({
       marginTop: 0,
       paddingLeft: 20,
       paddingRight: 20,
+      paddingBottom: 40,
       backgroundColor: 'rgba(0,0,0,0)',
       alignSelf: 'stretch',
       flex: 1
@@ -203,7 +192,7 @@ var styles = StyleSheet.create({
     messageInput:{
         flex:3, 
         height: 35, 
-        borderColor: 'rgba(255,255,255, 0.6)', 
+        borderColor: 'rgba(255,255,255, 0.6)',
         borderWidth: 1,
         borderRadius: 15,
         color: 'white',

@@ -1,13 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 import Chat from './Chat';
+import * as Colors from '../helpers/ColorPallette';
+import * as FontSizes from '../helpers/FontSizes';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { 
   View,
   StyleSheet,
   Dimensions,
+  TouchableHighlight,
   Text} from 'react-native';
 
  import {
@@ -21,6 +26,7 @@ import {
 } from 'react-native-webrtc';
 
 import kurentoUtils from 'react-native-kurento-utils-js';
+import InCallManager from 'react-native-incall-manager';
 
 var pc;
 var iceCandidatesCount = 0;
@@ -28,12 +34,13 @@ var localStream;
 var kurentoPeer;
 var counter = 0;
 
-class WebRTCChat extends Component{
+export default class WebRTCChat extends Component{
  
   constructor(props) {
     super(props);
     this.state = { 
-        sdpAnswerLoaded: false
+        sdpAnswerLoaded: false,
+        isAudioMute: false
      };
   }
   
@@ -57,9 +64,13 @@ class WebRTCChat extends Component{
 			this.generateOffer(function(error, offer){
           console.log(error);
           self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
-          self._startWebRtcAsViewer();
+          self._startWebRtcAsViewer();   
+          
+          InCallManager.start(); // audio/video, default: audio
+          InCallManager.setForceSpeakerphoneOn(true);
+          InCallManager.setKeepScreenOn(true);
       });
-		});
+    });
   }
 
   componentWillUpdate(){
@@ -101,7 +112,7 @@ class WebRTCChat extends Component{
 
       pc.onnegotiationneeded = function () {
         console.log('onnegotiationneeded');
-          console.log("2. Negotiation needed, lets create an offer.")
+        console.log("2. Negotiation needed, lets create an offer.")
       }
 
       pc.oniceconnectionstatechange = function(event) {
@@ -113,10 +124,10 @@ class WebRTCChat extends Component{
       
       pc.onaddstream = function (event) {
           self.props.updateStreamUrl(event.stream.toURL());
-        console.log("8. Stream has been added");
+          console.log("8. Stream has been added");
 
-        console.log('onaddstream', event.stream);
-        console.log(event.stream.toURL());
+          console.log('onaddstream', event.stream);
+          console.log(event.stream.toURL());
        
        };
 
@@ -129,12 +140,17 @@ class WebRTCChat extends Component{
       setTimeout(() => {
         getStats();
       }, 100);
-      
-      
   }
 
-  _setIsPresenter = function(){
-    this.props.setIsPresenter(true);
+  _endCall(){
+    InCallManager.stop();
+    this.props.navigation.goBack();
+  }
+
+  _setAudioMute(){
+    this.setState({ isAudioMute: !this.state.isAudioMute }, () => {
+     // InCallManager.setMicrophoneMute(this.state.isMicrophoneMute);
+    });
   }
 
   render() {
@@ -151,27 +167,34 @@ class WebRTCChat extends Component{
 
         return (
           <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
-            <Chat />
+                <View style={styles.videoCommands}>
+                  <TouchableHighlight onPress={()=>{ this._setAudioMute()}} style={styles.muteBtn}>
+                        <MCIcon name="volume-off" style={styles.muteIcon} />
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.hangUpBtn} onPress={() => {this._endCall()}}>
+                      <MCIcon name="phone-hangup" style={styles.hangupIcon} />
+                  </TouchableHighlight>
+              </View>
+              <Chat chat={this.props.chat} user={this.props.user} sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}/>
           </RTCView>
         );
   }
 }
 
 
-const mapStateToProps = (state) => {
-    return {
-        user: state.user,
-        webrtc: state.webrtc,
-        chat: state.chat
-    }
-};
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
+WebRTCChat.PropTypes = {
+  chat: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  webrtc: PropTypes.object.isRequired,
+  sendMessage: PropTypes.func.isRequired,
+  connect: PropTypes.func.isRequired,
+  disconnect: PropTypes.func.isRequired,
+  sendOnIceCandidate: PropTypes.func.isRequired,
+  startViewer: PropTypes.func.isRequired,
+  updateStreamUrl: PropTypes.func.isRequired,
+  updateConnectionStatus: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(WebRTCChat);
-
 
 var styles = StyleSheet.create({
   container: {
@@ -234,5 +257,41 @@ var styles = StyleSheet.create({
      alignItems: 'center',
      backgroundColor: '#F5FCFF',
      flexDirection: 'column'
+  },
+  videoCommands: {
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    paddingTop: 40
+  },
+  muteBtn: {
+    width: 60,
+    height: 60,
+    backgroundColor: Colors.LIGHT_BLUE,
+    alignSelf: 'flex-start',
+    marginRight: 10,
+    borderRadius: 40,
+    justifyContent: 'center',
+    paddingLeft: 5
+  },
+  hangUpBtn: {
+    width: 60,
+    height: 60,
+    backgroundColor: Colors.RED,
+    alignSelf: 'flex-start',
+    borderRadius: 40,
+    justifyContent: 'center'
+  },
+  muteIcon: {
+    fontSize: 28,
+    color: 'white',
+    width: 30,
+    alignSelf: 'center'
+  },
+  hangupIcon: {
+    fontSize: 28,
+    color: 'white',
+    width: 30,
+    alignSelf: 'center'
   }
 });
