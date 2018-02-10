@@ -4,10 +4,14 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import WebRTCChat from '../../../molecules/WebRTCChat';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ScreenLoader from '../../../molecules/ScreenLoader';
 import {
   StyleSheet,
   Text,
   View,
+  Image,
+  Dimensions
 } from 'react-native';
 
 class OtherScreen extends Component{
@@ -30,15 +34,15 @@ class OtherScreen extends Component{
 
   render(){
     if(!this.props.webrtc.roomStatus.presenterConnected){
-      return <View>
-        <Text>Waiting for presenter...</Text>
-      </View>
+      return(
+        <ScreenLoader message={'WAITING FOR PRESENTER'} goBack={() => {this.props.navigation.goBack() }} />
+      )
     }
 
     if(this.props.chat.roomId){
       return(
           <View style={styles.container}>
-              <WebRTCChat 
+              <WebRTCChat style={{backgroundColor: 'green}', alignSelf: 'stretch'}}
                 user={this.props.user} 
                 chat={this.props.chat}
                 webrtc={this.props.webrtc}
@@ -62,7 +66,7 @@ class OtherScreen extends Component{
 }
 
 OtherScreen.navigationOptions = ({ navigation }) => ({
-  header: null
+    header: null
 });
 
 
@@ -87,9 +91,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(OtherScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    //width: Dimensions.get('window').width,
     //justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  
+   // alignItems: 'center',
+    backgroundColor: 'blue',
+  }
 });

@@ -116,7 +116,7 @@ var styles = StyleSheet.create({
   formContainer: {
     width: 300,
     padding: 30,
-    marginTop: 100
+    marginTop: 0
   },
   opaqueLayer: {
     flex: 1,
@@ -206,7 +206,7 @@ class AuthForm extends Component{
                     <View style={styles.opaqueLayer}>
 
                         <View style={styles.formContainer}>
-                            <Image style={styles.logo} source={require('../../img/logo.png')} />
+                            <Image style={styles.logo} source={require('../../img/HomeCastLogo_long_white.png')} />
                             <Form style={styles.form}
                                 ref="form"
                                 type={Person}

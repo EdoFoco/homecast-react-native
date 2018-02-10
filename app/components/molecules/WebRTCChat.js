@@ -7,7 +7,7 @@ import Chat from './Chat';
 import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import ScreenLoader from '../molecules/ScreenLoader';
 import { 
   View,
   StyleSheet,
@@ -162,7 +162,7 @@ export default class WebRTCChat extends Component{
         }
         
         if(this.props.webrtc.status != 'completed'){
-          return <Text>{this.props.webrtc.status}</Text>
+          return <ScreenLoader message={this.props.webrtc.status} goBack={() => {this.props.navigation.goBack() }}/>
         }
 
         return (
