@@ -74,10 +74,7 @@ export default class AdminWebRTCChat extends Component{
               console.log('2. Presenter - Offer generated')
               self.props.startPresenter({roomId: self.props.chat.roomId, sdpOffer: offer});
               self._startWebRtcAsPresenter();
-              
-              InCallManager.start(); // audio/video, default: audio
-              InCallManager.setKeepScreenOn(true);
-          });
+         });
         });
     });
   }
@@ -99,13 +96,6 @@ export default class AdminWebRTCChat extends Component{
             this.setState({sdpAnswerLoaded: true});
         }
       }
-     
-    // if(this.props.webrtc.viewer.sdpAnswer){
-    //     console.log('6. Presenter - Processing Viewer Response');
-    //     kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
-    //       console.log('hi viewer');
-    //     });
-    //   }
   }
 
   componentWillUnmount(){
@@ -174,37 +164,37 @@ export default class AdminWebRTCChat extends Component{
 
           console.log('oniceconnectionstatechange', event.target.iceConnectionState);
           if (event.target.iceConnectionState === 'completed') {
-            setTimeout(() => {
-              //getStats();
-            }, 1000);
+            InCallManager.start();
+            InCallManager.setKeepScreenOn(true);
+            // setTimeout(() => {
+            //   //getStats();
+            // }, 1000);
           }
           if (event.target.iceConnectionState === 'connected') {
             console.log('Connected!!!');
-            //createDataChannel();
           }
       };
-      
-      // pc.onaddstream = function (event) {
-      //     self.props.updateStreamUrl(event.stream.toURL());
-      //       console.log("8. Stream has been added");
-
-      //       console.log('onaddstream', event.stream);
-      //       console.log(event.stream.toURL());
-      //  };
-
-       self.props.updateStreamUrl(localStream.toURL());
-
-       pc.addStream(localStream);
+    
+      self.props.updateStreamUrl(localStream.toURL());
+      pc.addStream(localStream);
  }
 
   _endCall(){
-    InCallManager.stop();
-    this.props.navigation.goBack();
+     InCallManager.stop();
+     this.props.navigation.goBack();
   }
 
   _setMute(){
     this.setState({ isMicrophoneMute: !this.state.isMicrophoneMute }, () => {
-     // InCallManager.setMicrophoneMute(this.state.isMicrophoneMute);
+      let tracks = localStream.getTracks();
+      if (tracks.length > 0) {
+          tracks.forEach((track, index, array) => {
+              if(track.kind === 'audio'){
+                track.enabled = !this.state.isMicrophoneMute;
+              }
+          })  
+          InCallManager.setMicrophoneMute(this.state.isMicrophoneMute);
+        }   
     });
   }
 
@@ -219,7 +209,11 @@ export default class AdminWebRTCChat extends Component{
           <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
               <View style={styles.videoCommands}>
                 <TouchableHighlight onPress={()=>{ this._setMute()}} style={styles.muteBtn}>
-                  <FontAwesomeIcon name="microphone-slash" style={styles.muteIcon} />
+                 {
+                   !this.state.isMicrophoneMute ?
+                   <FontAwesomeIcon name="microphone-slash" style={styles.muteIcon} /> :
+                   <FontAwesomeIcon name="microphone" style={styles.muteIcon} />
+                 }
                 </TouchableHighlight>
                   <TouchableHighlight style={styles.hangUpBtn} onPress={() => {this._endCall()}}>
                     <MCIcon name="phone-hangup" style={styles.hangupIcon} />

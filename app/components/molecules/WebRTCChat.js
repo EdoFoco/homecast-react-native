@@ -8,6 +8,7 @@ import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ScreenLoader from '../molecules/ScreenLoader';
+import InCallManager from 'react-native-incall-manager';
 import { 
   View,
   StyleSheet,
@@ -26,7 +27,7 @@ import {
 } from 'react-native-webrtc';
 
 import kurentoUtils from 'react-native-kurento-utils-js';
-import InCallManager from 'react-native-incall-manager';
+//import InCallManager from 'react-native-incall-manager';
 
 var pc;
 var iceCandidatesCount = 0;
@@ -65,10 +66,6 @@ export default class WebRTCChat extends Component{
           console.log(error);
           self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
           self._startWebRtcAsViewer();   
-          
-          InCallManager.start(); // audio/video, default: audio
-          InCallManager.setForceSpeakerphoneOn(true);
-          InCallManager.setKeepScreenOn(true);
       });
     });
   }
@@ -120,6 +117,11 @@ export default class WebRTCChat extends Component{
 
           console.log('oniceconnectionstatechange', event.target.iceConnectionState);
           self.props.updateConnectionStatus(event.target.iceConnectionState);
+          if(event.target.iceConnectionState == 'completed'){
+            InCallManager.start(); // audio/video, default: audio
+            InCallManager.setForceSpeakerphoneOn(true);
+            InCallManager.setKeepScreenOn(true);
+          }
       };
       
       pc.onaddstream = function (event) {
