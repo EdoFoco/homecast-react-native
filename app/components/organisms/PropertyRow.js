@@ -14,6 +14,54 @@ import {
     Image
 } from 'react-native';
 
+export default class PropertyRow extends Component{
+
+  render() {
+    return (
+        <TouchableHighlight style={styles.propertyButton} onPress={() => this.props.onPress(this.props.property)} underlayColor='rgba(0,0,0,0)'>
+            <View style={styles.propertContainer}>
+            <Image source={{uri: this.props.property.thumbnail}} style={styles.backgroundImage} >
+                { !this.props.enableFavourites ? null :
+                    <View style={styles.favouriteIconContainer}>
+                    <MaterialCommunityIcon.Button 
+                        name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
+                        backgroundColor='rgba(0,0,0,0)' 
+                        iconStyle={styles.favouriteIcon} 
+                        onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
+                    </View>
+                }
+                <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
+            </Image>
+            <View style={{flex:1, flexDirection: 'column'}}>
+                <View style={{flex:1}}/>
+                <Image source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
+                <View style={styles.propertyDescriptionWrapper}>
+                    <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
+                    <Text style={styles.descriptionText}>{this.props.property.address}</Text>
+                    <View style={styles.iconsContainer}>
+                        <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
+                        <Text style={styles.iconText}>{this.props.property.bedrooms}</Text>
+                        <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
+                        <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
+                    </View>
+                </View>
+            </View>
+        </View>
+        </TouchableHighlight>
+    );
+  }
+}
+
+PropertyRow.propTypes = {
+    property: PropTypes.object,
+    user: PropTypes.object,
+    onPress: PropTypes.func,
+    enableFavourites: PropTypes.bool,
+    onAddToFavourites: PropTypes.func,
+    onRemoveFromFavourites: PropTypes.func
+}  
+
+
 const styles = StyleSheet.create({
     propertyButton:{
         flexDirection: 'row',
@@ -90,52 +138,3 @@ const styles = StyleSheet.create({
         fontSize: 34
     }
 });
-
-
-export default class PropertyRow extends Component{
-
-  render() {
-    return (
-        <TouchableHighlight style={styles.propertyButton} onPress={() => this.props.onPress(this.props.property)} underlayColor='rgba(0,0,0,0)'>
-            <View style={styles.propertContainer}>
-            <Image source={{uri: this.props.property.thumbnail}} style={styles.backgroundImage} >
-                { !this.props.enableFavourites ? null :
-                    <View style={styles.favouriteIconContainer}>
-                    <MaterialCommunityIcon.Button 
-                        name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
-                        backgroundColor='rgba(0,0,0,0)' 
-                        iconStyle={styles.favouriteIcon} 
-                        onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
-                    </View>
-                }
-                <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
-            </Image>
-            <View style={{flex:1, flexDirection: 'column'}}>
-                <View style={{flex:1}}/>
-                <Image source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
-                <View style={styles.propertyDescriptionWrapper}>
-                    <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
-                    <Text style={styles.descriptionText}>{this.props.property.address}</Text>
-                    <View style={styles.iconsContainer}>
-                        <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                        <Text style={styles.iconText}>{this.props.property.bedrooms}</Text>
-                        <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                        <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
-                    </View>
-                </View>
-            </View>
-        </View>
-        </TouchableHighlight>
-    );
-  }
-}
-
-PropertyRow.propTypes = {
-    property: PropTypes.object,
-    user: PropTypes.object,
-    onPress: PropTypes.func,
-    enableFavourites: PropTypes.bool,
-    onAddToFavourites: PropTypes.func,
-    onRemoveFromFavourites: PropTypes.func
-}  
-

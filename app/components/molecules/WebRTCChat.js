@@ -177,7 +177,7 @@ export default class WebRTCChat extends Component{
                       <MCIcon name="phone-hangup" style={styles.hangupIcon} />
                   </TouchableHighlight>
               </View>
-              <Chat chat={this.props.chat} user={this.props.user} sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}/>
+              <Chat chat={this.props.chat} user={this.props.user} sendMessage={(roomId, username, message) => { this.props.sendMessage(roomId, username, message)}}/>
           </RTCView>
         );
   }

@@ -23,14 +23,14 @@ export default class ViewingScreen extends Component{
 
   
   _renderCTA(){
-    //if(this.props.viewing.isLive){
+    if(this.props.viewing.isLive){
         return ( 
         <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
             <Text style={styles.ctaText}>
                 Join Live Cast
            </Text>
         </TouchableHighlight>)
-    //}
+    }
     
     if(this.props.reservation){
         return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>

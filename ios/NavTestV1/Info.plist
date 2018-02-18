@@ -34,6 +34,11 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>46.101.93.197</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>192.168.1.76</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -53,7 +58,7 @@
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
-			<key>138.68.130.61</key>
+			<key>ec2-34-245-44-121.eu-west-1.compute.amazonaws.com</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
