@@ -9,6 +9,32 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+ export default class DateCell extends Component{
+
+  render() {
+    return(
+        <View style={styles.viewingCell}>
+            <Text style={this.props.titleStyle ? [styles.viewingTitle, this.props.titleStyle] : styles.viewingTitle}>{new Date(`${this.props.dateTime}`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
+            <Text style={this.props.dayStyle ? [styles.viewingDay, this.props.dayStyle] : styles.viewingDay} >{new Date(`${this.props.dateTime}`).getDate()}</Text>
+            <Text style={this.props.monthStyle ? [styles.viewingMonth, this.props.monthStyle]  : styles.viewingMonth}>{new Date(`${this.props.dateTime}`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
+            {
+                !this.props.showTime ? null :
+                <Text style={this.props.timeStyle ? [styles.viewingTime, this.props.timeStyle]  : styles.viewingTime}>{new Date(`${this.props.dateTime}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+            }
+        </View>
+    )
+  }
+}
+
+DateCell.PropTypes = {
+    dateTime: PropTypes.string.isRequired,
+    showTime: PropTypes.boolean,
+    titleStyle: PropTypes.object,
+    dayStyle: PropTypes.object,
+    monthStyle: PropTypes.object,
+    timeStyle: PropTypes.object
+}
+
 
 const styles = StyleSheet.create({
   
@@ -40,31 +66,3 @@ const styles = StyleSheet.create({
         fontSize: FontSizes.DEFAULT
     }
 });
-
-
- export default class DateCell extends Component{
-
-  render() {
-    return(
-        <View style={styles.viewingCell}>
-            <Text style={this.props.titleStyle ? [styles.viewingTitle, this.props.titleStyle] : styles.viewingTitle}>{new Date(`${this.props.dateTime}`).toLocaleString('en-us', {  weekday: 'long' })}</Text>
-            <Text style={this.props.dayStyle ? [styles.viewingDay, this.props.dayStyle] : styles.viewingDay} >{new Date(`${this.props.dateTime}`).getDate()}</Text>
-            <Text style={this.props.monthStyle ? [styles.viewingMonth, this.props.monthStyle]  : styles.viewingMonth}>{new Date(`${this.props.dateTime}`).toLocaleString('en-us', {  month: 'short' }).toUpperCase()}</Text>
-            {
-                !this.props.showTime ? null :
-                <Text style={this.props.timeStyle ? [styles.viewingTime, this.props.timeStyle]  : styles.viewingTime}>{new Date(`${this.props.dateTime}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
-            }
-        </View>
-    )
-  }
-}
-
-DateCell.PropTypes = {
-    dateTime: PropTypes.string.isRequired,
-    showTime: PropTypes.boolean,
-    titleStyle: PropTypes.object,
-    dayStyle: PropTypes.object,
-    monthStyle: PropTypes.object,
-    timeStyle: PropTypes.object
-}
-

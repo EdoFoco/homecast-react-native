@@ -4,7 +4,6 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import LoginScreen from '../components/templates/LoginScreen';
 import MainScreen from '../components/templates/MainScreen';
-import ProfileScreen from '../components/templates/ProfileScreen';
 
 import GuestTabBar from './guest-section/GuestTabBarNavigator';
 

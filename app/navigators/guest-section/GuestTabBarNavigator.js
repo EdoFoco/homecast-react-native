@@ -8,14 +8,14 @@ import GuestViewingsTab from '../../components/templates/guest-section/viewings-
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 
 const routeConfiguration = {
+  ViewingsTab: {
+    screen: GuestViewingsTab
+  },
   Properties: { 
     screen: PropertiesNavigator
   },
   FavouritesTab: {
     screen: FavouritesNavigator
-  },
-  ViewingsTab: {
-    screen: GuestViewingsTab
   },
   Options: {
     screen: OptionsTab
@@ -23,6 +23,7 @@ const routeConfiguration = {
 }
 
 const tabBarConfiguration = {
+  initialRoute: 'ViewingsTab',
   headerMode: 'screen',
   backBehavior: 'none',
   tabBarOptions: {

@@ -19,7 +19,6 @@ import {
 class PropertyContainer extends Component{
 
   componentWillMount(){
-   
     this.props.updateCurrentProperty(this.props.currentProperty);
   }
 

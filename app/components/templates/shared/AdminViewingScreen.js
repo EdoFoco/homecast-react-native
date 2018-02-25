@@ -86,8 +86,6 @@ AdminViewingScreen.PropTypes = {
     joinLiveCast: PropTypes.object.isRequired
 }
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
