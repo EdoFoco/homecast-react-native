@@ -20,7 +20,7 @@ export default function user(state = initialAuthState, action) {
     case types.UPDATE_AUTH_TOKEN:
         return { ...state, authToken: action.token };
     case types.UNAUTHORIZED_USER:
-        return { ...state, isAuthenticating: false, token: '', isLoggedIn: false };
+        return { ...state, isAuthenticating: false, authToken: '', isLoggedIn: false };
     case types.UPDATE_USER_INFO:
         return { ...state, isAuthenticating: false, isLoggedIn: true, info: action.user };
     default:

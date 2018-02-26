@@ -7,6 +7,8 @@ import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import DateCell from '../../shared/DateCell';
 import ViewingRow from '../../shared/ViewingRow';
+import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+
 import {
   StyleSheet,
   Text,
@@ -68,6 +70,7 @@ class ViewingsScreen extends Component{
           keyExtractor={(item, index) => index}
           removeClippedSubviews={false}
         />
+        <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
 
     )
@@ -83,7 +86,8 @@ ViewingsScreen.navigationOptions = {
 const mapStateToProps = (state) => {
    return {
      user: state.user,
-     viewingReservations: state.viewings.viewingReservations
+     viewingReservations: state.viewings.viewingReservations,
+     network: state.network
    }
 };
 

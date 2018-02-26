@@ -20,6 +20,7 @@ import chat from './Chat';
 import properties from './Properties';
 import viewings from './Viewings';
 import scrapers from './Scrapers';
+import network from './Network';
 
 import devToolsEnhancer from 'remote-redux-devtools';
 
@@ -41,7 +42,8 @@ const AppReducer = combineReducers({
   chat,
   properties,
   viewings,
-  scrapers
+  scrapers,
+  network
 }, devToolsEnhancer());
 
 export default AppReducer;

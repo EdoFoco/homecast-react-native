@@ -6,6 +6,7 @@ import FavouritesNavigator  from '../../components/templates/guest-section/favou
 import PropertiesNavigator  from '../../components/templates/guest-section/properties-tab/Navigator';
 import GuestViewingsTab from '../../components/templates/guest-section/viewings-tab/Navigator';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
+import NetworkErrorMessage from '../../components/templates/shared/NetworkErrorMessage';
 
 const routeConfiguration = {
   ViewingsTab: {
@@ -57,6 +58,7 @@ class GuestTabBar extends React.Component {
 const mapStateToProps = (state) => {
  return {
     navigationState: state.guestTabBar,
+    network: state.network
   }
 }
 

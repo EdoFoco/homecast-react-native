@@ -29,7 +29,10 @@ class OptionsScreen extends Component{
   _logout(){
     AsyncStorage.removeItem('@AuthToken:key')
     .then(() => {
-      this.props.logout();
+      return this.props.logout();
+    })
+    .then(() => {
+      return this.props.updateAuthenticatingState(false);
     });
   }
 

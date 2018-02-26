@@ -5,22 +5,8 @@ import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableHighlight,
-  Image
-} from 'react-native';
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white'
-  }
-});
+import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+import { View, StyleSheet, FlatList } from 'react-native';
 
 class PropertiesScreen extends Component{
 
@@ -56,7 +42,8 @@ class PropertiesScreen extends Component{
  _renderRow = function({item}){
     let property = item;
     return (
-            <PropertyRow 
+      <View style={styles.container}>
+        <PropertyRow 
               property = {property}
               user = {this.props.user.info}
               onPress = { (property) => { this._onPress(property) }}
@@ -64,7 +51,8 @@ class PropertiesScreen extends Component{
               onAddToFavourites = { (userId, propertyId) => { this._addToFavourites(userId, propertyId) }}
               onRemoveFromFavourites = { (userId, propertyId) => { this._removeFromFavourites(userId, propertyId) }} 
             />
-        )
+      </View>
+    )
   }
 
   render() {
@@ -76,6 +64,7 @@ class PropertiesScreen extends Component{
             keyExtractor={(item, index) => index}
             removeClippedSubviews={false}
           />
+          <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
 
     )
@@ -92,7 +81,8 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        properties: state.properties.propertiesList
+        properties: state.properties.propertiesList,
+        network: state.network
     }
 };
 
@@ -101,3 +91,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertiesScreen);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  }
+});

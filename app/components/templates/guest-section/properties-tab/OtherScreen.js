@@ -6,13 +6,12 @@ import { NavigationActions } from 'react-navigation';
 import WebRTCChat from '../../../molecules/WebRTCChat';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ScreenLoader from '../../../molecules/ScreenLoader';
+import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import {
   StyleSheet,
   Text,
   View,
-  Image,
-  Dimensions
-} from 'react-native';
+ } from 'react-native';
 
 class OtherScreen extends Component{
 
@@ -86,14 +85,10 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(OtherScreen);
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //width: Dimensions.get('window').width,
-    //justifyContent: 'center',
-   // alignItems: 'center',
-    backgroundColor: 'blue',
+    justifyContent: 'center',
+    backgroundColor: 'white',
   }
 });

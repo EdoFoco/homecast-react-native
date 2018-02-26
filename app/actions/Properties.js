@@ -1,7 +1,6 @@
 import * as types from './Types';
-import * as errorHandler from './ErrorHandler';
-import ApiService from '../libs/services/ApiService';
-
+import * as ErrorHandler from './ErrorHandler';
+import ApiServiceFactory from '../libs/services/ApiServiceFactory';
 
 export function updatePropertiesList(properties){
     return {
@@ -18,72 +17,118 @@ export function updateCurrentProperty(property){
 };
 
 export function addToFavourites(userId, propertyId){
-    return (dispatch, getState) => {
-        return ApiService.addToFavourites(userId, propertyId);
-      }
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            return await apiService.addToFavourites(userId, propertyId);
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+    }
 }
 
 export function removeFromFavourites(userId, propertyId){
-    return (dispatch, getState) => {
-        return ApiService.removeFromFavourites(userId, propertyId);
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            return await apiService.removeFromFavourites(userId, propertyId);
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
       }
 }
 
 export function getProperties() {
-    return (dispatch, getState) => {
-      
-      return ApiService.getProperties()
-          .then(resp => {
-              dispatch(updatePropertiesList(resp.data.properties));
-          });
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.getProperties();
+            dispatch(updatePropertiesList(resp.data.properties));
+            return resp.data.properties;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
     }
   }
 
 export function getUserProperties(userId) {
-    return (dispatch, getState) => {
-      return ApiService.getUserProperties(userId)
-          .then(resp => {
-              dispatch(updatePropertiesList(resp.data.properties));
-          });
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.getUserProperties(userId);
+            dispatch(updatePropertiesList(resp.data.properties));
+            return resp.data.properties;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
     }
   }
 
 export function getProperty(propertyId){
-    return (dispatch, getState) => {
-        return ApiService.getProperty(propertyId)
-            .then(resp => {
-                dispatch(updateCurrentProperty(resp.data));
-                return resp.data;
-            });
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.getProperty(propertyId);
+            dispatch(updateCurrentProperty(resp.data));
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }   
       }
   }
 
   export function updateProperty(property, userId){
-    return (dispatch, getState) => {
-        return ApiService.updateProperty(property)
-            .then(resp => {
-                dispatch(getUserProperties(userId));
-                return resp.data;
-            });
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.updateProperty(property);
+            dispatch(getUserProperties(userId));
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
       }
   }
 
 
 export function createViewing(propertyId, userId, viewingInfo){
-    return (dispatch, getState) => {
-        return ApiService.createViewing(propertyId, viewingInfo)
-        .then(() => {
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            await apiService.createViewing(propertyId, viewingInfo);
             dispatch(getUserProperties(userId))
-        });
-      }
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+    }
 }
 
   export function importProperty(propertyId, userId, url){
-    return (dispatch, getState) => {
-        return ApiService.importProperty(propertyId, url)
-            .then(resp => {
-                dispatch(getUserProperties(userId));
-                return resp.data;
-            });
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.importProperty(propertyId, url)
+            dispatch(getUserProperties(userId));
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
       }
   }
+
+  function handleError(error, dispatch){
+    console.warn(error);
+    var action = ErrorHandler.getActionForError(error);
+    if(action){
+        return dispatch(action);
+    }
+    throw error;
+}

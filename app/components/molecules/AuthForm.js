@@ -7,6 +7,7 @@ import * as t from 'tcomb-form-native'
 import Loader from '../atoms/Loader';
 import * as FontSizes from '../helpers/FontSizes';
 import * as errorHandler from '../../actions/ErrorHandler';
+import ApiService from '../../libs/services/ApiService';
 var _ = require('lodash');
 
 import { 
@@ -65,126 +66,23 @@ var options = {
     }
 }; 
 
-
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#20A4F3',
-    //justifyContent: 'center',
-    flexDirection: 'column',
-    alignSelf: 'stretch'
-  },
-  loaderContainer: {
-      flex: 1,
-      backgroundColor: '#20A4F3',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      alignSelf: 'stretch'
-  },
-  title: {
-    fontSize: FontSizes.BIG,
-    alignSelf: 'center',
-    marginBottom: 30
-  },
-  buttonText: {
-    fontSize: FontSizes.DEFAULT,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  loginBtn: {
-    height: 36,
-    backgroundColor: '#20A4F3',
-    borderColor: '#20A4F3',
-    borderWidth: 1,
-    //borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-  },
-  signupBtn: {
-    height: 36,
-    backgroundColor: '#FF3366',
-    borderColor: 'rgba(0,0,0,0)',
-    borderWidth: 1,
-    //borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-  },
-  formContainer: {
-    width: 300,
-    padding: 30,
-    marginTop: 0
-  },
-  opaqueLayer: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    alignSelf: 'stretch',
-    alignItems: 'center'
-  },
-  formTitle: {
-      fontSize: FontSizes.BIG,
-      alignSelf: 'center',
-      marginBottom: 20,
-      color: 'white'
-  },
-  backgroundImage: {
-      alignSelf: 'stretch',
-      width: null,
-      height: null,
-      resizeMode:"cover",
-      flex: 1,
-      alignItems: 'center'
-      
-  },
-  form: {
-      color: 'white'
-  },
-  logo:{
-      width: 130,
-      resizeMode: 'contain',
-      alignSelf: 'center'
-  }
-});
-
 var WINDOW_HEIGHT = Dimensions.get('window').height;
 
 class AuthForm extends Component{
-
- componentWillMount(){
-    AsyncStorage.getItem('@AuthToken:key')
-    .then((token) => {
-        if(!token){
-           throw new Error("No auth token");
-        }
-
-        return this.props.updateAuthToken(token, false);
-    })
-    .then(() => {
-        return this.props.getLoggedInUser();
-    })
-    .catch((error) => {
-        console.warn(error);
-        if(typeof error.response !== 'undefined'){
-            if(error.response.status == 401){
-                this.props.handleUnauthorized();
-            }
-        }
-       //console.error('API Error - handle error');
-       this.props.handleUnauthorized();
-    });
-  }
-
 
   _onPress() {
     var credentials = this.refs.form.getValue();
     if (credentials) { // if validation fails, value will be null
       this.props.login(credentials)
         .then((resp) => {
-            this.props.updateAuthToken(resp.token);
+            return AsyncStorage.setItem('@AuthToken:key', resp.token)
+            .then(() => {
+                return resp;
+            });
+        })
+        .then((resp) => {
             this.props.updateUserInfo(resp.user);
+            this.props.updateAuthToken(resp.token)
         })
         .catch((error) => {
             console.log(error);
@@ -215,7 +113,7 @@ class AuthForm extends Component{
                             <TouchableHighlight style={styles.loginBtn} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
                                 <Text style={styles.buttonText}>Login</Text>
                             </TouchableHighlight>
-                            <TouchableHighlight style={styles.signupBtn} onPress={console.log('Sign up')} underlayColor='#99d9f4'>
+                            <TouchableHighlight style={styles.signupBtn} underlayColor='#99d9f4'>
                                 <Text style={styles.buttonText}>Create Account</Text>
                             </TouchableHighlight>
                         </View>
@@ -234,7 +132,8 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         isAuthenticating: state.user.isAuthenticating,
-        nav: state.nav
+        nav: state.nav,
+        network: state.network
     }
 };
 
@@ -243,3 +142,88 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);
+
+
+
+var styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#20A4F3',
+      //justifyContent: 'center',
+      flexDirection: 'column',
+      alignSelf: 'stretch'
+    },
+    loaderContainer: {
+        flex: 1,
+        backgroundColor: '#20A4F3',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        alignSelf: 'stretch'
+    },
+    title: {
+      fontSize: FontSizes.BIG,
+      alignSelf: 'center',
+      marginBottom: 30
+    },
+    buttonText: {
+      fontSize: FontSizes.DEFAULT,
+      color: 'white',
+      alignSelf: 'center'
+    },
+    loginBtn: {
+      height: 36,
+      backgroundColor: '#20A4F3',
+      borderColor: '#20A4F3',
+      borderWidth: 1,
+      //borderRadius: 8,
+      marginBottom: 10,
+      alignSelf: 'stretch',
+      justifyContent: 'center',
+    },
+    signupBtn: {
+      height: 36,
+      backgroundColor: '#FF3366',
+      borderColor: 'rgba(0,0,0,0)',
+      borderWidth: 1,
+      //borderRadius: 8,
+      marginBottom: 10,
+      alignSelf: 'stretch',
+      justifyContent: 'center',
+    },
+    formContainer: {
+      width: 300,
+      padding: 30,
+      marginTop: 0
+    },
+    opaqueLayer: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.6)',
+      alignSelf: 'stretch',
+      alignItems: 'center'
+    },
+    formTitle: {
+        fontSize: FontSizes.BIG,
+        alignSelf: 'center',
+        marginBottom: 20,
+        color: 'white'
+    },
+    backgroundImage: {
+        alignSelf: 'stretch',
+        width: null,
+        height: null,
+        resizeMode:"cover",
+        flex: 1,
+        alignItems: 'center'
+        
+    },
+    form: {
+        color: 'white'
+    },
+    logo:{
+        width: 130,
+        resizeMode: 'contain',
+        alignSelf: 'center'
+    }
+  });
+  

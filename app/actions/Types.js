@@ -1,3 +1,6 @@
+//Generic
+export const NETWORK_ERROR = 'NETWORK_ERROR';
+
 // Auth
 export const AUTHENTICATING = 'AUTHENTICATING';
 export const LOGIN = 'LOGIN';

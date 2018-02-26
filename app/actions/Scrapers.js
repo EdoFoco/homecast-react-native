@@ -1,5 +1,6 @@
 import * as types from './Types';
-import ApiService from '../libs/services/ApiService';
+import ApiServiceFactory from '../libs/services/ApiServiceFactory';
+import * as ErrorHandler from './ErrorHandler';
 
 
 export function updateScrapers(scrapers){
@@ -10,11 +11,25 @@ export function updateScrapers(scrapers){
 }
 
 export function getScrapers() {
-    return (dispatch, getState) => {
-      
-      return ApiService.getScrapers()
-          .then(resp => {
-              dispatch(updateScrapers(resp.data.scrapers));
-          });
+    return async (dispatch, getState) => {
+      try{
+        var apiService = await ApiServiceFactory.getInstance();
+        var resp = await apiService.getScrapers();
+        dispatch(updateScrapers(resp.data.scrapers));
+        return resp.data.scrapers;
+      }
+      catch(error){
+        handleError(error, dispatch);
+      }
     }
   }
+
+
+  function handleError(error, dispatch){
+    console.warn(error);
+    var action = ErrorHandler.getActionForError(error);
+    if(action){
+        return dispatch(action);
+    }
+    throw error;
+}

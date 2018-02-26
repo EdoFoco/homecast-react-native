@@ -16,8 +16,9 @@ let socketIoMiddleware = createSocketMiddleware();
 
 const persistConfig = {
   key: 'root',
-  storage,
-}
+  storage: storage,
+  blacklist: ['webrtc', 'network']
+};
 
 class ReduxExampleApp extends React.Component {
   

@@ -1,147 +1,107 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
     //baseURL: 'http://46.101.93.197',
-
-let apiClient = axios.create({
-    baseURL: 'http://192.168.1.76:8111',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'dataType': 'json',
-      }
-  });
 
 class ApiService {
   
-    static setAuthToken(authToken){
-        apiClient.defaults.headers.common['Authorization'] = `Bearer ${ authToken }`;
-    }
+    apiClient;
 
-    static login(credentials){
-        return apiClient.post('api/auth/login', credentials)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
+    constructor(){
+        this.apiClient = axios.create({
+            baseURL: 'http://192.168.1.76:8111',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'dataType': 'json',
+              }
         });
     }
 
-    static getLoggedInUser(){
-        return apiClient.get('api/users/me')
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+    async loadTokenFromStorage(){
+        var token = await AsyncStorage.getItem('@AuthToken:key');
+        if(token){
+            this.apiClient.defaults.headers.common['Authorization'] = `Bearer ${ token }`;
+        }
     }
 
-    static getProperties(){
-        return apiClient.get('api/properties')
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+    async login(credentials){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.post('api/auth/login', credentials);
     }
 
-    static getProperty(propertyid){
-        return apiClient.get(`api/properties/${propertyid}`)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+    async getLoggedInUser(){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get('api/users/me');
     }
 
-    static getUserProperties(userId){
-       return apiClient.get(`api/users/${userId}/properties`)
-       .catch((e) => {
-        console.warn(e);
-        throw e;
-    });
+     async getProperties(){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get('api/properties');
+    }
+
+     async getProperty(propertyid){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get(`api/properties/${propertyid}`);
+    }
+
+     async getUserProperties(userId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get(`api/users/${userId}/properties`);
     }
     
-    static getViewing(viewingId){
-        return apiClient.get(`api/viewings/${ viewingId }`)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async getViewing(viewingId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get(`api/viewings/${ viewingId }`);
     }
 
-    static getPropertyViewings(propertyId){
-       return apiClient.get(`api/properties/${ propertyId }/viewings`)
-       .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async getPropertyViewings(propertyId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get(`api/properties/${ propertyId }/viewings`);
     }
 
-    static addToFavourites(userId, propertyId){
-       return apiClient.post(`api/users/${ userId }/favourites`, { property_id: propertyId})
-       .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async addToFavourites(userId, propertyId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.post(`api/users/${ userId }/favourites`, { property_id: propertyId});
     }
 
-    static removeFromFavourites(userId, propertyId){
-        return apiClient.delete(`api/users/${ userId }/favourites?property_id=${propertyId}`)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async removeFromFavourites(userId, propertyId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.delete(`api/users/${ userId }/favourites?property_id=${propertyId}`);
      }
 
-    static createViewingReservation(userId, viewingId){
-        return apiClient.post(`api/users/${ userId }/viewing-reservations`, { viewing_id: viewingId})
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async createViewingReservation(userId, viewingId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.post(`api/users/${ userId }/viewing-reservations`, { viewing_id: viewingId});
      }
 
-     static createViewing(propertyId, viewingInfo){
-        return apiClient.post(`api/properties/${ propertyId }/viewings`, viewingInfo)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+      async createViewing(propertyId, viewingInfo){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.post(`api/properties/${ propertyId }/viewings`, viewingInfo);
      }
 
-    static deleteViewingReservation(userId, viewingId){
-        return apiClient.delete(`api/users/${ userId }/viewing-reservations/${viewingId}`)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async deleteViewingReservation(userId, viewingId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.delete(`api/users/${ userId }/viewing-reservations/${viewingId}`);
      }
 
-    static getViewingReservations(userId){
-        return apiClient.get(`api/users/${userId}/viewing-reservations`)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async getViewingReservations(userId){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get(`api/users/${userId}/viewing-reservations`)
      }
 
-    static updateProperty(property){
-        return apiClient.put(`api/properties/${property.id}`, property)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async updateProperty(property){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.put(`api/properties/${property.id}`, property);
     }
 
-    static getScrapers(){
-        return apiClient.get(`api/scrapers`)
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async getScrapers(){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.get(`api/scrapers`);
     }
 
-    static importProperty(id, url){
-        return apiClient.post(url, { property_id: id })
-        .catch((e) => {
-            console.warn(e);
-            throw e;
-        });
+     async importProperty(id, url){
+        // await this.loadTokenIfNotSet();
+        return await this.apiClient.post(url, { property_id: id });
     }
     
 }

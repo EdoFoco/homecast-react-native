@@ -1,6 +1,7 @@
 import * as types from './Types';
-import ApiService from '../libs/services/ApiService';
 import { AsyncStorage } from 'react-native';
+import * as ErrorHandler from './ErrorHandler';
+import ApiServiceFactory from '../libs/services/ApiServiceFactory';
 
 export function updateUserInfo(user){
     return {
@@ -9,22 +10,18 @@ export function updateUserInfo(user){
     }
 }
 
-export function updateAuthToken(token){
-    AsyncStorage.setItem('@AuthToken:key', token);
-    ApiService.setAuthToken(token);
-
+export function updateAuthenticatingState(isAuthenticating){
     return {
-        type: types.UPDATE_AUTH_TOKEN,
-        token: token
+        type: types.AUTHENTICATING,
+        isAuthenticating: isAuthenticating
     }
 }
 
-export function login(credentials){
-    return (dispatch, getState) => {
-        return ApiService.login(credentials)
-            .then((resp) => {
-                return resp.data;
-            });
+export function updateAuthToken(token){
+    
+    return {
+        type: types.UPDATE_AUTH_TOKEN,
+        token: token
     }
 }
 
@@ -35,11 +32,40 @@ export function logout(){
     }
 }
 
-export function getLoggedInUser(){
-    return (dispatch, getState) => {
-        return ApiService.getLoggedInUser()
-            .then((resp) => {
-                dispatch(updateUserInfo(resp.data.user));
-            });
+
+export function login(credentials){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.login(credentials);
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
     }
+}
+
+
+export function getLoggedInUser(){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.getLoggedInUser()
+            dispatch(updateUserInfo(resp.data.user));
+            return resp.data.user;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+    }
+}
+
+function handleError(error, dispatch){
+    console.warn(error);
+    var action = ErrorHandler.getActionForError(error);
+    if(action){
+        return dispatch(action);
+    }
+    throw error;
 }

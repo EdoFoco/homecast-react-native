@@ -1,9 +1,32 @@
 import * as types from './Types';
 
+export function getActionForError(error){
+    if(!error.response && error.message.toLowerCase() == 'network error'){
+        return showNetworkError(true);
+    }
+    if(error.response && error.response.status){
+        console.log(error.response.request.responseURL);
+        switch(error.response.status){
+            case 400:
+                if(error.response.data.error === 'token_invalid' || error.response.data.error === 'token_not_provided'){
+                    return handleUnauthorized();
+                }
+            case 401:
+                return handleUnauthorized();
+        }
+    }
+}
 
 export function handleUnauthorized(){
     return {
         type: types.UNAUTHORIZED_USER,
         data: null
+    }
+}
+
+export function showNetworkError(hasError){
+    return {
+        type: types.NETWORK_ERROR,
+        hasError: hasError
     }
 }

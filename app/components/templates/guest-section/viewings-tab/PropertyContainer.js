@@ -5,21 +5,13 @@ import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import Property from '../../shared/Property';
 import * as Colors from '../../../helpers/ColorPallette';
-import {
-  Text,
-  View,
-  FlatList,
-  TouchableHighlight,
-  Image,
-  Dimensions,
-  ScrollView
-} from 'react-native';
+import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+import { View, StyleSheet } from 'react-native';
 
 
 class PropertyContainer extends Component{
 
   componentWillMount(){
-   
     this.props.updateCurrentProperty(this.props.currentProperty);
   }
 
@@ -29,13 +21,17 @@ class PropertyContainer extends Component{
   
   render() {
     return (
-        <Property 
+        <View style={styles.container}>
+          <Property 
             currentProperty={this.props.currentProperty}
             properties={this.props.properties}
             propertyScreen={this.props.propertyScreen}
             goToViewing={(viewingId) => { return this._goToViewing(viewingId)}}
             updatePropertyActiveTab={(index) => { return this.props.updatePropertyActiveTab(index)}}
-        />
+          />
+          <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
+        </View>
+        
     )
   }
 }
@@ -54,7 +50,8 @@ const mapStateToProps = (state, navigation) => {
         currentProperty: state.properties.propertiesList.find(p => p.id === navigation.navigation.state.params.property.id),
         currentPropertyViewings: state.properties.propertiesList.find(p => p.id === navigation.navigation.state.params.property.id).viewings,
         propertyScreen: state.propertyScreen,
-        properties: state.properties
+        properties: state.properties,
+        network: state.network
     }
 };
 
@@ -63,3 +60,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyContainer);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  }
+});

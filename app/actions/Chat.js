@@ -63,19 +63,6 @@ export function errorFethingViewing(error){
     //Todo: Do something
 }
 
-export function getViewing(viewingId){
-    return (dispatch, getState) => {
-        
-        return TntApi.get('viewings/' + viewingId)
-            .then(resp => {
-                console.log(resp);
-                dispatch(updateRoomId(resp.room.unique_id));
-            }).catch( (ex) => {
-                dispatch(errorFethingViewing(ex));
-            });
-      }
-}
-
 export function getRoomStatus(roomId){
     return {
         type: types.SERVER_ROOM_STATUS,

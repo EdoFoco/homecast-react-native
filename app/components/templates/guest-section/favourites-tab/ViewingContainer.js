@@ -4,6 +4,8 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import ViewingScreen from '../../shared/ViewingScreen';
 import { NavigationActions } from 'react-navigation';
+import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+import { View, StyleSheet } from 'react-native';
 
 class ViewingContainer extends Component{
 
@@ -39,16 +41,20 @@ _reserveSpot(userId, viewingId){
 
   render() {
     return(
-       <ViewingScreen 
-            viewing={this.props.viewing}
-            property={this.props.property}
-            reservation={this.props.reservation}
-            user={this.props.user}
-            cancelViewingReservation={(userId, reservationId) => {this._cancelViewingReservation(userId, reservationId)}}
-            createViewingReservation={(userId, viewingId) => {this._reserveSpot(userId, viewingId)} }
-            goToProperty={() => { this._goToProperty() }}
-            showViewPropertyBtn={true}
-       />
+        <View style={styles.container}>
+             <ViewingScreen 
+                viewing={this.props.viewing}
+                property={this.props.property}
+                reservation={this.props.reservation}
+                user={this.props.user}
+                cancelViewingReservation={(userId, reservationId) => {this._cancelViewingReservation(userId, reservationId)}}
+                createViewingReservation={(userId, viewingId) => {this._reserveSpot(userId, viewingId)} }
+                goToProperty={() => { this._goToProperty() }}
+                showViewPropertyBtn={true}
+              />
+            <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
+        </View>
+      
     )
   }
 }
@@ -65,7 +71,8 @@ const mapStateToProps = (state, {navigation}) => {
         property: property,
         viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
         reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewingId),
-        user: state.user
+        user: state.user,
+        network: state.network
     }
 };
 
@@ -74,3 +81,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewingContainer);
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }
+  });

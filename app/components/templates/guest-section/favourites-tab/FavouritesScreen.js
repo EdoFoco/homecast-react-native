@@ -5,22 +5,13 @@ import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
+import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
-  TouchableHighlight,
-  Image
 } from 'react-native';
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white'
-  }
-});
 
 class FavouritesScreen extends Component{
 
@@ -65,12 +56,13 @@ class FavouritesScreen extends Component{
   render() {
     return (
       <View style={styles.container}>
-        <FlatList
-          data={this.props.properties}
-          renderItem={(property) => this._renderRow(property)}
-          keyExtractor={(item, index) => index}
-          removeClippedSubviews={false}
-        />
+          <FlatList
+            data={this.props.properties}
+            renderItem={(property) => this._renderRow(property)}
+            keyExtractor={(item, index) => index}
+            removeClippedSubviews={false}
+          />
+          <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
 
     )
@@ -91,7 +83,8 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        properties: properties
+        properties: properties,
+        network: state.network
     }
 };
 
@@ -100,3 +93,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavouritesScreen);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  }
+});
