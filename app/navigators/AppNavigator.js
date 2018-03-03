@@ -1,11 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
-
-import LoginScreen from '../components/templates/LoginScreen';
 import MainScreen from '../components/templates/MainScreen';
-
-import GuestTabBar from './guest-section/GuestTabBarNavigator';
 
 const navigatorOptions = {
   navigationOptions:{
@@ -15,7 +11,6 @@ const navigatorOptions = {
 
 export const AppNavigator = StackNavigator({
   Main: { screen: MainScreen },
-  //Guest: { screen: GuestTabBar },
 }, navigatorOptions);
 
 

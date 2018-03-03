@@ -11,6 +11,8 @@ import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import storage from 'redux-persist/lib/storage';
 import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddleware';
+import {Linking} from 'react-native';
+import LinkRoutes from './app/libs/routing/LinkRoutes';
 
 let socketIoMiddleware = createSocketMiddleware();
 
@@ -26,6 +28,20 @@ class ReduxExampleApp extends React.Component {
   store = createStore(this.persistedReducer,  applyMiddleware( socketIoMiddleware, thunk));
   persistor = persistStore(this.store)
 
+  componentDidMount() {
+    Linking.addEventListener('url', event => this.handleOpenURL(event.url));
+    Linking.getInitialURL().then(url => url && this.handleOpenURL(url));
+  }
+
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  handleOpenURL(url) {
+    const path = url.split(':/')[1];
+    LinkRoutes(this.store, path);
+  }
+  
   render() {
 
     return (

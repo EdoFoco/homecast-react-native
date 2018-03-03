@@ -1,5 +1,4 @@
 import * as types from './Types';
-import TntApi from '../libs/services/TntApi';
 
 export function updateRoomId(roomId){
     return {

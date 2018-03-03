@@ -1,9 +1,8 @@
 import * as types from './Types';
 
-export function goToPropertyScreen(property){
+export function goToPropertiesTab(){
     return {
-        type: types.PROPERTIES_TAB_GO_TO_PROPERTY,
-        property: property
+        type: types.GO_TO_GUEST_PROPERTIES_TAB
     }
 }
 
@@ -13,10 +12,11 @@ export function resetViewingsTab(property){
     }
 }
 
-export function goToPropertiesTabViewingsScreen(viewing){
+export function goToPropertiesTabViewingsScreen(property, viewingId){
     return {
         type: types.GO_TO_PROPERTIES_TAB_VIEWING,
-        viewing: viewing
+        property: property,
+        viewingId: viewingId
     }
 }
 

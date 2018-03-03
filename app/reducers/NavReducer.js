@@ -12,8 +12,10 @@ export const guestTabBar = (state = initalGuestTabNavigatorState, action) => {
   const nextState = GuestTabBarNavigator.router.getStateForAction(action, state);
 
   switch(action.type){
-    case 'Navigation/GO_TO_PROPERTY_SCREEN':
-      return initalGuestTabNavigatorState;
+    case types.GO_TO_GUEST_PROPERTIES_TAB:
+      return GuestTabBarNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Properties'}),
+      );
     default:
       return nextState || state;
   }
@@ -35,12 +37,20 @@ export const guestPropertiesNav = (state = initalGuestPropertiesState, action) =
 
       case types.GO_TO_PROPERTIES_TAB_VIEWING:
         return GuestPropertiesNavigator.router.getStateForAction(
-          NavigationActions.navigate(
-            {
-              routeName: 'ViewingScreen',
-              params: { viewing: action.viewing }
-            }
-        ));
+          NavigationActions.reset({
+            index: 1,
+            actions: [
+              NavigationActions.navigate({ routeName: 'PropertiesHome'}),
+              NavigationActions.navigate({ routeName: 'PropertiesTabViewing', params: {property: action.property, viewingId: action.viewingId}})
+            ]
+          }));
+        // return GuestPropertiesNavigator.router.getStateForAction(
+        //   NavigationActions.navigate(
+        //     {
+        //       routeName: 'ViewingScreen',
+        //       params: { viewing: action.viewing }
+        //     }
+        // ));
 
       case types.PROPERTIES_TAB_GO_BACK:
         return GuestPropertiesNavigator.router.getStateForAction(

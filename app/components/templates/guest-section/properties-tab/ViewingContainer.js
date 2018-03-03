@@ -66,9 +66,10 @@ class ViewingContainer extends Component{
 }
 
 
-ViewingContainer.navigationOptions = ({ navigation }) => ({
-    title: `Viewing - ${navigation.state.params.property.name}`,
-});
+ViewingContainer.navigationOptions = function({navigation}) {
+    console.log(navigation);
+    return { title: `Viewing - ${navigation.state.params.property.name}` }
+};
 
 
 const mapStateToProps = (state, {navigation}) => {

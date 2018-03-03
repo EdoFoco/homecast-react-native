@@ -1,4 +1,5 @@
 import * as types from './Types';
+import { AsyncStorage } from 'react-native';
 
 export function getActionForError(error){
     if(!error.response && error.message.toLowerCase() == 'network error'){
@@ -18,6 +19,8 @@ export function getActionForError(error){
 }
 
 export function handleUnauthorized(){
+    AsyncStorage.removeItem('@AuthToken:key');
+
     return {
         type: types.UNAUTHORIZED_USER,
         data: null
