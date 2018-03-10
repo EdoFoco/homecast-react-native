@@ -3,7 +3,7 @@ import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import AppReducer from './app/reducers';
-import AppWithNavigationState from './app/navigators/AppNavigator';
+//import AppWithNavigationState from './app/navigators/AppNavigator';
 import MainScreen from './app/components/templates/MainScreen';
 import thunk from 'redux-thunk';
 import io from 'socket.io-client';
@@ -13,19 +13,28 @@ import storage from 'redux-persist/lib/storage';
 import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddleware';
 import {Linking} from 'react-native';
 import LinkRoutes from './app/libs/routing/LinkRoutes';
+import {
+  createReduxBoundAddListener,
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers';
 
 let socketIoMiddleware = createSocketMiddleware();
+let navMiddleware = createReactNavigationReduxMiddleware(
+  "root",
+  state => state.nav,
+);
+const addListener = createReduxBoundAddListener("root");
 
 const persistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['webrtc', 'network']
+  blacklist: ['webrtc', 'network', 'guestTabBar']
 };
 
 class ReduxExampleApp extends React.Component {
   
   persistedReducer = persistReducer(persistConfig, AppReducer)
-  store = createStore(this.persistedReducer,  applyMiddleware( socketIoMiddleware, thunk));
+  store = createStore(this.persistedReducer,  applyMiddleware( navMiddleware, socketIoMiddleware, thunk));
   persistor = persistStore(this.store)
 
   componentDidMount() {
@@ -47,7 +56,7 @@ class ReduxExampleApp extends React.Component {
     return (
       <Provider store={this.store}>
         <PersistGate loading={null} persistor={this.persistor}>
-          <MainScreen />
+          <MainScreen addListener={addListener}/>
         </PersistGate>
       </Provider>
     );

@@ -4,6 +4,10 @@ import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import PropertiesNavigator  from '../../components/templates/landlord-section/properties-tab/Navigator';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 import * as Colors from '../../components/helpers/ColorPallette';
+import {
+  createReduxBoundAddListener,
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
   Properties: { 
@@ -31,12 +35,15 @@ class LandlordTabBar extends React.Component {
 
   render(){
     const { dispatch, navigationState } = this.props;
+    const addListener = createReduxBoundAddListener("root");
+
     return (
       <LandlordTabBarNavigator 
         navigation={
           addNavigationHelpers({
             dispatch: dispatch,
-            state: navigationState
+            state: navigationState,
+            addListener
           })
         }
       />

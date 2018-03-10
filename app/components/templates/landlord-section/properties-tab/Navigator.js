@@ -8,6 +8,7 @@ import AddPropertyScreen from './AddPropertyScreen';
 import EditPropertyScreen from './EditPropertyScreen';
 import ViewingContainer from './ViewingContainer';
 import LiveCastContainer from './LiveCastContainer';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
@@ -40,13 +41,15 @@ class LandlordProperitesTab extends React.Component {
 
     render(){
         const { navigationState, dispatch } = this.props;
-        
+        const addListener = createReduxBoundAddListener("root");
+
         return (
             <LandlordPropertiesNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
-                    state: navigationState
+                    state: navigationState,
+                    addListener
                 })
             } />
         );  

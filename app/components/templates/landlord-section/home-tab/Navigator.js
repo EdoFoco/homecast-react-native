@@ -2,6 +2,7 @@ import React from 'react';
 import { addNavigationHelpers } from 'react-navigation';
 import { LandlordHomeNavigator } from '../../../../navigators/landlord-section/HomeNavigator';
 import { connect } from 'react-redux';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 class LandlordHomeTab extends React.Component {
 
@@ -12,13 +13,15 @@ class LandlordHomeTab extends React.Component {
     render(){
         
         const { navigationState, dispatch } = this.props;
-        
+        const addListener = createReduxBoundAddListener("root");
+
         return (
             <LandlordHomeNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
-                    state: navigationState
+                    state: navigationState,
+                    addListener
                 })
             }  />
         );  

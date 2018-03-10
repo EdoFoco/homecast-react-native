@@ -42,7 +42,7 @@ class MainScreen extends Component {
     if(this.props.isLoggedIn && this.state.isReady){
       if(this.props.section.sectionName === 'guest'){
         return(
-            <GuestTabBar />
+            <GuestTabBar addListener={this.props.addListener} />
         )
       }
       if(this.props.section.sectionName === 'landlord'){

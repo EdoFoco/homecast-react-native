@@ -20,11 +20,12 @@
     "react-native-indicators": "^0.11.1",
     "react-native-invertible-scroll-view": "^1.0.0",
     "react-native-kurento-utils-js": "6.6.2",
-    "react-native-maps": "^0.17.0",
+    "react-native-maps": "^0.20.1",
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-vector-icons": "^4.3.0",
     "react-native-webrtc": "1.57.1",
     "react-navigation": "git://github.com/react-community/react-navigation#master",
+    "react-navigation-redux-helpers": "^1.0.3",
     "react-redux": "^5.0.4",
     "redux": "^3.6.0",
     "redux-persist": "^5.9.1",
@@ -45,6 +46,8 @@
     "preset": "react-native"
   },
   "rnpm": {
-    "assets": ["./app/fonts" ]
-    }
+    "assets": [
+      "./app/fonts"
+    ]
+  }
 }

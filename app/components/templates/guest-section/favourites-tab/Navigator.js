@@ -6,6 +6,7 @@ import FavouritesScreen from './FavouritesScreen';
 import PropertyContainer from './PropertyContainer';
 import ViewingContainer from './ViewingContainer';
 import * as Colors from '../../../helpers/ColorPallette';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     FavouritesHome: { screen: FavouritesScreen },
@@ -36,13 +37,15 @@ class GuestFavouritesTab extends React.Component {
 
     render(){
         const { navigationState, dispatch } = this.props;
-        
+        const addListener = createReduxBoundAddListener("root");
+
         return (
             <GuestFavouritesNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
-                    state: navigationState
+                    state: navigationState,
+                    addListener
                 })
             } />
         );  

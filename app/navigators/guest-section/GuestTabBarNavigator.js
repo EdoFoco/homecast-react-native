@@ -7,6 +7,7 @@ import PropertiesNavigator  from '../../components/templates/guest-section/prope
 import GuestViewingsTab from '../../components/templates/guest-section/viewings-tab/Navigator';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 import NetworkErrorMessage from '../../components/templates/shared/NetworkErrorMessage';
+import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
   ViewingsTab: {
@@ -37,20 +38,30 @@ const tabBarConfiguration = {
 
 export const GuestTabBarNavigator = TabNavigator(routeConfiguration,tabBarConfiguration);
 
+
 class GuestTabBar extends React.Component {
 
   render(){
-    const { dispatch, navigationState } = this.props
-    return (
-      <GuestTabBarNavigator 
-        navigation={
-          addNavigationHelpers({
-            dispatch: dispatch,
-            state: navigationState
-          })
-        }
-      />
-    )
+    const { dispatch, navigationState } = this.props;
+    const addListener = createReduxBoundAddListener("root");
+
+    try{
+      return (
+        <GuestTabBarNavigator 
+          navigation={
+            addNavigationHelpers({
+              dispatch: dispatch,
+              state: navigationState,
+              addListener
+            })
+          }
+        />
+      )
+    }
+    catch(e){
+      return null;
+    }
+    
   }
 }
 

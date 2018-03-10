@@ -6,6 +6,7 @@ import ViewingsScreen from './ViewingsScreen';
 import ViewingContainer from './ViewingContainer';
 import PropertyContainer from './PropertyContainer';
 import * as Colors from '../../../helpers/ColorPallette';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     ViewingsHome: { screen: ViewingsScreen },
@@ -37,13 +38,15 @@ class GuestViewingsTab extends React.Component {
 
     render(){
         const { navigationState, dispatch } = this.props;
-        
+        const addListener = createReduxBoundAddListener("root");
+
         return (
             <GuestViewingsNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
-                    state: navigationState
+                    state: navigationState,
+                    addListener
                 })
             } />
         );  

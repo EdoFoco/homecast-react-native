@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OptionsScreen from './OptionsScreen';
 import * as Colors from '../../../helpers/ColorPallette';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     OptionsHome: { screen: OptionsScreen }
@@ -32,13 +33,15 @@ class OptionsTab extends React.Component {
 
     render(){
         const { navigationState, dispatch } = this.props;
-        
+        const addListener = createReduxBoundAddListener("root");
+
         return (
             <OptionsNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
-                    state: navigationState
+                    state: navigationState,
+                    addListener
                 })
             } />
         );  

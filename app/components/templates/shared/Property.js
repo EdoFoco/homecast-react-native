@@ -7,7 +7,6 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import MapView from 'react-native-maps';
 import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import ViewingRow from './ViewingRow';
@@ -98,14 +97,7 @@ export default class Property extends Component{
   _renderMapTab(){
     return (
       <View style={styles.tabContainer}>
-         <MapView
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
+        
       </View>
     )
   }
