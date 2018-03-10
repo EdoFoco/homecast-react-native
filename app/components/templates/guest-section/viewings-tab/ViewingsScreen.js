@@ -8,14 +8,14 @@ import * as FontSizes from '../../../helpers/FontSizes';
 import DateCell from '../../shared/DateCell';
 import ViewingRow from '../../shared/ViewingRow';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+import FastImage from 'react-native-fast-image';
 
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  TouchableHighlight,
-  Image
+  TouchableHighlight
 } from 'react-native';
 
 class ViewingsScreen extends Component{
@@ -45,7 +45,7 @@ class ViewingsScreen extends Component{
     return (
       <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing)}}>
         <View>
-              <Image style={styles.propertyThumb} source={{url: reservation.viewing.property.thumbnail}} />
+              <FastImage style={styles.propertyThumb} source={{url: reservation.viewing.property.thumbnail}} />
               <View style={{flexDirection: 'row',  padding: 20, paddingTop: 10}}>
                 <View style={styles.propertyDescriptionWrapper}>
                   <Text style={styles.propertyTitle}>{reservation.viewing.property.name}</Text>

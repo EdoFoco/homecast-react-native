@@ -11,7 +11,6 @@ import {
   Text,
   TouchableHighlight,
   View,
-  Image,
   AsyncStorage
 } from 'react-native';
 

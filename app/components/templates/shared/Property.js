@@ -11,13 +11,13 @@ import MapView from 'react-native-maps';
 import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import ViewingRow from './ViewingRow';
+import FastImage from 'react-native-fast-image';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   TouchableHighlight,
-  Image,
   Dimensions,
   ScrollView
 } from 'react-native';
@@ -55,8 +55,7 @@ export default class Property extends Component{
     return (
       <ScrollView style={styles.tabContainer}>
         <View style={{flexDirection: 'row', marginBottom: 20}} >
-            <Image source={{uri: this.props.currentProperty.thumbnail}} style={styles.backgroundImage} >
-            </Image>
+            <FastImage source={{uri: this.props.currentProperty.thumbnail}} resizeMode={FastImage.resizeMode.cover} style={styles.backgroundImage} />
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
@@ -200,7 +199,6 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover',
     height: 250
   },
   tabContainer:{

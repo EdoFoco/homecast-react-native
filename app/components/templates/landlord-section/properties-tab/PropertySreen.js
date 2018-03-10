@@ -11,10 +11,7 @@ import * as FontSizes from '../../../helpers/FontSizes';
 import {
   StyleSheet,
   Text,
-  View,
-  FlatList,
-  TouchableHighlight,
-  Image
+  View
 } from 'react-native';
 
 class PropertyScreen extends Component{

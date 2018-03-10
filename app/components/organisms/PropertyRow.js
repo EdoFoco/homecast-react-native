@@ -6,12 +6,12 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import PropTypes from 'prop-types';
 import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
+import FastImage from 'react-native-fast-image';
 import {
     StyleSheet,
     TouchableHighlight,
     View,
-    Text,
-    Image
+    Text
 } from 'react-native';
 
 export default class PropertyRow extends Component{
@@ -20,21 +20,17 @@ export default class PropertyRow extends Component{
     return (
         <TouchableHighlight style={styles.propertyButton} onPress={() => this.props.onPress(this.props.property)} underlayColor='rgba(0,0,0,0)'>
             <View style={styles.propertContainer}>
-            <Image source={{uri: this.props.property.thumbnail}} style={styles.backgroundImage} >
-                { !this.props.enableFavourites ? null :
-                    <View style={styles.favouriteIconContainer}>
-                    <MaterialCommunityIcon.Button 
-                        name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
-                        backgroundColor='rgba(0,0,0,0)' 
-                        iconStyle={styles.favouriteIcon} 
-                        onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
-                    </View>
-                }
-                <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
-            </Image>
+                <FastImage
+                    style={styles.backgroundImage}
+                    source={{
+                        uri: this.props.property.thumbnail,
+                        priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
             <View style={{flex:1, flexDirection: 'column'}}>
                 <View style={{flex:1}}/>
-                <Image source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
+                <FastImage source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
                 <View style={styles.propertyDescriptionWrapper}>
                     <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
                     <Text style={styles.descriptionText}>{this.props.property.address}</Text>
@@ -44,6 +40,7 @@ export default class PropertyRow extends Component{
                         <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
                         <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
                     </View>
+                    <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
                 </View>
             </View>
         </View>
@@ -70,7 +67,6 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        resizeMode: 'cover',
         height: 200
     },
     propertContainer: {
@@ -92,17 +88,16 @@ const styles = StyleSheet.create({
         fontSize: FontSizes.SMALL_TEXT
     },
     priceBadge:{
-        backgroundColor: Colors.AQUA_GREEN,
-        top: 150,
-        color: 'white',
-        position: 'relative',
-        left: 0,
-        fontSize: FontSizes.DEFAULT,
+        color: Colors.AQUA_GREEN,
+      //  top: 150,
+        position: 'absolute',
+        right: 0,
+        bottom: 10,
+        fontSize: FontSizes.SMALL_TEXT,
         fontWeight: 'bold',
         lineHeight: 35,
-        paddingLeft: 10,
         paddingRight: 10,
-        width: 150
+        textAlign: 'right',
     },
     profilePicture: {
         width: 80,

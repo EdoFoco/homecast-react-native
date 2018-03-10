@@ -4,11 +4,11 @@ import Spinner from '../atoms/Spinner';
 import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FastImage from 'react-native-fast-image';
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableHighlight
 } from 'react-native';
 
@@ -21,7 +21,7 @@ export default class ScreenLoader extends Component{
                 !this.props.goBack ? null :
                 <TouchableHighlight onPress={() => { this.props.goBack() }}><MCIcon name='chevron-left' style={styles.backButton}/></TouchableHighlight>
             }
-            <Image style={styles.logo} source={require('../../img/HomeCastLogo_long_white.png')} />
+            <FastImage style={styles.logo} source={require('../../img/HomeCastLogo_long_white.png')} />
 
             <View style={styles.controlsContainer}>
                 <Spinner />

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image';
 
 import {
   StyleSheet,
@@ -15,7 +16,6 @@ import {
   View,
   ScrollView,
   Button,
-  Image,
   Dimensions
 } from 'react-native';
 
@@ -23,14 +23,14 @@ export default class ViewingScreen extends Component{
 
   
   _renderCTA(){
-    if(this.props.viewing.isLive){
+    //if(this.props.viewing.isLive){
         return ( 
         <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
             <Text style={styles.ctaText}>
                 Join Live Cast
            </Text>
         </TouchableHighlight>)
-    }
+   // }
     
     if(this.props.reservation){
         return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>
@@ -61,7 +61,7 @@ export default class ViewingScreen extends Component{
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
-                <Image style={styles.propertyImage} source={{url: this.props.property.thumbnail}} />
+                <FastImage style={styles.propertyImage} source={{url: this.props.property.thumbnail}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>

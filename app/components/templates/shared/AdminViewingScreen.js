@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
@@ -15,7 +17,6 @@ import {
   View,
   ScrollView,
   Button,
-  Image,
   Dimensions
 } from 'react-native';
 
@@ -49,25 +50,30 @@ export default class AdminViewingScreen extends Component{
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
-                <Image style={styles.propertyImage} source={{url: this.props.property.thumbnail}} />
+                <FastImage style={styles.propertyImage} source={{url: this.props.property.thumbnail}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                     <Text style={styles.weekDayStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                   </View>
                 </View>
-
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.deleteViewing()}}>
+                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
                     <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>Delete Viewing</Text>
-                        <FontAwesomeIcon name="trash-o" style={styles.buttonIcon} /> 
+                        <Text style={styles.buttonText}>Invite a Viewer</Text>
+                        <MaterialIcons name="account-plus" style={styles.buttonIconMaterial}/>
+                        {/* <FontAwesomeIcon name="user-" style={styles.buttonIcon} />  */}
                     </View>
                 </TouchableHighlight>
-
                 <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>Contact Viewers</Text>
                         <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.deleteViewing()}}>
+                    <View style={styles.buttonTextContainer}>
+                        <Text style={styles.buttonText}>Delete Viewing</Text>
+                        <FontAwesomeIcon name="trash-o" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
             </ScrollView>
@@ -143,6 +149,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     flex: 0.1,
     fontSize: 28,
+    fontWeight: '100'
+  },
+  buttonIconMaterial: {
+    color: Colors.AQUA_GREEN,
+    alignSelf: 'flex-end',
+    flex: 0.1,
+    fontSize: 30,
+    paddingRight: 5,
     fontWeight: '100'
   },
   availabilityContainer: {

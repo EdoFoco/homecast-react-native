@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import  GuestTabBar  from '../../navigators/guest-section/GuestTabBarNavigator';
 import  LandlordTabBar  from '../../navigators/landlord-section/LandlordTabBarNavigator';
 import NetworkErrorMessage from '../templates/shared/NetworkErrorMessage';
@@ -12,8 +12,14 @@ import { AsyncStorage } from 'react-native';
 
 class MainScreen extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = { 
+        isReady: false
+     };
+  }
+
   componentWillMount(){
-   
     this.props.getLoggedInUser()
     .catch((error) => {
         console.warn(error);
@@ -26,11 +32,14 @@ class MainScreen extends Component {
     })
     .then(() => {
       return this.props.updateAuthenticatingState(false);
+    })
+    .then(() => {
+      this.setState({isReady: true})
     });
   }
 
   render(){
-    if(this.props.isLoggedIn){
+    if(this.props.isLoggedIn && this.state.isReady){
       if(this.props.section.sectionName === 'guest'){
         return(
             <GuestTabBar />
@@ -42,11 +51,16 @@ class MainScreen extends Component {
           )
       }
     }
+    if(this.state.isReady){
+      return(
+        <View style={styles.container}>
+          <AuthForm />
+          <NetworkErrorMessage  isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
+        </View>      
+      )
+    }
     return(
-      <View style={styles.container}>
-        <AuthForm />
-        <NetworkErrorMessage  isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
-      </View>      
+      <Text>Loading..</Text>
     )
   }
 }

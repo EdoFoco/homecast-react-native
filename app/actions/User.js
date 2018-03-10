@@ -38,6 +38,7 @@ export function login(credentials){
         try{
             var apiService = await ApiServiceFactory.getInstance();
             var resp = await apiService.login(credentials);
+            dispatch(updateUserInfo(resp.data.user));
             return resp.data;
         }
         catch(error){
@@ -46,12 +47,25 @@ export function login(credentials){
     }
 }
 
+export function signup(info){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.signup(info);
+            dispatch(updateUserInfo(resp.data.user));
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+    }
+}
 
 export function getLoggedInUser(){
     return async (dispatch, getState) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
-            var resp = await apiService.getLoggedInUser()
+            var resp = await apiService.getLoggedInUser();
             dispatch(updateUserInfo(resp.data.user));
             return resp.data.user;
         }

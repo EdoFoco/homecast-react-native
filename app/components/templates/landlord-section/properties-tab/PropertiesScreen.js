@@ -7,14 +7,14 @@ import PropertyRow from '../../../organisms/PropertyRow';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
+import FastImage from 'react-native-fast-image';
 
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  TouchableHighlight,
-  Image
+  TouchableHighlight
 } from 'react-native';
 
 class PropertiesScreen extends Component{
@@ -41,7 +41,7 @@ class PropertiesScreen extends Component{
                 <Text style={styles.iconText}>{property.bathrooms}</Text>
               </View>
             </View>
-              <Image style={styles.listingImage} source={{url: property.thumbnail}}/>
+              <FastImage style={styles.listingImage} source={{url: property.thumbnail}}/>
           </View>
         </TouchableHighlight>
           

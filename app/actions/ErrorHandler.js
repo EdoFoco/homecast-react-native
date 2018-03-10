@@ -12,6 +12,7 @@ export function getActionForError(error){
                 if(error.response.data.error === 'token_invalid' || error.response.data.error === 'token_not_provided'){
                     return handleUnauthorized();
                 }
+            case 403:
             case 401:
                 return handleUnauthorized();
         }
