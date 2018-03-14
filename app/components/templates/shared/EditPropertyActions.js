@@ -12,15 +12,10 @@ import {
 
 export default class EditPropertyActions extends Component{
 
-  constructor(props) {
-    super(props);
-  }
-
-  
   render() {
     return (
         <View style={styles.container}>
-            <TouchableHighlight style={styles.saveButton} onPress={() => { this.props.updateProperty() }}>
+            <TouchableHighlight style={this.props.enabled ? styles.saveButton : styles.saveButtonDisabled} onPress={!this.props.enabled ? () => {} : () => { this.props.updateProperty() }}>
                 <Text style={styles.buttonTextLight}>Save Changes</Text>
             </TouchableHighlight>
         </View>
@@ -33,6 +28,7 @@ EditPropertyActions.PropTypes ={
     property: PropTypes.object.isRequired,
     saveProperty: PropTypes.func.isRequired,
     cancelChanges: PropTypes.func.isRequired,
+    enabled: PropTypes.object
 }
 
 const styles = StyleSheet.create({
@@ -69,6 +65,14 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         width: Dimensions.get('window').width
+    },
+    saveButtonDisabled: {
+        backgroundColor: Colors.LIGHT_GRAY,
+        flex: 1,
+        paddingRight: 20,
+        paddingLeft: 20,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        width: Dimensions.get('window').width
     }
-  
 })    

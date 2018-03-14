@@ -28,7 +28,7 @@ const addListener = createReduxBoundAddListener("root");
 const persistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['webrtc', 'network', 'guestTabBar']
+  blacklist: ['webrtc', 'network']
 };
 
 class ReduxExampleApp extends React.Component {

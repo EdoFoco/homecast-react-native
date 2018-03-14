@@ -5,6 +5,7 @@ import TextControl from './TextControl';
 import NumericUnitControl from './NumericUnitControl';
 import RoomsControl from './RoomsControl';
 import DescriptionSectionsControl from './DescriptionSectionsControl';
+import AutocompleteControl from './AutocompleteControl';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
@@ -46,6 +47,7 @@ export default class EditPropertyForm extends Component{
   }
 
   _cancelChanges(){
+      this.props.clearAutocomplete();
       this.setState({property: this.props.property, showForm: false, formTarget: null});
   }
 
@@ -148,6 +150,17 @@ export default class EditPropertyForm extends Component{
                 />
             )
         }
+
+        case 'address': {
+            return <AutocompleteControl
+                    style={styles.autoCompleteControl}
+                    title="Property Address"
+                    description=""
+                    placeholder="Type an address" 
+                    getLocationSuggestions={(text) => {this.props.getLocationSuggestions(text, 'address')}} 
+                    suggestions={this.props.autocompleteSuggestions}
+                />
+        }
         default:
             return null;
     };
@@ -221,7 +234,7 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.sectionValue}>{this.props.property.address}, {this.props.property.postcode}, {this.props.property.city}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'address')}}>Edit</Text>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -255,7 +268,10 @@ export default class EditPropertyForm extends Component{
 EditPropertyForm.PropTypes = {
     property: PropTypes.object.isRequired,
     updateProperty: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired
+    user: PropTypes.object.isRequired,
+    getLocationSuggestions: PropTypes.func.isRequired,
+    clearAutocomplete: PropTypes.func.isRequired,
+    autocompleteSuggestions: PropTypes.array.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -360,6 +376,9 @@ const styles = StyleSheet.create({
     activeSwitch: {
         alignSelf: 'flex-end',
         marginTop: 15
+    },
+    autoCompleteControl: {
+        flex: 1
     }
   });
 

@@ -8,8 +8,8 @@ class ApiService {
 
     constructor(){
         this.apiClient = axios.create({
-            //baseURL: 'http://192.168.1.76:8111',
-            baseURL: 'http://46.101.93.197',
+            baseURL: 'http://192.168.1.76:8111',
+            //baseURL: 'http://46.101.93.197',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -114,6 +114,15 @@ class ApiService {
      async importProperty(id, url){
         
         return await this.apiClient.post(url, { property_id: id });
+    }
+
+    async getAddressSuggestions(text, type){
+        var params = `input=${text}`;
+        if(type){
+            params += `&type=${type}`;
+        }
+
+        return await this.apiClient.get(`api/autocomplete?${params}`);
     }
     
 }

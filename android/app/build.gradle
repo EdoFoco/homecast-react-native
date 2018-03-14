@@ -126,9 +126,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-maps')
     compile project(':react-native-fast-image')
     compile project(':react-native-incall-manager')
-    compile project(':react-native-maps')
     compile project(':react-native-vector-icons')
     compile project(':react-native-webrtc')
     compile fileTree(dir: "libs", include: ["*.jar"])

@@ -41,7 +41,10 @@ class EditPropertyScreen extends Component{
                   user={this.props.user}
                   property={this.props.property}
                   updateProperty={this.props.updateProperty}
-                  user={this.props.user}/> :
+                  user={this.props.user}
+                  getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
+                  clearAutocomplete={() => {this.props.updateLocationSuggestions([])}} 
+                  autocompleteSuggestions={this.props.autocompleteSuggestions}/> :
                   <AddViewingForm 
                   propertyId={this.props.property.id} 
                   userId={this.props.user.info.id} 
@@ -77,7 +80,8 @@ const mapStateToProps = (state, navigation) => {
     return {
         user: state.user,
         property: state.properties.propertiesList.find(p => p.id == navigation.navigation.state.params.property.id),
-    }
+        autocompleteSuggestions: state.location.suggestions,
+      }
 };
 
 function mapDispatchToProps(dispatch) {

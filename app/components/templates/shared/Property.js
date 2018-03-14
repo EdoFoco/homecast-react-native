@@ -11,6 +11,7 @@ import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import ViewingRow from './ViewingRow';
 import FastImage from 'react-native-fast-image';
+import MapView from 'react-native-maps';
 import {
   StyleSheet,
   Text,
@@ -96,9 +97,14 @@ export default class Property extends Component{
   
   _renderMapTab(){
     return (
-      <View style={styles.tabContainer}>
-        
-      </View>
+         <MapView style={styles.tabContainer}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
     )
   }
 
@@ -226,11 +232,14 @@ const styles = StyleSheet.create({
     },
     menuItemContainer: {
       alignSelf: 'flex-end',
-      padding: 20,
-      marginRight: 4
+      paddingTop: 20,
+      paddingBottom: 20,
+      paddingLeft: 10,
+      paddingRight: 10,
+      marginRight: 4,
     },
     menuItem: {
-      alignItems: 'center',
+      alignItems: 'center'
     },
     menuIcon: {
       color: 'white',
@@ -244,7 +253,7 @@ const styles = StyleSheet.create({
     },
     menuText: {
       color: Colors.AQUA_GREEN,
-      fontSize: FontSizes.DEFAULT,
+      fontSize: FontSizes.MEDIUM_BIG,
       flex: 0.7,
       alignSelf: 'center',
       marginLeft: 10
@@ -274,7 +283,6 @@ const styles = StyleSheet.create({
     },
     viewingButton: {
       flex: 1,
-      backgroundColor: 'orange',
       height: 40,
       width: 40
     },

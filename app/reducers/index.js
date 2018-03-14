@@ -21,6 +21,7 @@ import properties from './Properties';
 import viewings from './Viewings';
 import scrapers from './Scrapers';
 import network from './Network';
+import location from './Location';
 
 import devToolsEnhancer from 'remote-redux-devtools';
 
@@ -43,7 +44,8 @@ const AppReducer = combineReducers({
   properties,
   viewings,
   scrapers,
-  network
+  network,
+  location
 }, devToolsEnhancer());
 
 export default AppReducer;

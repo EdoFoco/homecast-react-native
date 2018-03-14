@@ -12,11 +12,14 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
+@import GoogleMaps;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyBI8XPW03pYA9WiEKjUiJ4d0Phz6e8VZE8"];
+  
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [NSURL URLWithString:@"http://192.168.1.76:8081/index.ios.bundle?platform=ios&dev=true&minify=false"];

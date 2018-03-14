@@ -3,9 +3,9 @@ package com.navtestv1;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.facebook.react.ReactNativeHost;
@@ -29,9 +29,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
             new FastImageViewPackage(),
             new InCallManagerPackage(),
-            new MapsPackage(),
             new VectorIconsPackage(),
             new WebRTCModulePackage()
 

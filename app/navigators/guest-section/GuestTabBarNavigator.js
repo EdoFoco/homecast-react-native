@@ -10,14 +10,14 @@ import NetworkErrorMessage from '../../components/templates/shared/NetworkErrorM
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-  ViewingsTab: {
-    screen: GuestViewingsTab
-  },
   Properties: { 
     screen: PropertiesNavigator
   },
   FavouritesTab: {
     screen: FavouritesNavigator
+  },
+  ViewingsTab: {
+    screen: GuestViewingsTab
   },
   Options: {
     screen: OptionsTab

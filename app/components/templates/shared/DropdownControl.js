@@ -52,7 +52,9 @@ DropdownControl.PropTypes ={
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10
+        flex: 1,
+        margin: 10,
+        marginBottom: 0
     },
     title: {
         fontSize: FontSizes.TITLE,

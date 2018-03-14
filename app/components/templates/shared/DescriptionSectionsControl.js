@@ -84,6 +84,7 @@ export default class DescriptionSectionsControl extends Component{
                 updateProperty={this.props.updateProperty}
                 cancelChanges={() => {this.props.cancelChanges()}}
                 hideForm={() => {this.props.hideForm()}}
+                enabled={true}
             />
         </ScrollView>
     )

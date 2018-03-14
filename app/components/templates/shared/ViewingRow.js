@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     viewingCapacity: {
         color: Colors.RED,
-        fontSize: FontSizes.DEFAULT,
+        fontSize: FontSizes.MEDIUM_BIG,
         textAlign: 'left',
         borderWidth: 1,
         borderColor: Colors.RED,
@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
         flex: 0.7,
     },
     viewingTime:{
-        fontSize: FontSizes.DEFAULT,
+        fontSize: FontSizes.MEDIUM_BIG,
         textAlign: 'left',
         color: Colors.DARK_GREY,
         paddingRight: 5
     },
     dateStyle:{
-        fontSize: FontSizes.SMALL_TEXT,
+        fontSize: FontSizes.MEDIUM_BIG,
         color: Colors.VERY_LIGHT_GRAY,
         flex: 1,
         textAlign: 'left'

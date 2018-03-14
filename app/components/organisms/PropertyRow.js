@@ -28,8 +28,16 @@ export default class PropertyRow extends Component{
                     }}
                     resizeMode={FastImage.resizeMode.cover}
                 />
+                 { !this.props.enableFavourites ? null :
+                    <View style={styles.favouriteIconContainer}>
+                    <MaterialCommunityIcon.Button 
+                        name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
+                        backgroundColor='rgba(0,0,0,0)' 
+                        iconStyle={styles.favouriteIcon} 
+                        onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
+                    </View>
+                }
             <View style={{flex:1, flexDirection: 'column'}}>
-                <View style={{flex:1}}/>
                 <FastImage source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
                 <View style={styles.propertyDescriptionWrapper}>
                     <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         bottom: 10,
-        fontSize: FontSizes.SMALL_TEXT,
+        fontSize: FontSizes.MEDIUM_BIG,
         fontWeight: 'bold',
         lineHeight: 35,
         paddingRight: 10,

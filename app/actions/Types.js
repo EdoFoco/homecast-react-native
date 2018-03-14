@@ -30,6 +30,8 @@ export const GOTO_GUEST_TAB_BAR = 'GOTO_GUEST_TAB_BAR';
 //Section Changed
 export const GOTO_SECTION = 'GOTO_SECTION';
 
+//Locatin
+export const UPDATE_LOCATION_SUGGESTIONS = 'UPDATE_LOCATION_SUGGESTIONS';
 
 //Sockets
 export const SERVER_CONNECT = 'server/connect';

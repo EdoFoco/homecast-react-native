@@ -100,14 +100,14 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   buttonWrapper: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   section: {
     padding: 40
   },
   sectionTitle: {
     alignSelf: 'flex-start',
-    fontSize: 22,
+    fontSize: FontSizes.MEDIUM_BIG,
     color: Colors.DARK_GREY,
     flex: 0.9
   },
@@ -115,8 +115,9 @@ const styles = StyleSheet.create({
     color: Colors.AQUA_GREEN,
     alignSelf: 'flex-end',
     flex: 0.1,
-    fontSize: 32,
-    fontWeight: '100'
+    fontSize: FontSizes.BIG,
+    fontWeight: '100',
+    marginRight: 10
   },
   logoutSection: {
     flex: 0.5

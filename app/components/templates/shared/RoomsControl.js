@@ -70,6 +70,7 @@ export default class RoomsControl extends Component{
                     property={this.props.property}
                     updateProperty={() => {this.props.updateProperty()}}
                     cancelChanges={() => {this.props.cancelChanges()}}
+                    enabled={true}
                 />
             </View>
         </View>
@@ -92,6 +93,7 @@ RoomsControl.PropTypes ={
 const styles = StyleSheet.create({
     container: {
         margin: 10,
+        marginBottom: 0,
         flex: 1
     },
     title: {
