@@ -231,7 +231,7 @@ export default class EditPropertyForm extends Component{
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Address</Text>
-                            <Text style={styles.sectionValue}>{this.props.property.address}, {this.props.property.postcode}, {this.props.property.city}</Text>
+                            <Text style={styles.sectionValue}>{this.props.property.address}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
                             <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'address')}}>Edit</Text>

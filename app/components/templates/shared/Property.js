@@ -2,7 +2,6 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../helpers/ColorPallette';
@@ -11,7 +10,7 @@ import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import ViewingRow from './ViewingRow';
 import FastImage from 'react-native-fast-image';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import {
   StyleSheet,
   Text,
@@ -99,12 +98,16 @@ export default class Property extends Component{
     return (
          <MapView style={styles.tabContainer}
             initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
+              latitude: this.props.currentProperty.latitude,
+              longitude: this.props.currentProperty.longitude,
+              latitudeDelta: 0.00622,
+              longitudeDelta: 0.00421,
+            }}>
+              <Marker
+                  coordinate={{latitude: this.props.currentProperty.latitude, longitude: this.props.currentProperty.longitude}}
+                  image={require('../../../img/pin.png')}
+                />
+            </MapView>
     )
   }
 
@@ -127,25 +130,30 @@ export default class Property extends Component{
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
             <View style={styles.container}>
-              <View style={{flexDirection: 'row', backgroundColor: Colors.DARK_BLUE, width: Dimensions.get('window').width}}>
-                {this.state.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
-                {this.state.activeTab == 2 ?<Text style={styles.menuText}>Map</Text> : null }
-                {this.state.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null }
+              <View style={styles.menuWrapper}>
+                <View style={styles.menuTitleContainer}>
+                  <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                    <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
+                  </TouchableHighlight>
+                  {this.state.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
+                  {this.state.activeTab == 2 ?<Text style={styles.menuText}>Map</Text> : null }
+                  {this.state.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null }
+                </View>
                 <View style={styles.menuContainer}>
-                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 1})}}>
-                          <View style={styles.menuItem}>
+                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 1})}} underlayColor={'rgba(0,0,0,0)'}>
+                        <View style={this.state.activeTab == 1 ? styles.menuItemActive : styles.menuItem}>
                               <FontAwesomeIcon style={this.state.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
                               { this.state.activeTab == 1 ? <View style={styles.triangle} /> : null }
                           </View>
                         </TouchableHighlight>
-                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 2})}}>
-                          <View style={styles.menuItem}> 
+                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 2})}} underlayColor={'rgba(0,0,0,0)'}>
+                        <View style={this.state.activeTab == 2 ? styles.menuItemActive : styles.menuItem}>
                               <FontAwesomeIcon style={this.state.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="map" />
                               { this.state.activeTab == 2 ? <View style={styles.triangle} /> : null }
                           </View>
                         </TouchableHighlight>
-                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 3})}}>
-                          <View style={styles.menuItem}> 
+                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 3})}} underlayColor={'rgba(0,0,0,0)'}>
+                        <View style={this.state.activeTab == 3 ? styles.menuItemActive : styles.menuItem}>
                               <FontAwesomeIcon style={this.state.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
                               { this.state.activeTab == 3 ? <View style={styles.triangle} /> : null }
                           </View>
@@ -180,7 +188,8 @@ Property.PropTypes = {
     currentProperty: PropTypes.object.isRequired,
     propertyScreen: PropTypes.object.isRequired,
     properties: PropTypes.object.isRequired,
-    goToViewing: PropTypes.func.isRequired
+    goToViewing: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -225,124 +234,152 @@ const styles = StyleSheet.create({
       padding: 10, 
       justifyContent: 'center'
     },
-    menuContainer: {
-      flexDirection: 'row',
-      alignSelf: 'flex-end',
-      alignItems: 'flex-end',
-    },
-    menuItemContainer: {
-      alignSelf: 'flex-end',
-      paddingTop: 20,
-      paddingBottom: 20,
-      paddingLeft: 10,
-      paddingRight: 10,
-      marginRight: 4,
-    },
-    menuItem: {
-      alignItems: 'center'
-    },
-    menuIcon: {
-      color: 'white',
-      fontSize: FontSizes.TITLE,
-      marginBottom: 5
-    },
-    menuIconActive: {
-      color: Colors.AQUA_GREEN,
-      fontSize: FontSizes.TITLE,
-      marginBottom: 5
-    },
-    menuText: {
-      color: Colors.AQUA_GREEN,
-      fontSize: FontSizes.MEDIUM_BIG,
-      flex: 0.7,
-      alignSelf: 'center',
-      marginLeft: 10
-    },
-    menuTextActive: {
-      color: Colors.RED,
-      fontSize: FontSizes.SMALL_TEXT
-    },
-    viewingMonthHeader: {
-      borderBottomWidth: 2,
-      flex: 1,
-      fontSize: FontSizes.SMALL_TEXT
-    },
-    viewingsListContainer: {
-      flex: 1,
-      backgroundColor: 'green',
-      margin: 20,
-      height: 80,
-      width: 20
-    },
-    viewingWrapper: {
-      height: 60,
-      backgroundColor: 'yellow',
-      margin: 10,
-      alignSelf: 'stretch',
-      flex: 1
-    },
-    viewingButton: {
-      flex: 1,
-      height: 40,
-      width: 40
-    },
-    priceBadge:{
-      color: Colors.AQUA_GREEN,
-      fontSize: FontSizes.DEFAULT,
-      fontWeight: 'bold',
-      alignSelf: 'center',
-    },
-    propertyTitle: {
-      fontSize: FontSizes.BIG,
-      fontWeight: 'bold',
-      alignSelf: 'flex-start',
-      color: Colors.DARK_GREY,
-      padding: 10,
-      paddingTop: 0,
-      flex: 0.7
-    },
-    servicesContainer: {
-      flexDirection: 'row',
-      alignSelf: 'stretch',
-      marginTop: 15,
-    },
-    serviceItem: {
-      flex: 1,
-      alignSelf: 'flex-start',
-      alignItems: 'center'
-    },
-    serviceIcon: {
-      fontSize: FontSizes.DEFAULT,
-      color: Colors.LIGHT_GRAY
-    },
-    serviceText: {
-      fontSize: FontSizes.SMALL_TEXT,
-      color: Colors.DARK_GREY
-    },
-    descriptionContainer: {
-      marginTop: 0,
-      padding: 10
-    },
-    subTitle: {
-      fontSize: FontSizes.DEFAULT,
-      fontWeight: 'bold',
-      color: Colors.DARK_GREY,
-      marginTop: 15
-    },
-    propertyDescription: {
-      marginTop: 10,
-      fontSize: FontSizes.DEFAULT,
-      color: Colors.DARK_GREY
-    },
-    requestViewingButton: {
-      flex: 0.1,
-      backgroundColor: Colors.AQUA_GREEN,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    requestViewingButtonTxt: {
-      alignItems: 'center',
-      fontSize: FontSizes.DEFAULT,
-      color: 'white'
-    }
+  menuWrapper: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    width: Dimensions.get('window').width, 
+    paddingTop: 30,
+    alignItems: 'center',
+    paddingBottom: 10
+  },
+  menuContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  menuItemContainer: {
+    marginLeft: 5,
+    marginRight: 5,
+    justifyContent: 'center'
+  },
+  menuItem: {
+    alignItems: 'center',
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: Colors.VERY_LIGHT_GRAY,
+    padding: 7,
+    width: 35
+  },
+  menuItemActive: {
+    alignItems: 'center',
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: Colors.AQUA_GREEN,
+    padding: 7,
+    alignSelf: 'center',
+    width: 35
+  },
+  menuIcon: {
+    color: Colors.VERY_LIGHT_GRAY,
+    fontSize: FontSizes.DEFAULT,
+  },
+  menuIconActive: {
+    color: Colors.AQUA_GREEN,
+    fontSize: FontSizes.DEFAULT,
+  },
+  menuTitleContainer:{
+    flex: 0.7,
+    flexDirection: 'row',
+  },
+  backButton: {
+    alignSelf: 'center'
+  },
+  backButtonIcon: {
+    fontSize: 45,
+    color: Colors.AQUA_GREEN,
+  },
+  menuText: {
+    color: Colors.AQUA_GREEN,
+    fontSize: FontSizes.MEDIUM_BIG,
+    alignSelf: 'center',
+    textAlign: 'center',
+    marginLeft: 10,
+    paddingBottom: 5
+  },
+  menuTextActive: {
+    color: Colors.RED,
+    fontSize: FontSizes.SMALL_TEXT
+  },
+  viewingMonthHeader: {
+    borderBottomWidth: 2,
+    flex: 1,
+    fontSize: FontSizes.SMALL_TEXT
+  },
+  viewingsListContainer: {
+    flex: 1,
+    margin: 20,
+    height: 80,
+    width: 20
+  },
+  viewingWrapper: {
+    height: 60,
+    backgroundColor: 'yellow',
+    margin: 10,
+    alignSelf: 'stretch',
+    flex: 1
+  },
+  viewingButton: {
+    flex: 1,
+    height: 40,
+    width: 40
+  },
+  priceBadge:{
+    color: Colors.AQUA_GREEN,
+    fontSize: FontSizes.DEFAULT,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+  },
+  propertyTitle: {
+    fontSize: FontSizes.BIG,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    color: Colors.DARK_GREY,
+    padding: 10,
+    paddingTop: 0,
+    flex: 0.7
+  },
+  servicesContainer: {
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    marginTop: 15,
+  },
+  serviceItem: {
+    flex: 1,
+    alignSelf: 'flex-start',
+    alignItems: 'center'
+  },
+  serviceIcon: {
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.LIGHT_GRAY
+  },
+  serviceText: {
+    fontSize: FontSizes.SMALL_TEXT,
+    color: Colors.DARK_GREY
+  },
+  descriptionContainer: {
+    marginTop: 0,
+    padding: 10
+  },
+  subTitle: {
+    fontSize: FontSizes.DEFAULT,
+    fontWeight: 'bold',
+    color: Colors.DARK_GREY,
+    marginTop: 15
+  },
+  propertyDescription: {
+    marginTop: 10,
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.DARK_GREY
+  },
+  requestViewingButton: {
+    flex: 0.1,
+    backgroundColor: Colors.AQUA_GREEN,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  requestViewingButtonTxt: {
+    alignItems: 'center',
+    fontSize: FontSizes.DEFAULT,
+    color: 'white'
+  }
 });

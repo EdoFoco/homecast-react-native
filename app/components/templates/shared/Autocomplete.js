@@ -2,8 +2,8 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EditPropertyActions from './EditPropertyActions';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
     TextInput,
     StyleSheet,
@@ -16,34 +16,9 @@ import {
 
 export default class Autocomplete extends Component{
 
-    constructor(props){
-        super(props);
-        this.state = {
-            value: null,
-            textInputValue: ''
-        }
-    }
-
-    _selectAddress(suggestion){
-        this.setState({textInputValue: suggestion.description});
-        this.setState({ value: suggestion.item });
-        this.props.setValue(suggestion);
-    }
-
-    _renderRow(suggestion){
-        console.log(suggestion);
-        return(
-            <TouchableHighlight key={suggestion.item.place_id} style={styles.suggestionRow} onPress={() => {this._selectAddress(suggestion.item)}}>
-                <Text style={styles.suggestionText}>{suggestion.item.description}</Text>
-            </TouchableHighlight>
-        )
-    }
-
-    _textChanged(text, type) {
-        this.props.getLocationSuggestions(text, type);
-        this.setState({textInputValue: text});
-        this.setState({value: null});
-        this.props.setValue(null);
+    _textChanged(text) {
+        this.props.getLocationSuggestions(text);
+        this.props.onChange(text);
     }
 
     render() {
@@ -52,17 +27,19 @@ export default class Autocomplete extends Component{
                 <View style={{flex: 1}}>
                     <TextInput style={styles.textInput}
                         placeholder={this.props.placeholder}
-                        value={this.state.textInputValue}
-                        onChangeText={(text, type) => {this._textChanged(text, type)}}
+                        value={this.props.textValue}
+                        height={this.props.height ? this.props.height : 50}
+                        onChangeText={(text) => {this._textChanged(text)}}
+                        onFocus={this.props.onFocus ? () => { this.props.onFocus() } : null}
+                        onEndEditing={this.props.onFocus ? () => {this.props.onEndFocus() } : null}
                     />
-                    <View style={styles.suggestionsContainer}>
-                        <FlatList
-                            data={this.props.suggestions}
-                            renderItem={(suggestion) => this._renderRow(suggestion)}
-                            keyExtractor={(item, index) => index}
-                            removeClippedSubviews={false}
-                        />
-                    </View>
+                    {
+                        !this.props.textValue ?  null:
+                        <TouchableHighlight style={styles.cancelTextBtn} onPress={() => {this._textChanged("")}}>
+                            <MaterialIcons name="close-circle" style={styles.buttonIcon}/>
+                        </TouchableHighlight>
+                    }
+                   
                 </View>
             </View>
         )
@@ -70,10 +47,13 @@ export default class Autocomplete extends Component{
 }
 
 Autocomplete.PropTypes ={
+    textValue: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
+    height: PropTypes.integer,
     getLocationSuggestions: PropTypes.func.isRequired,
-    suggestions: PropTypes.array.isRequired,
-    setValue: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onFocus: PropTypes.func,
+    onEndFocus: PropTypes.func
 }
 
 const styles = StyleSheet.create({
@@ -91,28 +71,20 @@ const styles = StyleSheet.create({
     textInput: {
         borderWidth: 1,
         height: 50,
-        marginTop: 20,
         borderColor: Colors.LIGHT_GRAY,
         borderRadius: 10,
         paddingLeft: 10,
+        paddingRight: 20
     },
-    actions: {
-        alignSelf: 'flex-end',
+    cancelTextBtn: {
+        position:'absolute',
+        top: 7,
+        right: 10,
+        width: 24,
+        height: 24,
     },
-    suggestionsContainer: {
-        flex: 1,
-        paddingLeft: 10,
-        paddingRight: 10,
-    },
-    suggestionRow: {
-        flex: 1,
-        height: 50,
-        justifyContent: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.LIGHT_GRAY,
-    },
-    suggestionText: {
-        fontSize: FontSizes.SMALL_TEXT,
+    buttonIcon: {
+        fontSize: 24,
         color: Colors.LIGHT_GRAY
     }
 })    

@@ -1,7 +1,7 @@
 import * as types from '../actions/Types';
 
 const initialLocationSuggestions = {
-     suggestions: {},
+     suggestions: [],
 }
 
 export default function locationSuggestions(state = initialLocationSuggestions, action) {

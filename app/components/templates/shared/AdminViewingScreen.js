@@ -61,7 +61,6 @@ export default class AdminViewingScreen extends Component{
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>Invite a Viewer</Text>
                         <MaterialIcons name="account-plus" style={styles.buttonIconMaterial}/>
-                        {/* <FontAwesomeIcon name="user-" style={styles.buttonIcon} />  */}
                     </View>
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>

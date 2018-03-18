@@ -18,18 +18,8 @@ const routeConfiguration = {
 
 const stackConfiguration = {
   initialRoute: 'PropertiesHome',
-  
   navigationOptions: {
-    headerBackTitle: null,
-    headerTintColor: Colors.RED,
-    titleStyle: {
-        fontWeight:  'bold',
-        fontSize: 35
-       },
-    headerStyle: {
-      backgroundColor: 'white',
-      
-    }
+    header: null
   }
 }
 

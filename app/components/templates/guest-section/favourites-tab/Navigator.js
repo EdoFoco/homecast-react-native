@@ -17,10 +17,7 @@ const routeConfiguration = {
 const stackConfiguration = {
   initialRoute: 'FavouritesHome',
   navigationOptions: {
-    headerTintColor: Colors.RED,
-    headerStyle: {
-      backgroundColor: 'white'
-    }
+    header: null
   }
 }
 
