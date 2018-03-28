@@ -38,13 +38,14 @@ class EditPropertyScreen extends Component{
               {
                 this.state.tabIndex == 1 ?
                   <EditPropertyForm 
-                  user={this.props.user}
-                  property={this.props.property}
-                  updateProperty={this.props.updateProperty}
-                  user={this.props.user}
-                  getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
-                  clearAutocomplete={() => {this.props.updateLocationSuggestions([])}} 
-                  autocompleteSuggestions={this.props.autocompleteSuggestions}/> :
+                    user={this.props.user}
+                    property={this.props.property}
+                    updateProperty={this.props.updateProperty}
+                    user={this.props.user}
+                    getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
+                    updateLocationSuggestions={(suggestions) => {this.props.updateLocationSuggestions(suggestions)}} 
+                    autocompleteSuggestions={this.props.autocompleteSuggestions} 
+                  /> :
                   <AddViewingForm 
                   propertyId={this.props.property.id} 
                   userId={this.props.user.info.id} 

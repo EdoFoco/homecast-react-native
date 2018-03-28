@@ -47,7 +47,7 @@ export default class EditPropertyForm extends Component{
   }
 
   _cancelChanges(){
-      this.props.clearAutocomplete();
+      this.props.updateLocationSuggestions([]);
       this.setState({property: this.props.property, showForm: false, formTarget: null});
   }
 
@@ -159,6 +159,7 @@ export default class EditPropertyForm extends Component{
                     placeholder="Type an address" 
                     getLocationSuggestions={(text) => {this.props.getLocationSuggestions(text, 'address')}} 
                     suggestions={this.props.autocompleteSuggestions}
+                    updateLocationSuggestions={(suggestions) => { this.props.updateLocationSuggestions(suggestions) }}
                 />
         }
         default:
@@ -270,8 +271,9 @@ EditPropertyForm.PropTypes = {
     updateProperty: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     getLocationSuggestions: PropTypes.func.isRequired,
-    clearAutocomplete: PropTypes.func.isRequired,
-    autocompleteSuggestions: PropTypes.array.isRequired
+    updateLocationSuggestions: PropTypes.func.isRequired,
+    autocompleteSuggestions: PropTypes.array.isRequired,
+    updateLocationSuggestions: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

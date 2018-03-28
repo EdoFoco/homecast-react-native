@@ -74,6 +74,11 @@ class PropertiesScreen extends Component{
     this.setState({locationSearchValue: text})
   }
 
+  _handleOnEndFocus(){
+    this.setState({ isSearching: false });
+    this.props.updateLocationSuggestions([]);
+  }
+
   render() {
     console.log(this.state.isSearching);
     return (
@@ -87,12 +92,12 @@ class PropertiesScreen extends Component{
             <Autocomplete
                 textValue={this.state.locationSearchValue}  
                 style={styles.autoComplete}
-                placeholder="Type an address" 
+                placeholder="Type a location" 
                 height={40}
                 getLocationSuggestions={(text) => {this.props.getAddressSuggestions(text, 'geocode')}}
                 onChange={(text) => {this._handleLocationTextChange(text)}}
                 onFocus={() => {this.setState({ isSearching: true })}}
-                onEndFocus={() => {this.setState({ isSearching: false })}}
+                onEndFocus={() => {this._handleOnEndFocus()}}
                 />
           </View>
           <View style={styles.locationSuggestionsContainer}>
@@ -149,19 +154,23 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignItems: 'center',
     paddingBottom: 10,
-    flex: 0.2
+    height: 130,
+    paddingBottom: 10
   },
   menuWrapperActive: {
     backgroundColor: 'white',
     paddingTop: 20,
     alignItems: 'center',
     paddingBottom: 10,
-    flex: 1
+    flex: 1,
+    paddingBottom: 10
   },
   menuTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignSelf: 'center',
+    paddingTop: 5,
+    paddingBottom: 5
   },
   logo:{
     width: 50,

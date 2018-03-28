@@ -74,7 +74,9 @@ const styles = StyleSheet.create({
         borderColor: Colors.LIGHT_GRAY,
         borderRadius: 10,
         paddingLeft: 10,
-        paddingRight: 20
+        paddingRight: 20,
+        backgroundColor: 'white',
+        color: Colors.LIGHT_GRAY
     },
     cancelTextBtn: {
         position:'absolute',
