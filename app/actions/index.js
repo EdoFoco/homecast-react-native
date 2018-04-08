@@ -9,6 +9,7 @@ import * as ErrorHandler from './ErrorHandler';
 import * as NavActions from './NavActions';
 import * as Scrapers from './Scrapers';
 import * as Location from './Location';
+import * as Filters from './Filters';
 
 export const ActionCreators = Object.assign({},
   UserActions,
@@ -21,5 +22,6 @@ export const ActionCreators = Object.assign({},
   Viewings,
   NavActions,
   Scrapers,
-  Location
+  Location,
+  Filters
 );

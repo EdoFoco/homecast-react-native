@@ -24,7 +24,7 @@
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-vector-icons": "^4.3.0",
     "react-native-webrtc": "1.57.1",
-    "react-navigation": "git://github.com/react-community/react-navigation#master",
+    "react-navigation": "^1.5.11",
     "react-navigation-redux-helpers": "^1.0.3",
     "react-redux": "^5.0.4",
     "redux": "^3.6.0",

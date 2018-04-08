@@ -66,3 +66,6 @@ export const PROPERTIES_TAB_GO_TO_PROPERTY = 'Navigation/PROPERTIES_TAB_GO_TO_PR
 
 //Scrapers
 export const UPDATE_SCRAPERS = 'UPDATE_SCRAPERS';
+
+//Filters
+export const UPDATE_FILTERS = 'UPDATE_FILTERS';

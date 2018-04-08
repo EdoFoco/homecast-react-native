@@ -19,11 +19,15 @@ DEPENDENCIES:
   - React (from `../node_modules/react-native`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - GoogleMaps
+
 EXTERNAL SOURCES:
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   Yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
@@ -32,4 +36,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4b56abfecf7ce449e16b7c7b6179e7eeec7d470a
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

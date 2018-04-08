@@ -5,11 +5,13 @@ import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
+import * as FontSizeS from '../../../helpers/FontSizes';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import { View, StyleSheet, FlatList, TouchableHighlight, Dimensions, Text, Keyboard } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableHighlight, Dimensions, Text, Keyboard, TextInput } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Autocomplete from '../../shared/Autocomplete';
 import LocationSuggestions from '../../shared/LocationSuggestions';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class PropertiesScreen extends Component{
 
@@ -17,7 +19,8 @@ class PropertiesScreen extends Component{
     super(props);
     this.state = {
       isSearching: false,
-      locationSearchValue: ''
+      locationSearchValue: '',
+      showFiltersModal: false
     }
   }
 
@@ -85,10 +88,9 @@ class PropertiesScreen extends Component{
       <View style={styles.container}>
          <View style={this.state.isSearching && this.props.location.suggestions.length > 0 ? styles.menuWrapperActive : styles.menuWrapper}>
           <View style={styles.menuTitleContainer}>
-              <FastImage style={styles.logo} source={require('../../../../img/homecast_logo_color_6.png')} resizeMode={FastImage.resizeMode.contain}/>
-              <Text style={styles.title}>homecast</Text>
           </View>
           <View style={styles.autocompleteContainer}>
+            <FastImage style={styles.logo} source={require('../../../../img/homecast_logo_color_6.png')} resizeMode={FastImage.resizeMode.cover}/>
             <Autocomplete
                 textValue={this.state.locationSearchValue}  
                 style={styles.autoComplete}
@@ -99,6 +101,7 @@ class PropertiesScreen extends Component{
                 onFocus={() => {this.setState({ isSearching: true })}}
                 onEndFocus={() => {this._handleOnEndFocus()}}
                 />
+            <MCIcon name="filter-variant" style={styles.filterIcon} onPress={() => { this.setState({showFiltersModal: !this.state.showFiltersModal }) }}/>
           </View>
           <View style={styles.locationSuggestionsContainer}>
             <LocationSuggestions 
@@ -114,6 +117,28 @@ class PropertiesScreen extends Component{
           keyExtractor={(item, index) => index}
           removeClippedSubviews={false}
         />
+
+        {
+          !this.state.showFiltersModal ? null :
+          <View style={styles.filtersModal}>
+            <View style={styles.filterContainer}>
+              <Text style={styles.filtersTitle}>Filters</Text>  
+              <MCIcon name="window-close" style={styles.closeFiltersIcon} onPress={() => { this.setState({showFiltersModal: !this.state.showFiltersModal }) }}/>
+            </View>
+            <View style={styles.filterContainer}>
+              <TextInput style={styles.textInput}
+                    value={ this.state.minPriceFilter }
+                    onChangeText={(text) => {this.setState({minPriceFilter: text})}}
+                    keyboardType="numeric"
+                />
+            </View>
+            <View style={styles.filterContainer}>
+              <Text style={styles.filtersTitle}>Filters</Text>  
+              <MCIcon name="window-close" style={styles.closeFiltersIcon} onPress={() => { this.setState({showFiltersModal: !this.state.showFiltersModal }) }}/>
+            </View>
+          </View>
+        }
+
         <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
 
@@ -151,11 +176,13 @@ const styles = StyleSheet.create({
   },
   menuWrapper: {
     backgroundColor: 'white',
-    paddingTop: 20,
+    paddingTop: 30,
     alignItems: 'center',
     paddingBottom: 10,
-    height: 130,
-    paddingBottom: 10
+    paddingBottom: 30,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.6,
   },
   menuWrapperActive: {
     backgroundColor: 'white',
@@ -173,9 +200,11 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   logo:{
-    width: 50,
-    height: 50,
-    marginRight: 10
+    width: 60,
+    height: 60,
+    marginRight: 10,
+    borderColor: Colors.LIGHT_GRAY,
+    marginTop: 7
   },
   title: {
     fontSize: 30,
@@ -184,14 +213,46 @@ const styles = StyleSheet.create({
   },
   autocompleteContainer: {
     alignSelf: 'stretch',
-    marginRight: 30,
-    marginLeft: 30,
-    height: 40
+    alignItems: 'center',
+    marginRight: 10,
+    marginLeft: 10,
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  filterIcon: {
+    color: Colors.AQUA_GREEN,
+    fontSize: 28,
+    marginLeft: 20
   },
   locationSuggestionsContainer: {
     flex: 0.8,
     alignSelf: 'stretch',
     marginRight: 30,
     marginLeft: 30
+  },
+  filtersModal: {
+    backgroundColor: 'white',
+    position: 'absolute',
+    bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    paddingTop: 30
+  },
+  closeFiltersIcon: {
+    color: Colors.LIGHT_GRAY,
+    fontSize: 30,
+    alignSelf: 'flex-end',
+    flex: 0.1
+  },
+  filtersTitle: {
+    fontSize: FontSizeS.TITLE,
+    color: Colors.DARK_GREY,
+    flex: 0.9
+  },
+  filterContainer: {
+    flexDirection: 'row'
   }
 });
