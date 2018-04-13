@@ -5,12 +5,13 @@ import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
-import * as FontSizeS from '../../../helpers/FontSizes';
+import * as FontSizes from '../../../helpers/FontSizes';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet, FlatList, TouchableHighlight, Dimensions, Text, Keyboard, TextInput } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Autocomplete from '../../shared/Autocomplete';
 import LocationSuggestions from '../../shared/LocationSuggestions';
+import FiltersModal from '../../shared/FiltersModal';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class PropertiesScreen extends Component{
@@ -68,7 +69,8 @@ class PropertiesScreen extends Component{
   }
 
   _selectLocation(suggestion){
-    this.setState({locationSearchValue: suggestion.description})
+    this.props.updateFilters({...this.props.searchFilters, placeId: suggestion.place_id});
+    this.props.getProperties(this.props.searchFilters);
     this.props.updateLocationSuggestions([]);
     Keyboard.dismiss();
   }
@@ -120,23 +122,11 @@ class PropertiesScreen extends Component{
 
         {
           !this.state.showFiltersModal ? null :
-          <View style={styles.filtersModal}>
-            <View style={styles.filterContainer}>
-              <Text style={styles.filtersTitle}>Filters</Text>  
-              <MCIcon name="window-close" style={styles.closeFiltersIcon} onPress={() => { this.setState({showFiltersModal: !this.state.showFiltersModal }) }}/>
-            </View>
-            <View style={styles.filterContainer}>
-              <TextInput style={styles.textInput}
-                    value={ this.state.minPriceFilter }
-                    onChangeText={(text) => {this.setState({minPriceFilter: text})}}
-                    keyboardType="numeric"
-                />
-            </View>
-            <View style={styles.filterContainer}>
-              <Text style={styles.filtersTitle}>Filters</Text>  
-              <MCIcon name="window-close" style={styles.closeFiltersIcon} onPress={() => { this.setState({showFiltersModal: !this.state.showFiltersModal }) }}/>
-            </View>
-          </View>
+          <FiltersModal 
+            getProperties={(filters) => {this.props.getProperties(filters)}}
+            filters={this.props.searchFilters} 
+            updateFilters={(filters) => {this.props.updateFilters(filters)}} 
+            closeModal={() => {this.setState({showFiltersModal: false})}} />
         }
 
         <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
@@ -158,7 +148,8 @@ const mapStateToProps = (state) => {
         user: state.user,
         properties: state.properties.propertiesList,
         network: state.network,
-        location: state.location
+        location: state.location,
+        searchFilters: state.filters.searchFilters
     }
 };
 
@@ -220,39 +211,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  filterIcon: {
-    color: Colors.AQUA_GREEN,
-    fontSize: 28,
-    marginLeft: 20
-  },
   locationSuggestionsContainer: {
     flex: 0.8,
     alignSelf: 'stretch',
     marginRight: 30,
     marginLeft: 30
   },
-  filtersModal: {
-    backgroundColor: 'white',
-    position: 'absolute',
-    bottom: 0,
-    top: 0,
-    left: 0,
-    right: 0,
-    padding: 10,
-    paddingTop: 30
-  },
-  closeFiltersIcon: {
-    color: Colors.LIGHT_GRAY,
-    fontSize: 30,
-    alignSelf: 'flex-end',
-    flex: 0.1
-  },
-  filtersTitle: {
-    fontSize: FontSizeS.TITLE,
-    color: Colors.DARK_GREY,
-    flex: 0.9
-  },
-  filterContainer: {
-    flexDirection: 'row'
+  filterIcon: {
+    color: Colors.AQUA_GREEN,
+    fontSize: 28,
+    marginLeft: 20
   }
 });

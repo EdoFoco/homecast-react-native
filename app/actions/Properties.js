@@ -40,11 +40,11 @@ export function removeFromFavourites(userId, propertyId){
       }
 }
 
-export function getProperties() {
+export function getProperties(filters) {
     return async (dispatch, getState) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
-            var resp = await apiService.getProperties();
+            var resp = await apiService.getProperties(filters);
             dispatch(updatePropertiesList(resp.data.properties));
             return resp.data.properties;
         }

@@ -12,7 +12,6 @@ import { guestViewingsNav  } from './NavReducer';
 import { guestTabBar }from './NavReducer';
 import { guestPropertiesNav }from './NavReducer';
 
-
 import user from './User';
 import section from './Section';
 import webrtc from './NewWebRTC';
@@ -22,10 +21,12 @@ import viewings from './Viewings';
 import scrapers from './Scrapers';
 import network from './Network';
 import location from './Location';
+import filters from './Filters';
 
 import devToolsEnhancer from 'remote-redux-devtools';
 
 const AppReducer = combineReducers({
+
   //Guest Navigators
   guestTabBar,
   guestPropertiesNav,
@@ -45,7 +46,9 @@ const AppReducer = combineReducers({
   viewings,
   scrapers,
   network,
-  location
+  location,
+  filters
+  
 }, devToolsEnhancer());
 
 export default AppReducer;

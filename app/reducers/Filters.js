@@ -1,13 +1,13 @@
 import * as types from '../actions/Types';
 
-const initialLocationSuggestions = {
-     filters: [],
+const initialFilters = {
+  searchFilters: {},
 }
 
-export default function locationSuggestions(state = initialLocationSuggestions, action) {
+export default function filters(state = initialFilters, action) {
     switch (action.type) {
-        case types.UPDATE_LOCATION_SUGGESTIONS:
-          return { ...state, suggestions: action.suggestions };
+        case types.UPDATE_FILTERS:
+          return { ...state, searchFilters: action.filters };
         default:
           return state;
       }
