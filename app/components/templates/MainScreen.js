@@ -35,6 +35,9 @@ class MainScreen extends Component {
     })
     .then(() => {
       this.setState({isReady: true})
+    })
+    .catch((e) => {
+      console.error(e);
     });
   }
 

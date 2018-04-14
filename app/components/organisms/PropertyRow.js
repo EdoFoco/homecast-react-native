@@ -11,22 +11,43 @@ import {
     StyleSheet,
     TouchableHighlight,
     View,
-    Text
+    Text,
+    FlatList,
+    Dimensions
 } from 'react-native';
 
 export default class PropertyRow extends Component{
 
+  _renderImage(item){
+    let image = item.item;
+    if(image){
+      return(  
+        <TouchableHighlight style={{ width:  Dimensions.get('window').width, backgroundColor: 'pink' }} onPress={() => this.props.onPress(this.props.property)}>
+          <FastImage
+              style={styles.backgroundImage}
+              source={{
+                  uri: image.url,
+                  priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+          />
+        </TouchableHighlight>
+      )   
+    }
+  }
+
   render() {
     return (
-        <TouchableHighlight style={styles.propertyButton} onPress={() => this.props.onPress(this.props.property)} underlayColor='rgba(0,0,0,0)'>
+        <View style={styles.propertyButton}  underlayColor='rgba(0,0,0,0)'>
             <View style={styles.propertContainer}>
-                <FastImage
-                    style={styles.backgroundImage}
-                    source={{
-                        uri: this.props.property.thumbnail,
-                        priority: FastImage.priority.normal,
-                    }}
-                    resizeMode={FastImage.resizeMode.cover}
+                <FlatList
+                    style={styles.imagesContainer}
+                    data={this.props.property.images}
+                    renderItem={(image) => this._renderImage(image)}
+                    keyExtractor={(item, index) => index}
+                    removeClippedSubviews={false}
+                    horizontal
+                    pagingEnabled
                 />
                  { !this.props.enableFavourites ? null :
                     <View style={styles.favouriteIconContainer}>
@@ -37,22 +58,25 @@ export default class PropertyRow extends Component{
                         onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
                     </View>
                 }
-            <View style={{flex:1, flexDirection: 'column'}}>
-                <FastImage source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
-                <View style={styles.propertyDescriptionWrapper}>
-                    <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
-                    <Text style={styles.descriptionText}>{this.props.property.address}</Text>
-                    <View style={styles.iconsContainer}>
-                        <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                        <Text style={styles.iconText}>{this.props.property.bedrooms}</Text>
-                        <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                        <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
+            <TouchableHighlight style={{flex:1}} onPress={() => this.props.onPress(this.props.property)}>
+                <View tyle={{flex:1, flexDirection: 'column'}} >
+                    <FastImage source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
+    
+                    <View style={styles.propertyDescriptionWrapper}>
+                        <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
+                        <Text style={styles.descriptionText}>{this.props.property.address}</Text>
+                        <View style={styles.iconsContainer}>
+                            <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
+                            <Text style={styles.iconText}>{this.props.property.bedrooms}</Text>
+                            <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
+                            <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
+                        </View>
+                        <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
                     </View>
-                    <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
                 </View>
-            </View>
+            </TouchableHighlight>
         </View>
-        </TouchableHighlight>
+        </View>
     );
   }
 }
@@ -73,9 +97,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    backgroundImage: {
+    imagesContainer:{
         flex: 1,
-        height: 200
+        backgroundColor: 'blue'
+    },
+    backgroundImage: {
+        height: 200,
+        backgroundColor: 'green'
     },
     propertContainer: {
         flex: 1,

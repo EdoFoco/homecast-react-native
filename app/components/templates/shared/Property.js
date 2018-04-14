@@ -50,11 +50,39 @@ export default class Property extends Component{
     )
   };
 
+  _renderImage = ({item}) => {
+    let image = item;
+    if(image){
+      return(  
+        <View style={{ width:  Dimensions.get('window').width, backgroundColor: 'pink' }}>
+          <FastImage
+              style={styles.backgroundImage}
+              source={{
+                  uri: image.url,
+                  priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+          />
+        </View>
+      )   
+    }
+    return null;
+  }
+
   _renderInfoTab(){
     return (
       <ScrollView style={styles.tabContainer}>
         <View style={{flexDirection: 'row', marginBottom: 20}} >
-            <FastImage source={{uri: this.props.currentProperty.thumbnail}} resizeMode={FastImage.resizeMode.cover} style={styles.backgroundImage} />
+             <FlatList
+                    style={styles.imagesContainer}
+                    data={this.props.currentProperty.images}
+                    renderItem={(image) => this._renderImage(image)}
+                    keyExtractor={(item, index) => index}
+                    removeClippedSubviews={false}
+                    horizontal
+                    pagingEnabled
+                />
+            {/* <FastImage source={{uri: this.props.currentProperty.thumbnail}} resizeMode={FastImage.resizeMode.cover} style={styles.backgroundImage} /> */}
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
@@ -205,8 +233,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   backgroundImage: {
-    flex: 1,
-    height: 250
+  //  flex: 1,
+    height: 250,
+    backgroundColor: 'green'
   },
   tabContainer:{
       flex: 1,
@@ -381,5 +410,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: FontSizes.DEFAULT,
     color: 'white'
+  },
+  imagesContainer: {
+    backgroundColor: 'blue',
+    height: 200
   }
 });

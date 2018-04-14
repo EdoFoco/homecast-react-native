@@ -16,6 +16,7 @@ const routeConfiguration = {
 
 const stackConfiguration = {
   initialRoute: 'FavouritesHome',
+  gesturesEnabled: false,
   navigationOptions: {
     header: null
   }
