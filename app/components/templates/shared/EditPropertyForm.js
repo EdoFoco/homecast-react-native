@@ -173,7 +173,7 @@ export default class EditPropertyForm extends Component{
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
                 <View style={styles.container}>
                     <Image style={styles.propertyThumbnail} source={{url: this.props.property.thumbnail}}>
-                        <TouchableHighlight style={styles.opaqueLayer}>
+                        <TouchableHighlight style={styles.opaqueLayer} onPress={(screen) => {this.props.goToScreen('UploadPhotosScreen')}}>
                             <Text style={styles.photosBtn}>Photos</Text>
                         </TouchableHighlight>
                     </Image>

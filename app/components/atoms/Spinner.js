@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, Easing } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
-
+import { Animated, Easing, StyleSheet, View } from 'react-native';
 import {
     BallIndicator,
     BarIndicator,

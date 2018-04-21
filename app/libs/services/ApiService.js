@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
+import FormData from 'form-data';
     //baseURL: 'http://46.101.93.197',
 
 class ApiService {
@@ -138,6 +139,24 @@ class ApiService {
         return await this.apiClient.get(`api/autocomplete?${params}`);
     }
     
+    async uploadPropertyImage(propertyId, image, progressCallback){
+        const config = {
+            headers: {...this.apiClient.headers, 'content-type': 'multipart/form-data'},
+            onUploadProgress: progressEvent => progressCallback(progressEvent)
+        }
+        var formData = new FormData();
+        formData.append('image', {
+            uri: image.path,
+            type: image.mime,
+            name: image.filename,
+        });
+        
+        return await this.apiClient.post(`api/properties/${propertyId}/photos`, formData, config);
+    }
+
+    async deletePropertyImage(propertyId, id){
+        return await this.apiClient.delete(`api/properties/${propertyId}/photos/${id}`);
+    }
 }
 
 export default ApiService

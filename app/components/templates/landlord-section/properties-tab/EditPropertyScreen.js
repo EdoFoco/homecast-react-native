@@ -44,7 +44,8 @@ class EditPropertyScreen extends Component{
                     user={this.props.user}
                     getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
                     updateLocationSuggestions={(suggestions) => {this.props.updateLocationSuggestions(suggestions)}} 
-                    autocompleteSuggestions={this.props.autocompleteSuggestions} 
+                    autocompleteSuggestions={this.props.autocompleteSuggestions}
+                    goToScreen={(screen) => {this.props.navigation.navigate(screen, {property: this.props.property})}}
                   /> :
                   <AddViewingForm 
                   propertyId={this.props.property.id} 

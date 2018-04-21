@@ -22,7 +22,7 @@ export default class PropertyRow extends Component{
     let image = item.item;
     if(image){
       return(  
-        <TouchableHighlight style={{ width:  Dimensions.get('window').width, backgroundColor: 'pink' }} onPress={() => this.props.onPress(this.props.property)}>
+        <TouchableHighlight style={{ width:  Dimensions.get('window').width }} onPress={() => this.props.onPress(this.props.property)}>
           <FastImage
               style={styles.backgroundImage}
               source={{
@@ -99,11 +99,9 @@ const styles = StyleSheet.create({
     },
     imagesContainer:{
         flex: 1,
-        backgroundColor: 'blue'
     },
     backgroundImage: {
         height: 200,
-        backgroundColor: 'green'
     },
     propertContainer: {
         flex: 1,

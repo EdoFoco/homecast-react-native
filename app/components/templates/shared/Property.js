@@ -54,7 +54,7 @@ export default class Property extends Component{
     let image = item;
     if(image){
       return(  
-        <View style={{ width:  Dimensions.get('window').width, backgroundColor: 'pink' }}>
+        <View style={{ width:  Dimensions.get('window').width }}>
           <FastImage
               style={styles.backgroundImage}
               source={{
@@ -235,7 +235,6 @@ const styles = StyleSheet.create({
   backgroundImage: {
   //  flex: 1,
     height: 250,
-    backgroundColor: 'green'
   },
   tabContainer:{
       flex: 1,
@@ -252,7 +251,6 @@ const styles = StyleSheet.create({
   },
   viewingsList: {
     //  height: 80
-    backgroundColor: 'blue',
     flex: 1
   },
   liveViewingsTitle: {
@@ -412,7 +410,6 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   imagesContainer: {
-    backgroundColor: 'blue',
     height: 200
   }
 });

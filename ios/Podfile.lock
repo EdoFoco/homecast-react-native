@@ -4,36 +4,53 @@ PODS:
   - GoogleMaps/Base (2.5.0)
   - GoogleMaps/Maps (2.5.0):
     - GoogleMaps/Base
-  - React (0.44.0):
-    - React/Core (= 0.44.0)
+  - QBImagePickerController (3.4.0)
   - React/Core (0.44.0):
     - React/cxxreact
     - Yoga (= 0.44.0.React)
   - React/cxxreact (0.44.0):
     - React/jschelpers
   - React/jschelpers (0.44.0)
+  - React/RCTImage (0.44.0):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTNetwork (0.44.0):
+    - React/Core
+  - RNImageCropPicker (0.20.1):
+    - QBImagePickerController
+    - React/Core
+    - RSKImageCropper
+  - RSKImageCropper (2.0.1)
   - Yoga (0.44.0.React)
 
 DEPENDENCIES:
   - GoogleMaps
-  - React (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - GoogleMaps
+    - QBImagePickerController
+    - RSKImageCropper
 
 EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: e53535491f7b382b8cd681428dd853159bf25545
+  RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
+  RSKImageCropper: 50d5a3e4160f0309b14d75b89d5ae2f496d56e0d
   Yoga: f2b1f5b59fadb774a3dd9932a7cf813c6e284d71
 
-PODFILE CHECKSUM: 4b56abfecf7ce449e16b7c7b6179e7eeec7d470a
+PODFILE CHECKSUM: 95769b65f72777273e3ae5adaae740b23dbe4a4e
 
 COCOAPODS: 1.5.0

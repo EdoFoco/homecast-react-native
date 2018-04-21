@@ -96,6 +96,35 @@ export function getProperty(propertyId){
       }
   }
 
+  export function uploadPropertyImage(userId, propertyId, image, progressCallback){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.uploadPropertyImage(propertyId, image, progressCallback);
+            dispatch(getUserProperties(userId));
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+      }
+  }
+
+  export function deletePropertyImages(userId, propertyId, imageIds){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+
+            var deleteImageTasks = imageIds.map(id => apiService.deletePropertyImage(propertyId, id));
+            await Promise.all(deleteImageTasks);
+            
+            return dispatch(getUserProperties(userId));
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+      }
+  }
 
 export function createViewing(propertyId, userId, viewingInfo){
     return async (dispatch, getState) => {
@@ -110,7 +139,7 @@ export function createViewing(propertyId, userId, viewingInfo){
     }
 }
 
-  export function importProperty(propertyId, userId, url){
+export function importProperty(propertyId, userId, url){
     return async (dispatch, getState) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();

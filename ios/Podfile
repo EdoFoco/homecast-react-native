@@ -1,7 +1,10 @@
 target 'NavTestV1' do
   react_native_path = "../node_modules/react-native"
   pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
-  pod "React", :path => react_native_path
-                
+  pod "React", :path => react_native_path, subspecs: [
+    'RCTImage',
+  ]
+  pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
+
   pod 'GoogleMaps'
 end
