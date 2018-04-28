@@ -84,9 +84,9 @@ export default class Property extends Component{
                 />
             {/* <FastImage source={{uri: this.props.currentProperty.thumbnail}} resizeMode={FastImage.resizeMode.cover} style={styles.backgroundImage} /> */}
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{flexDirection: 'row'}}>
           <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
-          <View style={{alignItems: 'center', paddingRight: 20}}>
+          <View style={{alignSelf: 'flex-start', paddingTop: 5,  flex: 0.3, paddingRight: 10,}}>
             <Text style={styles.priceBadge}>£ {Math.round(this.props.currentProperty.price)}</Text>
             <Text style={{color: Colors.AQUA_GREEN, fontSize: FontSizes.DEFAULT, alignSelf: 'center'}}>month</Text>
           </View>
@@ -271,7 +271,9 @@ const styles = StyleSheet.create({
   menuContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 0.4,
+    paddingRight: 5
   },
   menuItemContainer: {
     marginLeft: 5,
@@ -304,7 +306,7 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.DEFAULT,
   },
   menuTitleContainer:{
-    flex: 0.7,
+    flex: 0.6,
     flexDirection: 'row',
   },
   backButton: {
@@ -319,7 +321,6 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.MEDIUM_BIG,
     alignSelf: 'center',
     textAlign: 'center',
-    marginLeft: 10,
     paddingBottom: 5
   },
   menuTextActive: {

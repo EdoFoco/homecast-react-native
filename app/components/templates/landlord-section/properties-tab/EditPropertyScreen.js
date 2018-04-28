@@ -97,7 +97,6 @@ var styles = StyleSheet.create({
       backgroundColor: 'white',
       flexDirection: 'row',
       flex: 0.1,
-      backgroundColor: 'blue'
     },
     activeTab: {
       flex: 0.5, 
@@ -120,7 +119,6 @@ var styles = StyleSheet.create({
       alignSelf: 'center',
     },
     tabContent: {
-      flex: 0.8,
-      backgroundColor: 'green'
+      flex: 1,
     }
 });

@@ -99,12 +99,14 @@ const styles = StyleSheet.create({
   listingCell: {
     flexDirection: 'row',
     flex: 1,
-    padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.WHITE_SMOKE
+    borderBottomColor: Colors.WHITE_SMOKE,
+    paddingTop: 5,
+    paddingBottom: 5
   },
   listingDescription: {
-    flex: 0.5
+    flex: 0.5,
+    paddingLeft: 10
   },
   iconsContainer: {
     marginTop: 10,
@@ -122,10 +124,10 @@ const styles = StyleSheet.create({
       color: Colors.LIGHT_GRAY
   },
   listingImage: {
-    height: 120,
-    width: 180,
+    height: 100,
     alignSelf: 'flex-end',
-    right: 0
+    right: 0,
+    flex: 0.5
   },
   listingTitle: {
     fontSize: FontSizes.DEFAULT

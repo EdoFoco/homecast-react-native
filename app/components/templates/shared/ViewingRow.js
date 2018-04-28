@@ -43,13 +43,11 @@ ViewingRow.propTypes ={
 const styles = StyleSheet.create({
     viewingRow:{
         flex: 1,
-        alignSelf: 'stretch',
-        padding: 20,
         borderBottomColor: Colors.LIGHT_GRAY,
         borderBottomWidth: 1,
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        padding: 10
     },
     viewingCapacity: {
         color: Colors.RED,
@@ -59,10 +57,11 @@ const styles = StyleSheet.create({
         borderColor: Colors.RED,
         padding: 5,
         borderRadius: 10,
-        alignSelf: 'flex-end'
+        height: 40,
+        flex: 0.4
     },
     viewingDateContainer: {
-        flex: 0.7,
+        flex: 0.6,
     },
     viewingTime:{
         fontSize: FontSizes.MEDIUM_BIG,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
         paddingRight: 5
     },
     dateStyle:{
-        fontSize: FontSizes.MEDIUM_BIG,
+        fontSize: FontSizes.DEFAULT,
         color: Colors.VERY_LIGHT_GRAY,
         flex: 1,
         textAlign: 'left'
