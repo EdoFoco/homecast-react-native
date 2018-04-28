@@ -16,7 +16,7 @@ import {
     StyleSheet,
     Text,
     View,
-    Image,
+    ImageBackground,
     TouchableHighlight,
     ScrollView,
     Switch,
@@ -172,11 +172,11 @@ export default class EditPropertyForm extends Component{
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
                 <View style={styles.container}>
-                    <Image style={styles.propertyThumbnail} source={{url: this.props.property.thumbnail}}>
+                    <ImageBackground style={styles.propertyThumbnail} source={{url: this.props.property.thumbnail}}>
                         <TouchableHighlight style={styles.opaqueLayer} onPress={(screen) => {this.props.goToScreen('UploadPhotosScreen')}}>
                             <Text style={styles.photosBtn}>Photos</Text>
                         </TouchableHighlight>
-                    </Image>
+                    </ImageBackground>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Status</Text>

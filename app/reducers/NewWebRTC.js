@@ -60,6 +60,7 @@ export default function webrtc(state = initialConferenceState, action) {
         return { ...state, presenter: presenter};
 
     case types.CLIENT_ROOM_STATUS:
+        console.log(action.data);
         if(!action.data.roomStatus.presenterConnected){
             initialConferenceState.viewer.iceCandidates = [];
             initialConferenceState.presenter.iceCandidates = [];
