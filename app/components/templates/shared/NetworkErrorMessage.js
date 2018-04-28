@@ -26,7 +26,7 @@ export default class NetworkErrorMessage extends Component{
   }
 }
 
-NetworkErrorMessage.PropTypes = {
+NetworkErrorMessage.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     showError: PropTypes.func.isRequired
 }

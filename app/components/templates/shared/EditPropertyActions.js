@@ -24,7 +24,7 @@ export default class EditPropertyActions extends Component{
   }
 }
 
-EditPropertyActions.PropTypes ={
+EditPropertyActions.propTypes ={
     property: PropTypes.object.isRequired,
     saveProperty: PropTypes.func.isRequired,
     cancelChanges: PropTypes.func.isRequired,

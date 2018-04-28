@@ -67,7 +67,7 @@ class ViewingsScreen extends Component{
          <FlatList
           data={this.props.viewingReservations}
           renderItem={(reservation) => this._renderRow(reservation)}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
           removeClippedSubviews={false}
         />
         <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />

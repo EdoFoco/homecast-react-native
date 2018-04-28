@@ -82,7 +82,7 @@ export default class AddViewingForm extends Component{
                 <FlatList
                     data={this.props.viewings}
                     renderItem={(viewing) => this._renderRow(viewing)}
-                    keyExtractor={(item, index) => index}
+                    keyExtractor={(item, index) => index.toString()}
                     removeClippedSubviews={false}
                 />
                 }
@@ -142,7 +142,7 @@ export default class AddViewingForm extends Component{
   }
 }
 
-AddViewingForm.PropTypes ={
+AddViewingForm.propTypes ={
     propertyId: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
     viewings: PropTypes.array.isRequired,

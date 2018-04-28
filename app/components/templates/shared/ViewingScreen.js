@@ -90,10 +90,10 @@ export default class ViewingScreen extends Component{
   }
 }
 
-ViewingScreen.PropTypes = {
+ViewingScreen.propTypes = {
     viewing: PropTypes.object.isRequired,
     property: PropTypes.object.isRequired,
-    reservation: PropTypes.object.isRequired,
+    reservation: PropTypes.object,
     user: PropTypes.object.isRequired,
     cancelViewingReservation: PropTypes.func.isRequired,
     createViewingReservation: PropTypes.func.isRequired,

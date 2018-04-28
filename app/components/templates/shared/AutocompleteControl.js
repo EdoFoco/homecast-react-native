@@ -81,7 +81,7 @@ export default class AutocompleteControl extends Component{
   }
 }
 
-AutocompleteControl.PropTypes ={
+AutocompleteControl.propTypes ={
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     property: PropTypes.object.isRequired,

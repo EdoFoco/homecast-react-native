@@ -35,9 +35,9 @@ export default class ViewingRow extends Component{
   }
 }
 
-ViewingRow.PropTypes ={
+ViewingRow.propTypes ={
     viewing: PropTypes.object.isRequired,
-    gotToViewing: PropTypes.func.isRequired
+    gotToViewing: PropTypes.func
 }
 
 const styles = StyleSheet.create({

@@ -32,7 +32,7 @@ export default class ScreenLoader extends Component{
     }
 }
 
-ScreenLoader.PropTypes = {
+ScreenLoader.propTypes = {
     message: PropTypes.string,
     goBack: PropTypes.func
 }

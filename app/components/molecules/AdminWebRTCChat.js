@@ -225,7 +225,7 @@ export default class AdminWebRTCChat extends Component{
   }
 }
 
-AdminWebRTCChat.PropTypes = {
+AdminWebRTCChat.propTypes = {
   chat: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   webrtc: PropTypes.object.isRequired,

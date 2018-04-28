@@ -95,7 +95,6 @@ class PropertiesScreen extends Component{
             <FastImage style={styles.logo} source={require('../../../../img/homecast_logo_color_6.png')} resizeMode={FastImage.resizeMode.cover}/>
             <Autocomplete
                 textValue={this.state.locationSearchValue}  
-                style={styles.autoComplete}
                 placeholder="Type a location" 
                 height={40}
                 getLocationSuggestions={(text) => {this.props.getAddressSuggestions(text, 'geocode')}}
@@ -116,7 +115,7 @@ class PropertiesScreen extends Component{
         <FlatList
           data={this.props.properties}
           renderItem={(property) => this._renderRow(property)}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
           removeClippedSubviews={false}
         />
 

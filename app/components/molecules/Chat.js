@@ -141,7 +141,7 @@ export default class Chat extends Component{
     }
 }
 
-Chat.PropTypes = {
+Chat.propTypes = {
     sendMessage: PropTypes.func.isRequired,
     chat: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired

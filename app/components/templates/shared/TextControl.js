@@ -48,7 +48,7 @@ export default class TextControl extends Component{
   }
 }
 
-TextControl.PropTypes ={
+TextControl.propTypes ={
     value: PropTypes.string.isRequired,
     property: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,

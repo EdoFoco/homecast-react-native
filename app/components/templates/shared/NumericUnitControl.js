@@ -59,7 +59,7 @@ export default class NumericUnitControl extends Component{
   }
 }
 
-NumericUnitControl.PropTypes ={
+NumericUnitControl.propTypes ={
     value: PropTypes.number.isRequired,
     property: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,

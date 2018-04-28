@@ -78,7 +78,7 @@ export default class RoomsControl extends Component{
   }
 }
 
-RoomsControl.PropTypes ={
+RoomsControl.propTypes ={
     property: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

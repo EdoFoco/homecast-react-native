@@ -26,7 +26,7 @@ import {
   }
 }
 
-DateCell.PropTypes = {
+DateCell.propTypes = {
     dateTime: PropTypes.string.isRequired,
     showTime: PropTypes.boolean,
     titleStyle: PropTypes.object,

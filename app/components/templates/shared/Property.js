@@ -32,7 +32,7 @@ export default class Property extends Component{
     }
    }
    
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index.toString();
   
   _toDateString(date){
     let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
@@ -77,7 +77,7 @@ export default class Property extends Component{
                     style={styles.imagesContainer}
                     data={this.props.currentProperty.images}
                     renderItem={(image) => this._renderImage(image)}
-                    keyExtractor={(item, index) => index}
+                    keyExtractor={(item, index) => index.toString()}
                     removeClippedSubviews={false}
                     horizontal
                     pagingEnabled
@@ -212,9 +212,8 @@ export default class Property extends Component{
   }
 }
 
-Property.PropTypes = {
+Property.propTypes = {
     currentProperty: PropTypes.object.isRequired,
-    propertyScreen: PropTypes.object.isRequired,
     properties: PropTypes.object.isRequired,
     goToViewing: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired

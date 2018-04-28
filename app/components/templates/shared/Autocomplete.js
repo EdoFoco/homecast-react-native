@@ -46,10 +46,9 @@ export default class Autocomplete extends Component{
   }
 }
 
-Autocomplete.PropTypes ={
+Autocomplete.propTypes ={
     textValue: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    height: PropTypes.integer,
     getLocationSuggestions: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func,

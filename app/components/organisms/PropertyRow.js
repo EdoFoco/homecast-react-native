@@ -44,7 +44,7 @@ export default class PropertyRow extends Component{
                     style={styles.imagesContainer}
                     data={this.props.property.images}
                     renderItem={(image) => this._renderImage(image)}
-                    keyExtractor={(item, index) => index}
+                    keyExtractor={(item, index) => index.toString()}
                     removeClippedSubviews={false}
                     horizontal
                     pagingEnabled

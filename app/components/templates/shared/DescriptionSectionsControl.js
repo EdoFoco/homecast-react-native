@@ -91,7 +91,7 @@ export default class DescriptionSectionsControl extends Component{
   }
 }
 
-DescriptionSectionsControl.PropTypes ={
+DescriptionSectionsControl.propTypes ={
     property: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

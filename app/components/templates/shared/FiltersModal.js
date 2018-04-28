@@ -129,7 +129,7 @@ export default class FiltersModal extends Component{
   }
 }
 
-FiltersModal.PropTypes ={
+FiltersModal.propTypes ={
    getProperties: PropTypes.func.isRequired,
    updateFilters: PropTypes.func.isRequired,
    closeModal: PropTypes.func.isRequired,

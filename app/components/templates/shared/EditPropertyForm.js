@@ -266,7 +266,7 @@ export default class EditPropertyForm extends Component{
   }
 }
 
-EditPropertyForm.PropTypes = {
+EditPropertyForm.propTypes = {
     property: PropTypes.object.isRequired,
     updateProperty: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,

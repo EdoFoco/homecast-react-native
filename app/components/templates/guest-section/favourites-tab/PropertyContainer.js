@@ -29,8 +29,7 @@ class PropertyContainer extends Component{
         <Property 
             currentProperty={this.props.currentProperty}
             properties={this.props.properties}
-            propertyScreen={this.props.propertyScreen}
-            goToViewing={(viewingId) => { return this._goToViewing(viewingId)}}
+            goToViewing={(viewingId) => { this._goToViewing(viewingId)} }
             updatePropertyActiveTab={(index) => { return this.props.updatePropertyActiveTab(index)}}
             goBack={() => {this.props.navigation.goBack()}}
           />

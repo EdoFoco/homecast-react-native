@@ -84,11 +84,11 @@ export default class AdminViewingScreen extends Component{
   }
 }
 
-AdminViewingScreen.PropTypes = {
+AdminViewingScreen.propTypes = {
     viewing: PropTypes.object.isRequired,
     property: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    joinLiveCast: PropTypes.object.isRequired
+    joinLiveCast: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

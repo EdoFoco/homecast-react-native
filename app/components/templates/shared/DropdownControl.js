@@ -41,7 +41,7 @@ export default class DropdownControl extends Component{
   }
 }
 
-DropdownControl.PropTypes ={
+DropdownControl.propTypes ={
     value: PropTypes.string.isRequired,
     optionsList: PropTypes.array.isRequired,
     property: PropTypes.object.isRequired,

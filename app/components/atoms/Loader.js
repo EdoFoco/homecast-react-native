@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import * as FontSizes from '../helpers/FontSizes';
 import { connect } from 'react-redux';
 import {

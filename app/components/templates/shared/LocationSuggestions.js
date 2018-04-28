@@ -39,7 +39,7 @@ export default class LocationSuggestions extends Component{
                 style={{flex: 1}}
                 data={this.props.suggestions}
                 renderItem={(suggestion) => this._renderRow(suggestion)}
-                keyExtractor={(item, index) => index}
+                keyExtractor={(item, index) => index.toString()}
                 removeClippedSubviews={false}
                 keyboardShouldPersistTaps={'handled'}
             />     
@@ -47,7 +47,7 @@ export default class LocationSuggestions extends Component{
   }
 }
 
-LocationSuggestions.PropTypes ={
+LocationSuggestions.propTypes ={
     suggestions: PropTypes.array.isRequired,
     onPress: PropTypes.func.isRequired
 }
