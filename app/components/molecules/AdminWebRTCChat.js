@@ -9,6 +9,8 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationActions } from 'react-navigation';
+import kurentoUtils from '../../libs/third-party/kurento';
+import InCallManager from 'react-native-incall-manager';
 
 import { 
   View,
@@ -29,8 +31,6 @@ import {
   MediaStream
 } from 'react-native-webrtc';
 
-import kurentoUtils from 'react-native-kurento-utils-js';
-import InCallManager from 'react-native-incall-manager';
 
 var pc;
 var iceCandidatesCount = 0;
@@ -55,56 +55,27 @@ export default class AdminWebRTCChat extends Component{
 
     this._getLocalStream(true, function(stream) {
         localStream = stream;
-        // var options = {
-        //     videoStream: localStream,
-        //     onicecandidate : function (event, error) {
-        //         console.log('onicecandidate', event.candidate);
-        //         if (event.candidate) {
-        //           console.log("3. Presenter - Sending Ice Cnadidate")
-        //           self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
-        //         }
-        //     },
-        //     mandatory: {
-        //       offerToReceiveVideo: false,
-        //       offerToReceiveAudio: false
-        //     }
-        // }
-
         var options = {
-          offerToReceiveVideo: false,
-          offerToReceiveAudio: false
-        };
-
-        console.log('1. Presenter - Generating offer');
-         
-        kurentoPeer = new RTCPeerConnection(options);
-        kurentoPeer.onicecandidate = function (event, error) {
-            console.log('onicecandidate', event.candidate);
-            if (event.candidate) {
-              console.log("3. Presenter - Sending Ice Cnadidate")
-              self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event.candidate});
+            videoStream: localStream,
+            onicecandidate : function (event, error) {
+                console.log('onicecandidate', event.candidate);
+                if (event.candidate) {
+                  console.log("3. Presenter - Sending Ice Cnadidate")
+                  self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
+                }
             }
-        };
+        }
 
-        kurentoPeer.createOffer()
-        .then((offer) => {
-          kurentoPeer.setLocalDescription(offer);
-          return offer;
-        })
-        .then((offer) => {
-          console.log('2. Presenter - Offer generated')
-          self.props.startPresenter({roomId: self.props.chat.roomId, sdpOffer: offer.sdp});
-          self._startWebRtcAsPresenter();
+        kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
+          if(error) return onError(error);
+
+          console.log('1. Presenter - Generating offer');
+          this.generateOffer(function(error, offer){
+              console.log('2. Presenter - Offer generated')
+              self.props.startPresenter({roomId: self.props.chat.roomId, sdpOffer: offer});
+              self._startWebRtcAsPresenter();
+         });
         });
-        // kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
-        //   if(error) return onError(error);
-
-        //   this.generateOffer(function(error, offer){
-        //       console.log('2. Presenter - Offer generated')
-        //       self.props.startPresenter({roomId: self.props.chat.roomId, sdpOffer: offer});
-        //       self._startWebRtcAsPresenter();
-        //  });
-        // });
     });
   }
 
@@ -113,30 +84,16 @@ export default class AdminWebRTCChat extends Component{
     if(this.props.webrtc.presenter.iceCandidates.length > 0){
       iceCandidatesCount = this.props.webrtc.presenter.iceCandidates.length;
       //console.log("4. Presenter - Adding Ice Candidate")
-      kurentoPeer.addIceCandidate(new RTCIceCandidate(this.props.webrtc.presenter.iceCandidates[iceCandidatesCount -1]));
+      pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.presenter.iceCandidates[iceCandidatesCount -1]));
     }
 
     if(this.props.webrtc.presenter.sdpAnswer){
         if(!this.state.sdpAnswerLoaded){
             console.log('5. Presenter - Processing Presenter Answer');
-            console.log(this.props.webrtc.presenter.sdpAnswer);
-            var answer = new RTCSessionDescription({
-              type: 'answer',
-              sdp: this.props.webrtc.presenter.sdpAnswer
+            kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
+              console.log('hi presenter');
             });
-
-            kurentoPeer.setRemoteDescription(answer)
-            .then(() => {
-              console.log('hi');
-              this.setState({sdpAnswerLoaded: true});
-             })
-             .catch((e) => {
-               console.log(e);
-             });
-            // kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
-            //   console.log('hi presenter');
-            // });
-            // this.setState({sdpAnswerLoaded: true});
+            this.setState({sdpAnswerLoaded: true});
         }
       }
   }
@@ -242,7 +199,12 @@ export default class AdminWebRTCChat extends Component{
   }
 
   render() {
-       
+       if(this.props.webrtc.hasError){
+          return <View>
+            <Text>There was an error connecting to the socket. Go Back and try again</Text>
+          </View>
+        }
+
         return (
           <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
               <View style={styles.videoCommands}>
@@ -257,9 +219,6 @@ export default class AdminWebRTCChat extends Component{
                     <MCIcon name="phone-hangup" style={styles.hangupIcon} />
                 </TouchableHighlight>
               </View>
-              {
-                this.props.webrtc.hasError ? <Text>There was an error connecting to the socket. Go Back and try again</Text> : null
-              }
               <Chat chat={this.props.chat} user={this.props.user} sendMessage={(roomId, username, message) => { this.props.sendMessage(roomId, username, message)}}/>
           </RTCView>
         );

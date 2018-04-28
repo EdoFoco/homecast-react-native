@@ -9,6 +9,7 @@ import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ScreenLoader from '../molecules/ScreenLoader';
 import InCallManager from 'react-native-incall-manager';
+import kurentoUtils from '../../libs/third-party/kurento';
 import { 
   View,
   StyleSheet,
@@ -26,8 +27,7 @@ import {
   getUserMedia,
 } from 'react-native-webrtc';
 
-import kurentoUtils from 'react-native-kurento-utils-js';
-//import InCallManager from 'react-native-incall-manager';
+
 
 var pc;
 var iceCandidatesCount = 0;
