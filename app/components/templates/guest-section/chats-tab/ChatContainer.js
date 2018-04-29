@@ -4,7 +4,7 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import ChatsScreen from '../../shared/ChatsScreen';
+import ChatScreen from '../../shared/ChatScreen';
 
 import {
   StyleSheet,
@@ -13,37 +13,30 @@ import {
   Text
 } from 'react-native';
 
-class ChatsContainer extends Component{
 
-  componentWillMount(){
-      this.props.getChats()
-      .then((chats) => {
-          //DoSomething
-      });
-  }
+class ChatContainer extends Component{
 
   render() {
     return (
       <View style={styles.container}>
-          <ChatsScreen chats={this.props.chats} user={this.props.user} goToScreen={(chat) => {this.props.navigation.navigate('Chat', { chat: chat })}}>Chat</ChatsScreen>
-          <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
+        <ChatScreen user={this.props.user} chat={this.props.chat} getMessages={this.props.getMessages}/>
       </View>
     )
   }
   
 }
 
-ChatsContainer.navigationOptions = {
-  title: 'Chats',
+ChatContainer.navigationOptions = {
+  title: 'Chat',
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, {navigation}) => {
     
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
         network: state.network,
-        chats: state.chat.chats
+        chat: navigation.state.params.chat
     }
 };
 
@@ -51,7 +44,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer);
 
 const styles = StyleSheet.create({
   container: {

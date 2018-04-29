@@ -161,6 +161,10 @@ class ApiService {
     async getChats(){
         return await this.apiClient.get(`api/chats`);
     }
+
+    async getMessages(chatId, page){
+        return await this.apiClient.get(`api/chats/${chatId}/messages`);
+    }
 }
 
 export default ApiService

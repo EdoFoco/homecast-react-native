@@ -26,10 +26,14 @@ export default class ChatsScreen extends Component{
         return userNames.join(', ');
     }
 
+    _navigateToScreen(chat){
+        this.props.goToScreen(chat);
+    }
+
     _renderChatRow(item) {
         var chat = item.item;
         return(
-            <TouchableHighlight onPress={() => {console.log(chat.id)}}>
+            <TouchableHighlight onPress={() => {this._navigateToScreen(chat)}}>
                 <View style={styles.chatRow}>
                     <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender.profile_picture, priority: FastImage.priority.normal }} resizeMode={FastImage.resizeMode.cover} />
                     <View style={styles.rowDescriptionContainer}>
@@ -58,7 +62,8 @@ export default class ChatsScreen extends Component{
 
 ChatsScreen.propTypes ={
   chats: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  goToScreen: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

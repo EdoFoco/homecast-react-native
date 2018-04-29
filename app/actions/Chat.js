@@ -90,3 +90,19 @@ export function getChats(){
         }   
       }
   }
+
+export function getMessages(chatId, page){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.getMessages(chatId, page);
+            dispatch({
+                type: 'DO_NOTHING'
+            });
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }   
+      }
+  }
