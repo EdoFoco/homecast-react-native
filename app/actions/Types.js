@@ -54,6 +54,7 @@ export const SET_SOCKET_ERROR = 'SOCKET_ERROR';
 export const CLIENT_MESSAGE = 'client/message';
 export const SERVER_MESSAGE = 'server/message';
 export const UPDATE_ROOM_ID = 'UPDATE_ROOM_ID';
+export const UPDATE_CHATS = 'UPDATE_CHATS';
 
 //WebRTC
 export const UPDATE_CONNECTION_STATUS = 'UPDATE_CONNECTION_STATUS';

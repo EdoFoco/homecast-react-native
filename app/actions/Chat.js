@@ -1,4 +1,5 @@
 import * as types from './Types';
+import ApiServiceFactory from '../libs/services/ApiServiceFactory';
 
 export function updateRoomId(roomId){
     return {
@@ -69,3 +70,23 @@ export function getRoomStatus(roomId){
     }
 }
 
+export function updateChats(chats){
+    return {
+        type: types.UPDATE_CHATS,
+        chats: chats
+    }
+}
+
+export function getChats(){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.getChats();
+            dispatch(updateChats(resp.data));
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }   
+      }
+  }

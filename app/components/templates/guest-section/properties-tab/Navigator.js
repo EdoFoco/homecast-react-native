@@ -28,9 +28,9 @@ export const GuestPropertiesNavigator = StackNavigator(routeConfiguration, stack
 class GuestProperitesTab extends React.Component {
     
     static navigationOptions = {
-        tabBarLabel: 'Properties',
+        tabBarLabel: null,
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="home" size={22} color={tintColor} style={{height: 22, width: 22}} />
+            <Icon name="home" size={24} color={tintColor} style={{height: 24, width: 24}} />
           )
     }
 

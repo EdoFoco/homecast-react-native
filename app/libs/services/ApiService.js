@@ -157,6 +157,10 @@ class ApiService {
     async deletePropertyImage(propertyId, id){
         return await this.apiClient.delete(`api/properties/${propertyId}/photos/${id}`);
     }
+
+    async getChats(){
+        return await this.apiClient.get(`api/chats`);
+    }
 }
 
 export default ApiService

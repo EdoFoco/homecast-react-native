@@ -4,6 +4,7 @@ import { GuestPropertiesNavigator } from '../components/templates/guest-section/
 import { GuestFavouritesNavigator } from '../components/templates/guest-section/favourites-tab/Navigator';
 import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
 import { OptionsNavigator } from '../components/templates/shared/options-tab/Navigator';
+import { GuestChatsNavigator } from '../components/templates/guest-section/chats-tab/Navigator';
 
 import { LandlordTabBarNavigator } from '../navigators/landlord-section/LandlordTabBarNavigator';
 import { LandlordPropertiesNavigator } from '../components/templates/landlord-section/properties-tab/Navigator';
@@ -32,6 +33,7 @@ const AppReducer = combineReducers({
   guestPropertiesNav,
   guestFavouritesNav: (state, action) => GuestFavouritesNavigator.router.getStateForAction(action,state),
   guestViewingsNav,
+  guestChatsNav: (state, action) => GuestChatsNavigator.router.getStateForAction(action,state),
   optionsNav: (state, action) => OptionsNavigator.router.getStateForAction(action,state),
   
   //Landlord Navigators

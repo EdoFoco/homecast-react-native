@@ -29,7 +29,7 @@ class GuestFavouritesTab extends React.Component {
     static navigationOptions = {
         tabBarLabel: 'Favourites',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="heart" size={22} color={tintColor} style={{height: 22, width: 22}}/>
+            <Icon name="heart"  size={24} color={tintColor} style={{height: 24, width: 24}}/>
         )
     }
 

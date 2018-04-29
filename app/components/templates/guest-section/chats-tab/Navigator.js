@@ -1,36 +1,35 @@
 import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ViewingsScreen from './ViewingsScreen';
-import ViewingContainer from './ViewingContainer';
-import PropertyContainer from './PropertyContainer';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import ChatsContainer from './ChatsContainer';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-    ViewingsHome: { screen: ViewingsScreen },
-    Viewing: { screen: ViewingContainer },
-    ViewingProperty: { screen: PropertyContainer}
+    ChatsHome: { screen: ChatsContainer }
 }
 
 const stackConfiguration = {
-  initialRoute: 'ViewingsHome',
+  initialRoute: 'ChatsHome',
   navigationOptions: {
-    header: null
+    headerTintColor: Colors.RED,
+    headerStyle: {
+      backgroundColor: 'white'
+    }
   }
 }
 
-export const GuestViewingsNavigator = StackNavigator(routeConfiguration, stackConfiguration);
+export const GuestChatsNavigator = StackNavigator(routeConfiguration, stackConfiguration);
 
-class GuestViewingsTab extends React.Component {
+class GuestChatsTab extends React.Component {
     
     static navigationOptions = {
-        tabBarLabel: 'Viewings',
+        tabBarLabel: 'Chats',
         tabBarIcon: ({ tintColor }) => (
-            <Icon name="calendar-clock"  size={24} color={tintColor} style={{height: 24, width: 24}} />
-          ),
-        showIcon: true
+            <MCIcon name="message-outline"  size={24} color={tintColor} style={{height: 24, width: 24}} />
+          )
     }
 
     render(){
@@ -38,7 +37,7 @@ class GuestViewingsTab extends React.Component {
         const addListener = createReduxBoundAddListener("root");
 
         return (
-            <GuestViewingsNavigator  
+            <GuestChatsNavigator  
                 navigation={
                 addNavigationHelpers({
                     dispatch: dispatch,
@@ -52,8 +51,8 @@ class GuestViewingsTab extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.guestViewingsNav
+        navigationState: state.guestChatsNav
     }
 }
 
-export default connect(mapStateToProps)(GuestViewingsTab)
+export default connect(mapStateToProps)(GuestChatsTab)
