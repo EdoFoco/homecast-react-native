@@ -121,12 +121,10 @@ class ApiService {
     }
 
      async getScrapers(){
-        
         return await this.apiClient.get(`api/scrapers`);
     }
 
      async importProperty(id, url){
-        
         return await this.apiClient.post(url, { property_id: id });
     }
 
@@ -164,6 +162,10 @@ class ApiService {
 
     async getMessages(chatId, page){
         return await this.apiClient.get(`api/chats/${chatId}/messages`);
+    }
+
+    async sendMessage(chatId, message){
+        return await this.apiClient.post(`api/chats/${chatId}/messages`, { message: message });
     }
 }
 

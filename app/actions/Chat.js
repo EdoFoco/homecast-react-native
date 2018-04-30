@@ -106,3 +106,16 @@ export function getMessages(chatId, page){
         }   
       }
   }
+
+  export function sendMessage(chatId, message){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.sendMessage(chatId, message);
+            return dispatch(getMessages(chatId));
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }   
+      }
+  }

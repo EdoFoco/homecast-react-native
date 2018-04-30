@@ -19,7 +19,12 @@ class ChatContainer extends Component{
   render() {
     return (
       <View style={styles.container}>
-        <ChatScreen user={this.props.user} chat={this.props.chat} getMessages={this.props.getMessages}/>
+        <ChatScreen 
+            user={this.props.user} 
+            chat={this.props.chat} 
+            getMessages={this.props.getMessages}
+            sendMessage={this.props.sendMessage}
+        />
       </View>
     )
   }
