@@ -1,3 +1,4 @@
+platform :ios, '9.0'
 target 'NavTestV1' do
   react_native_path = "../node_modules/react-native"
   pod "yoga", :path => "#{react_native_path}/ReactCommon/Yoga"
@@ -12,6 +13,8 @@ target 'NavTestV1' do
     'RCTNetwork',
   ]
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
-
   pod 'GoogleMaps'
+  pod 'Firebase/Core'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Messaging'
 end

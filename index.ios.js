@@ -13,6 +13,9 @@ import storage from 'redux-persist/lib/storage';
 import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddleware';
 import {Linking} from 'react-native';
 import LinkRoutes from './app/libs/routing/LinkRoutes';
+import firebase, { RemoteMessage, NotificationOpen } from 'react-native-firebase';
+import * as chatActions from './app/actions/Chat';
+
 import {
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware,
@@ -33,6 +36,7 @@ const persistConfig = {
 
 class ReduxExampleApp extends React.Component {
   
+ 
   persistedReducer = persistReducer(persistConfig, AppReducer)
   store = createStore(this.persistedReducer,  applyMiddleware( navMiddleware, socketIoMiddleware, thunk));
   persistor = persistStore(this.store)
@@ -40,7 +44,31 @@ class ReduxExampleApp extends React.Component {
   componentDidMount() {
     Linking.addEventListener('url', event => this.handleOpenURL(event.url));
     Linking.getInitialURL().then(url => url && this.handleOpenURL(url));
+
+    this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
+      console.log(notification);
+      // Process your notification as required
+      // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+    });
+    this.notificationListener = firebase.notifications().onNotification((notification) => {
+        this.store.dispatch(chatActions.getChats());
+    });
+
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+      const action = notificationOpen.action;
+      const notification = notificationOpen.notification;
+      console.log(notification);
+      if(notification.data && notification.data.path){
+        this.handleOpenURL(notification.data.path);
+      }
+    });
   }
+
+  componentWillUnmount() {
+    this.notificationDisplayedListener();
+    this.notificationListener();
+    this.notificationOpenedListener();
+}
 
   componentWillUnmount() {
     Linking.removeEventListener('url', this.handleOpenURL);

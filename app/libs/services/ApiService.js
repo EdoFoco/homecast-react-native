@@ -167,6 +167,10 @@ class ApiService {
     async sendMessage(chatId, message){
         return await this.apiClient.post(`api/chats/${chatId}/messages`, { message: message });
     }
+
+    async updateDeviceToken(userId, token){
+        return await this.apiClient.post(`api/users/${userId}/token`, { token: token });
+    }
 }
 
 export default ApiService

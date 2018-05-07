@@ -102,7 +102,6 @@ export default class ChatScreen extends Component{
     }
 
     render() {
-        console.log(this.state);
         return (
             <View style={styles.container}>
                 <Animated.View style={{height: this.viewHeight}}>

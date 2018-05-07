@@ -26,3 +26,16 @@ export function propertiesTabGoBack(fromScreen){
         fromScreen: fromScreen
     }
 }
+
+export function goToChatsTab(){
+    return {
+        type: types.GO_TO_CHATS_TAB,
+    }
+}
+
+export function goToChat(chat){
+    return {
+        type: types.GO_TO_CHATS_TAB,
+        chat: chat
+    }
+}

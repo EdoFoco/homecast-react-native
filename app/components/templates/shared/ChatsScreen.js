@@ -35,10 +35,14 @@ export default class ChatsScreen extends Component{
         return(
             <TouchableHighlight onPress={() => {this._navigateToScreen(chat)}}>
                 <View style={styles.chatRow}>
-                    <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender.profile_picture, priority: FastImage.priority.normal }} resizeMode={FastImage.resizeMode.cover} />
+                    <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender_profile_picture, priority: FastImage.priority.normal }} resizeMode={FastImage.resizeMode.cover} />
                     <View style={styles.rowDescriptionContainer}>
                         <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
                         <Text style={styles.lastMessage} numberOfLines={1}>{chat.last_message.body}</Text>
+                        {
+                            chat.wasRead ? null:
+                            <Text>Not Read</Text>
+                        }
                     </View>
                 </View>
             </TouchableHighlight>

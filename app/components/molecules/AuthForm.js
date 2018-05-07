@@ -11,8 +11,7 @@ import * as errorHandler from '../../actions/ErrorHandler';
 import ApiService from '../../libs/services/ApiService';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FastImage from 'react-native-fast-image';
-
-var _ = require('lodash');
+import firebase from 'react-native-firebase';
 
 import { 
   View,
@@ -50,13 +49,31 @@ class AuthForm extends Component{
     console.log(credentials);
     if (credentials) { // if validation fails, value will be null
       this.props.login(credentials)
-        .then((resp) => {
-            this.props.updateAuthToken(resp.token)
+        .then((user) => {
+            this.props.updateAuthToken(user.token);
         })
         .catch((error) => {
             console.log(error);
             this.props.handleUnauthorized();
-        });
+        })
+        .then(() => {
+            return firebase.messaging().hasPermission();
+        })
+        .then((enabled) => {
+            console.log(enabled);
+            if(!enabled){
+                return firebase.messaging().requestPermission();
+            }
+        })
+        .then(() => {
+            return firebase.messaging().getToken();
+        })
+        .then((token) => {
+            console.log(token);
+            if(this.props.user.token != token){
+                return this.props.updateDeviceToken(this.props.user.id, token)
+            }
+        })
     }
   }
 
@@ -202,6 +219,7 @@ const mapStateToProps = (state) => {
     console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
+        user: state.user.info,
         isAuthenticating: state.user.isAuthenticating,
         nav: state.nav,
         network: state.network

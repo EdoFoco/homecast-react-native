@@ -75,6 +75,19 @@ export function getLoggedInUser(){
     }
 }
 
+export function updateDeviceToken($userId, $token){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            await apiService.updateDeviceToken($userId, $token);
+            return dispatch(getLoggedInUser());
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+    }
+}
+
 function handleError(error, dispatch){
     console.warn(error);
     var action = ErrorHandler.getActionForError(error);
