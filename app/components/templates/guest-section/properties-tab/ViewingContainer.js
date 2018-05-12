@@ -39,8 +39,8 @@ _setNotifications(){
     });
 
     console.log(notification1);
-    const date1 = new Date();
-    date1.setSeconds(date1.getSeconds() + 10);
+    const date1 = new Date(this.props.viewing.date_time);
+    date1.setMinutes(date1.getMinutes() - 15);
 
     let notification2 = new firebase.notifications.Notification()
     .setNotificationId(`Viewing-${this.props.viewing.id}-5min`)
@@ -51,8 +51,8 @@ _setNotifications(){
         path: `homecast://guest/properties/${this.props.property.id}/viewings/${this.props.viewing.id}`
     });
 
-    const date2 = new Date();
-    date2.setSeconds(date2.getSeconds() + 20);
+    const date2 = new Date(this.props.viewing.date_time);
+    date2.setMinutes(date2.getMinutes() - 5);
 
     return firebase.notifications().scheduleNotification(notification1, {
         fireDate: date1.getTime(),
@@ -64,10 +64,18 @@ _setNotifications(){
     });
 }
     
+_cancelNotifications(){
+    firebase.notifications().cancelNotification(`Viewing-${this.props.viewing.id}-5min`);
+    firebase.notifications().cancelNotification(`Viewing-${this.props.viewing.id}-15min`);
+}
+
  _cancelViewingReservation(userId, reservationId, navigation){
     return this.props.cancelViewingReservation(userId, reservationId)
     .then(() => {
         return this.props.getProperty(this.props.property.id);
+    })
+    .then(() => {
+        this._cancelNotifications();
     })
     .catch((error) => {
         console.error(error);

@@ -37,60 +37,45 @@ export default function (store, url) {
   
 };
 
-function handleViewingDeepLink(store, params) {
-  store.dispatch(propertyActions.getProperties())
-  .then((properties) => {
-      var property = properties.find(p => p.id == params.propertyId);
-      var propertyViewing = property.viewings.find(v => v.id == params.viewingId);
-      if(!propertyViewing){
-          throw new Error('Viewing not found');
-      }
-      if(property){
-        return store.dispatch(viewingActions.getViewing(params.viewingId))
-        .then((viewing) => {
-            return data = {
-                property: property,
-                viewing: viewing
-            }
-        });
-      }
-
+async function handleViewingDeepLink(store, params) {
+  try{
+    var properties = await store.dispatch(propertyActions.getProperties());
+  
+    var property = properties.find(p => p.id == params.propertyId);
+    if(!property){
       throw new Error("Property not found");
-  })
-  .then((data) => {
-    store.dispatch(navActions.goToPropertiesTab());
-    return data;
-  })
-  .then((data) => {
-    return store.dispatch(navActions.goToPropertiesTabViewingsScreen(data.property, data.viewing.id));
-  })
-  .catch((e) => {
-      console.log(e);
-  });
+    }
+  
+    var propertyViewing = property.viewings.find(v => v.id == params.viewingId);
+    if(!propertyViewing){
+        throw new Error('Viewing not found');
+    };
+  
+    var viewing = await store.dispatch(viewingActions.getViewing(params.viewingId));
+    
+    await store.dispatch(navActions.goToPropertiesTab());
+    await store.dispatch(navActions.goToPropertiesHome());
+    await store.dispatch(navActions.goToPropertiesTabViewingsScreen(property, viewing.id));
+  }
+  catch(e){
+    console.warn(e);
+  }
 }
 
-function handleChatDeepLink(store, params){
-  console.log('handling deep link');
-  console.log(params);
-  store.dispatch(chatActions.getChats())
-  .then((chats) => {
-    console.log(chats);
+async function handleChatDeepLink(store, params){
+  try{
+    var chats = await store.dispatch(chatActions.getChats())
     var chat = chats.find(c => c.id == params.chatId);
-    console.log(chat);
-
+    
     if(!chat){
       throw new Error('Chat not found');
     }
-    return chat;
-  })
-  .then((chat) => {
-     store.dispatch(navActions.goToChatsTab());
-     return chat;
-  })
-  .then((chat) => {
-    return store.dispatch(navActions.goToChat(chat));
-  })
-  .catch((error) => {
-    console.log(error);
-  })
+    
+    await store.dispatch(navActions.goToChatsTab());
+    await store.dispatch(navActions.goToChat(chat));
+  }
+  catch(e){
+    console.warn(e);
+  }
+  
 }

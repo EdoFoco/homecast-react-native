@@ -6,6 +6,7 @@ import ViewingScreen from '../../shared/ViewingScreen';
 import { NavigationActions } from 'react-navigation';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet } from 'react-native';
+import firebase from 'react-native-firebase';
 
 class ViewingContainer extends Component{
 
@@ -17,10 +18,20 @@ class ViewingContainer extends Component{
     .then(() => {
         return this.props.navigation.goBack();
     })
+    .then(() => {
+        this._cancelNotifications();
+    })
     .catch((error) => {
         console.error(error);
     });
  }
+
+   
+ _cancelNotifications(){
+    firebase.notifications().cancelNotification(`Viewing-${this.props.viewing.id}-5min`);
+    firebase.notifications().cancelNotification(`Viewing-${this.props.viewing.id}-15min`);
+ }
+
   
   _goToProperty(){
   

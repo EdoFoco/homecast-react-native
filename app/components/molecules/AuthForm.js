@@ -41,39 +41,28 @@ class AuthForm extends Component{
         }
     }
 
-  _login() {
+  async _login() {
     var credentials = {
         email: this.state.email,
         password: this.state.password
     }
     console.log(credentials);
     if (credentials) { // if validation fails, value will be null
-      this.props.login(credentials)
-        .then((user) => {
-            this.props.updateAuthToken(user.token);
-        })
-        .catch((error) => {
-            console.log(error);
+        try{
+            var user = await this.props.login(credentials);
+            await this.props.updateAuthToken(user.token);
+            var hasPermission = await firebase.messaging().hasPermission();
+            if(!hasPermission){
+                await firebase.messaging().requestPermission();
+            }
+
+            var token = await firebase.messaging().getToken();
+            await this.props.updateDeviceToken(user.user.id, token)
+        }
+        catch(e){
+            console.error(e);
             this.props.handleUnauthorized();
-        })
-        .then(() => {
-            return firebase.messaging().hasPermission();
-        })
-        .then((enabled) => {
-            console.log(enabled);
-            if(!enabled){
-                return firebase.messaging().requestPermission();
-            }
-        })
-        .then(() => {
-            return firebase.messaging().getToken();
-        })
-        .then((token) => {
-            console.log(token);
-            if(this.props.user.token != token){
-                return this.props.updateDeviceToken(this.props.user.id, token)
-            }
-        })
+        }
     }
   }
 
@@ -87,10 +76,10 @@ class AuthForm extends Component{
     console.log(info);
     this.props.signup(info)
     .then(() => {
-        this.props.login({ email: info.email, password: info.password })
+        return this.props.login({ email: info.email, password: info.password })
     })
     .then((resp) => {
-        this.props.updateAuthToken(resp.token)
+        return this.props.updateAuthToken(resp.token)
     })
     .catch((error) => {
         console.log(error);
@@ -117,7 +106,7 @@ class AuthForm extends Component{
                         onChangeText={(text) => this.setState({password: text})}></TextInput>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableHighlight style={styles.loginButton} onPress={() => {this._login()}}>
+                    <TouchableHighlight style={styles.loginButton} onPress={async () => { await this._login()}}>
                         <View>
                             <Text style={styles.buttonText}>LOG IN</Text>
                         </View>

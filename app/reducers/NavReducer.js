@@ -22,7 +22,7 @@ export const guestTabBar = (state = initalGuestTabNavigatorState, action) => {
   switch(action.type){
     case types.GO_TO_GUEST_PROPERTIES_TAB:
       return GuestTabBarNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'PropertiesTab'}),
+        NavigationActions.navigate({ key: null, routeName: 'PropertiesTab'}),
       );
     case types.GO_TO_CHATS_TAB:
       return GuestTabBarNavigator.router.getStateForAction(
@@ -59,16 +59,25 @@ export const guestPropertiesNav = (state = initalGuestPropertiesState, action) =
             NavigationActions.navigate({ routeName: 'PropertiesPropertyScreen', params: {property: action.property}})
           ]
         }));
-
-      case types.GO_TO_PROPERTIES_TAB_VIEWING:
+      
+    case types.GO_TO_PROPERTIES_HOME:
         return GuestPropertiesNavigator.router.getStateForAction(
-          NavigationActions.reset({
-            index: 1,
-            actions: [
-              NavigationActions.navigate({ routeName: 'PropertiesHome'}),
-              NavigationActions.navigate({ routeName: 'PropertiesViewing', params: {property: action.property, viewingId: action.viewingId}})
-            ]
-          }));
+          NavigationActions.navigate({
+            key: null,
+            routeName: 'PropertiesHome' 
+          })
+        );
+
+    case types.GO_TO_PROPERTIES_TAB_VIEWING:
+      return GuestPropertiesNavigator.router.getStateForAction(
+        NavigationActions.reset({
+          key: null,
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'PropertiesHome' }),
+            NavigationActions.navigate({ routeName: 'PropertiesViewing', params: {property: action.property, viewingId: action.viewingId} }),
+          ],
+        }));
           
         // return GuestPropertiesNavigator.router.getStateForAction(
         //   NavigationActions.navigate(
@@ -112,15 +121,14 @@ export const chatsNav = (state = initialChatsState, action) => {
   const nextState = GuestChatsNavigator.router.getStateForAction(action, state);
 
   switch(action.type){
+      case types.GO_TO_CHATS_HOME:
+        return GuestChatsNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: 'ChatsHome', params: {chat: action.chat}})
+        );
       case types.GO_TO_CHAT:
         return GuestChatsNavigator.router.getStateForAction(
-          NavigationActions.reset({
-            index: 1,
-            actions: [
-              NavigationActions.navigate({ routeName: 'ChatsHome'}),
               NavigationActions.navigate({ routeName: 'Chat', params: {chat: action.chat}})
-            ]
-          }));
+          );
       case 'Navigation/NAVIGATE':
         if(action.routeName.toLowerCase().indexOf('tab') > -1){
           //return initialChatsState;
