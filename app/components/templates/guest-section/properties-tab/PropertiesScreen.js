@@ -31,7 +31,7 @@ class PropertiesScreen extends Component{
   }
 
   _onPress(property){
-      this.props.navigation.navigate('PropertiesTabPropertyScreen', { property : property});
+      this.props.navigation.navigate('PropertiesPropertyScreen', { property : property});
   }
 
   _addToFavourites(userId, propertyId){

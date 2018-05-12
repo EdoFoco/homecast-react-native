@@ -22,7 +22,7 @@ class PropertyContainer extends Component{
   }
 
   _goToViewing(viewingId){
-      this.props.navigation.navigate('PropertiesTabViewing', { viewingId: viewingId, property: this.props.currentProperty});
+      this.props.navigation.navigate('PropertiesViewing', { viewingId: viewingId, property: this.props.currentProperty});
     }
   
   render() {

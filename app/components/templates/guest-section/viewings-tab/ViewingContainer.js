@@ -33,6 +33,10 @@ class ViewingContainer extends Component{
     });
   }
 
+  _joinLiveCast(){
+    this.props.navigation.navigate('LiveCast', { viewing: this.props.viewing});
+  }
+
   render() {
     return(
         <View style={styles.container}>
@@ -41,12 +45,14 @@ class ViewingContainer extends Component{
                 property={this.props.property}
                 reservation={this.props.reservation}
                 user={this.props.user}
+                createViewingReservation={() => {}}
                 cancelViewingReservation={(userId, reservationId, navigation) =>{this._cancelViewingReservation(userId, reservationId, navigation)}}
                 goToProperty={() => { this._goToProperty() }}
                 showViewPropertyBtn={this.props.nav.index > 1 ? false : true}
                 getProperty={this.props.getProperty}
-                />
-                <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
+                joinLiveCast={this._joinLiveCast}
+            />
+            <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>
     )
   }

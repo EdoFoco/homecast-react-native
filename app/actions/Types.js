@@ -26,8 +26,6 @@ export const UPDATE_PROPERTY_ACTIVE_TAB = 'UPDATE_PROPERTY_ACTIVE_TAB';
 //Navigation
 export const GOTO_SCREEN = 'GOTO_SCREEN';
 export const GOTO_GUEST_TAB_BAR = 'GOTO_GUEST_TAB_BAR';
-
-//Section Changed
 export const GOTO_SECTION = 'GOTO_SECTION';
 
 //Locatin

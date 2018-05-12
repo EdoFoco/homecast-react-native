@@ -12,6 +12,10 @@ import { LandlordPropertiesNavigator } from '../components/templates/landlord-se
 import { guestViewingsNav  } from './NavReducer';
 import { guestTabBar }from './NavReducer';
 import { guestPropertiesNav }from './NavReducer';
+import { favouritesNav }from './NavReducer';
+import { chatsNav }from './NavReducer';
+import { landlordTabBar }from './NavReducer';
+import { landlordPropertiesNav }from './NavReducer';
 
 import user from './User';
 import section from './Section';
@@ -31,15 +35,15 @@ const AppReducer = combineReducers({
   //Guest Navigators
   guestTabBar,
   guestPropertiesNav,
-  guestFavouritesNav: (state, action) => GuestFavouritesNavigator.router.getStateForAction(action,state),
+  guestFavouritesNav: favouritesNav,
   guestViewingsNav,
-  guestChatsNav: (state, action) => GuestChatsNavigator.router.getStateForAction(action,state),
+  guestChatsNav: chatsNav,
   optionsNav: (state, action) => OptionsNavigator.router.getStateForAction(action,state),
   
   //Landlord Navigators
-  landlordTabBar: (state,action) => LandlordTabBarNavigator.router.getStateForAction(action,state),
-  landlordPropertiesNav: (state,action) => LandlordPropertiesNavigator.router.getStateForAction(action,state),
-  
+  landlordTabBar: landlordTabBar,
+  landlordPropertiesNav,
+
   user,
   section,
   webrtc,

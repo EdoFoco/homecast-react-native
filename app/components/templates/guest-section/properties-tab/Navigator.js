@@ -12,8 +12,8 @@ import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 const routeConfiguration = {
     PropertiesHome: { screen: PropertiesScreen },
     LiveCast: { screen: OtherScreen },
-    PropertiesTabPropertyScreen: { screen: PropertyContainer },
-    PropertiesTabViewing: { screen: ViewingContainer }
+    PropertiesPropertyScreen: { screen: PropertyContainer },
+    PropertiesViewing: { screen: ViewingContainer }
 }
 
 const stackConfiguration = {

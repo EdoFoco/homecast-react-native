@@ -118,8 +118,7 @@ ViewingScreen.propTypes = {
     createViewingReservation: PropTypes.func.isRequired,
     goToProperty: PropTypes.func.isRequired,
     showViewPropertyBtn: PropTypes.bool.isRequired,
-    joinLiveCast: PropTypes.func.isRequired,
-    getViewing: PropTypes.func.isRequired
+    joinLiveCast: PropTypes.func.isRequired
 }
 
 

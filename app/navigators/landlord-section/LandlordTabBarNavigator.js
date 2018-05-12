@@ -10,10 +10,10 @@ import {
 } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-  Properties: { 
+  PropertiesTab: { 
     screen: PropertiesNavigator
   },
-  Options: {
+  OptionsTab: {
     screen: OptionsTab
   }
 }

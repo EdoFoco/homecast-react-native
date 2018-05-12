@@ -11,7 +11,7 @@ import NetworkErrorMessage from '../../components/templates/shared/NetworkErrorM
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-  Properties: { 
+  PropertiesTab: { 
     screen: PropertiesNavigator
   },
   FavouritesTab: {
