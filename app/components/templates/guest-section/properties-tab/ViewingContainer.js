@@ -10,28 +10,59 @@ import firebase from 'react-native-firebase';
 
 class ViewingContainer extends Component{
 
+  componentWillMount(){
+      this.props.getViewingReservations(this.props.user.info.id);
+  }
+
  _reserveSpot(userId, viewingId){
     return this.props.createViewingReservation(userId, viewingId)
     .then(() => {
         return this.props.getProperty(this.props.property.id);
     })
     .then(() => {
-        //Build notification
-        // const notification = new firebase.notifications.Notification();
-
-        // // Schedule the notification for 1 minute in the future
-        // const date = new Date();
-        // date.setMinutes(date.getMinutes() + 1);
-
-        // firebase.notifications().scheduleNotification(notification, {
-        //     fireDate: date.getTime(),
-        // })
+        return this._setNotifications();
     })
     .catch((error) => {
         console.error(error);
     });
  }
-        
+
+_setNotifications(){
+    // Build notification
+    let notification1 = new firebase.notifications.Notification()
+    .setNotificationId(`Viewing-${this.props.viewing.id}-15min`)
+    .setTitle(this.props.property.name)
+    .setBody(`Live viewing will start in 15min`)
+    .setSound('default')
+    .setData({
+        path: `homecast://guest/properties/${this.props.property.id}/viewings/${this.props.viewing.id}`
+    });
+
+    console.log(notification1);
+    const date1 = new Date();
+    date1.setSeconds(date1.getSeconds() + 10);
+
+    let notification2 = new firebase.notifications.Notification()
+    .setNotificationId(`Viewing-${this.props.viewing.id}-5min`)
+    .setTitle(this.props.property.name)
+    .setBody(`Live viewing will start in 5min`)
+    .setSound('default')
+    .setData({
+        path: `homecast://guest/properties/${this.props.property.id}/viewings/${this.props.viewing.id}`
+    });
+
+    const date2 = new Date();
+    date2.setSeconds(date2.getSeconds() + 20);
+
+    return firebase.notifications().scheduleNotification(notification1, {
+        fireDate: date1.getTime(),
+    })
+    .then(() => {
+        return firebase.notifications().scheduleNotification(notification2, {
+            fireDate: date2.getTime()
+        });
+    });
+}
     
  _cancelViewingReservation(userId, reservationId, navigation){
     return this.props.cancelViewingReservation(userId, reservationId)
