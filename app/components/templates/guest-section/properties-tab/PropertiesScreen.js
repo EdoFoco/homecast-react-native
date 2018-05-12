@@ -21,7 +21,8 @@ class PropertiesScreen extends Component{
     this.state = {
       isSearching: false,
       locationSearchValue: '',
-      showFiltersModal: false
+      showFiltersModal: false,
+      isRefreshing: false
     }
   }
 
@@ -84,6 +85,14 @@ class PropertiesScreen extends Component{
     this.props.updateLocationSuggestions([]);
   }
 
+  _refresh(){
+    this.setState({isRefreshing: true});
+    this.props.getProperties()
+    .then(() => {
+      this.setState({isRefreshing: false})
+    });
+  }
+
   render() {
     console.log(this.state.isSearching);
     return (
@@ -117,6 +126,8 @@ class PropertiesScreen extends Component{
           renderItem={(property) => this._renderRow(property)}
           keyExtractor={(item, index) => index.toString()}
           removeClippedSubviews={false}
+          refreshing={this.state.isRefreshing}
+          onRefresh={() => this._refresh()}
         />
 
         {

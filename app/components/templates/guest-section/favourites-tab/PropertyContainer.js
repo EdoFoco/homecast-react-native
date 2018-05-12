@@ -32,6 +32,7 @@ class PropertyContainer extends Component{
             goToViewing={(viewingId) => { this._goToViewing(viewingId)} }
             updatePropertyActiveTab={(index) => { return this.props.updatePropertyActiveTab(index)}}
             goBack={() => {this.props.navigation.goBack()}}
+            getProperty={this.props.getProperty}
           />
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>

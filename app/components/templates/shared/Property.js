@@ -18,7 +18,8 @@ import {
   FlatList,
   TouchableHighlight,
   Dimensions,
-  ScrollView
+  ScrollView,
+  RefreshControl
 } from 'react-native';
 import { DEFAULT } from '../../helpers/FontSizes';
 
@@ -28,7 +29,8 @@ export default class Property extends Component{
     super(props);
 
     this.state = {
-        activeTab: 1
+        activeTab: 1,
+        isRefreshing: false
     }
    }
    
@@ -71,7 +73,10 @@ export default class Property extends Component{
 
   _renderInfoTab(){
     return (
-      <ScrollView style={styles.tabContainer}>
+      <ScrollView style={styles.tabContainer} refreshControl={<RefreshControl
+          refreshing={this.state.isRefreshing}
+          onRefresh={() => {this._refresh()}}
+        />} >
         <View style={{flexDirection: 'row', marginBottom: 20}} >
              <FlatList
                     style={styles.imagesContainer}
@@ -148,12 +153,22 @@ export default class Property extends Component{
            keyExtractor={this._keyExtractor}
            renderItem={this._renderItem} 
            extraData={this.props.properties}
-         />
+           refreshing={this.state.isRefreshing}
+           onRefresh={() => this._refresh()}
+          />
       
     </View>
     )
   }
   
+  _refresh(){
+    this.setState({isRefreshing: true});
+    this.props.getProperty(this.props.currentProperty.id)
+    .then(() => {
+      this.setState({isRefreshing: false})
+    });
+  }
+
   render() {
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -202,10 +217,10 @@ export default class Property extends Component{
 
             </View>
         {
-          // this.state.activeTab != 3 ? null :
-          // <TouchableHighlight style={styles.requestViewingButton}>
-          //     <Text style={styles.requestViewingButtonTxt}>Request alternative viewing</Text>
-          // </TouchableHighlight>
+          this.state.activeTab != 3 ? null :
+          <TouchableHighlight style={styles.requestViewingButton}>
+              <Text style={styles.requestViewingButtonTxt}>Request alternative viewing</Text>
+          </TouchableHighlight>
         }
       </View>
     )
@@ -216,8 +231,9 @@ Property.propTypes = {
     currentProperty: PropTypes.object.isRequired,
     properties: PropTypes.object.isRequired,
     goToViewing: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired
-}
+    goBack: PropTypes.func.isRequired,
+    getProperty: PropTypes.func.isRequired
+  }
 
 const styles = StyleSheet.create({
   container: {

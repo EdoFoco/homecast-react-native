@@ -6,6 +6,7 @@ import ViewingScreen from '../../shared/ViewingScreen';
 import { NavigationActions } from 'react-navigation';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet } from 'react-native';
+import firebase from 'react-native-firebase';
 
 class ViewingContainer extends Component{
 
@@ -13,6 +14,18 @@ class ViewingContainer extends Component{
     return this.props.createViewingReservation(userId, viewingId)
     .then(() => {
         return this.props.getProperty(this.props.property.id);
+    })
+    .then(() => {
+        //Build notification
+        // const notification = new firebase.notifications.Notification();
+
+        // // Schedule the notification for 1 minute in the future
+        // const date = new Date();
+        // date.setMinutes(date.getMinutes() + 1);
+
+        // firebase.notifications().scheduleNotification(notification, {
+        //     fireDate: date.getTime(),
+        // })
     })
     .catch((error) => {
         console.error(error);

@@ -16,21 +16,29 @@ import {
   View,
   ScrollView,
   Button,
-  Dimensions
+  Dimensions,
+  RefreshControl
 } from 'react-native';
 
 export default class ViewingScreen extends Component{
 
-  
+  constructor(props){
+    super(props)
+    this.state = {
+      isRefreshing: false
+    }
+  }
+
+
   _renderCTA(){
-    //if(this.props.viewing.isLive){
+    if(this.props.viewing.isLive){
         return ( 
         <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
             <Text style={styles.ctaText}>
                 Join Live Cast
            </Text>
         </TouchableHighlight>)
-   // }
+   }
     
     if(this.props.reservation){
         return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>
@@ -53,6 +61,14 @@ export default class ViewingScreen extends Component{
     return `${weekday}, ${day} ${month}`;
   }
  
+  _refresh(){
+    this.setState({isRefreshing: true});
+    this.props.getProperty(this.props.property.id)
+    .then(() => {
+      this.setState({isRefreshing: false})
+    });
+  }
+
   render() {
     return(
         <View style={{backgroundColor: 'white', flex: 1}}>
@@ -60,7 +76,10 @@ export default class ViewingScreen extends Component{
                   <Text style={styles.availabilityTitle}>Availability</Text>
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
-            <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
+            <ScrollView style={{backgroundColor: 'white', flex: 0.85}} refreshControl={<RefreshControl
+                refreshing={this.state.isRefreshing}
+                onRefresh={() => {this._refresh()}}
+              />} >>
                 <FastImage style={styles.propertyImage} source={{url: this.props.property.thumbnail}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
@@ -99,7 +118,8 @@ ViewingScreen.propTypes = {
     createViewingReservation: PropTypes.func.isRequired,
     goToProperty: PropTypes.func.isRequired,
     showViewPropertyBtn: PropTypes.bool.isRequired,
-    joinLiveCast: PropTypes.func.isRequired
+    joinLiveCast: PropTypes.func.isRequired,
+    getViewing: PropTypes.func.isRequired
 }
 
 
