@@ -14,4 +14,7 @@ target 'NavTestV1' do
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
 
   pod 'GoogleMaps'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
 end

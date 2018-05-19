@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddleware';
 import {Linking} from 'react-native';
 import LinkRoutes from './app/libs/routing/LinkRoutes';
+import reduxCatch from 'redux-catch';
 import {
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware,
@@ -34,7 +35,7 @@ const persistConfig = {
 class ReduxExampleApp extends React.Component {
   
   persistedReducer = persistReducer(persistConfig, AppReducer)
-  store = createStore(this.persistedReducer,  applyMiddleware( navMiddleware, socketIoMiddleware, thunk));
+  store = createStore(this.persistedReducer,  applyMiddleware(reduxCatch(this.handleError), navMiddleware, socketIoMiddleware, thunk));
   persistor = persistStore(this.store)
 
   componentDidMount() {
@@ -50,6 +51,15 @@ class ReduxExampleApp extends React.Component {
     const path = url.split(':/')[1];
     LinkRoutes(this.store, path);
   }
+
+  handleError(error, getState, lastAction, dispatch) {
+    console.error(error);
+    console.debug('Handling Redux');
+    console.debug('current state', getState());
+    console.debug('last action was', lastAction);
+    // optionally dispatch an action due to the error using the dispatch parameter
+  }
+  
   
   render() {
 

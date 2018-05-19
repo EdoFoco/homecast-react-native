@@ -10,6 +10,7 @@ import { addNavigationHelpers } from 'react-navigation';
 import AuthForm from '../molecules/AuthForm';
 import { AsyncStorage } from 'react-native';
 import { YellowBox } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 
@@ -20,6 +21,10 @@ class MainScreen extends Component {
     this.state = { 
         isReady: false
      };
+  }
+
+  componentDidMount(){
+    SplashScreen.hide()
   }
 
   componentWillMount(){
