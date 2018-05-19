@@ -72,3 +72,6 @@ export const UPDATE_SCRAPERS = 'UPDATE_SCRAPERS';
 
 //Filters
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
+
+//General Reducers
+export const RESET_REDUCERS = 'RESET_REDUCERS';

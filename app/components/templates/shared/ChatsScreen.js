@@ -30,6 +30,7 @@ export default class ChatsScreen extends Component{
         this.props.goToScreen(chat);
     }
 
+ 
     _renderChatRow(item) {
         var chat = item.item;
         return(

@@ -35,3 +35,9 @@ export function showNetworkError(hasError){
         hasError: hasError
     }
 }
+
+export function resetReducers(){
+    return {
+        type: types.RESET_REDUCERS
+    }
+}

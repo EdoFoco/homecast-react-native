@@ -50,6 +50,10 @@ class AuthForm extends Component{
     if (credentials) { // if validation fails, value will be null
         try{
             var user = await this.props.login(credentials);
+            if(!user){
+                throw new Error();
+            }
+            
             await this.props.updateAuthToken(user.token);
             var hasPermission = await firebase.messaging().hasPermission();
             if(!hasPermission){
@@ -60,7 +64,6 @@ class AuthForm extends Component{
             await this.props.updateDeviceToken(user.user.id, token)
         }
         catch(e){
-            console.error(e);
             this.props.handleUnauthorized();
         }
     }
@@ -131,7 +134,9 @@ class AuthForm extends Component{
                 </View>
                 <View style={styles.textInputWrapper}>
                     <MCIcon name="email-outline" style={styles.textInputIcon} />
-                    <TextInput style={styles.textInput} 
+                    <TextInput 
+                        style={styles.textInput} 
+                        secureTextEntry={false} 
                         placeholderTextColor={'rgba(255, 255, 255, 0.8)'} 
                         placeholder="Email"
                         onChangeText={(text) => this.setState({signupEmail: text})}></TextInput>

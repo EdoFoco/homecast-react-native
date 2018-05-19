@@ -14,6 +14,8 @@ import {Linking} from 'react-native';
 import LinkRoutes from './app/libs/routing/LinkRoutes';
 import firebase, { RemoteMessage, NotificationOpen } from 'react-native-firebase';
 import * as chatActions from './app/actions/Chat';
+import * as errorHandlerActions from './app/actions/ErrorHandler';
+import { AsyncStorage } from 'react-native';
 
 import reduxCatch from 'redux-catch';
 import {
@@ -80,11 +82,14 @@ class ReduxExampleApp extends React.Component {
   }
 
   handleError(error, getState, lastAction, dispatch) {
-    console.error(error);
-    console.debug('Handling Redux');
-    console.debug('current state', getState());
-    console.debug('last action was', lastAction);
-    // optionally dispatch an action due to the error using the dispatch parameter
+    dispatch(errorHandlerActions.resetReducers());
+    AsyncStorage.getAllKeys()
+    .then((keys) => {
+      AsyncStorage.multiRemove(keys);
+    })
+    .catch((e) => {
+      console.debug(e);
+    });
   }
   
   

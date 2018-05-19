@@ -1,3 +1,4 @@
+import * as types from '../actions/Types';
 import { combineReducers } from 'redux';
 import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
 import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
@@ -57,4 +58,12 @@ const AppReducer = combineReducers({
   
 }, devToolsEnhancer());
 
-export default AppReducer;
+
+const rootReducer = (state, action) => {
+  if (action.type === types.RESET_REDUCERS) {
+    state = undefined
+  }
+  return AppReducer(state, action)
+}
+
+export default rootReducer;
