@@ -12,6 +12,13 @@ export function resetViewingsTab(property){
     }
 }
 
+export function goToPropertiesHome(){
+    return {
+        type: types.GO_TO_PROPERTIES_HOME
+    }
+}
+
+
 export function goToPropertiesTabViewingsScreen(property, viewingId){
     return {
         type: types.GO_TO_PROPERTIES_TAB_VIEWING,
@@ -27,6 +34,12 @@ export function propertiesTabGoBack(fromScreen){
     }
 }
 
+export function goToChatsHome(){
+    return {
+        type: types.GO_TO_CHATS_HOME
+    }
+}
+
 export function goToChatsTab(){
     return {
         type: types.GO_TO_CHATS_TAB,
@@ -35,7 +48,7 @@ export function goToChatsTab(){
 
 export function goToChat(chat){
     return {
-        type: types.GO_TO_CHATS_TAB,
+        type: types.GO_TO_CHAT,
         chat: chat
     }
 }

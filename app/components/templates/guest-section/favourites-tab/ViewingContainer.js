@@ -6,6 +6,7 @@ import ViewingScreen from '../../shared/ViewingScreen';
 import { NavigationActions } from 'react-navigation';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet } from 'react-native';
+import firebase from 'react-native-firebase';
 
 class ViewingContainer extends Component{
 
@@ -13,6 +14,9 @@ _reserveSpot(userId, viewingId){
     return this.props.createViewingReservation(userId, viewingId)
     .then(() => {
         return this.props.getProperty(this.props.property.id);
+    })
+    .then(() => {
+        this._setNotifications();
     })
     .catch((error) => {
         console.error(error);
@@ -24,11 +28,58 @@ _reserveSpot(userId, viewingId){
     .then(() => {
         return this.props.getProperty(this.props.property.id);
     })
+    .then(() => {
+        this._cancelNotifications();
+    })
     .catch((error) => {
         console.error(error);
     });
  }
   
+
+_setNotifications(){
+    // Build notification
+    let notification1 = new firebase.notifications.Notification()
+    .setNotificationId(`Viewing-${this.props.viewing.id}-15min`)
+    .setTitle(this.props.property.name)
+    .setBody(`Live viewing will start in 15min`)
+    .setSound('default')
+    .setData({
+        path: `homecast://guest/properties/${this.props.property.id}/viewings/${this.props.viewing.id}`
+    });
+
+    console.log(notification1);
+    const date1 = new Date(this.props.viewing.date_time);
+    date1.setMinutes(date1.getMinutes() - 15);
+
+    let notification2 = new firebase.notifications.Notification()
+    .setNotificationId(`Viewing-${this.props.viewing.id}-5min`)
+    .setTitle(this.props.property.name)
+    .setBody(`Live viewing will start in 5min`)
+    .setSound('default')
+    .setData({
+        path: `homecast://guest/properties/${this.props.property.id}/viewings/${this.props.viewing.id}`
+    });
+
+    const date2 = new Date(this.props.viewing.date_time);
+    date2.setMinutes(date2.getMinutes() - 5);
+
+    return firebase.notifications().scheduleNotification(notification1, {
+        fireDate: date1.getTime(),
+    })
+    .then(() => {
+        return firebase.notifications().scheduleNotification(notification2, {
+            fireDate: date2.getTime()
+        });
+    });
+}
+    
+_cancelNotifications(){
+    firebase.notifications().cancelNotification(`Viewing-${this.props.viewing.id}-5min`);
+    firebase.notifications().cancelNotification(`Viewing-${this.props.viewing.id}-15min`);
+}
+
+
   _goToProperty(){
     return this.props.getProperty(this.props.property.id)
     .then((property) => {
