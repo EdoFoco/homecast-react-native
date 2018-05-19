@@ -17,4 +17,7 @@ target 'NavTestV1' do
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
   pod 'Firebase/Messaging'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
 end

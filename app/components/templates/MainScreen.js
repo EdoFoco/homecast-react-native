@@ -12,6 +12,8 @@ import { AsyncStorage } from 'react-native';
 import { YellowBox } from 'react-native';
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Module WebRTCModule', 'Module RNInCallManager', 'Remote debugger']);
+import SplashScreen from 'react-native-splash-screen';
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 
 class MainScreen extends Component {
@@ -21,6 +23,10 @@ class MainScreen extends Component {
     this.state = { 
         isReady: false
      };
+  }
+
+  componentDidMount(){
+    SplashScreen.hide()
   }
 
   componentWillMount(){
