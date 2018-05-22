@@ -10,7 +10,8 @@ class ApiService {
     constructor(){
         this.apiClient = axios.create({
             //baseURL: 'http://192.168.1.76:8111',
-            baseURL: 'http://46.101.93.197',
+            //baseURL: 'http://46.101.93.197',
+            baseURL: 'https://api.homecastapp.com',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

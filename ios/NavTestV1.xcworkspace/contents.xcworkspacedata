@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:NavTestV1.xcodeproj">
+      location = "group:/Users/edoardofoco/Documents/Projects/React Native/homecast/ios/Homecast.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

@@ -21,7 +21,8 @@ class MainScreen extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-        isReady: false
+        isReady: false,
+        error: null
      };
   }
 
@@ -48,6 +49,8 @@ class MainScreen extends Component {
     })
     .catch((e) => {
       console.error(e);
+      this.setState({error: e})
+      this.setState({isReady: true})
     });
   }
 
@@ -73,7 +76,7 @@ class MainScreen extends Component {
       )
     }
     return(
-      <Text>Loading..</Text>
+      <Text>Loading.. Is Loading: {this.state.isReady.toString()}, isLoggedIn: {this.props.isLoggedIn.toString()}</Text>
     )
   }
 }
