@@ -12,7 +12,7 @@
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
-		00E356F31AD99517003FC87E /* NavTestV1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NavTestV1Tests.m */; };
+		00E356F31AD99517003FC87E /* HomecastTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HomecastTests.m */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -35,8 +35,8 @@
 		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-		2DCD954D1E0B4F2C00145EB5 /* NavTestV1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NavTestV1Tests.m */; };
-		2E9CB424C4870C836E515A3E /* libPods-NavTestV1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6D524A1730EF3C92FD633E /* libPods-NavTestV1.a */; };
+		2DCD954D1E0B4F2C00145EB5 /* HomecastTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HomecastTests.m */; };
+		2E9CB424C4870C836E515A3E /* libPods-Homecast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC6D524A1730EF3C92FD633E /* libPods-Homecast.a */; };
 		379467A63ABB4AA78F1575DA /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03A789EEDA994D91A5173C7D /* SimpleLineIcons.ttf */; };
 		4188535E5ED74C66B9C023C8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61E991671E5140E69729CB82 /* Ionicons.ttf */; };
 		47DBDC3193AC4D73B32F8974 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C5B8E568A545E39B17A2EB /* libRNImagePicker.a */; };
@@ -86,6 +86,7 @@
 		968EDCAF2055EF5200558289 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 968EDC7D2055EF5100558289 /* AIRGMSMarker.m */; };
 		968EDCB02055EF9600558289 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9607A13A2055EE8400AA90CE /* libAirMaps.a */; };
 		978360CFE8814928ABAACE6A /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6AB2CAEDCB04713A27D885B /* Montserrat-Bold.ttf */; };
+		9996A4B41202DC406183C09F /* libPods-Homecast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 179779A93E481D103127EF0C /* libPods-Homecast.a */; };
 		A1437458AC3C431DB94E4944 /* libRNInCallManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA3AB0F8C07440EB9766C8E /* libRNInCallManager.a */; };
 		AEA2F0CA644D425688E8D047 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDC5E999B0A34FA8AEDB715E /* Feather.ttf */; };
 		BE78F8EB3DFB40C8BBD8C9CF /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB47F2E061564E7EA4AE4844 /* Montserrat-Regular.ttf */; };
@@ -135,7 +136,7 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = NavTestV1;
+			remoteInfo = Homecast;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -163,7 +164,7 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "NavTestV1-tvOS";
+			remoteInfo = "Homecast-tvOS";
 		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -433,25 +434,27 @@
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
 		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* NavTestV1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavTestV1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* HomecastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomecastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* NavTestV1Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavTestV1Tests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* HomecastTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomecastTests.m; sourceTree = "<group>"; };
 		03A789EEDA994D91A5173C7D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		04C5B8E568A545E39B17A2EB /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		054F7349BFCC4F169271E8FB /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		0CA3AB0F8C07440EB9766C8E /* libRNInCallManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNInCallManager.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* NavTestV1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NavTestV1.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = NavTestV1/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = NavTestV1/AppDelegate.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Homecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Homecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Homecast/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Homecast/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NavTestV1/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NavTestV1/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NavTestV1/main.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Homecast/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.info; fileEncoding = 4; name = Info.plist; path = Homecast/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Homecast/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* NavTestV1-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NavTestV1-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* NavTestV1-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NavTestV1-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		169A86C9BEFD27612E900C76 /* Pods-Homecast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Homecast.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Homecast/Pods-Homecast.debug.xcconfig"; sourceTree = "<group>"; };
+		179779A93E481D103127EF0C /* libPods-Homecast.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Homecast.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E47B1E0B4A5D006451C7 /* Homecast-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Homecast-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* Homecast-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Homecast-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F28027C78644882AA8A98C6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		2FF03C61A95C4B8893739098 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		2FFED826B8494F6F85E46A69 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
@@ -460,12 +463,10 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6036ED734E0D4098800C312A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		61E991671E5140E69729CB82 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		64992AA00D0B8F456F9E9216 /* Pods-NavTestV1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavTestV1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NavTestV1/Pods-NavTestV1.debug.xcconfig"; sourceTree = "<group>"; };
 		752EDE20466942A18524B7DB /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		811DDF9B1F7943388B029AFA /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		9606CA06209DB50A00D4DDDD /* NavTestV1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = NavTestV1.entitlements; path = NavTestV1/NavTestV1.entitlements; sourceTree = "<group>"; };
 		9606CA0B209DCD2E00D4DDDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		960B6D461EE41A5E00375E9C /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../node_modules/react-native-webrtc/ios/WebRTC.framework"; sourceTree = "<group>"; };
 		960B6D4B1EE41B7C00375E9C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -482,6 +483,7 @@
 		96337300208364DC0054BD80 /* libQBImagePickerController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libQBImagePickerController.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9633732E208366530054BD80 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9633739F20836B190054BD80 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9635DFD120B49C440056C649 /* Homecast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Homecast.entitlements; path = Homecast/Homecast.entitlements; sourceTree = "<group>"; };
 		963E18572055DF1F006B362B /* libGoogle-Maps-iOS-Utils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libGoogle-Maps-iOS-Utils.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96732CDB20B018CE0059CB94 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		968EDC592055EF5100558289 /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
@@ -524,10 +526,11 @@
 		968EDC7E2055EF5100558289 /* DummyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyView.h; sourceTree = "<group>"; };
 		96A217C54B0E4E139EBA7696 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 		9B1FFEFBB5A94ED4B4572F19 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
-		AC6D524A1730EF3C92FD633E /* libPods-NavTestV1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NavTestV1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC6D524A1730EF3C92FD633E /* libPods-Homecast.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Homecast.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B4F42996F24D3AA44B6AEF /* RCTWebRTC.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWebRTC.xcodeproj; path = "../node_modules/react-native-webrtc/ios/RCTWebRTC.xcodeproj"; sourceTree = "<group>"; };
 		B8794989A76D4653A5F0558B /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		BB47F2E061564E7EA4AE4844 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../app/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		C922010FFD78F9DE8E8ECB85 /* Pods-Homecast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Homecast.release.xcconfig"; path = "Pods/Target Support Files/Pods-Homecast/Pods-Homecast.release.xcconfig"; sourceTree = "<group>"; };
 		CE4B1CF105FB4D64A94D3243 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		D1582EE7752343948E511442 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		D21F163F2B034C70AC8B2C19 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -536,7 +539,6 @@
 		E735AEE4C4E84547AA75EE13 /* libRCTWebRTC.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTWebRTC.a; sourceTree = "<group>"; };
 		EDC5E999B0A34FA8AEDB715E /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		F300FAB1154E4D8AB59B606F /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
-		F75B5572E3C9B5B47AECD7AB /* Pods-NavTestV1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavTestV1.release.xcconfig"; path = "Pods/Target Support Files/Pods-NavTestV1/Pods-NavTestV1.release.xcconfig"; sourceTree = "<group>"; };
 		FE2713632F3648B383BE7252 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -583,9 +585,10 @@
 				A1437458AC3C431DB94E4944 /* libRNInCallManager.a in Frameworks */,
 				1879FA6EE3E84B659B23B02D /* libFastImage.a in Frameworks */,
 				968EDCB02055EF9600558289 /* libAirMaps.a in Frameworks */,
-				2E9CB424C4870C836E515A3E /* libPods-NavTestV1.a in Frameworks */,
+				2E9CB424C4870C836E515A3E /* libPods-Homecast.a in Frameworks */,
 				47DBDC3193AC4D73B32F8974 /* libRNImagePicker.a in Frameworks */,
 				7B7F1DAB015348028D27EA20 /* libRNFirebase.a in Frameworks */,
+				9996A4B41202DC406183C09F /* libPods-Homecast.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,13 +659,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		00E356EF1AD99517003FC87E /* NavTestV1Tests */ = {
+		00E356EF1AD99517003FC87E /* HomecastTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* NavTestV1Tests.m */,
+				00E356F21AD99517003FC87E /* HomecastTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = NavTestV1Tests;
+			path = HomecastTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -693,10 +696,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* NavTestV1 */ = {
+		13B07FAE1A68108700A75B9A /* Homecast */ = {
 			isa = PBXGroup;
 			children = (
-				9606CA06209DB50A00D4DDDD /* NavTestV1.entitlements */,
+				9635DFD120B49C440056C649 /* Homecast.entitlements */,
 				9606CA0B209DCD2E00D4DDDD /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -706,7 +709,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = NavTestV1;
+			name = Homecast;
 			sourceTree = "<group>";
 		};
 		146834001AC3E56700842450 /* Products */ = {
@@ -810,9 +813,9 @@
 			children = (
 				968EDC582055EF5100558289 /* AirGoogleMaps */,
 				960B6D601EE41EC100375E9C /* WebRTC.framework */,
-				13B07FAE1A68108700A75B9A /* NavTestV1 */,
+				13B07FAE1A68108700A75B9A /* Homecast */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* NavTestV1Tests */,
+				00E356EF1AD99517003FC87E /* HomecastTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				960B6D451EE41A5E00375E9C /* Frameworks */,
 				1BE1703EC7FE44CC816DDF61 /* Resources */,
@@ -826,10 +829,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* NavTestV1.app */,
-				00E356EE1AD99517003FC87E /* NavTestV1Tests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* NavTestV1-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* NavTestV1-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Homecast.app */,
+				00E356EE1AD99517003FC87E /* HomecastTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* Homecast-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* Homecast-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -837,8 +840,8 @@
 		8961E683A8D5E175689FC239 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				64992AA00D0B8F456F9E9216 /* Pods-NavTestV1.debug.xcconfig */,
-				F75B5572E3C9B5B47AECD7AB /* Pods-NavTestV1.release.xcconfig */,
+				169A86C9BEFD27612E900C76 /* Pods-Homecast.debug.xcconfig */,
+				C922010FFD78F9DE8E8ECB85 /* Pods-Homecast.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -877,7 +880,8 @@
 				960B6D4D1EE41B8300375E9C /* AudioToolbox.framework */,
 				960B6D4B1EE41B7C00375E9C /* AVFoundation.framework */,
 				960B6D461EE41A5E00375E9C /* WebRTC.framework */,
-				AC6D524A1730EF3C92FD633E /* libPods-NavTestV1.a */,
+				AC6D524A1730EF3C92FD633E /* libPods-Homecast.a */,
+				179779A93E481D103127EF0C /* libPods-Homecast.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -993,9 +997,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* NavTestV1Tests */ = {
+		00E356ED1AD99517003FC87E /* HomecastTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "NavTestV1Tests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "HomecastTests" */;
 			buildPhases = (
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
@@ -1006,14 +1010,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = NavTestV1Tests;
-			productName = NavTestV1Tests;
-			productReference = 00E356EE1AD99517003FC87E /* NavTestV1Tests.xctest */;
+			name = HomecastTests;
+			productName = HomecastTests;
+			productReference = 00E356EE1AD99517003FC87E /* HomecastTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* NavTestV1 */ = {
+		13B07F861A680F5B00A75B9A /* Homecast */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NavTestV1" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Homecast" */;
 			buildPhases = (
 				69763F8E65B115AE04C58921 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -1022,19 +1026,20 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				960B6D641EE41F5000375E9C /* Embed Frameworks */,
 				EF00AB2EBC39D42B22CB91E6 /* [CP] Copy Pods Resources */,
+				9635E01320B6A48A0056C649 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = NavTestV1;
+			name = Homecast;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* NavTestV1.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Homecast.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* NavTestV1-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* Homecast-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "NavTestV1-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Homecast-tvOS" */;
 			buildPhases = (
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -1045,14 +1050,14 @@
 			);
 			dependencies = (
 			);
-			name = "NavTestV1-tvOS";
-			productName = "NavTestV1-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* NavTestV1-tvOS.app */;
+			name = "Homecast-tvOS";
+			productName = "Homecast-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* Homecast-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* NavTestV1-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* Homecast-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "NavTestV1-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Homecast-tvOSTests" */;
 			buildPhases = (
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
@@ -1063,9 +1068,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "NavTestV1-tvOSTests";
-			productName = "NavTestV1-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* NavTestV1-tvOSTests.xctest */;
+			name = "Homecast-tvOSTests";
+			productName = "Homecast-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* Homecast-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1198,10 +1203,10 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* NavTestV1 */,
-				00E356ED1AD99517003FC87E /* NavTestV1Tests */,
-				2D02E47A1E0B4A5D006451C7 /* NavTestV1-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* NavTestV1-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* Homecast */,
+				00E356ED1AD99517003FC87E /* HomecastTests */,
+				2D02E47A1E0B4A5D006451C7 /* Homecast-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* Homecast-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1598,12 +1603,25 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NavTestV1-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Homecast-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		9635E01320B6A48A0056C649 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\n# remove simulator's archs if location is not simulator's directory\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\necho \"No need to remove archs\"\n;;\n*)\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"i386 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"x86_64 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\n;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\ndone";
 		};
 		EF00AB2EBC39D42B22CB91E6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1611,7 +1629,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-NavTestV1/Pods-NavTestV1-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Homecast/Pods-Homecast-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/RSKImageCropper/RSKImageCropper/RSKImageCropperStrings.bundle",
@@ -1626,7 +1644,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NavTestV1/Pods-NavTestV1-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Homecast/Pods-Homecast-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1636,7 +1654,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* NavTestV1Tests.m in Sources */,
+				00E356F31AD99517003FC87E /* HomecastTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1681,7 +1699,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* NavTestV1Tests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* HomecastTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1690,12 +1708,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* NavTestV1 */;
+			target = 13B07F861A680F5B00A75B9A /* Homecast */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* NavTestV1-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* Homecast-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1707,7 +1725,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = NavTestV1;
+			path = Homecast;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1734,7 +1752,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
-				INFOPLIST_FILE = NavTestV1Tests/Info.plist;
+				INFOPLIST_FILE = HomecastTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1747,7 +1765,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NavTestV1.app/NavTestV1";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Homecast.app/Homecast";
 			};
 			name = Debug;
 		};
@@ -1769,7 +1787,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
-				INFOPLIST_FILE = NavTestV1Tests/Info.plist;
+				INFOPLIST_FILE = HomecastTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1782,17 +1800,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NavTestV1.app/NavTestV1";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Homecast.app/Homecast";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64992AA00D0B8F456F9E9216 /* Pods-NavTestV1.debug.xcconfig */;
+			baseConfigurationReference = 169A86C9BEFD27612E900C76 /* Pods-Homecast.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = NavTestV1/NavTestV1.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = Homecast/Homecast.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1818,7 +1836,7 @@
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios\n\n$(SRCROOT)/../node_modules/react-native-splash-screen/ios\n\n$(SRCROOT)/../node_modules/react-native-splash-screen/ios\n\n/**",
 				);
-				INFOPLIST_FILE = NavTestV1/Info.plist;
+				INFOPLIST_FILE = Homecast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
@@ -1839,20 +1857,20 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.homecastapp.homecast;
-				PRODUCT_NAME = NavTestV1;
-				PROVISIONING_PROFILE = "e0eee7a7-5ce8-4f7d-8130-348ad12c4d3e";
-				PROVISIONING_PROFILE_SPECIFIER = Homecast.Prod;
+				PRODUCT_NAME = Homecast;
+				PROVISIONING_PROFILE = "298fd33d-8488-45c3-bfd9-cceb7469331f";
+				PROVISIONING_PROFILE_SPECIFIER = Homecast;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F75B5572E3C9B5B47AECD7AB /* Pods-NavTestV1.release.xcconfig */;
+			baseConfigurationReference = C922010FFD78F9DE8E8ECB85 /* Pods-Homecast.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = NavTestV1/NavTestV1.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = Homecast/Homecast.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1878,7 +1896,7 @@
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
-				INFOPLIST_FILE = NavTestV1/Info.plist;
+				INFOPLIST_FILE = Homecast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
@@ -1894,9 +1912,9 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.homecastapp.homecast;
-				PRODUCT_NAME = NavTestV1;
-				PROVISIONING_PROFILE = "e0eee7a7-5ce8-4f7d-8130-348ad12c4d3e";
-				PROVISIONING_PROFILE_SPECIFIER = Homecast.Prod;
+				PRODUCT_NAME = Homecast;
+				PROVISIONING_PROFILE = "298fd33d-8488-45c3-bfd9-cceb7469331f";
+				PROVISIONING_PROFILE_SPECIFIER = Homecast;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1926,7 +1944,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
-				INFOPLIST_FILE = "NavTestV1-tvOS/Info.plist";
+				INFOPLIST_FILE = "Homecast-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1936,7 +1954,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.NavTestV1-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Homecast-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1969,7 +1987,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
-				INFOPLIST_FILE = "NavTestV1-tvOS/Info.plist";
+				INFOPLIST_FILE = "Homecast-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1979,7 +1997,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.NavTestV1-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Homecast-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1999,16 +2017,16 @@
 				DEVELOPMENT_TEAM = 6YBNL65A3R;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "NavTestV1-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Homecast-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.NavTestV1-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Homecast-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NavTestV1-tvOS.app/NavTestV1-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Homecast-tvOS.app/Homecast-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
@@ -2025,16 +2043,16 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6YBNL65A3R;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "NavTestV1-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Homecast-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.NavTestV1-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Homecast-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NavTestV1-tvOS.app/NavTestV1-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Homecast-tvOS.app/Homecast-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -2125,7 +2143,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "NavTestV1Tests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "HomecastTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -2134,7 +2152,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NavTestV1" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Homecast" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -2143,7 +2161,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "NavTestV1-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Homecast-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -2152,7 +2170,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "NavTestV1-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Homecast-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,

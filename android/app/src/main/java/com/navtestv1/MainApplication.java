@@ -1,4 +1,4 @@
-package com.navtestv1;
+package com.Homecast;
 
 import android.app.Application;
 

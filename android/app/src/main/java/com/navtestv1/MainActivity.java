@@ -1,4 +1,4 @@
-package com.navtestv1;
+package com.Homecast;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "NavTestV1";
+        return "Homecast";
     }
 }

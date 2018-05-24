@@ -62,6 +62,7 @@ class ViewingContainer extends Component{
                 showViewPropertyBtn={this.props.nav.index > 1 ? false : true}
                 getProperty={this.props.getProperty}
                 joinLiveCast={this._joinLiveCast}
+                navigation={this.props.navigation}
             />
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>

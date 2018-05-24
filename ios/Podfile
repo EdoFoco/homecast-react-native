@@ -1,5 +1,5 @@
 platform :ios, '9.0'
-target 'NavTestV1' do
+target 'Homecast' do
   react_native_path = "../node_modules/react-native"
   pod "yoga", :path => "#{react_native_path}/ReactCommon/Yoga"
   pod "React", :path => react_native_path, subspecs: [

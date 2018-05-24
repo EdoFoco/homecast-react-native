@@ -109,6 +109,7 @@ _cancelNotifications(){
                 goToProperty={() => { this._goToProperty() }}
                 showViewPropertyBtn={true}
                 joinLiveCast={() => {this._joinLiveCast()}}
+                navigation={this.props.navigation}
             />
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>

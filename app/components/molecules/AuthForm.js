@@ -164,9 +164,6 @@ class AuthForm extends Component{
   }
 
   render() {
-        if (this.props.isAuthenticating) {
-            return(  <View style={styles.loaderContainer}><Loader /></View>);
-        }
         
         return (
             <View style={styles.container}>

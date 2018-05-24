@@ -8,6 +8,7 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
@@ -31,14 +32,14 @@ export default class ViewingScreen extends Component{
 
 
   _renderCTA(){
-    if(this.props.viewing.isLive){
+    //if(this.props.viewing.isLive){
         return ( 
         <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
             <Text style={styles.ctaText}>
                 Join Live Cast
            </Text>
         </TouchableHighlight>)
-   }
+   //}
     
     if(this.props.reservation){
         return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>
@@ -72,7 +73,10 @@ export default class ViewingScreen extends Component{
   render() {
     return(
         <View style={{backgroundColor: 'white', flex: 1}}>
-              <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', padding: 20 }}>
+              <View style={{backgroundColor: 'white', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingLeft: 10, paddingRight: 10, paddingTop: 20 }}>
+                  <TouchableHighlight style={styles.backButton} onPress={() => {this.props.navigation.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                    <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
+                  </TouchableHighlight>
                   <Text style={styles.availabilityTitle}>Availability</Text>
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
@@ -118,7 +122,8 @@ ViewingScreen.propTypes = {
     createViewingReservation: PropTypes.func.isRequired,
     goToProperty: PropTypes.func.isRequired,
     showViewPropertyBtn: PropTypes.bool.isRequired,
-    joinLiveCast: PropTypes.func.isRequired
+    joinLiveCast: PropTypes.func.isRequired,
+    navigation: PropTypes.object.isRequired
 }
 
 
@@ -189,15 +194,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   availabilityTitle:{
+    flex: 0.3,
     textAlign: 'left',
     color: Colors.AQUA_GREEN,
     fontSize: FontSizes.DEFAULT,
+    paddingBottom: 5
   },
   availabilityValue: {
     fontSize: FontSizes.DEFAULT,
     flex: 0.6,
     textAlign: 'right',
-    color: 'white',
+    color: Colors.AQUA_GREEN,
+    paddingBottom: 5
   },
   secureSpotBtn: {
     alignSelf: 'flex-end',
@@ -295,5 +303,13 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 90,
     padding: 20,
+  },
+  backButton: {
+    flex: 0.1,
+    alignSelf: 'center'
+  },
+  backButtonIcon: {
+    fontSize: 45,
+    color: Colors.AQUA_GREEN,
   }
 });

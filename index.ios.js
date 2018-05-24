@@ -105,6 +105,6 @@ class ReduxExampleApp extends React.Component {
   }
 }
 
-AppRegistry.registerComponent('NavTestV1', () => ReduxExampleApp);
+AppRegistry.registerComponent('Homecast', () => ReduxExampleApp);
 
 export default ReduxExampleApp;

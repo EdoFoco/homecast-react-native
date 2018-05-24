@@ -102,6 +102,7 @@ _cancelNotifications(){
                 createViewingReservation={(userId, viewingId) => {this._reserveSpot(userId, viewingId)} }
                 goToProperty={() => { this._goToProperty() }}
                 showViewPropertyBtn={true}
+                navigation={this.props.navigation}
               />
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>
