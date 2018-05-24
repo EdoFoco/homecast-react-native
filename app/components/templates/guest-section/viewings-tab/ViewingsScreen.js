@@ -101,6 +101,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ViewingsScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 30,
     justifyContent: 'center',
     backgroundColor: 'white',
   },

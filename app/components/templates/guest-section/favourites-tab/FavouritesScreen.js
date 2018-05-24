@@ -97,6 +97,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(FavouritesScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 30,
     justifyContent: 'center',
     backgroundColor: 'white',
   }

@@ -98,8 +98,6 @@ class PropertiesScreen extends Component{
     return (
       <View style={styles.container}>
          <View style={this.state.isSearching && this.props.location.suggestions.length > 0 ? styles.menuWrapperActive : styles.menuWrapper}>
-          <View style={styles.menuTitleContainer}>
-          </View>
           <View style={styles.autocompleteContainer}>
             <FastImage style={styles.logo} source={require('../../../../img/homecast_logo_color_6.png')} resizeMode={FastImage.resizeMode.cover}/>
             <Autocomplete
@@ -187,11 +185,11 @@ const styles = StyleSheet.create({
   },
   menuWrapperActive: {
     backgroundColor: 'white',
-    paddingTop: 20,
+    paddingTop: 30,
     alignItems: 'center',
     paddingBottom: 10,
     flex: 1,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   menuTitleContainer: {
     flexDirection: 'row',
@@ -222,10 +220,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   locationSuggestionsContainer: {
-    flex: 0.8,
+    flex: 1,
     alignSelf: 'stretch',
-    marginRight: 30,
-    marginLeft: 30
+    marginRight: 20,
+    marginLeft: 20,
   },
   filterIcon: {
     color: Colors.AQUA_GREEN,

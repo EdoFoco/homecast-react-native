@@ -108,6 +108,7 @@ _cancelNotifications(){
                 createViewingReservation={(userId, viewingId) => {this._reserveSpot(userId, viewingId)} }
                 goToProperty={() => { this._goToProperty() }}
                 showViewPropertyBtn={true}
+                getProperty={this.props.getProperty}
                 joinLiveCast={() => {this._joinLiveCast()}}
                 navigation={this.props.navigation}
             />

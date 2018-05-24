@@ -49,7 +49,6 @@
 		7B7F1DAB015348028D27EA20 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A217C54B0E4E139EBA7696 /* libRNFirebase.a */; };
 		830A03E0A55C4255925C72C4 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6036ED734E0D4098800C312A /* Zocial.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		9606CA0C209DCD2E00D4DDDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9606CA0B209DCD2E00D4DDDD /* GoogleService-Info.plist */; };
 		960B6D4C1EE41B7C00375E9C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D4B1EE41B7C00375E9C /* AVFoundation.framework */; };
 		960B6D4E1EE41B8300375E9C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D4D1EE41B8300375E9C /* AudioToolbox.framework */; };
 		960B6D501EE41B8A00375E9C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D4F1EE41B8A00375E9C /* CoreGraphics.framework */; };
@@ -65,6 +64,7 @@
 		960B6D621EE41F4F00375E9C /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D601EE41EC100375E9C /* WebRTC.framework */; };
 		960B6D631EE41F4F00375E9C /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D601EE41EC100375E9C /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		96732CE120B018EA0059CB94 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96732CE020B018CE0059CB94 /* libSplashScreen.a */; };
+		96847E3D20B75DCC007DA0F1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 96847E1120B75DCC007DA0F1 /* GoogleService-Info.plist */; };
 		968EDC9D2055EF5200558289 /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 968EDC5A2055EF5100558289 /* AIRGoogleMapUrlTile.m */; };
 		968EDC9E2055EF5200558289 /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 968EDC5D2055EF5100558289 /* AIRGoogleMapPolygonManager.m */; };
 		968EDC9F2055EF5200558289 /* AIRGoogleMapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 968EDC602055EF5100558289 /* AIRGoogleMapMarker.m */; };
@@ -467,7 +467,6 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		811DDF9B1F7943388B029AFA /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		9606CA0B209DCD2E00D4DDDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		960B6D461EE41A5E00375E9C /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../node_modules/react-native-webrtc/ios/WebRTC.framework"; sourceTree = "<group>"; };
 		960B6D4B1EE41B7C00375E9C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		960B6D4D1EE41B8300375E9C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -486,6 +485,7 @@
 		9635DFD120B49C440056C649 /* Homecast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Homecast.entitlements; path = Homecast/Homecast.entitlements; sourceTree = "<group>"; };
 		963E18572055DF1F006B362B /* libGoogle-Maps-iOS-Utils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libGoogle-Maps-iOS-Utils.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96732CDB20B018CE0059CB94 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
+		96847E1120B75DCC007DA0F1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		968EDC592055EF5100558289 /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
 		968EDC5A2055EF5100558289 /* AIRGoogleMapUrlTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapUrlTile.m; sourceTree = "<group>"; };
 		968EDC5B2055EF5100558289 /* AIRGoogleMapMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarkerManager.h; sourceTree = "<group>"; };
@@ -700,7 +700,7 @@
 			isa = PBXGroup;
 			children = (
 				9635DFD120B49C440056C649 /* Homecast.entitlements */,
-				9606CA0B209DCD2E00D4DDDD /* GoogleService-Info.plist */,
+				96847E1120B75DCC007DA0F1 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1527,9 +1527,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9606CA0C209DCD2E00D4DDDD /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				96847E3D20B75DCC007DA0F1 /* GoogleService-Info.plist in Resources */,
 				D5877CF2C20041F9BFA73BB7 /* Entypo.ttf in Resources */,
 				688CC3D393A84DB9A7203D5F /* EvilIcons.ttf in Resources */,
 				53699187BD9446E9AD3A22F4 /* FontAwesome.ttf in Resources */,

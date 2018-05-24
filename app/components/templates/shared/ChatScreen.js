@@ -79,7 +79,7 @@ export default class ChatScreen extends Component{
         var message = item.item;
 
         return(
-            <View style={this.props.user.info.id == message.sender.id ? styles.messageLeft : styles.messageRight}>
+            <View style={this.props.user.info.id == message.sender.id ? styles.messageRight : styles.messageLeft}>
                 <View style={this.props.user.info.id == message.sender.id ? styles.blueMessage : styles.grayMessage}>
                     <Text style={styles.text} overflow="hidden">{message.body}</Text>
                 </View>
@@ -142,7 +142,6 @@ ChatScreen.propTypes ={
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignSelf: 'flex-start',
     },
     messagesList: {
         flex: 0.9
@@ -164,13 +163,13 @@ const styles = StyleSheet.create({
     blueMessage: {
         backgroundColor: Colors.LIGHT_BLUE,
         borderRadius: 15,
-        marginRight: 60,
+        marginLeft: 60,
         alignItems: 'flex-start',
     },
     grayMessage: {
         backgroundColor: Colors.VERY_LIGHT_GRAY,
         borderRadius: 15,
-        marginLeft: 60,
+        marginRight: 60,
     },
     text: {
         color: 'white',

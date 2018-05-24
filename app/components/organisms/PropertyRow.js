@@ -60,7 +60,7 @@ export default class PropertyRow extends Component{
                 }
             <TouchableHighlight style={{flex:1}} onPress={() => this.props.onPress(this.props.property)}>
                 <View tyle={{flex:1, flexDirection: 'column'}} >
-                    <FastImage source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/>
+                    {/* <FastImage source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/> */}
     
                     <View style={styles.propertyDescriptionWrapper}>
                         <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
       //  top: 150,
         position: 'absolute',
         right: 0,
-        bottom: 10,
+        top: 0,
         fontSize: FontSizes.MEDIUM_BIG,
         fontWeight: 'bold',
         lineHeight: 35,

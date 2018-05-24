@@ -32,14 +32,15 @@ export default class ViewingScreen extends Component{
 
 
   _renderCTA(){
-    //if(this.props.viewing.isLive){
+    var date = new Date(`${this.props.viewing.date_time}`);
+    if(date < new Date()){
         return ( 
         <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
             <Text style={styles.ctaText}>
                 Join Live Cast
            </Text>
         </TouchableHighlight>)
-   //}
+   }
     
     if(this.props.reservation){
         return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>
@@ -72,8 +73,8 @@ export default class ViewingScreen extends Component{
 
   render() {
     return(
-        <View style={{backgroundColor: 'white', flex: 1}}>
-              <View style={{backgroundColor: 'white', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingLeft: 10, paddingRight: 10, paddingTop: 20 }}>
+        <View style={{flex: 1}}>
+              <View style={{backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20 }}>
                   <TouchableHighlight style={styles.backButton} onPress={() => {this.props.navigation.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
                     <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
                   </TouchableHighlight>
@@ -84,7 +85,7 @@ export default class ViewingScreen extends Component{
                 refreshing={this.state.isRefreshing}
                 onRefresh={() => {this._refresh()}}
               />} >>
-                <FastImage style={styles.propertyImage} source={{url: this.props.property.thumbnail}} />
+                <FastImage style={styles.propertyImage} source={{url: this.props.property.images[0].url}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
