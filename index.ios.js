@@ -16,7 +16,7 @@ import firebase, { RemoteMessage, NotificationOpen } from 'react-native-firebase
 import * as chatActions from './app/actions/Chat';
 import * as errorHandlerActions from './app/actions/ErrorHandler';
 import { AsyncStorage } from 'react-native';
-
+import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 import reduxCatch from 'redux-catch';
 import {
   createReduxBoundAddListener,
@@ -35,6 +35,36 @@ const persistConfig = {
   storage: storage,
   blacklist: ['webrtc', 'network', 'location']
 };
+
+const errorHandler = (e, isFatal) => {
+  if (isFatal) {
+    Alert.alert(
+        'Unexpected error occurred',
+        `
+        Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}
+        We have reported this to our team ! Please close the app and start again!
+        `,
+      [{
+        text: 'Close'
+      }]
+    );
+    AsyncStorage.getAllKeys()
+    .then((keys) => {
+      AsyncStorage.multiRemove(keys);
+    })
+    .catch((e) => {
+      console.debug(e);
+    });
+  } else {
+    console.log(e); // So that we can see it in the ADB logs in case of Android if needed
+  }
+};
+
+setJSExceptionHandler(errorHandler, true);
+
+setNativeExceptionHandler((errorString) => {
+    console.log('setNativeExceptionHandler');
+});
 
 class ReduxExampleApp extends React.Component {
   
