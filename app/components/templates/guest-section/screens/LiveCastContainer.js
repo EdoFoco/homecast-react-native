@@ -13,7 +13,7 @@ import {
   View,
  } from 'react-native';
 
-class OtherScreen extends Component{
+class LiveCastContainer extends Component{
 
   componentWillMount(){
     this.props.getViewing(this.props.navigation.state.params.viewing.id)
@@ -64,7 +64,7 @@ class OtherScreen extends Component{
   
 }
 
-OtherScreen.navigationOptions = ({ navigation }) => ({
+LiveCastContainer.navigationOptions = ({ navigation }) => ({
     header: null
 });
 
@@ -83,7 +83,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OtherScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LiveCastContainer);
 
 const styles = StyleSheet.create({
   container: {

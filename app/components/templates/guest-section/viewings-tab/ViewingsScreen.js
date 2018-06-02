@@ -9,6 +9,7 @@ import DateCell from '../../shared/DateCell';
 import ViewingRow from '../../shared/ViewingRow';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import FastImage from 'react-native-fast-image';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
@@ -28,7 +29,8 @@ class ViewingsScreen extends Component{
   }
 
   _goToViewing(viewing){
-    this.props.navigation.navigate('Viewing', { viewingId : viewing.id, property: viewing.property });
+    this.props.goToGuestViewingsScreen(viewing);
+    this.props.navigation.navigate('ViewingsStack');
   }
 
   _toDateString(date){
@@ -79,7 +81,10 @@ class ViewingsScreen extends Component{
 }
 
 ViewingsScreen.navigationOptions = {
-  title: 'Upcoming Viewings',
+  tabBarLabel: 'Viewings',
+  tabBarIcon: ({ tintColor }) => (
+      <Icon name="calendar-clock"  size={24} color={tintColor} style={{height: 24, width: 24}} />
+    ),
 };
 
 

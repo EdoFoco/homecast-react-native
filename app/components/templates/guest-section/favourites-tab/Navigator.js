@@ -1,21 +1,19 @@
 import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import FavouritesScreen from './FavouritesScreen';
-import PropertyContainer from './PropertyContainer';
-import ViewingContainer from './ViewingContainer';
+import PropertyContainer from '../screens/PropertyContainer';
+import ViewingContainer from '../screens/ViewingContainer';
 import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-    FavouritesHome: { screen: FavouritesScreen },
     PropertyScreen: { screen: PropertyContainer },
-    FavouritesViewingScreen: { screen: ViewingContainer }
+    PropertyViewings: { screen: ViewingContainer }
 }
 
 const stackConfiguration = {
-  initialRoute: 'FavouritesHome',
+  initialRoute: 'PropertyScreen',
   gesturesEnabled: false,
   navigationOptions: {
     header: null
@@ -26,13 +24,6 @@ export const GuestFavouritesNavigator = StackNavigator(routeConfiguration, stack
 
 class GuestFavouritesTab extends React.Component {
     
-    static navigationOptions = {
-        tabBarLabel: 'Favourites',
-        tabBarIcon: ({ tintColor }) => (
-            <Icon name="heart"  size={24} color={tintColor} style={{height: 24, width: 24}}/>
-        )
-    }
-
     render(){
         const { navigationState, dispatch } = this.props;
         const addListener = createReduxBoundAddListener("root");

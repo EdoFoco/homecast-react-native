@@ -6,6 +6,7 @@ import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
   StyleSheet,
@@ -16,7 +17,8 @@ import {
 class FavouritesScreen extends Component{
 
   _onPress(property){
-      this.props.navigation.navigate('PropertyScreen', { property : property});
+    this.props.goToGuestFavouritesPropertyScreen(property);
+    this.props.navigation.navigate('FavouritesStack');
   }
 
   _addToFavourites(userId, propertyId){
@@ -72,6 +74,10 @@ class FavouritesScreen extends Component{
 
 FavouritesScreen.navigationOptions = {
   title: 'Favourites',
+  tabBarLabel: 'Favourites',
+  tabBarIcon: ({ tintColor }) => (
+      <Icon name="heart"  size={24} color={tintColor} style={{height: 24, width: 24}}/>
+  )
 };
 
 const mapStateToProps = (state) => {

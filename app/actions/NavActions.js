@@ -18,13 +18,6 @@ export function goToPropertiesHome(){
     }
 }
 
-export function goToGuestPropertyScreen(property){
-    return {
-        type: types.PROPERTIES_TAB_GO_TO_PROPERTY,
-        property: property
-    }
-}
-
 export function goToPropertiesTabViewingsScreen(property, viewingId){
     return {
         type: types.GO_TO_PROPERTIES_TAB_VIEWING,
@@ -62,5 +55,28 @@ export function goToChat(chat){
 export function returnToGuestTabBar(){
     return {
         type: types.RETURN_TO_GUEST_TAB_BAR
+    }
+}
+
+
+//New
+export function goToGuestPropertyScreen(property){
+    return {
+        type: types.PROPERTIES_TAB_GO_TO_PROPERTY,
+        property: property
+    }
+}
+
+export function goToGuestFavouritesPropertyScreen(property){
+    return {
+        type: types.FAVOURITES_TAB_GO_TO_PROPERTY,
+        property: property
+    }
+}
+
+export function goToGuestViewingsScreen(viewing){
+    return {
+        type: types.VIEWINGS_TAB_GO_TO_VIEWING,
+        viewing: viewing
     }
 }

@@ -4,6 +4,9 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import * as Colors from '../../components/helpers/ColorPallette';
 import GuestTabBar from './GuestTabBarNavigator';
 import PropertiesNavigator  from '../../components/templates/guest-section/properties-tab/Navigator';
+import FavouritesNavigator  from '../../components/templates/guest-section/favourites-tab/Navigator';
+import GuestViewingsNavigator  from '../../components/templates/guest-section/viewings-tab/Navigator';
+import GuestChatsNavigator  from '../../components/templates/guest-section/chats-tab/Navigator';
 import NetworkErrorMessage from '../../components/templates/shared/NetworkErrorMessage';
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
@@ -13,6 +16,15 @@ const routeConfiguration = {
   },
   PropertyStack: {
     screen: PropertiesNavigator
+  },
+  FavouritesStack: {
+    screen: FavouritesNavigator
+  },
+  ViewingsStack: {
+    screen: GuestViewingsNavigator
+  },
+  ChatsStack: {
+    screen: GuestChatsNavigator
   }
 }
 

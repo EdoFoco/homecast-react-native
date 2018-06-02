@@ -1,21 +1,18 @@
 import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ViewingsScreen from './ViewingsScreen';
-import ViewingContainer from './ViewingContainer';
-import PropertyContainer from './PropertyContainer';
+import ViewingContainer from '../screens/ViewingContainer';
+import PropertyContainer from '../screens/PropertyContainer';
 import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-    ViewingsHome: { screen: ViewingsScreen },
-    Viewing: { screen: ViewingContainer },
-    ViewingProperty: { screen: PropertyContainer}
+    ViewingScreen: { screen: ViewingContainer },
+    PropertyViewings: { screen: ViewingContainer }
 }
 
 const stackConfiguration = {
-  initialRoute: 'ViewingsHome',
+  initialRoute: 'ViewingScreen',
   navigationOptions: {
     header: null
   }
@@ -25,14 +22,6 @@ export const GuestViewingsNavigator = StackNavigator(routeConfiguration, stackCo
 
 class GuestViewingsTab extends React.Component {
     
-    static navigationOptions = {
-        tabBarLabel: 'Viewings',
-        tabBarIcon: ({ tintColor }) => (
-            <Icon name="calendar-clock"  size={24} color={tintColor} style={{height: 24, width: 24}} />
-          ),
-        showIcon: true
-    }
-
     render(){
         const { navigationState, dispatch } = this.props;
         const addListener = createReduxBoundAddListener("root");

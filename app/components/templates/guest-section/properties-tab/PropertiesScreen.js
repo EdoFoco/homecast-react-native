@@ -13,9 +13,10 @@ import Autocomplete from '../../shared/Autocomplete';
 import LocationSuggestions from '../../shared/LocationSuggestions';
 import FiltersModal from '../../shared/FiltersModal';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class PropertiesScreen extends Component{
-
+  
   constructor(props){
     super(props);
     this.state = {
@@ -32,7 +33,7 @@ class PropertiesScreen extends Component{
 
   _onPress(property){
       this.props.goToGuestPropertyScreen(property);
-      this.props.navigation.navigate('PropertyStack', { property : property});
+      this.props.navigation.navigate('PropertyStack');
   }
 
   _addToFavourites(userId, propertyId){
@@ -146,8 +147,13 @@ class PropertiesScreen extends Component{
   
 }
 
+
 PropertiesScreen.navigationOptions = {
   title: 'Properties',
+  tabBarLabel: null,
+  tabBarIcon: ({ tintColor }) => (
+      <Icon name="home" size={24} color={tintColor} style={{height: 24, width: 24}} />
+    )
 };
 
 const mapStateToProps = (state) => {

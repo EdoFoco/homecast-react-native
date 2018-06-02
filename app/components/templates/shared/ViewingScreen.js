@@ -43,7 +43,7 @@ export default class ViewingScreen extends Component{
    }
     
     if(this.props.reservation){
-        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id, this.props.navigation)}}>
+        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id)}}>
             <Text style={styles.ctaText}>Cancel Reservation </Text>
         </TouchableHighlight>)
     }
@@ -75,7 +75,7 @@ export default class ViewingScreen extends Component{
     return(
         <View style={{flex: 1}}>
               <View style={{backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20 }}>
-                  <TouchableHighlight style={styles.backButton} onPress={() => {this.props.navigation.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                  <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
                     <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
                   </TouchableHighlight>
                   <Text style={styles.availabilityTitle}>Availability</Text>
@@ -123,8 +123,7 @@ ViewingScreen.propTypes = {
     createViewingReservation: PropTypes.func.isRequired,
     goToProperty: PropTypes.func.isRequired,
     showViewPropertyBtn: PropTypes.bool.isRequired,
-    joinLiveCast: PropTypes.func.isRequired,
-    navigation: PropTypes.object.isRequired
+    joinLiveCast: PropTypes.func.isRequired
 }
 
 

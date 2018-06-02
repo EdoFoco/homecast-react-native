@@ -6,17 +6,23 @@ import { NavigationActions } from 'react-navigation';
 import Property from '../../shared/Property';
 import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
 
 class PropertyContainer extends Component{
 
   componentWillMount(){
+   
     this.props.updateCurrentProperty(this.props.currentProperty);
+    
+    this.props.getViewingReservations(this.props.user.info.id)
+    .catch((error) => {
+      console.error(error);
+    })
   }
 
   _goToViewing(viewingId){
-      this.props.navigation.navigate('Viewing', { viewingId: viewingId, property: this.props.currentProperty});
+      this.props.navigation.navigate('PropertyViewings', { viewingId: viewingId, property: this.props.currentProperty});
     }
   
   render() {
@@ -28,12 +34,11 @@ class PropertyContainer extends Component{
             propertyScreen={this.props.propertyScreen}
             goToViewing={(viewingId) => { return this._goToViewing(viewingId)}}
             updatePropertyActiveTab={(index) => { return this.props.updatePropertyActiveTab(index)}}
-            goBack={() => {this.props.navigation.goBack()}}
+            goBack={() => {this.props.returnToGuestTabBar()}}
             getProperty={this.props.getProperty}
           />
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>
-        
     )
   }
 }

@@ -2,12 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import * as Colors from '../../components/helpers/ColorPallette';
-import FavouritesNavigator  from '../../components/templates/guest-section/favourites-tab/Navigator';
-import PropertiesNavigator  from '../../components/templates/guest-section/properties-tab/Navigator';
 import PropertiesScreen from '../../components/templates/guest-section/properties-tab/PropertiesScreen';
-import GuestViewingsTab from '../../components/templates/guest-section/viewings-tab/Navigator';
+import FavouritesScreen from '../../components/templates/guest-section/favourites-tab/FavouritesScreen';
+import ViewingsScreen from '../../components/templates/guest-section/viewings-tab/ViewingsScreen';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
-import GuestChatsTab from '../../components/templates/guest-section/chats-tab/Navigator';
+import ChatsContainer from '../components/templates/guest-section/chats-tab/ChatsContainer';
 import NetworkErrorMessage from '../../components/templates/shared/NetworkErrorMessage';
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
@@ -16,13 +15,13 @@ const routeConfiguration = {
     screen: PropertiesScreen
   },
   FavouritesTab: {
-    screen: FavouritesNavigator
+    screen: FavouritesScreen
   },
   ChatsTab: {
-    screen: GuestChatsTab
+    screen: ChatsContainer
   },
   ViewingsTab: {
-    screen: GuestViewingsTab
+    screen: ViewingsScreen
   },
   Options: {
     screen: OptionsTab

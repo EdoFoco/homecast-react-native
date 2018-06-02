@@ -10,32 +10,22 @@ import firebase from 'react-native-firebase';
 
 class ViewingContainer extends Component{
 
-_reserveSpot(userId, viewingId){
+  componentWillMount(){
+      this.props.getViewingReservations(this.props.user.info.id);
+  }
+
+ _reserveSpot(userId, viewingId){
     return this.props.createViewingReservation(userId, viewingId)
     .then(() => {
         return this.props.getProperty(this.props.property.id);
     })
     .then(() => {
-        this._setNotifications();
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-}
-    
- _cancelViewingReservation(userId, reservationId, navigation){
-    return this.props.cancelViewingReservation(userId, reservationId)
-    .then(() => {
-        return this.props.getProperty(this.props.property.id);
-    })
-    .then(() => {
-        this._cancelNotifications();
+        return this._setNotifications();
     })
     .catch((error) => {
         console.error(error);
     });
  }
-  
 
 _setNotifications(){
     // Build notification
@@ -79,7 +69,19 @@ _cancelNotifications(){
     firebase.notifications().cancelNotification(`Viewing-${this.props.viewing.id}-15min`);
 }
 
-
+ _cancelViewingReservation(userId, reservationId){
+    return this.props.cancelViewingReservation(userId, reservationId)
+    .then(() => {
+        return this.props.getProperty(this.props.property.id);
+    })
+    .then(() => {
+        this._cancelNotifications();
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+ }
+  
   _goToProperty(){
     return this.props.getProperty(this.props.property.id)
     .then((property) => {
@@ -90,10 +92,14 @@ _cancelNotifications(){
     });
   }
 
+  _joinLiveCast(){
+    this.props.navigation.navigate('LiveCast', { viewing: this.props.viewing});
+  }
+
   render() {
     return(
         <View style={styles.container}>
-             <ViewingScreen 
+            <ViewingScreen 
                 viewing={this.props.viewing}
                 property={this.props.property}
                 reservation={this.props.reservation}
@@ -102,27 +108,31 @@ _cancelNotifications(){
                 createViewingReservation={(userId, viewingId) => {this._reserveSpot(userId, viewingId)} }
                 goToProperty={() => { this._goToProperty() }}
                 showViewPropertyBtn={true}
+                getProperty={this.props.getProperty}
+                joinLiveCast={() => {this._joinLiveCast()}}
                 navigation={this.props.navigation}
-              />
+                goBack={() => {this.props.returnToGuestTabBar()}}
+            />
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>
-      
+       
     )
   }
 }
 
 
-ViewingContainer.navigationOptions = ({ navigation }) => ({
-    title: `Viewing - ${navigation.state.params.property.name}`,
-});
+ViewingContainer.navigationOptions = function({navigation}) {
+    console.log(navigation);
+    return { title: `Viewing - ${navigation.state.params.viewing.property.name}` }
+};
 
 
 const mapStateToProps = (state, {navigation}) => {
-    let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.property.id);
+    let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.viewing.property.id);
     return {
         property: property,
-        viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
-        reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewingId),
+        viewing: property.viewings.find(v => v.id === navigation.state.params.viewing.id),
+        reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewing.id),
         user: state.user,
         network: state.network
     }

@@ -2,14 +2,12 @@ import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ChatsContainer from './ChatsContainer';
-import ChatContainer from './ChatContainer';
+import ChatContainer from '../screens/ChatContainer';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-    ChatsHome: { screen: ChatsContainer },
     Chat: { screen: ChatContainer }
 }
 
