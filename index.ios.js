@@ -33,7 +33,7 @@ const addListener = createReduxBoundAddListener("root");
 const persistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['webrtc', 'network', 'location']
+  blacklist: ['webrtc', 'network', 'location', 'guestRootNav', 'guestTabBar']
 };
 
 const errorHandler = (e, isFatal) => {

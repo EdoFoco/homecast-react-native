@@ -12,6 +12,8 @@ import { LandlordPropertiesNavigator } from '../components/templates/landlord-se
 
 import { guestViewingsNav  } from './NavReducer';
 import { guestTabBar }from './NavReducer';
+import { guestRootNav }from './NavReducer';
+
 import { guestPropertiesNav }from './NavReducer';
 import { favouritesNav }from './NavReducer';
 import { chatsNav }from './NavReducer';
@@ -35,6 +37,7 @@ const AppReducer = combineReducers({
 
   //Guest Navigators
   guestTabBar,
+  //guestRootNav,
   guestPropertiesNav,
   guestFavouritesNav: favouritesNav,
   guestViewingsNav,

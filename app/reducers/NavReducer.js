@@ -1,4 +1,6 @@
 import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
+import { GuestRootNavigator } from '../navigators/guest-section/GuestRootNavigator';
+
 import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
 import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
 import { GuestChatsNavigator } from '../components/templates/guest-section/chats-tab/Navigator';
@@ -9,6 +11,7 @@ import { NavigationActions } from 'react-navigation';
 import * as types from '../actions/Types';
 
 const initalGuestTabNavigatorState = GuestTabBarNavigator.router.getStateForAction(GuestTabBarNavigator.router.getActionForPathAndParams('PropertiesTab'));
+//const initialGuestRootNavigatorState = GuestRootNavigator.router.getStateForAction(GuestRootNavigator.router.getActionForPathAndParams('TabBar'));
 const initialLandlordTabNavigatorState = LandlordTabBarNavigator.router.getStateForAction(LandlordTabBarNavigator.router.getActionForPathAndParams('PropertiesTab'));
 const initialViewingsNavigatorState = GuestViewingsNavigator.router.getStateForAction(GuestViewingsNavigator.router.getActionForPathAndParams('ViewingsHome'));
 const initalGuestPropertiesState =  GuestPropertiesNavigator.router.getStateForAction(GuestPropertiesNavigator.router.getActionForPathAndParams('PropertiesHome'));
@@ -34,6 +37,15 @@ export const guestTabBar = (state = initalGuestTabNavigatorState, action) => {
       return nextState || state;
   }
 };
+
+// export const guestRootNav = (state = initialGuestRootNavigatorState, action) => {
+//   const nextState = GuestRootNavigator.router.getStateForAction(action, state);
+
+//   switch(action.type){
+//     default:
+//       return nextState || state;
+//   }
+// };
 
 export const landlordTabBar = (state = initialLandlordTabNavigatorState, action) => {
   const nextState = LandlordTabBarNavigator.router.getStateForAction(action, state);

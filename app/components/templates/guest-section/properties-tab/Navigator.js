@@ -10,17 +10,17 @@ import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-    PropertiesHome: { screen: PropertiesScreen },
     LiveCast: { screen: OtherScreen },
     PropertiesPropertyScreen: { screen: PropertyContainer },
     PropertiesViewing: { screen: ViewingContainer }
 }
 
 const stackConfiguration = {
-  initialRoute: 'PropertiesHome',
+  initialRoute: 'PropertiesPropertyScreen',
   navigationOptions: {
-    header: null
-  }
+    header: null,
+  },
+  mode: 'modal'
 }
 
 export const GuestPropertiesNavigator = StackNavigator(routeConfiguration, stackConfiguration);
