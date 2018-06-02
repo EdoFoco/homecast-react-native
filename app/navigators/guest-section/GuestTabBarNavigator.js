@@ -4,6 +4,7 @@ import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import * as Colors from '../../components/helpers/ColorPallette';
 import FavouritesNavigator  from '../../components/templates/guest-section/favourites-tab/Navigator';
 import PropertiesNavigator  from '../../components/templates/guest-section/properties-tab/Navigator';
+import PropertiesScreen from '../../components/templates/guest-section/properties-tab/PropertiesScreen';
 import GuestViewingsTab from '../../components/templates/guest-section/viewings-tab/Navigator';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 import GuestChatsTab from '../../components/templates/guest-section/chats-tab/Navigator';
@@ -12,7 +13,7 @@ import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
   PropertiesTab: { 
-    screen: PropertiesNavigator
+    screen: PropertiesScreen
   },
   FavouritesTab: {
     screen: FavouritesNavigator

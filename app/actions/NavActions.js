@@ -18,6 +18,12 @@ export function goToPropertiesHome(){
     }
 }
 
+export function goToGuestPropertyScreen(property){
+    return {
+        type: types.PROPERTIES_TAB_GO_TO_PROPERTY,
+        property: property
+    }
+}
 
 export function goToPropertiesTabViewingsScreen(property, viewingId){
     return {
@@ -50,5 +56,11 @@ export function goToChat(chat){
     return {
         type: types.GO_TO_CHAT,
         chat: chat
+    }
+}
+
+export function returnToGuestTabBar(){
+    return {
+        type: types.RETURN_TO_GUEST_TAB_BAR
     }
 }

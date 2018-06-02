@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import  GuestTabBar  from '../../navigators/guest-section/GuestTabBarNavigator';
+//import  GuestTabBar  from '../../navigators/guest-section/GuestTabBarNavigator';
+import GuestRootNav from '../../navigators/guest-section/GuestRootNavigator';
 import  LandlordTabBar  from '../../navigators/landlord-section/LandlordTabBarNavigator';
 import NetworkErrorMessage from '../templates/shared/NetworkErrorMessage';
 import { connect } from 'react-redux';
@@ -58,7 +59,7 @@ class MainScreen extends Component {
     if(this.props.isLoggedIn && this.state.isReady){
       if(this.props.section.sectionName === 'guest'){
         return(
-            <GuestTabBar addListener={this.props.addListener} />
+            <GuestRootNav addListener={this.props.addListener} />
         )
       }
       if(this.props.section.sectionName === 'landlord'){

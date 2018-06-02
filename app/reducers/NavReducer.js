@@ -11,10 +11,10 @@ import { NavigationActions } from 'react-navigation';
 import * as types from '../actions/Types';
 
 const initalGuestTabNavigatorState = GuestTabBarNavigator.router.getStateForAction(GuestTabBarNavigator.router.getActionForPathAndParams('PropertiesTab'));
-//const initialGuestRootNavigatorState = GuestRootNavigator.router.getStateForAction(GuestRootNavigator.router.getActionForPathAndParams('TabBar'));
+const initialGuestRootNavigatorState = GuestRootNavigator.router.getStateForAction(GuestRootNavigator.router.getActionForPathAndParams('TabBar'));
 const initialLandlordTabNavigatorState = LandlordTabBarNavigator.router.getStateForAction(LandlordTabBarNavigator.router.getActionForPathAndParams('PropertiesTab'));
 const initialViewingsNavigatorState = GuestViewingsNavigator.router.getStateForAction(GuestViewingsNavigator.router.getActionForPathAndParams('ViewingsHome'));
-const initalGuestPropertiesState =  GuestPropertiesNavigator.router.getStateForAction(GuestPropertiesNavigator.router.getActionForPathAndParams('PropertiesHome'));
+const initalGuestPropertiesState =  GuestPropertiesNavigator.router.getStateForAction(GuestPropertiesNavigator.router.getActionForPathAndParams('PropertiesPropertyScreen'));
 const initialChatsState =  GuestChatsNavigator.router.getStateForAction(GuestChatsNavigator.router.getActionForPathAndParams('ChatsHome'));
 const initialFavouritesState =  GuestFavouritesNavigator.router.getStateForAction(GuestFavouritesNavigator.router.getActionForPathAndParams('FavouritesHome'));
 const intitialLandlordPropertiesState = LandlordPropertiesNavigator.router.getStateForAction(LandlordPropertiesNavigator.router.getActionForPathAndParams('PropertiesHome'));
@@ -38,14 +38,18 @@ export const guestTabBar = (state = initalGuestTabNavigatorState, action) => {
   }
 };
 
-// export const guestRootNav = (state = initialGuestRootNavigatorState, action) => {
-//   const nextState = GuestRootNavigator.router.getStateForAction(action, state);
+export const guestRootNav = (state = initialGuestRootNavigatorState, action) => {
+  const nextState = GuestRootNavigator.router.getStateForAction(action, state);
 
-//   switch(action.type){
-//     default:
-//       return nextState || state;
-//   }
-// };
+  switch(action.type){
+    case types.RETURN_TO_GUEST_TAB_BAR:
+      return GuestRootNavigator.router.getStateForAction(
+        NavigationActions.back()
+      );
+    default:
+      return nextState || state;
+  }
+};
 
 export const landlordTabBar = (state = initialLandlordTabNavigatorState, action) => {
   const nextState = LandlordTabBarNavigator.router.getStateForAction(action, state);
@@ -64,21 +68,16 @@ export const guestPropertiesNav = (state = initalGuestPropertiesState, action) =
   switch(action.type){
     case types.PROPERTIES_TAB_GO_TO_PROPERTY:
       return GuestPropertiesNavigator.router.getStateForAction(
-        NavigationActions.reset({
-          index: 1,
-          actions: [
-            NavigationActions.navigate({ routeName: 'PropertiesHome'}),
-            NavigationActions.navigate({ routeName: 'PropertiesPropertyScreen', params: {property: action.property}})
-          ]
-        }));
+        NavigationActions.navigate({ routeName: 'PropertiesPropertyScreen', params: {property: action.property}})
+      );
       
     case types.GO_TO_PROPERTIES_HOME:
-        return GuestPropertiesNavigator.router.getStateForAction(
-          NavigationActions.navigate({
-            key: null,
-            routeName: 'PropertiesHome' 
-          })
-        );
+        // return GuestPropertiesNavigator.router.getStateForAction(
+        //   NavigationActions.navigate({
+        //     key: null,
+        //     routeName: 'PropertiesHome' 
+        //   })
+        // );
 
     case types.GO_TO_PROPERTIES_TAB_VIEWING:
       return GuestPropertiesNavigator.router.getStateForAction(

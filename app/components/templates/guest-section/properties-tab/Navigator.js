@@ -19,8 +19,7 @@ const stackConfiguration = {
   initialRoute: 'PropertiesPropertyScreen',
   navigationOptions: {
     header: null,
-  },
-  mode: 'modal'
+  }
 }
 
 export const GuestPropertiesNavigator = StackNavigator(routeConfiguration, stackConfiguration);

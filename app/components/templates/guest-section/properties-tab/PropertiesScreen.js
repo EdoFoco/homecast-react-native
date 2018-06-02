@@ -31,7 +31,8 @@ class PropertiesScreen extends Component{
   }
 
   _onPress(property){
-      this.props.navigation.navigate('PropertiesPropertyScreen', { property : property});
+      this.props.goToGuestPropertyScreen(property);
+      this.props.navigation.navigate('PropertyStack', { property : property});
   }
 
   _addToFavourites(userId, propertyId){

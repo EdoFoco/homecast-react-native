@@ -66,6 +66,7 @@ export const PROPERTIES_TAB_GO_BACK = 'Navigation/PROPERTIES_TAB_GO_BACK';
 export const PROPERTIES_TAB_GO_TO_PROPERTY = 'Navigation/PROPERTIES_TAB_GO_TO_PROPERTY';
 export const GO_TO_CHATS_TAB = 'GO_TO_CHATS_TAB';
 export const GO_TO_CHAT = 'GO_TO_CHAT';
+export const RETURN_TO_GUEST_TAB_BAR = 'RETURN_TO_GUEST_TAB_BAR';
 
 //Scrapers
 export const UPDATE_SCRAPERS = 'UPDATE_SCRAPERS';

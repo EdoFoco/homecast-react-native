@@ -37,7 +37,7 @@ const AppReducer = combineReducers({
 
   //Guest Navigators
   guestTabBar,
-  //guestRootNav,
+  guestRootNav,
   guestPropertiesNav,
   guestFavouritesNav: favouritesNav,
   guestViewingsNav,
