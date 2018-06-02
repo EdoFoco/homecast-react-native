@@ -3,7 +3,6 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ChatContainer from '../screens/ChatContainer';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
@@ -25,13 +24,6 @@ export const GuestChatsNavigator = StackNavigator(routeConfiguration, stackConfi
 
 class GuestChatsTab extends React.Component {
     
-    static navigationOptions = {
-        tabBarLabel: 'Chats',
-        tabBarIcon: ({ tintColor }) => (
-            <MCIcon name="message-outline"  size={24} color={tintColor} style={{height: 24, width: 24}} />
-          )
-    }
-
     render(){
         const { navigationState, dispatch } = this.props;
         const addListener = createReduxBoundAddListener("root");

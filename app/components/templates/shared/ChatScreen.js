@@ -35,7 +35,7 @@ export default class ChatScreen extends Component{
    
     componentWillMount() {
         this.keyboardHeight = new Animated.Value(0);
-        this.viewHeight = new Animated.Value(Dimensions.get('window').height - 120);
+        this.viewHeight = new Animated.Value(Dimensions.get('window').height - 60);
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
         this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
         
@@ -64,7 +64,7 @@ export default class ChatScreen extends Component{
     keyboardWillHide = e => {
         Animated.spring(this.viewHeight, {
         duration: 150,
-        toValue:   Dimensions.get('window').height - 120,
+        toValue:   Dimensions.get('window').height - 60,
         }).start();
     }
 

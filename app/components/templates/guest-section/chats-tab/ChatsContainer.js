@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import ChatsScreen from '../../shared/ChatsScreen';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
@@ -22,10 +23,15 @@ class ChatsContainer extends Component{
       });
   }
 
+  _goToChatScreen(chat){
+    this.props.goToChat(chat);
+    this.props.navigation.navigate('ChatsStack');
+  }
+
   render() {
     return (
       <View style={styles.container}>
-          <ChatsScreen chats={this.props.chats} user={this.props.user} goToScreen={(chat) => {this.props.navigation.navigate('Chat', { chat: chat })}}>Chat</ChatsScreen>
+          <ChatsScreen chats={this.props.chats} user={this.props.user} goToScreen={(chat) => {this._goToChatScreen(chat)}} >Chat</ChatsScreen>
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
     )
@@ -34,7 +40,10 @@ class ChatsContainer extends Component{
 }
 
 ChatsContainer.navigationOptions = {
-  title: 'Chats',
+  tabBarLabel: 'Chats',
+  tabBarIcon: ({ tintColor }) => (
+      <Icon name="message-outline"  size={24} color={tintColor} style={{height: 24, width: 24}} />
+    ),
 };
 
 const mapStateToProps = (state) => {
@@ -56,6 +65,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ChatsContainer);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 40,
     justifyContent: 'center',
     backgroundColor: 'white',
   }
