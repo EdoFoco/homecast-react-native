@@ -14,6 +14,13 @@ import {
 
 export default class ChatsScreen extends Component{
 
+    constructor(props){
+        super(props);
+        this.state = {
+            isRefreshing: false
+        }
+    }
+
     _renderUsernames(users){
         var userNames = [];
 
@@ -25,13 +32,29 @@ export default class ChatsScreen extends Component{
 
         return userNames.join(', ');
     }
+
+    _refresh(){
+        this.setState({isRefreshing: true});
+        this.props.getChats()
+        .then(() => {
+            this.setState({isRefreshing: false});
+        })
+        .catch((e) => {
+            this.setState({isRefreshing: false});
+            console.log(e);
+        })
+    }
  
     _renderChatRow(item) {
         var chat = item.item;
+
         return(
             <TouchableHighlight onPress={() => {this.props.goToScreen(chat)}}>
                 <View style={styles.chatRow}>
-                    <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender_profile_picture, priority: FastImage.priority.normal }} resizeMode={FastImage.resizeMode.cover} />
+                    {
+                        !chat.last_message.sender_profile_picture ? null :
+                        <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender_profile_picture, priority: FastImage.priority.normal }} resizeMode={FastImage.resizeMode.cover} />
+                    }
                     <View style={styles.rowDescriptionContainer}>
                         <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
                         <Text style={styles.lastMessage} numberOfLines={1}>{chat.last_message.body}</Text>
@@ -53,7 +76,8 @@ export default class ChatsScreen extends Component{
                     renderItem={(chat) => this._renderChatRow(chat)}
                     keyExtractor={(item, index) => index.toString()}
                     removeClippedSubviews={false}
-                    pagingEnabled
+                    refreshing={this.state.isRefreshing}
+                    onRefresh={() => this._refresh()}
                 />
             </View>
         )
@@ -63,7 +87,8 @@ export default class ChatsScreen extends Component{
 ChatsScreen.propTypes ={
   chats: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
-  goToScreen: PropTypes.func.isRequired
+  goToScreen: PropTypes.func.isRequired,
+  getChats: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

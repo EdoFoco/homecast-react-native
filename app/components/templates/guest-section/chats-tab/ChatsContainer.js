@@ -31,7 +31,7 @@ class ChatsContainer extends Component{
   render() {
     return (
       <View style={styles.container}>
-          <ChatsScreen chats={this.props.chats} user={this.props.user} goToScreen={(chat) => {this._goToChatScreen(chat)}} >Chat</ChatsScreen>
+          <ChatsScreen chats={this.props.chats} user={this.props.user} goToScreen={(chat) => {this._goToChatScreen(chat)}} getChats={this.props.getChats} >Chat</ChatsScreen>
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
     )
