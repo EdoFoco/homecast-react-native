@@ -153,7 +153,7 @@ export function importProperty(propertyId, userId, url){
       }
   }
 
-  function handleError(error, dispatch){
+function handleError(error, dispatch){
     console.warn(error);
     var action = ErrorHandler.getActionForError(error);
     if(action){

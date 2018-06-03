@@ -232,7 +232,7 @@ Property.propTypes = {
     properties: PropTypes.object.isRequired,
     goToViewing: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
-    getProperty: PropTypes.func.isRequired
+    getProperty: PropTypes.func.isRequired,
   }
 
 const styles = StyleSheet.create({

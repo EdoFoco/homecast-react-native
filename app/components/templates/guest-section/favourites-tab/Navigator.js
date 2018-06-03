@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import FavouritesScreen from './FavouritesScreen';
 import PropertyContainer from '../screens/PropertyContainer';
 import ViewingContainer from '../screens/ViewingContainer';
+import CreateChatContainer from '../screens/CreateChatContainer';
 import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     PropertyScreen: { screen: PropertyContainer },
-    PropertyViewings: { screen: ViewingContainer }
+    PropertyViewings: { screen: ViewingContainer },
+    CreateChatContainer: { screen: CreateChatContainer }
 }
 
 const stackConfiguration = {

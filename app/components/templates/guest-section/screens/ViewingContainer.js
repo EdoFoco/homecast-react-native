@@ -112,6 +112,7 @@ _cancelNotifications(){
                 joinLiveCast={() => {this._joinLiveCast()}}
                 navigation={this.props.navigation}
                 goBack={() => {this.props.returnToGuestTabBar()}}
+                contactAgent={() => {this.props.navigation.navigate('CreateChatContainer', {recipientIds : [this.props.user.info.id, this.props.property.user.id] })}}
             />
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>

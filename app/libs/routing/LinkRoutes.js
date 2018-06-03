@@ -72,7 +72,7 @@ async function handleChatDeepLink(store, params){
     }
     
     await store.dispatch(navActions.goToChatsTab());
-    //await store.dispatch(navActions.goToChat(chat));
+    await store.dispatch(navActions.goToChat(chat));
   }
   catch(e){
     console.warn(e);

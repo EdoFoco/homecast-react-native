@@ -4,7 +4,6 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FastImage from 'react-native-fast-image';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Animatable from 'react-native-animatable';
 import {
     StyleSheet,
@@ -21,33 +20,20 @@ import {
 
 export default class CreateChatScreen extends Component{
 
-    chatPoll;
-
     constructor(props){
         super(props);
         this.state = {
-            currentPage: 1,
-            lastPage: 1,
             messages: [],
+            conversationId: null,
             message: null
         }
     }
    
     componentWillMount() {
         this.keyboardHeight = new Animated.Value(0);
-        this.viewHeight = new Animated.Value(Dimensions.get('window').height - 120);
+        this.viewHeight = new Animated.Value(Dimensions.get('window').height - 70);
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
         this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
-        
-        this._getMessages()
-        .then(() => {
-            this.chatPoll = setInterval(() => {
-                this._getMessages();
-            }, 10000);
-        })
-        .catch((e) => {
-            console.log(e);
-        });
     }
 
     componentWillUnmount() {
@@ -57,14 +43,14 @@ export default class CreateChatScreen extends Component{
     keyboardWillShow = event => {
         Animated.timing(this.viewHeight, {
             duration: 150,
-            toValue:   Dimensions.get('window').height - event.endCoordinates.height - 60,
+            toValue:   Dimensions.get('window').height - event.endCoordinates.height - 70,
         }).start();
     }
 
     keyboardWillHide = e => {
         Animated.spring(this.viewHeight, {
         duration: 150,
-        toValue:   Dimensions.get('window').height - 120,
+        toValue:   Dimensions.get('window').height - 70,
         }).start();
     }
 
@@ -86,24 +72,64 @@ export default class CreateChatScreen extends Component{
     }
 
     _send(){
-        this.props.sendMessage(this.props.chat.id, this.state.message)
-        .then(() => {
-            return this._getMessages();
-        })
-        .then(() => {
-            this.setState({ message: null });
-        });
+        if(this.state.conversationId){
+            this.props.sendMessage(this.state.conversationId, this.state.message)
+            .then((message) => {
+                var messages = [...this.state.messages];
+                messages.push({
+                    sender: {
+                        id: this.props.user.info.id,
+                    },
+                    body: this.state.message
+                });
+                this.setState({messages: messages});
+            })
+            .then(() => {
+                this.setState({ message: null });
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+        }
+        else{
+            this.props.createChat(this.props.recipientIds)
+            .then((chat) => {
+                this.setState({conversationId: chat.id});
+                return this.props.sendMessage(chat.id, this.state.message);
+            })
+            .then((message) => {
+                var messages = [...this.state.messages];
+                messages.push({
+                    sender: {
+                        id: this.props.user.info.id,
+                    },
+                    body: this.state.message
+                });
+                this.setState({messages: messages});
+            })
+            .then(() => {
+                this.setState({ message: null });
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+        }
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.header}>
+                    <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                        <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
+                    </TouchableHighlight>
+                    <Text style={styles.title}>Chat</Text>
+                </View>
                 <Animated.View style={{height: this.viewHeight}}>
-
-                <FlatList
+                    <FlatList
                         style={styles.messagesList}
                         inverted={true}
-                        data={this.state.messages}
+                        data={this.state.messages.reverse()}
                         renderItem={(message) => this._renderMessageRow(message)}
                         keyExtractor={(item, index) => index.toString()}
                         removeClippedSubviews={false}
@@ -117,25 +143,27 @@ export default class CreateChatScreen extends Component{
                             value={this.state.message}
                         />
                         <TouchableHighlight style={styles.sendButton} onPress={() => {this._send()}}>
-                            <MCIcon name="send" style={styles.sendIcon} />
+                            <MaterialIcons name="send" style={styles.sendIcon} />
                         </TouchableHighlight>
                     </View>
-                    </Animated.View>
-                </View>
+                </Animated.View>
+            </View>
         )
   }
 }
 
-ChatScreen.propTypes ={
-  chat: PropTypes.object.isRequired,
+CreateChatScreen.propTypes ={
   user: PropTypes.object.isRequired,
-  getMessages: PropTypes.func.isRequired,
-  sendMessage: PropTypes.func.isRequired
+  createChat: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
+  recipientIds: PropTypes.array.isRequired,
+  goBack: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 20
     },
     messagesList: {
         flex: 0.9
@@ -196,5 +224,22 @@ const styles = StyleSheet.create({
     sendIcon: {
         fontSize: FontSizes.BIG,
         color: Colors.LIGHT_BLUE,
+    },
+    backButton: {
+        alignSelf: 'flex-start',
+        flex: 0.1,
+    },
+    backButtonIcon: {
+        fontSize: 45,
+        color: Colors.AQUA_GREEN,
+    },
+    header: {
+        flexDirection: 'row',
+    },
+    title: {
+        flex: 0.9,
+        fontSize: FontSizes.MEDIUM_BIG,
+        color: Colors.AQUA_GREEN,
+        textAlign: 'center'
     }
 })    

@@ -99,12 +99,15 @@ export default class ViewingScreen extends Component{
                         <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
+                {
+                  this.props.user.info.id == this.props.property.user.id ? null : 
+                  <TouchableHighlight style={styles.buttonContainer} onPress={this.props.contactAgent}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>Contact Agent</Text>
                         <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
                     </View>
-                </TouchableHighlight>
+                  </TouchableHighlight>
+                }
             </ScrollView>
             <View style={styles.joinCastContainer}>
                {this._renderCTA()}
@@ -123,7 +126,8 @@ ViewingScreen.propTypes = {
     createViewingReservation: PropTypes.func.isRequired,
     goToProperty: PropTypes.func.isRequired,
     showViewPropertyBtn: PropTypes.bool.isRequired,
-    joinLiveCast: PropTypes.func.isRequired
+    joinLiveCast: PropTypes.func.isRequired,
+    contactAgent: PropTypes.func.isRequired
 }
 
 

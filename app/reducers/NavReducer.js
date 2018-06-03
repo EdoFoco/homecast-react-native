@@ -29,7 +29,7 @@ export const guestTabBar = (state = initalGuestTabNavigatorState, action) => {
       );
     case types.GO_TO_CHATS_TAB:
       return GuestTabBarNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'ChatsTab'}),
+        NavigationActions.navigate({ routeName: 'ChatsStack'}),
       );
     case types.GOTO_SECTION:
       return initalGuestTabNavigatorState

@@ -1,5 +1,6 @@
 import * as types from './Types';
 import ApiServiceFactory from '../libs/services/ApiServiceFactory';
+import * as ErrorHandler from './ErrorHandler';
 
 export function updateRoomId(roomId){
     return {
@@ -91,6 +92,20 @@ export function getChats(){
       }
   }
 
+export function createChat(participantIds){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.createChat(participantIds);
+            dispatch(getChats());
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }   
+      }
+  }
+
 export function getMessages(chatId, page){
     return async (dispatch, getState) => {
         try{
@@ -119,3 +134,12 @@ export function getMessages(chatId, page){
         }   
       }
   }
+
+function handleError(error, dispatch){
+    console.warn(error);
+    var action = ErrorHandler.getActionForError(error);
+    if(action){
+        return dispatch(action);
+    }
+    throw error;
+}

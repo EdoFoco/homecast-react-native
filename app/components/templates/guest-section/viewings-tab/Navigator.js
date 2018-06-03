@@ -3,12 +3,13 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import ViewingContainer from '../screens/ViewingContainer';
 import PropertyContainer from '../screens/PropertyContainer';
+import CreateChatContainer from '../screens/CreateChatContainer';
 import * as Colors from '../../../helpers/ColorPallette';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     ViewingScreen: { screen: ViewingContainer },
-    PropertyViewings: { screen: ViewingContainer }
+    CreateChatContainer: { screen: CreateChatContainer }
 }
 
 const stackConfiguration = {
