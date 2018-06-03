@@ -74,9 +74,10 @@ export function goToGuestFavouritesPropertyScreen(property){
     }
 }
 
-export function goToGuestViewingsScreen(viewing){
+export function goToGuestViewingsScreen(viewingId, property){
     return {
         type: types.VIEWINGS_TAB_GO_TO_VIEWING,
-        viewing: viewing
+        viewingId: viewingId,
+        property: property
     }
 }

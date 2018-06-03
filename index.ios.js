@@ -33,7 +33,7 @@ const addListener = createReduxBoundAddListener("root");
 const persistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['webrtc', 'network', 'location', 'guestTabBar']
+  blacklist: ['webrtc', 'network', 'location', 'guestTabBar', 'guestRootNav']
 };
 
 const errorHandler = (e, isFatal) => {
@@ -60,7 +60,7 @@ const errorHandler = (e, isFatal) => {
   }
 };
 
-setJSExceptionHandler(errorHandler, true);
+//setJSExceptionHandler(errorHandler, true);
 
 setNativeExceptionHandler((errorString) => {
     console.log('setNativeExceptionHandler');

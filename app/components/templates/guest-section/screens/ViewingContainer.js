@@ -123,16 +123,16 @@ _cancelNotifications(){
 
 ViewingContainer.navigationOptions = function({navigation}) {
     console.log(navigation);
-    return { title: `Viewing - ${navigation.state.params.viewing.property.name}` }
+    return { title: `Viewing - ${navigation.state.params.property.name}` }
 };
 
 
 const mapStateToProps = (state, {navigation}) => {
-    let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.viewing.property.id);
+    let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.property.id);
     return {
         property: property,
-        viewing: property.viewings.find(v => v.id === navigation.state.params.viewing.id),
-        reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewing.id),
+        viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
+        reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewingId),
         user: state.user,
         network: state.network
     }

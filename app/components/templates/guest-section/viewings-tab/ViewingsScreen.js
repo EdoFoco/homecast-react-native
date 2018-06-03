@@ -28,8 +28,8 @@ class ViewingsScreen extends Component{
     })
   }
 
-  _goToViewing(viewing){
-    this.props.goToGuestViewingsScreen(viewing);
+  _goToViewing(viewingId, property){
+    this.props.goToGuestViewingsScreen(viewingId, property);
     this.props.navigation.navigate('ViewingsStack');
   }
 
@@ -45,7 +45,7 @@ class ViewingsScreen extends Component{
   _renderRow = function({item}){
     let reservation = item;
     return (
-      <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing)}}>
+      <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing.id, reservation.viewing.property)}}>
         <View>
               <FastImage style={styles.propertyThumb} source={{url: reservation.viewing.property.images[0].url}} />
               <View style={{flexDirection: 'row',  padding: 20, paddingTop: 10}}>

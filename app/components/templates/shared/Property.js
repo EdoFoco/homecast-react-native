@@ -48,7 +48,7 @@ export default class Property extends Component{
   _renderItem = ({item}) => {
     let viewing = item;
     return (
-      <ViewingRow viewing={viewing} goToViewing={(viewingId) => {this.props.goToViewing(viewingId)}} />
+      <ViewingRow viewing={viewing} goToViewing={(viewingId) => {this.props.goToViewing(viewingId, this.props.currentProperty)}} />
     )
   };
 
