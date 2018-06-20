@@ -10,6 +10,7 @@ import * as NavActions from './NavActions';
 import * as Scrapers from './Scrapers';
 import * as Location from './Location';
 import * as Filters from './Filters';
+import * as Network from './Network';
 
 export const ActionCreators = Object.assign({},
   UserActions,
@@ -23,5 +24,6 @@ export const ActionCreators = Object.assign({},
   NavActions,
   Scrapers,
   Location,
-  Filters
+  Filters,
+  Network
 );

@@ -127,9 +127,9 @@ export default class AdminWebRTCChat extends Component{
       audio: true,
       video: {
         mandatory: {
-          width: { min: 640, ideal: 1280, max: 1920 },
-          height: { min: 480, ideal: 720, max: 1080 },
-          minFrameRate: 30
+          width: { min: 320, ideal: 640, max: 960 },
+          height: { min: 240, ideal: 480, max: 720 },
+          minFrameRate: 25
         }
       }
     }, function (stream) {

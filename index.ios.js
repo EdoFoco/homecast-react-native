@@ -5,13 +5,13 @@ import { createStore, applyMiddleware } from 'redux';
 import AppReducer from './app/reducers';
 import MainScreen from './app/components/templates/MainScreen';
 import thunk from 'redux-thunk';
-import io from 'socket.io-client';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import storage from 'redux-persist/lib/storage';
 import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddleware';
 import {Linking} from 'react-native';
 import LinkRoutes from './app/libs/routing/LinkRoutes';
+import SignalChecker from './app/libs/network/SignalChecker';
 import firebase, { RemoteMessage, NotificationOpen } from 'react-native-firebase';
 import * as chatActions from './app/actions/Chat';
 import * as errorHandlerActions from './app/actions/ErrorHandler';
@@ -60,7 +60,7 @@ const errorHandler = (e, isFatal) => {
   }
 };
 
-//setJSExceptionHandler(errorHandler, true);
+setJSExceptionHandler(errorHandler, true);
 
 setNativeExceptionHandler((errorString) => {
     console.log('setNativeExceptionHandler');
@@ -76,6 +76,7 @@ class ReduxExampleApp extends React.Component {
   componentDidMount() {
     Linking.addEventListener('url', event => this.handleOpenURL(event.url));
     Linking.getInitialURL().then(url => url && this.handleOpenURL(url));
+    SignalChecker.listenForSignalChange(this.store);
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
       console.log(notification);
@@ -100,11 +101,8 @@ class ReduxExampleApp extends React.Component {
     this.notificationDisplayedListener();
     this.notificationListener();
     this.notificationOpenedListener();
-}
-
-  componentWillUnmount() {
     Linking.removeEventListener('url', this.handleOpenURL);
-  }
+}
 
   handleOpenURL(url) {
     const path = url.split(':/')[1];

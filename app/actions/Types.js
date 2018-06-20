@@ -1,5 +1,6 @@
 //Generic
 export const NETWORK_ERROR = 'NETWORK_ERROR';
+export const UPDATE_SIGNAL_STRENGTH = 'UPDATE_SIGNAL_STRENGTH';
 
 // Auth
 export const AUTHENTICATING = 'AUTHENTICATING';
