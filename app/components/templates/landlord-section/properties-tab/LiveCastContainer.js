@@ -46,6 +46,7 @@ class LiveCastContainer extends Component{
               sendOnIceCandidate={(data) => {this.props.sendOnIceCandidate(data)}}
               updateStreamUrl={(data) => {this.props.updateStreamUrl(data)}}
               navigation={this.props.navigation}
+              network={this.props.network}
               />
           </View>
       );
@@ -66,7 +67,8 @@ const mapStateToProps = ( state, navigation ) => {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
         chat: state.chat,
-        webrtc: state.webrtc
+        webrtc: state.webrtc,
+        network: state.network
     }
 };
 

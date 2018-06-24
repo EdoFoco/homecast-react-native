@@ -123,7 +123,46 @@ export default class AdminWebRTCChat extends Component{
         }
       });
     }
-    getUserMedia({
+
+    var mediaOptions = _getMediaOptions();
+    
+    getUserMedia(mediaOptions, function (stream) {
+      console.log('getUserMedia success', stream);
+      callback(stream);
+    }, function(error){
+      console.log(error)
+    });
+}
+
+_getMediaOptions(){
+  if(network.networkType == 'wifi' || network.signalStrength == '4g'){
+    console.log('Stream in high quality')
+    return {
+      audio: true,
+      video: {
+        mandatory: {
+          width: { min: 480, ideal: 720, max: 1080 },
+          height: { min: 640, ideal: 1280, max: 1920 },
+          minFrameRate: 30
+        }
+      }
+    }
+  }
+  else{
+    console.log('Stream in low quality')
+    return {
+      audio: true,
+      video: {
+        mandatory: {
+          width: { min: 240, ideal: 480, max: 720 },
+          height: { min: 320, ideal: 640, max: 960 },
+          minFrameRate: 25
+        }
+      }
+    }
+  }
+  /*
+  {
       audio: true,
       video: {
         mandatory: {
@@ -132,12 +171,7 @@ export default class AdminWebRTCChat extends Component{
           minFrameRate: 25
         }
       }
-    }, function (stream) {
-      console.log('getUserMedia success', stream);
-      callback(stream);
-    }, function(error){
-      console.log(error)
-    });
+    }*/ 
 }
 
  _startWebRtcAsPresenter  = function(){
@@ -235,7 +269,8 @@ AdminWebRTCChat.propTypes = {
   sendOnIceCandidate: PropTypes.func.isRequired,
   startPresenter: PropTypes.func.isRequired,
   updateStreamUrl: PropTypes.func.isRequired,
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  network: PropTypes.object.isRequired
 }
 
 var styles = StyleSheet.create({

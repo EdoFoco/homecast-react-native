@@ -18,7 +18,7 @@ class SignalChecker {
           NetInfo.addEventListener(
             'connectionChange', (connectionInfo) => {
               console.log('Connection, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
-              store.dispatch(networkActions.updateSignalStrength(connectionInfo.effectiveType));
+              store.dispatch(networkActions.updateSignalStrength(connectionInfo.type, connectionInfo.effectiveType));
             }
            );
     }
