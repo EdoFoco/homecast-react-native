@@ -14,6 +14,7 @@ import LocationSuggestions from '../../shared/LocationSuggestions';
 import FiltersModal from '../../shared/FiltersModal';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import GAClient from '../../../../libs/third-party/GoogleAnalytics/ga';
 
 class PropertiesScreen extends Component{
   
@@ -72,10 +73,14 @@ class PropertiesScreen extends Component{
   }
 
   _selectLocation(suggestion){
+    this.setState({locationSearchValue: suggestion.description});
     this.props.updateFilters({...this.props.searchFilters, placeId: suggestion.place_id});
     this.props.getProperties(this.props.searchFilters);
     this.props.updateLocationSuggestions([]);
+    GAClient.gaClientInstance.trackLocationFilter(suggestion.description);
     Keyboard.dismiss();
+
+    
   }
 
   _handleLocationTextChange(text){

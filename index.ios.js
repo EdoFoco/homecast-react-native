@@ -17,6 +17,7 @@ import * as chatActions from './app/actions/Chat';
 import * as errorHandlerActions from './app/actions/ErrorHandler';
 import { AsyncStorage } from 'react-native';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
+import GAClient from './app/libs/third-party/GoogleAnalytics/ga';
 import reduxCatch from 'redux-catch';
 import {
   createReduxBoundAddListener,
@@ -58,12 +59,14 @@ const errorHandler = (e, isFatal) => {
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
   }
+  GAClient.gaClientInstance.trackException(e, isFatal);
 };
 
 setJSExceptionHandler(errorHandler, true);
 
 setNativeExceptionHandler((errorString) => {
     console.log('setNativeExceptionHandler');
+    GAClient.gaClientInstance.trackException(errorString, isFatal);
 });
 
 class ReduxExampleApp extends React.Component {

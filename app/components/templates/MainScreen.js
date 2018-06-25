@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-//import  GuestTabBar  from '../../navigators/guest-section/GuestTabBarNavigator';
 import GuestRootNav from '../../navigators/guest-section/GuestRootNavigator';
 import  LandlordTabBar  from '../../navigators/landlord-section/LandlordTabBarNavigator';
 import NetworkErrorMessage from '../templates/shared/NetworkErrorMessage';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
-import { addNavigationHelpers } from 'react-navigation';
 import AuthForm from '../molecules/AuthForm';
-import { AsyncStorage } from 'react-native';
 import { YellowBox } from 'react-native';
-
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Module WebRTCModule', 'Module RNInCallManager', 'Remote debugger']);
 import SplashScreen from 'react-native-splash-screen';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);

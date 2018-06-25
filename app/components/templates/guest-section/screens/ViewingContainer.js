@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import ViewingScreen from '../../shared/ViewingScreen';
-import { NavigationActions } from 'react-navigation';
+import GAClient from '../../../../libs/third-party/GoogleAnalytics/ga';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet } from 'react-native';
 import firebase from 'react-native-firebase';
@@ -94,6 +94,7 @@ _cancelNotifications(){
 
   _joinLiveCast(){
     this.props.navigation.navigate('LiveCast', { viewing: this.props.viewing});
+    GAClient.gaClientInstance.trackClientViewingStarted(this.props.user.info.id, this.props.viewing.id);
   }
 
   render() {

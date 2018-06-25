@@ -1,14 +1,7 @@
 import * as types from '../actions/Types';
 import { combineReducers } from 'redux';
-import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
-import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
-import { GuestFavouritesNavigator } from '../components/templates/guest-section/favourites-tab/Navigator';
-import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
 import { OptionsNavigator } from '../components/templates/shared/options-tab/Navigator';
-import { GuestChatsNavigator } from '../components/templates/guest-section/chats-tab/Navigator';
 
-import { LandlordTabBarNavigator } from '../navigators/landlord-section/LandlordTabBarNavigator';
-import { LandlordPropertiesNavigator } from '../components/templates/landlord-section/properties-tab/Navigator';
 
 import { guestViewingsNav  } from './NavReducer';
 import { guestTabBar }from './NavReducer';
@@ -19,7 +12,7 @@ import { favouritesNav }from './NavReducer';
 import { chatsNav }from './NavReducer';
 import { landlordTabBar }from './NavReducer';
 import { landlordPropertiesNav }from './NavReducer';
-
+import { genericNav } from './NavReducer';
 import user from './User';
 import section from './Section';
 import webrtc from './NewWebRTC';
@@ -43,7 +36,8 @@ const AppReducer = combineReducers({
   guestViewingsNav,
   guestChatsNav: chatsNav,
   optionsNav: (state, action) => OptionsNavigator.router.getStateForAction(action,state),
-  
+  genericNav,
+
   //Landlord Navigators
   landlordTabBar: landlordTabBar,
   landlordPropertiesNav,

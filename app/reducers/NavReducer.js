@@ -1,6 +1,5 @@
 import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
 import { GuestRootNavigator } from '../navigators/guest-section/GuestRootNavigator';
-
 import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
 import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
 import { GuestChatsNavigator } from '../components/templates/guest-section/chats-tab/Navigator';
@@ -9,6 +8,7 @@ import { LandlordTabBarNavigator } from '../navigators/landlord-section/Landlord
 import { LandlordPropertiesNavigator } from '../components/templates/landlord-section/properties-tab/Navigator';
 import { NavigationActions } from 'react-navigation';
 import * as types from '../actions/Types';
+import GAClient from '../libs/third-party/GoogleAnalytics/ga';
 
 const initalGuestTabNavigatorState = GuestTabBarNavigator.router.getStateForAction(GuestTabBarNavigator.router.getActionForPathAndParams('PropertiesTab'));
 const initialGuestRootNavigatorState = GuestRootNavigator.router.getStateForAction(GuestRootNavigator.router.getActionForPathAndParams('TabBar'));
@@ -172,5 +172,16 @@ export const landlordPropertiesNav = (state = intitialLandlordPropertiesState, a
           }
         default:
           return nextState || state;
+    }
+};
+
+export const genericNav = (state = null, action) => {
+  switch(action.type){
+        case 'Navigation/NAVIGATE':
+          if(action.routeName){
+            GAClient.gaClientInstance.trackScreen(action.routeName);
+          }
+        default:
+          return state;
     }
 };

@@ -1,6 +1,6 @@
 import { NetInfo } from 'react-native';
 import * as networkActions from '../../actions/Network';
-//import store from '../../reducers';
+import GAClient from '../../libs/third-party/GoogleAnalytics/ga';
 
 class SignalChecker {
   
@@ -18,6 +18,7 @@ class SignalChecker {
           NetInfo.addEventListener(
             'connectionChange', (connectionInfo) => {
               console.log('Connection, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+              GAClient.gaClientInstance.trackSignalStrength(connectionInfo.type, connectionInfo.effectiveType);
               store.dispatch(networkActions.updateSignalStrength(connectionInfo.type, connectionInfo.effectiveType));
             }
            );

@@ -124,7 +124,7 @@ export default class AdminWebRTCChat extends Component{
       });
     }
 
-    var mediaOptions = _getMediaOptions();
+    var mediaOptions = this._getMediaOptions();
     
     getUserMedia(mediaOptions, function (stream) {
       console.log('getUserMedia success', stream);
@@ -135,7 +135,20 @@ export default class AdminWebRTCChat extends Component{
 }
 
 _getMediaOptions(){
-  if(network.networkType == 'wifi' || network.signalStrength == '4g'){
+  if(!this.props.network){
+    return {
+      audio: true,
+      video: {
+        mandatory: {
+          width: { min: 480, ideal: 720, max: 1080 },
+          height: { min: 640, ideal: 1280, max: 1920 },
+          minFrameRate: 30
+        }
+      }
+    }
+  }
+
+  if(this.props.network.networkType == 'wifi' || this.props.network.signalStrength == '4g'){
     console.log('Stream in high quality')
     return {
       audio: true,

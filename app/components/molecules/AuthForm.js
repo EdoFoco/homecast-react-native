@@ -1,31 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
-import * as t from 'tcomb-form-native'
-import Loader from '../atoms/Loader';
 import * as FontSizes from '../helpers/FontSizes';
 import * as Colors from '../helpers/ColorPallette';
-import * as errorHandler from '../../actions/ErrorHandler';
-import ApiService from '../../libs/services/ApiService';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FastImage from 'react-native-fast-image';
 import firebase from 'react-native-firebase';
+import GAClient from '../../libs/third-party/GoogleAnalytics/ga';
 
 import { 
   View,
-  TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-  AsyncStorage,
   TextInput,
-  Dimensions,
   Keyboard,
   TouchableWithoutFeedback,
   Text } from 'react-native';
 
-var WINDOW_HEIGHT = Dimensions.get('window').height;
 
 class AuthForm extends Component{
 
@@ -53,7 +45,8 @@ class AuthForm extends Component{
             if(!user){
                 throw new Error();
             }
-            
+            GAClient.gaClientInstance.trackLogin(user.user.id);
+
             await this.props.updateAuthToken(user.token);
             var hasPermission = await firebase.messaging().hasPermission();
             if(!hasPermission){
@@ -79,6 +72,7 @@ class AuthForm extends Component{
     console.log(info);
     this.props.signup(info)
     .then(() => {
+        GAClient.gaClientInstance.trackSignup();
         return this.props.login({ email: info.email, password: info.password })
     })
     .then((resp) => {

@@ -50,7 +50,8 @@ const mapStateToProps = (state, {navigation}) => {
   return {
       property: property,
       viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
-      user: state.user
+      user: state.user,
+      network: state.network
     }
 };
 

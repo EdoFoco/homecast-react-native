@@ -88,7 +88,8 @@ AdminViewingScreen.propTypes = {
     viewing: PropTypes.object.isRequired,
     property: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    joinLiveCast: PropTypes.func.isRequired
+    joinLiveCast: PropTypes.func.isRequired,
+    network: PropTypes.object.isRequired
 }
 
 const styles = StyleSheet.create({
