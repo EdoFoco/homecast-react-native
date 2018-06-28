@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import GuestRootNav from '../../navigators/guest-section/GuestRootNavigator';
-import  LandlordTabBar  from '../../navigators/landlord-section/LandlordTabBarNavigator';
+import LandlordRootNav  from '../../navigators/landlord-section/LandlordRootNavigator';
 import NetworkErrorMessage from '../templates/shared/NetworkErrorMessage';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
@@ -60,8 +60,8 @@ class MainScreen extends Component {
       }
       if(this.props.section.sectionName === 'landlord'){
         return(
-            <LandlordTabBar />
-          )
+            <LandlordRootNav addListener={this.props.addListener} />
+        )
       }
     }
     if(this.state.isReady){

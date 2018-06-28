@@ -1,5 +1,8 @@
 import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNavigator';
 import { GuestRootNavigator } from '../navigators/guest-section/GuestRootNavigator';
+
+import { LandlordRootNavigator } from '../navigators/landlord-section/LandlordRootNavigator';
+
 import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
 import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
 import { GuestChatsNavigator } from '../components/templates/guest-section/chats-tab/Navigator';
@@ -17,7 +20,8 @@ const initialViewingsNavigatorState = GuestViewingsNavigator.router.getStateForA
 const initalGuestPropertiesState =  GuestPropertiesNavigator.router.getStateForAction(GuestPropertiesNavigator.router.getActionForPathAndParams('PropertiesPropertyScreen'));
 const initialChatsState =  GuestChatsNavigator.router.getStateForAction(GuestChatsNavigator.router.getActionForPathAndParams('Chat'));
 const initialFavouritesState =  GuestFavouritesNavigator.router.getStateForAction(GuestFavouritesNavigator.router.getActionForPathAndParams('PropertyScreen'));
-const intitialLandlordPropertiesState = LandlordPropertiesNavigator.router.getStateForAction(LandlordPropertiesNavigator.router.getActionForPathAndParams('PropertiesHome'));
+const intitialLandlordPropertiesState = LandlordPropertiesNavigator.router.getStateForAction(LandlordPropertiesNavigator.router.getActionForPathAndParams('EditPropertyScreen'));
+const initialLandlordRootNavigatorState = LandlordRootNavigator.router.getStateForAction(LandlordRootNavigator.router.getActionForPathAndParams('TabBar'));
 
 export const guestTabBar = (state = initalGuestTabNavigatorState, action) => {
   const nextState = GuestTabBarNavigator.router.getStateForAction(action, state);
@@ -46,6 +50,16 @@ export const guestRootNav = (state = initialGuestRootNavigatorState, action) => 
       return GuestRootNavigator.router.getStateForAction(
         NavigationActions.back()
       );
+    default:
+      return nextState || state;
+  }
+};
+
+
+export const landlordRootNav = (state = initialLandlordRootNavigatorState, action) => {
+  const nextState = LandlordRootNavigator.router.getStateForAction(action, state);
+
+  switch(action.type){
     default:
       return nextState || state;
   }
@@ -166,10 +180,10 @@ export const landlordPropertiesNav = (state = intitialLandlordPropertiesState, a
   const nextState = LandlordPropertiesNavigator.router.getStateForAction(action, state);
 
   switch(action.type){
-        case 'Navigation/NAVIGATE':
-          if(action.routeName.toLowerCase().indexOf('tab') > -1){
-           // return intitialLandlordPropertiesState;
-          }
+        case types.PROPERTIES_TAB_GO_TO_PROPERTY:
+          return LandlordPropertiesNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: 'EditPropertyScreen', params: {property: action.property}})
+          );
         default:
           return nextState || state;
     }

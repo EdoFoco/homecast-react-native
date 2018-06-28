@@ -29,8 +29,8 @@
   
   NSURL *jsCodeLocation;
 
- //jsCodeLocation = [NSURL URLWithString:@"http://169.254.79.26:8081/index.ios.bundle?platform=ios&dev=true&minify=false"];
- jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  jsCodeLocation = [NSURL URLWithString:@"http://192.168.43.245:8081/index.ios.bundle?platform=ios&dev=true&minify=false"];
+ //jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"Homecast"

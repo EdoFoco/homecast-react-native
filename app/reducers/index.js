@@ -10,6 +10,8 @@ import { guestRootNav }from './NavReducer';
 import { guestPropertiesNav }from './NavReducer';
 import { favouritesNav }from './NavReducer';
 import { chatsNav }from './NavReducer';
+
+import { landlordRootNav } from './NavReducer';
 import { landlordTabBar }from './NavReducer';
 import { landlordPropertiesNav }from './NavReducer';
 import { genericNav } from './NavReducer';
@@ -37,6 +39,7 @@ const AppReducer = combineReducers({
   guestChatsNav: chatsNav,
   optionsNav: (state, action) => OptionsNavigator.router.getStateForAction(action,state),
   genericNav,
+  landlordRootNav,
 
   //Landlord Navigators
   landlordTabBar: landlordTabBar,

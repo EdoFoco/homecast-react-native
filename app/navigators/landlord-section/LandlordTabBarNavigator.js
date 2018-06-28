@@ -1,17 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
-import PropertiesNavigator  from '../../components/templates/landlord-section/properties-tab/Navigator';
+import PropertiesScreen from '../../components/templates/landlord-section/properties-tab/PropertiesScreen';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 import * as Colors from '../../components/helpers/ColorPallette';
 import {
   createReduxBoundAddListener,
-  createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
   PropertiesTab: { 
-    screen: PropertiesNavigator
+    screen: PropertiesScreen
   },
   OptionsTab: {
     screen: OptionsTab

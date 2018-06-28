@@ -12,7 +12,6 @@ import UploadPhotosScreen from './UploadPhotosScreen';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
-    PropertiesHome: { screen: PropertiesScreen },
     EditPropertyScreen: { screen: EditPropertyScreen },
     AddPropertyScreen: { screen: AddPropertyScreen },
     ViewingScreen: { screen: ViewingContainer },
@@ -21,7 +20,7 @@ const routeConfiguration = {
 }
 
 const stackConfiguration = {
-  initialRoute: 'PropertiesHome',
+  initialRoute: 'EditPropertyScreen',
   navigationOptions: {
     headerTintColor: Colors.RED,
     headerStyle: {

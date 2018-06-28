@@ -67,6 +67,13 @@ export function goToGuestPropertyScreen(property){
     }
 }
 
+export function goToLandlordPropertyScreen(property){
+    return {
+        type: types.PROPERTIES_TAB_GO_TO_PROPERTY,
+        property: property
+    }
+}
+
 export function goToGuestFavouritesPropertyScreen(property){
     return {
         type: types.FAVOURITES_TAB_GO_TO_PROPERTY,

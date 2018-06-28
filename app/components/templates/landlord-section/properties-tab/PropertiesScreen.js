@@ -24,7 +24,8 @@ class PropertiesScreen extends Component{
   }
 
   _onPress(property){
-      this.props.navigation.navigate('EditPropertyScreen', { property : property});
+      this.props.goToLandlordPropertyScreen(property);
+      this.props.navigation.navigate('PropertyStack');
   }
 
  _renderRow = function({item}){

@@ -2,28 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import * as Colors from '../../components/helpers/ColorPallette';
-import GuestTabBar from './GuestTabBarNavigator';
-import PropertiesNavigator  from '../../components/templates/guest-section/properties-tab/Navigator';
-import FavouritesNavigator  from '../../components/templates/guest-section/favourites-tab/Navigator';
+import LandlordTabBar from './LandlordTabBarNavigator';
+import LandlordPropertiesNavigator from '../../components/templates/landlord-section/properties-tab/Navigator';
 import GuestViewingsNavigator  from '../../components/templates/guest-section/viewings-tab/Navigator';
 import GuestChatsNavigator  from '../../components/templates/guest-section/chats-tab/Navigator';
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
   TabBar: { 
-    screen: GuestTabBar
+    screen: LandlordTabBar
   },
   PropertyStack: {
-    screen: PropertiesNavigator
-  },
-  FavouritesStack: {
-    screen: FavouritesNavigator
-  },
-  ViewingsStack: {
-    screen: GuestViewingsNavigator
-  },
-  ChatsStack: {
-    screen: GuestChatsNavigator
+    screen: LandlordPropertiesNavigator
   }
 }
 
@@ -42,10 +32,10 @@ const configuration = {
   }
 }
 
-export const GuestRootNavigator = StackNavigator(routeConfiguration, configuration);
+export const LandlordRootNavigator = StackNavigator(routeConfiguration, configuration);
 
 
-class GuestRootNav extends React.Component {
+class LandlordRootNav extends React.Component {
 
   render(){
     const { dispatch, navigationState } = this.props;
@@ -53,7 +43,7 @@ class GuestRootNav extends React.Component {
 
     try{
       return (
-        <GuestRootNavigator 
+        <LandlordRootNavigator 
           navigation={
             addNavigationHelpers({
               dispatch: dispatch,
@@ -74,10 +64,9 @@ class GuestRootNav extends React.Component {
 
 const mapStateToProps = (state) => {
  return {
-    navigationState: state.guestRootNav,
-    network: state.network
+    navigationState: state.landlordRootNav,
   }
 }
 
 
-export default connect(mapStateToProps)(GuestRootNav)
+export default connect(mapStateToProps)(LandlordRootNav)
