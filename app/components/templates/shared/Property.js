@@ -22,6 +22,7 @@ import {
   RefreshControl
 } from 'react-native';
 import { DEFAULT } from '../../helpers/FontSizes';
+import HorizontalViewingsList from './HorizontalViewingsList';
 
 export default class Property extends Component{
 
@@ -71,6 +72,13 @@ export default class Property extends Component{
     return null;
   }
 
+  _renderViewingItem({item}){
+    let viewing = item;
+    return (
+      <ViewingRow viewing={viewing} goToViewing={() => {this.props.goToViewing(viewing.id, this.props.currentProperty)}}/>
+    )
+  }
+
   _renderInfoTab(){
     return (
       <ScrollView style={styles.tabContainer} refreshControl={<RefreshControl
@@ -79,24 +87,25 @@ export default class Property extends Component{
         />} >
         <View style={{flexDirection: 'row', marginBottom: 20}} >
              <FlatList
-                    style={styles.imagesContainer}
-                    data={this.props.currentProperty.images}
-                    renderItem={(image) => this._renderImage(image)}
-                    keyExtractor={(item, index) => index.toString()}
-                    removeClippedSubviews={false}
-                    horizontal
-                    pagingEnabled
-                />
+                  style={styles.imagesContainer}
+                  data={this.props.currentProperty.images}
+                  renderItem={(image) => this._renderImage(image)}
+                  keyExtractor={(item, index) => index.toString()}
+                  removeClippedSubviews={false}
+                  horizontal
+                  pagingEnabled
+              />
             {/* <FastImage source={{uri: this.props.currentProperty.thumbnail}} resizeMode={FastImage.resizeMode.cover} style={styles.backgroundImage} /> */}
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={styles.propertyTitle}>{this.props.currentProperty.name}</Text>
-          <View style={{alignSelf: 'flex-start', paddingTop: 5,  flex: 0.3, paddingRight: 10,}}>
-            <Text style={styles.priceBadge}>£ {Math.round(this.props.currentProperty.price)}</Text>
-            <Text style={{color: Colors.AQUA_GREEN, fontSize: FontSizes.DEFAULT, alignSelf: 'center'}}>month</Text>
-          </View>
-         </View>
-       <View style={styles.servicesContainer}>
+        <View style={{ flex: 1}}>
+          <View style={styles.titleContainer}>
+            <View style={styles.priceContainer}>
+              <Text style={styles.propertyTitle}>£ {Math.round(this.props.currentProperty.price)}</Text>
+              <Text style={styles.priceUnit}>/month</Text>
+            </View>
+            <Text style={styles.address}>{this.props.currentProperty.address}</Text>
+          </View>  
+          <View style={styles.servicesContainer}>
                 <View style={styles.serviceItem}>
                     <FontAwesomeIcon name="bed" style={styles.serviceIcon} />
                     <Text style={styles.serviceText}>{this.props.currentProperty.bedrooms} beds</Text> 
@@ -110,12 +119,32 @@ export default class Property extends Component{
                 <Text style={styles.serviceText}>{this.props.currentProperty.bathrooms} bath</Text> 
               </View>
          </View>
+        </View>
+        <View style={styles.sectionTitleContainer}>
+          <Text style={styles.sectionTitle}>Live Viewings</Text>
+        </View>
+        <View style={{marginBottom: 20, marginTop: 10, paddingBottom: 20, flex:1}}>
+        {
+          this.props.currentProperty.viewings.length == 0 ?
+          <Text style={styles.noViewingsText}>There are no viewings scheduled for this property. Contact the agent to ask for availability.</Text> :
+          <FlatList
+              style={styles.horizontalViewingContainer}
+              data={this.props.currentProperty.viewings}
+              renderItem={(viewing) => this._renderViewingItem(viewing)}
+              keyExtractor={(item, index) => index.toString()}
+              removeClippedSubviews={false}
+              pagingEnabled
+          />
+        } 
+        </View>
+        <View style={styles.sectionTitleContainer}>
+            <Text style={styles.sectionTitle}>Description</Text>
+          </View>    
          <View style={styles.descriptionContainer}>
-             { 
+            { 
               this.props.currentProperty.description_sections.map((section, index) => {
                  return ( 
                     <View key={index}>
-                       <Text style={styles.subTitle}>{section.title}</Text>
                         <Text style={styles.propertyDescription}>{section.description}</Text>
                     </View>
                   )
@@ -123,6 +152,23 @@ export default class Property extends Component{
              }
            
          </View>
+        <View style={styles.sectionTitleContainer}>
+          <Text style={styles.sectionTitle}>Map</Text>
+        </View>
+        <View style={{height: 300}}>
+          <MapView style={styles.tabContainer}
+            initialRegion={{
+              latitude: this.props.currentProperty.latitude,
+              longitude: this.props.currentProperty.longitude,
+              latitudeDelta: 0.00622,
+              longitudeDelta: 0.00421,
+            }}>
+              <Marker
+                  coordinate={{latitude: this.props.currentProperty.latitude, longitude: this.props.currentProperty.longitude}}
+                  image={require('../../../img/pin.png')}
+                />
+            </MapView>
+        </View>
       </ScrollView>
     )
   }
@@ -178,11 +224,12 @@ export default class Property extends Component{
                   <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
                     <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
                   </TouchableHighlight>
-                  {this.state.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
+                  <Text style={styles.menuText}>{this.props.currentProperty.address}</Text>
+                  {/* {this.state.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
                   {this.state.activeTab == 2 ?<Text style={styles.menuText}>Map</Text> : null }
-                  {this.state.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null }
+                  {this.state.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null } */}
                 </View>
-                <View style={styles.menuContainer}>
+                {/* <View style={styles.menuContainer}>
                         <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 1})}} underlayColor={'rgba(0,0,0,0)'}>
                         <View style={this.state.activeTab == 1 ? styles.menuItemActive : styles.menuItem}>
                               <FontAwesomeIcon style={this.state.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
@@ -201,7 +248,7 @@ export default class Property extends Component{
                               { this.state.activeTab == 3 ? <View style={styles.triangle} /> : null }
                           </View>
                         </TouchableHighlight>
-                  </View>
+                  </View> */}
               </View>
               {{
                 1: (
@@ -279,7 +326,7 @@ const styles = StyleSheet.create({
   menuWrapper: {
     flexDirection: 'row',
     backgroundColor: 'white',
-    width: Dimensions.get('window').width, 
+   // width: Dimensions.get('window').width, 
     paddingTop: 30,
     alignItems: 'center',
     paddingBottom: 10
@@ -288,7 +335,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 0.4,
+    flex: 1,
     paddingRight: 5
   },
   menuItemContainer: {
@@ -322,7 +369,7 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.DEFAULT,
   },
   menuTitleContainer:{
-    flex: 0.6,
+    flex: 1,
     flexDirection: 'row',
   },
   backButton: {
@@ -373,18 +420,30 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   propertyTitle: {
-    fontSize: FontSizes.BIG,
+    fontSize: FontSizes.TITLE,
     fontWeight: 'bold',
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-end',
     color: Colors.DARK_GREY,
-    padding: 10,
-    paddingTop: 0,
-    flex: 0.7
+  },
+  priceContainer:{
+    flexDirection: 'row',
+    paddingLeft: 15
+  },
+  priceUnit: {
+    alignSelf: 'flex-end',
+    fontSize: FontSizes.DEFAULT,
+    paddingBottom: 4
   },
   servicesContainer: {
     flexDirection: 'row',
     alignSelf: 'stretch',
-    marginTop: 15,
+    paddingLeft: 15,
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: Colors.LIGHT_GRAY,
+    marginTop: 10,
+    paddingTop: 20,
+    paddingBottom: 20
   },
   serviceItem: {
     flex: 1,
@@ -400,8 +459,9 @@ const styles = StyleSheet.create({
     color: Colors.DARK_GREY
   },
   descriptionContainer: {
-    marginTop: 0,
-    padding: 10
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 15,
   },
   subTitle: {
     fontSize: FontSizes.DEFAULT,
@@ -410,9 +470,9 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   propertyDescription: {
-    marginTop: 10,
     fontSize: FontSizes.DEFAULT,
-    color: Colors.DARK_GREY
+    color: Colors.DARK_GREY,
+    fontFamily: 'Avenir-Book'
   },
   requestViewingButton: {
     flex: 0.1,
@@ -427,5 +487,31 @@ const styles = StyleSheet.create({
   },
   imagesContainer: {
     height: 200
+  },
+  horizontalViewingContainer: {
+    maxHeight: 200
+  },
+  sectionTitleContainer: {
+    backgroundColor: Colors.WHITE_SMOKE,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 15,
+  },
+  sectionTitle: {
+    fontSize: FontSizes.DEFAULT, 
+    color: Colors.LIGHT_GRAY,
+    fontWeight: 'bold'
+  },
+  address: {
+    paddingTop: 5,
+    paddingLeft: 15,
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.LIGHT_GRAY
+  },
+  noViewingsText: {
+    padding: 20,
+    fontSize: FontSizes.DEFAULT,
+    alignSelf: 'center',
+    color: Colors.LIGHT_GRAY
   }
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, Alert } from 'react-native';
+import { AppRegistry, Alert, Text, TextInput } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import AppReducer from './app/reducers';
@@ -12,7 +12,7 @@ import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddlewa
 import {Linking} from 'react-native';
 import LinkRoutes from './app/libs/routing/LinkRoutes';
 import SignalChecker from './app/libs/network/SignalChecker';
-import firebase, { RemoteMessage, NotificationOpen } from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 import * as chatActions from './app/actions/Chat';
 import * as errorHandlerActions from './app/actions/ErrorHandler';
 import { AsyncStorage } from 'react-native';
@@ -69,14 +69,14 @@ setNativeExceptionHandler((errorString) => {
     GAClient.gaClientInstance.trackException(errorString, isFatal);
 });
 
-class ReduxExampleApp extends React.Component {
+class HomecastApp extends React.Component {
   
- 
   persistedReducer = persistReducer(persistConfig, AppReducer)
   store = createStore(this.persistedReducer,  applyMiddleware(reduxCatch(this.handleError), navMiddleware, socketIoMiddleware, thunk));
   persistor = persistStore(this.store)
 
   componentDidMount() {
+    this.setDefaultFontFamily();
     Linking.addEventListener('url', event => this.handleOpenURL(event.url));
     Linking.getInitialURL().then(url => url && this.handleOpenURL(url));
     SignalChecker.listenForSignalChange(this.store);
@@ -86,12 +86,11 @@ class ReduxExampleApp extends React.Component {
       // Process your notification as required
       // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
     });
-    this.notificationListener = firebase.notifications().onNotification((notification) => {
-        this.store.dispatch(chatActions.getChats());
+    this.notificationListener = firebase.notifications().onNotification(() => {
+      this.store.dispatch(chatActions.getChats());
     });
 
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-      const action = notificationOpen.action;
       const notification = notificationOpen.notification;
       console.log(notification);
       if(notification.data && notification.data.path){
@@ -112,7 +111,7 @@ class ReduxExampleApp extends React.Component {
     LinkRoutes(this.store, path);
   }
 
-  handleError(error, getState, lastAction, dispatch) {
+  handleError(dispatch) {
     dispatch(errorHandlerActions.resetReducers());
     AsyncStorage.getAllKeys()
     .then((keys) => {
@@ -124,6 +123,34 @@ class ReduxExampleApp extends React.Component {
   }
   
   
+  setDefaultFontFamily() {
+    let components = [Text, TextInput]
+
+    const customProps = {
+        style: {
+            fontFamily: "Avenir-Book"
+        }
+    }
+
+    for(let i = 0; i < components.length; i++) {
+        const TextRender = components[i].prototype.render;
+        const initialDefaultProps = components[i].prototype.constructor.defaultProps;
+        components[i].prototype.constructor.defaultProps = {
+            ...initialDefaultProps,
+            ...customProps,
+        }
+        components[i].prototype.render = function render() {
+            let oldProps = this.props;
+            this.props = { ...this.props, style: [customProps.style, this.props.style] };
+            try {
+                return TextRender.apply(this, arguments);
+            } finally {
+                this.props = oldProps;
+            }
+        };
+    }
+  }
+
   render() {
 
     return (
@@ -136,6 +163,6 @@ class ReduxExampleApp extends React.Component {
   }
 }
 
-AppRegistry.registerComponent('Homecast', () => ReduxExampleApp);
+AppRegistry.registerComponent('Homecast', () => HomecastApp);
 
-export default ReduxExampleApp;
+export default HomecastApp;

@@ -9,7 +9,7 @@ import {
    StyleSheet
   } from 'react-native';
 
-export default class ViewingRow extends Component{
+export default class HorizontalViewingsList extends Component{
 
    _toDateString(date){
         let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
@@ -28,14 +28,13 @@ export default class ViewingRow extends Component{
                     <Text style={styles.viewingTime}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                     <Text style={styles.dateStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                 </View>
-                <Text style={styles.viewingCapacity}>{this.props.viewing.capacity} slots left</Text>
             </View>
         </TouchableHighlight>
     )
   }
 }
 
-ViewingRow.propTypes ={
+HorizontalViewingsList.propTypes ={
     viewing: PropTypes.object.isRequired,
     gotToViewing: PropTypes.func
 }
@@ -43,18 +42,22 @@ ViewingRow.propTypes ={
 const styles = StyleSheet.create({
     viewingRow:{
         flex: 1,
-        borderBottomColor: Colors.LIGHT_GRAY,
-        borderBottomWidth: 0.5,
         flexDirection: 'row',
         justifyContent: 'center',
-        padding: 10
+        padding: 5,
+        borderColor: Colors.AQUA_GREEN,
+        borderRadius: 10,
+        borderWidth: 1,
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 5
     },
     viewingCapacity: {
-        color: Colors.AQUA_GREEN,
+        color: Colors.RED,
         fontSize: FontSizes.MEDIUM_BIG,
-        textAlign: 'center',
+        textAlign: 'left',
         borderWidth: 1,
-        borderColor: Colors.AQUA_GREEN,
+        borderColor: Colors.RED,
         padding: 5,
         borderRadius: 10,
         height: 40,
@@ -64,8 +67,8 @@ const styles = StyleSheet.create({
         flex: 0.6,
     },
     viewingTime:{
-        fontSize: FontSizes.MEDIUM_BIG,
-        textAlign: 'left',
+        fontSize: FontSizes.DEFAULT,
+        textAlign: 'center',
         color: Colors.DARK_GREY,
         paddingRight: 5
     },
