@@ -36,6 +36,8 @@ class PropertyContainer extends Component{
             updatePropertyActiveTab={(index) => { return this.props.updatePropertyActiveTab(index)}}
             goBack={() => {this.props.returnToGuestTabBar()}}
             getProperty={this.props.getProperty}
+            contactAgent={() => {this.props.navigation.navigate('CreateChatContainer', {recipientIds : [this.props.user.info.id, this.props.currentProperty.user.id] })}}
+            showContactAgent={this.props.user.info.id != this.props.currentProperty.user.id}
           />
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>

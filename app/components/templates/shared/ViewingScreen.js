@@ -99,7 +99,7 @@ export default class ViewingScreen extends Component{
                         <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
-                {
+                { 
                   this.props.user.info.id == this.props.property.user.id ? null : 
                   <TouchableHighlight style={styles.buttonContainer} onPress={this.props.contactAgent}>
                     <View style={styles.buttonTextContainer}>
@@ -107,7 +107,7 @@ export default class ViewingScreen extends Component{
                         <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
                     </View>
                   </TouchableHighlight>
-                }
+                } 
             </ScrollView>
             <View style={styles.joinCastContainer}>
                {this._renderCTA()}

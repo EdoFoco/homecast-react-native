@@ -1,12 +1,8 @@
 import React, { Component} from 'react';
-import { connect } from 'react-redux';
-import { ActionCreators } from '../../../actions';
-import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import ViewingRow from './ViewingRow';
 import FastImage from 'react-native-fast-image';
@@ -21,8 +17,6 @@ import {
   ScrollView,
   RefreshControl
 } from 'react-native';
-import { DEFAULT } from '../../helpers/FontSizes';
-import HorizontalViewingsList from './HorizontalViewingsList';
 
 export default class Property extends Component{
 
@@ -35,7 +29,7 @@ export default class Property extends Component{
     }
    }
    
-  _keyExtractor = (item, index) => index.toString();
+  _keyExtractor = (index) => index.toString();
   
   _toDateString(date){
     let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
@@ -90,7 +84,7 @@ export default class Property extends Component{
                   style={styles.imagesContainer}
                   data={this.props.currentProperty.images}
                   renderItem={(image) => this._renderImage(image)}
-                  keyExtractor={(item, index) => index.toString()}
+                  keyExtractor={(index) => index.toString()}
                   removeClippedSubviews={false}
                   horizontal
                   pagingEnabled
@@ -131,9 +125,9 @@ export default class Property extends Component{
               style={styles.horizontalViewingContainer}
               data={this.props.currentProperty.viewings}
               renderItem={(viewing) => this._renderViewingItem(viewing)}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(index) => index.toString()}
               removeClippedSubviews={false}
-              pagingEnabled
+              
           />
         } 
         </View>
@@ -173,40 +167,6 @@ export default class Property extends Component{
     )
   }
   
-  _renderMapTab(){
-    return (
-         <MapView style={styles.tabContainer}
-            initialRegion={{
-              latitude: this.props.currentProperty.latitude,
-              longitude: this.props.currentProperty.longitude,
-              latitudeDelta: 0.00622,
-              longitudeDelta: 0.00421,
-            }}>
-              <Marker
-                  coordinate={{latitude: this.props.currentProperty.latitude, longitude: this.props.currentProperty.longitude}}
-                  image={require('../../../img/pin.png')}
-                />
-            </MapView>
-    )
-  }
-
-  _renderViewingsTab(){
-    return (
-      <View style={styles.viewingsTabContainer}>
-      
-          <FlatList style={{margin:5, flex: 1}}
-           data={this.props.currentProperty.viewings}
-           keyExtractor={this._keyExtractor}
-           renderItem={this._renderItem} 
-           extraData={this.props.properties}
-           refreshing={this.state.isRefreshing}
-           onRefresh={() => this._refresh()}
-          />
-      
-    </View>
-    )
-  }
-  
   _refresh(){
     this.setState({isRefreshing: true});
     this.props.getProperty(this.props.currentProperty.id)
@@ -225,48 +185,16 @@ export default class Property extends Component{
                     <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
                   </TouchableHighlight>
                   <Text style={styles.menuText}>{this.props.currentProperty.address}</Text>
-                  {/* {this.state.activeTab == 1 ? <Text style={styles.menuText}>Info</Text> : null }
-                  {this.state.activeTab == 2 ?<Text style={styles.menuText}>Map</Text> : null }
-                  {this.state.activeTab == 3 ?<Text style={styles.menuText}>Live Viewings</Text> : null } */}
                 </View>
-                {/* <View style={styles.menuContainer}>
-                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 1})}} underlayColor={'rgba(0,0,0,0)'}>
-                        <View style={this.state.activeTab == 1 ? styles.menuItemActive : styles.menuItem}>
-                              <FontAwesomeIcon style={this.state.activeTab == 1 ? styles.menuIconActive : styles.menuIcon} name="info" />
-                              { this.state.activeTab == 1 ? <View style={styles.triangle} /> : null }
-                          </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 2})}} underlayColor={'rgba(0,0,0,0)'}>
-                        <View style={this.state.activeTab == 2 ? styles.menuItemActive : styles.menuItem}>
-                              <FontAwesomeIcon style={this.state.activeTab == 2 ? styles.menuIconActive : styles.menuIcon} name="map" />
-                              { this.state.activeTab == 2 ? <View style={styles.triangle} /> : null }
-                          </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={styles.menuItemContainer} onPress={ () => { this.setState({activeTab: 3})}} underlayColor={'rgba(0,0,0,0)'}>
-                        <View style={this.state.activeTab == 3 ? styles.menuItemActive : styles.menuItem}>
-                              <FontAwesomeIcon style={this.state.activeTab == 3 ? styles.menuIconActive : styles.menuIcon} name="video-camera" />
-                              { this.state.activeTab == 3 ? <View style={styles.triangle} /> : null }
-                          </View>
-                        </TouchableHighlight>
-                  </View> */}
               </View>
-              {{
-                1: (
+              {
                   this._renderInfoTab()
-                ),
-                2: (
-                  this._renderMapTab()
-                ),
-                3: (
-                  this._renderViewingsTab()
-                )
-              }[this.state.activeTab]}
-
+              }
             </View>
         {
-          this.state.activeTab != 3 ? null :
-          <TouchableHighlight style={styles.requestViewingButton}>
-              <Text style={styles.requestViewingButtonTxt}>Request alternative viewing</Text>
+          !this.props.showContactAgent ? null :
+          <TouchableHighlight style={styles.contactAgentButton} onPress={() => {this.props.contactAgent()}}>
+              <Text style={styles.contactAgentButtonTxt}>Contact Agent</Text>
           </TouchableHighlight>
         }
       </View>
@@ -280,6 +208,8 @@ Property.propTypes = {
     goToViewing: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
     getProperty: PropTypes.func.isRequired,
+    contactAgent: PropTypes.func,
+    showContactAgent: PropTypes.bool.isRequired
   }
 
 const styles = StyleSheet.create({
@@ -381,10 +311,11 @@ const styles = StyleSheet.create({
   },
   menuText: {
     color: Colors.AQUA_GREEN,
-    fontSize: FontSizes.MEDIUM_BIG,
+    fontSize: FontSizes.DEFAULT,
     alignSelf: 'center',
     textAlign: 'center',
-    paddingBottom: 5
+    paddingBottom: 5,
+    flex: 0.9
   },
   menuTextActive: {
     color: Colors.RED,
@@ -471,16 +402,15 @@ const styles = StyleSheet.create({
   },
   propertyDescription: {
     fontSize: FontSizes.DEFAULT,
-    color: Colors.DARK_GREY,
-    fontFamily: 'Avenir-Book'
+    color: Colors.DARK_GREY
   },
-  requestViewingButton: {
+  contactAgentButton: {
     flex: 0.1,
     backgroundColor: Colors.AQUA_GREEN,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  requestViewingButtonTxt: {
+  contactAgentButtonTxt: {
     alignItems: 'center',
     fontSize: FontSizes.DEFAULT,
     color: 'white'
