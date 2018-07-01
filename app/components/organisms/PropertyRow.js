@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: 0.5,
         borderColor: Colors.LIGHT_GRAY,
-        paddingBottom: 40
+        paddingBottom: 20
         //paddingTop: 20
     },
     imagesContainer:{
