@@ -9,7 +9,7 @@ import {
    StyleSheet
   } from 'react-native';
 
-export default class HorizontalViewingsList extends Component{
+export default class ViewingCell extends Component{
 
    _toDateString(date){
         let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
@@ -34,7 +34,7 @@ export default class HorizontalViewingsList extends Component{
   }
 }
 
-HorizontalViewingsList.propTypes ={
+ViewingCell.propTypes ={
     viewing: PropTypes.object.isRequired,
     gotToViewing: PropTypes.func
 }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ViewingCell from '../templates/shared/ViewingCell';
 import PropTypes from 'prop-types';
 import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
@@ -22,7 +21,7 @@ export default class PropertyRow extends Component{
     let image = item.item;
     if(image){
       return(  
-        <TouchableHighlight style={{ width:  Dimensions.get('window').width }} onPress={() => this.props.onPress(this.props.property)}>
+        <TouchableHighlight style={{ width:  Dimensions.get('window').width, padding: 10, paddingTop: 15 }} onPress={() => this.props.onPress(this.props.property)}>
           <FastImage
               style={styles.backgroundImage}
               source={{
@@ -36,6 +35,22 @@ export default class PropertyRow extends Component{
     }
   }
 
+  _renderViewing(item){
+      let viewing = item.item;
+      return(
+        <ViewingCell viewing={viewing} />
+      )
+  }
+
+  _toDateString(date){
+    let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
+    let day = new Date(`${date}`).getDate();
+    let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
+    let year = new Date(`${date}`).toLocaleString('en-us', {  year: 'numeric' });
+
+    return `${weekday}, ${day} ${month} ${year}`;
+}
+
   render() {
     return (
         <View style={styles.propertyButton}  underlayColor='rgba(0,0,0,0)'>
@@ -44,7 +59,7 @@ export default class PropertyRow extends Component{
                     style={styles.imagesContainer}
                     data={this.props.property.images}
                     renderItem={(image) => this._renderImage(image)}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={(index) => index.toString()}
                     removeClippedSubviews={false}
                     horizontal
                     pagingEnabled
@@ -59,19 +74,48 @@ export default class PropertyRow extends Component{
                     </View>
                 }
             <TouchableHighlight style={{flex:1}} onPress={() => this.props.onPress(this.props.property)}>
-                <View tyle={{flex:1, flexDirection: 'column'}} >
-                    {/* <FastImage source={{uri: this.props.property.user.profile_picture}} style={styles.profilePicture}/> */}
-    
+                <View tyle={styles.infoContainer} >
                     <View style={styles.propertyDescriptionWrapper}>
-                        <Text style={styles.propertyTitle}>{this.props.property.name}</Text>
-                        <Text style={styles.descriptionText}>{this.props.property.address}</Text>
-                        <View style={styles.iconsContainer}>
-                            <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                            <Text style={styles.iconText}>{this.props.property.bedrooms}</Text>
-                            <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                            <Text style={styles.iconText}>{this.props.property.bathrooms}</Text>
+                        <View style={styles.leftWrapper}>
+                            <View style={styles.priceWrapper}>
+                                <Text style={styles.price}>£{Math.round(this.props.property.price)}</Text>
+                                <Text style={styles.priceUnit}>/month</Text>
+                            </View>
+                            <Text style={styles.descriptionText}>{this.props.property.address.replace(', UK', '')}</Text>
                         </View>
-                        <Text style={styles.priceBadge}>£ {Math.round(this.props.property.price)} p/m</Text>
+                        <View style={styles.rightWrapper}>
+                            <View style={styles.iconsContainer}>
+                                <View style={styles.iconWrapper}>
+                                    <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
+                                    <Text style={styles.iconText}>{this.props.property.bedrooms} beds</Text>
+                                </View>
+                                <View style={styles.iconWrapper}>
+                                    <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
+                                    <Text style={styles.iconText}>{this.props.property.bathrooms} baths</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.viewingsContainer}>
+                        <MaterialCommunityIcon name="calendar-clock" style={styles.videoIcon} />
+                       
+                        <View style={styles.viewingTitleWrapper}>
+                            <Text style={styles.viewingsTitle}> Next Live Viewing: </Text>
+                        </View>
+                        {
+                                this.props.property.viewings.length == 0 ?
+                                <Text style={styles.viewingDate}> Not scheduled</Text> :
+                                <Text style={styles.viewingDate}> {this._toDateString(this.props.property.viewings[0].date_time)}</Text>
+                        }
+                        {/* <FlatList
+                            style={styles.imagesContainer}
+                            data={this.props.property.viewings}
+                            renderItem={(viewing) => this._renderViewing(viewing)}
+                            keyExtractor={(index) => index.toString()}
+                            removeClippedSubviews={false}
+                            horizontal
+                            pagingEnabled
+                        /> */}
                     </View>
                 </View>
             </TouchableHighlight>
@@ -95,13 +139,18 @@ const styles = StyleSheet.create({
     propertyButton:{
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth: 0.5,
+        borderColor: Colors.LIGHT_GRAY,
+        paddingBottom: 40
+        //paddingTop: 20
     },
     imagesContainer:{
         flex: 1,
     },
     backgroundImage: {
-        height: 200,
+        height: 250,
+        borderRadius: 5
     },
     propertContainer: {
         flex: 1,
@@ -109,21 +158,23 @@ const styles = StyleSheet.create({
     },
     propertyDescriptionWrapper: {
         alignSelf: 'stretch',
-        height: 100,
-        padding: 20,
-        paddingTop: 10
+        flex: 0.2,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flexDirection: 'row',
     },
     propertyTitle: {
         color: Colors.DARK_GREY,
         fontSize: FontSizes.DEFAULT
     },
     descriptionText: {
-        color: Colors.VERY_LIGHT_GRAY,
-        fontSize: FontSizes.SMALL_TEXT
+        color: Colors.LIGHT_GRAY,
+        fontSize: FontSizes.SMALL_TEXT,
+        paddingRight: 10
     },
     priceBadge:{
         color: Colors.AQUA_GREEN,
-      //  top: 150,
         position: 'absolute',
         right: 0,
         top: 0,
@@ -145,25 +196,76 @@ const styles = StyleSheet.create({
     iconsContainer: {
         marginTop: 10,
         flexDirection: 'row',
-        flex: 1
     },
     descriptionIcon: {
         fontSize: FontSizes.DEFAULT,
-        marginRight: 10,
-        color: Colors.LIGHT_GRAY
+        color: Colors.DARK_GREY
     },
     iconText: {
         marginLeft: 5,
         marginRight:10,
-        color: Colors.LIGHT_GRAY
+        color: Colors.DARK_GREY,
+       // fontSize: FontSizes
     },
     favouriteIconContainer:{
         position: 'absolute',
-        top: 0,
+        top: 15,
         right: 0
     },
     favouriteIcon:{
         color: Colors.RED,
         fontSize: 34
-    }
+    },
+    priceWrapper: {
+        flexDirection: 'row',
+    },
+    price: {
+        fontSize: FontSizes.TITLE,
+        fontWeight: 'bold',
+    },
+    priceUnit: {
+        fontSize: FontSizes.DEFAULT,
+        paddingTop: 7
+    },
+    iconWrapper: {
+        alignItems: 'center'
+    },
+    leftWrapper: {
+        flex: 0.7,
+    },
+    rightWrapper: {
+        flex: 0.3
+    },
+    viewingsContainer: {
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flex: 1,
+        flexDirection: 'row'
+    },
+    viewingTitleWrapper: {
+        //backgroundColor: Colors.AQUA_GREEN,
+        marginTop: 0,
+        borderRadius: 5,
+        flex: 1,
+        justifyContent: 'center'
+    },
+    viewingsTitle: {
+        color: Colors.LIGHT_GRAY,
+        fontSize: FontSizes.DEFAULT,
+        textAlignVertical: 'center'
+    },
+   viewingDate: {
+        //flex: 0.7,
+        fontSize: FontSizes.DEFAULT,
+        textAlign: 'right',
+        color: Colors.DARK_GREY,
+        fontWeight: 'bold',
+        alignSelf: 'center'
+   },
+   videoIcon: {
+       color: Colors.AQUA_GREEN,
+       fontSize: FontSizes.TITLE
+   }
 });

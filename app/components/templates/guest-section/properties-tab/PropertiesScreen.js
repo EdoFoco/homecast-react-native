@@ -191,9 +191,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 10,
     paddingBottom: 30,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.6,
+    borderBottomWidth: 0.5,
+    borderColor: Colors.LIGHT_GRAY
+    // shadowColor: 'black',
+    // shadowOffset: { width: 0, height: 1 },
+    // shadowOpacity: 0.6,
   },
   menuWrapperActive: {
     backgroundColor: 'white',
