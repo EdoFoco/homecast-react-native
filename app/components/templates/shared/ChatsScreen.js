@@ -52,8 +52,9 @@ export default class ChatsScreen extends Component{
             <TouchableHighlight onPress={() => {this.props.goToScreen(chat)}}>
                 <View style={styles.chatRow}>
                     {
-                        !chat.last_message.sender_profile_picture ? null :
-                        <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender_profile_picture, priority: FastImage.priority.normal }} resizeMode={FastImage.resizeMode.cover} />
+                        !chat.last_message.sender_profile_picture ? 
+                        <FastImage style={styles.rowImage}  source={require('../../../img/dummy_avatar.png')} resizeMode={FastImage.resizeMode.contain} /> :
+                        <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender_profile_picture, priority: FastImage.priority.cover }} resizeMode={FastImage.resizeMode.cover} />
                     }
                     <View style={styles.rowDescriptionContainer}>
                         <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
@@ -104,10 +105,9 @@ const styles = StyleSheet.create({
         borderBottomColor: Colors.WHITE_SMOKE    
     },
     rowImage: {
-        flex: 0.2,
-        height: 60,
-        width: 60,
-        borderRadius: 30
+        height: 50,
+        width: 50,
+        borderRadius: 20
     },
     rowDescriptionContainer: {
        paddingLeft: 20,
@@ -115,11 +115,11 @@ const styles = StyleSheet.create({
     },
     rowTitle: {
         fontWeight: 'bold',
-        fontSize: FontSizes.MEDIUM_BIG
+        fontSize: FontSizes.DEFAULT
     },
     lastMessage: {
-        fontSize: FontSizes.DEFAULT,
+        fontSize: FontSizes.SMALL_TEXT,
         color: Colors.VERY_LIGHT_GRAY,
-        marginTop: 14,
+        marginTop: 0,
     }
 })    

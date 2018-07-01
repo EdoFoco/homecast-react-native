@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
+import * as FontSizes from '../../../helpers/FontSizes';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
@@ -12,6 +12,7 @@ import {
   StyleSheet,
   View,
   FlatList,
+  Text
 } from 'react-native';
 
 class FavouritesScreen extends Component{
@@ -56,6 +57,13 @@ class FavouritesScreen extends Component{
   }
 
   render() {
+    if(this.props.properties.length == 0){
+      return(
+        <View style={styles.noFavouritesContainer}>
+          <Text style={styles.noFavouritesMessage}>Shortlist the best properties by adding them to your favourites.</Text>
+        </View>
+      )
+    }
     return (
       <View style={styles.container}>
           <FlatList
@@ -106,5 +114,18 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     justifyContent: 'center',
     backgroundColor: 'white',
+  },
+  noFavouritesContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    paddingRight: 40,
+    paddingLeft: 40
+  },
+  noFavouritesMessage: {
+    color: Colors.LIGHT_GRAY,
+    alignSelf: 'center',
+    fontSize: FontSizes.DEFAULT,
+    textAlign: 'center'
   }
 });

@@ -2,11 +2,8 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
-import DateCell from '../../shared/DateCell';
-import ViewingRow from '../../shared/ViewingRow';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -87,6 +84,14 @@ class ViewingsScreen extends Component{
   }
 
   render() {
+    if(this.props.viewingReservations.length == 0) {
+      return(
+        <View style={styles.noViewingsContainer}>
+          <Text style={styles.noViewingsMessage}>You haven't reserved a spot for any property. Choose a property and reserve a spot for a Live viewing.</Text>
+        </View>
+      )
+    }
+
     return (
       <View style={styles.container}>
          <FlatList
@@ -262,5 +267,18 @@ videoIcon: {
    color: Colors.AQUA_GREEN,
    fontSize: FontSizes.TITLE,
    alignSelf: 'flex-start',
+},
+noViewingsContainer: {
+  flex: 1,
+  backgroundColor: 'white',
+  justifyContent: 'center',
+  paddingRight: 40,
+  paddingLeft: 40
+},
+noViewingsMessage: {
+  color: Colors.LIGHT_GRAY,
+  alignSelf: 'center',
+  fontSize: FontSizes.DEFAULT,
+  textAlign: 'center'
 }
 });
