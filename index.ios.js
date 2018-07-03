@@ -111,7 +111,7 @@ class HomecastApp extends React.Component {
     LinkRoutes(this.store, path);
   }
 
-  handleError(dispatch) {
+  handleError(error, getState, lastAction, dispatch) {
     dispatch(errorHandlerActions.resetReducers());
     AsyncStorage.getAllKeys()
     .then((keys) => {
