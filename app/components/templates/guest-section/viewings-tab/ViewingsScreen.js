@@ -164,7 +164,8 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.DEFAULT,
     textAlign: 'right',
     color: Colors.DARK_GREY,
-    paddingRight: 10
+    paddingRight: 10,
+    fontWeight: 'bold'
   },
   propertyThumb: {
     height: 250,
