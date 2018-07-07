@@ -50,6 +50,8 @@ export const guestRootNav = (state = initialGuestRootNavigatorState, action) => 
       return GuestRootNavigator.router.getStateForAction(
         NavigationActions.back()
       );
+    case types.GOTO_SECTION:
+      return initialGuestRootNavigatorState;
     default:
       return nextState || state;
   }
@@ -60,6 +62,8 @@ export const landlordRootNav = (state = initialLandlordRootNavigatorState, actio
   const nextState = LandlordRootNavigator.router.getStateForAction(action, state);
 
   switch(action.type){
+    case types.GOTO_SECTION:
+      return initialLandlordRootNavigatorState;
     default:
       return nextState || state;
   }
