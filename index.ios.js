@@ -72,7 +72,7 @@ setNativeExceptionHandler((errorString) => {
 class HomecastApp extends React.Component {
   
   persistedReducer = persistReducer(persistConfig, AppReducer)
-  store = createStore(this.persistedReducer,  applyMiddleware(reduxCatch(this.handleError), navMiddleware, socketIoMiddleware, thunk));
+  store = createStore(this.persistedReducer,  applyMiddleware(reduxCatch(this.handleError), navMiddleware, thunk));
   persistor = persistStore(this.store)
 
   componentDidMount() {

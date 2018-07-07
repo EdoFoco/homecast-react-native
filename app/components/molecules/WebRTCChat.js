@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { ActionCreators } from '../../actions';
-import { bindActionCreators } from 'redux';
 import Chat from './Chat';
 import * as Colors from '../helpers/ColorPallette';
-import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ScreenLoader from '../molecules/ScreenLoader';
 import InCallManager from 'react-native-incall-manager';
@@ -18,20 +14,14 @@ import {
   Text} from 'react-native';
 
  import {
-  RTCPeerConnection,
-  RTCMediaStream,
   RTCIceCandidate,
-  RTCSessionDescription,
   RTCView,
-  MediaStreamTrack,
-  getUserMedia,
 } from 'react-native-webrtc';
 
 
 
 var pc;
 var iceCandidatesCount = 0;
-var localStream;
 var kurentoPeer;
 var counter = 0;
 
@@ -49,7 +39,7 @@ export default class WebRTCChat extends Component{
     var self = this;
     
     var kurentoOptions = {
-          onicecandidate: function (event, error) {
+          onicecandidate: function (event) {
             console.log('onicecandidate', event.candidate);
             if (event.candidate) {
               console.log("5. Ice Candidate Received")
@@ -103,9 +93,6 @@ export default class WebRTCChat extends Component{
       pc = kurentoPeer.peerConnection;
       console.log("1. Creating Peer Connection.")
       
-      function logError(error){
-        console.log(error);
-      }
 
       pc.onnegotiationneeded = function () {
         console.log('onnegotiationneeded');

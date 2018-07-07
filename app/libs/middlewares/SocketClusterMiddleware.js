@@ -92,7 +92,6 @@ export default function createSocketMiddleware(callsToServerPrefix = 'server/', 
             }
         
             return next(action);
-           
         };
     }
 }

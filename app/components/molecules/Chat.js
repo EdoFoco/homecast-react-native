@@ -1,28 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
-import { ActionCreators } from '../../actions';
-import { bindActionCreators } from 'redux';
 import * as Animatable from 'react-native-animatable';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import * as Colors from '../helpers/ColorPallette'
 import { 
   View,
-  TouchableOpacity,
-  TouchableHighlight,
   StyleSheet,
   TextInput,
   ListView,
-  ListViewDataSource,
-  Platform,
   Dimensions,
-  KeyboardAvoidingView,
   Animated,
   Keyboard,
-  FlatList,
   Text} from 'react-native';
 
 const textBoxOffset = 120;
@@ -67,14 +55,14 @@ export default class Chat extends Component{
         }).start();
     }
 
-    keyboardDidHide = e => {
+    keyboardDidHide = () => {
         Animated.spring(this.viewHeight, {
-        duration: 150,
-        toValue:   Dimensions.get('window').height - textBoxOffset,
+            duration: 150,
+            toValue: Dimensions.get('window').height - textBoxOffset,
         }).start();
     }
 
-    _renderRow = function(rowData, rowId){
+    _renderRow = function(rowData){
         return (
             <Animatable.View animation="myFadeOut"  delay={3000}>
             <View style={{flex: 1,alignSelf: 'flex-start', backgroundColor: 'white', borderRadius:10, margin:10, padding:10}}>
@@ -107,16 +95,9 @@ export default class Chat extends Component{
             <Animated.View style={{height: this.viewHeight}}>
                 <View style={styles.chatContainer}>
                     <View style={styles.listViewContainer}>
-                    {/* <FlatList
-                        inverted
-                        data={this.props.chat.chatMessages}
-                        renderItem={(message) => this._renderRow(message)}
-                        keyExtractor={(item, index) => index}
-                        removeClippedSubviews={false}
-                        /> */}
                         <ListView
                             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-                            dataSource={this.ds.cloneWithRows(this.props.chat.chatMessages, this.props.chat.chatMessages.map((row, index) => index).reverse())}
+                            dataSource={this.ds.cloneWithRows(this.props.chat.chatMessages, this.props.chat.chatMessages.map((index) => index).reverse())}
                             enableEmptySections={true}
                             renderRow={(rowData, rowId) => this._renderRow(rowData, rowId)} 
                             />

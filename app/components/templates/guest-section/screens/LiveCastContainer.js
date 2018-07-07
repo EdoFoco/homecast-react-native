@@ -2,11 +2,9 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import WebRTCChat from '../../../molecules/WebRTCChat';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ScreenLoader from '../../../molecules/ScreenLoader';
-import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
+import SocketService from '../../../../libs/services/SocketService';
 import {
   StyleSheet,
   Text,
@@ -14,6 +12,14 @@ import {
  } from 'react-native';
 
 class LiveCastContainer extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      socketId: null,
+      roomStatus: {}
+    }
+  }
 
   componentWillMount(){
     this.props.getViewing(this.props.navigation.state.params.viewing.id)
@@ -23,8 +29,30 @@ class LiveCastContainer extends Component{
     })
     .then(() => {
       console.log('About to connect!!');
-      this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
+      var connectionData = {
+        roomId: this.props.navigation.state.params.viewing.id,
+        username: this.props.user.info.name,
+        isPresenter: false
+      };
+
+      SocketService.instance.connect(connectionData, this.onError, (socketId) => {this.onSubscribed(socketId)});
+
+      //this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
     });
+  }
+
+  onError(err){
+    console.log(this.props.user.info.name);
+    console.log(err);
+  }
+
+  onSubscribed(socketId){
+    console.log(this.props.user.info.name);
+    this.setState({socketId: socketId});
+  }
+
+  onRoomStatus(status){
+    this.setState({roomStatus: status});
   }
 
   componentWillUnmount(){
@@ -64,13 +92,13 @@ class LiveCastContainer extends Component{
   
 }
 
-LiveCastContainer.navigationOptions = ({ navigation }) => ({
+LiveCastContainer.navigationOptions = () => ({
     header: null
 });
 
 
 
-const mapStateToProps = ( state, navigation ) => {
+const mapStateToProps = ( state ) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
