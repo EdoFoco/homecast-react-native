@@ -3,7 +3,8 @@ import * as socketCluster from 'socketcluster-client';
 
 //var options = { host: '35.176.192.208:8000' };
 //var options = { host: '192.168.1.76:8000' };
-var options = { host: 'ec2-34-245-44-121.eu-west-1.compute.amazonaws.com:8000' };
+var options = { host: 'ec2-34-247-46-111.eu-west-1.compute.amazonaws.com:8000' };
+
 var socket;
 var iceCounter = 0;
 var poller;
