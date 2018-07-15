@@ -72,6 +72,16 @@ export default class WebRTCChat extends Component{
       console.log('length:' + this.props.iceCandidates.length + 'candiate: ' + candidate.candidate);
       if(pc && candidate) pc.addIceCandidate(new RTCIceCandidate(candidate));
     }
+
+    if(this.props.sdpAnswer){
+      if(!this.state.sdpAnswerLoaded){
+       // console.log('5. Presenter - Processing Presenter Answer');
+        this.setState({sdpAnswerLoaded: true});
+        kurentoPeer.processAnswer(this.props.sdpAnswer, function(){
+          console.log('hi viewer');
+        });
+      }
+    }
   }
   componentWillUpdate(){
     // if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){
@@ -201,7 +211,8 @@ WebRTCChat.PropTypes = {
   updateConnectionStatus: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
   publishEvent: PropTypes.func.isRequired,
-  iceCandidates: PropTypes.array.isRequired
+  iceCandidates: PropTypes.array.isRequired,
+  sdpAnswer: PropTypes.object.isRequired
 }
 
 var styles = StyleSheet.create({

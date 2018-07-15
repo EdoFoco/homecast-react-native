@@ -19,7 +19,8 @@ class LiveCastContainer extends Component{
       socketId: null,
       roomStatus: {},
       presenterResponse: {},
-      iceCandidates: []
+      iceCandidates: [],
+      viewerResponse: {}
     }
   }
 
@@ -110,6 +111,7 @@ class LiveCastContainer extends Component{
                 goBack={() => {this.goBack()}}
                 publishEvent={(event) => { SocketService.instance.publishEvent(this.props.chat.roomId, event) }}
                 iceCandidates={this.state.iceCandidates}
+                sdpAnswer={this.state.viewerResponse.sdpAnswer}
               />
           </View>
       );
