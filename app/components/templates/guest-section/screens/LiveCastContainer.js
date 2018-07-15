@@ -20,7 +20,8 @@ class LiveCastContainer extends Component{
       roomStatus: {},
       presenterResponse: {},
       iceCandidates: [],
-      viewerResponse: {}
+      viewerResponse: {},
+      webRtcError: false
     }
   }
 
@@ -45,14 +46,12 @@ class LiveCastContainer extends Component{
         (viewerResponse) => {this.onViewerResponse(viewerResponse)},
         (candidate) => {this.onIceCandidate(candidate)}
       );
-
-      //this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
     });
   }
 
   onError(err){
-    //console.log(this.props.user.info.name);
     console.log(err);
+    this.setState({webRtcError: true});
   }
 
   onSubscribed(socketId){
@@ -100,18 +99,12 @@ class LiveCastContainer extends Component{
               <WebRTCChat style={{backgroundColor: 'green}', alignSelf: 'stretch'}}
                 user={this.props.user} 
                 chat={this.props.chat}
-                webrtc={this.props.webrtc}
-                connect={(data) => {this.props.connect(data)}}
-                disconnect={(data) => {this.props.disconnect(data)}}
                 sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}
-                startViewer={(data) => {this.props.startViewer(data)}}
-                sendOnIceCandidate={(data) => {this.props.sendOnIceCandidate(data)}}
-                updateStreamUrl={(data) => {this.props.updateStreamUrl(data)}}
-                updateConnectionStatus={(data) => {this.props.updateConnectionStatus(data)}}
                 goBack={() => {this.goBack()}}
                 publishEvent={(event) => { SocketService.instance.publishEvent(this.props.chat.roomId, event) }}
                 iceCandidates={this.state.iceCandidates}
                 sdpAnswer={this.state.viewerResponse.sdpAnswer}
+                hasError={this.state.hasError}
               />
           </View>
       );
@@ -126,8 +119,6 @@ class LiveCastContainer extends Component{
 LiveCastContainer.navigationOptions = () => ({
     header: null
 });
-
-
 
 const mapStateToProps = ( state ) => {
     return {
