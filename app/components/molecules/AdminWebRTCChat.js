@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { ActionCreators } from '../../actions';
-import { bindActionCreators } from 'redux';
 import Chat from './Chat';
 import * as Colors from '../helpers/ColorPallette';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { NavigationActions } from 'react-navigation';
 import kurentoUtils from '../../libs/third-party/kurento';
 import InCallManager from 'react-native-incall-manager';
+import ScreenLoader from '../molecules/ScreenLoader';
 
 import { 
   View,
@@ -21,15 +18,10 @@ import {
   Platform} from 'react-native';
 
  import {
-  RTCPeerConnection,
-  RTCMediaStream,
   RTCIceCandidate,
-  RTCSessionDescription,
   RTCView,
   MediaStreamTrack,
-  getUserMedia,
-  MediaStream
-} from 'react-native-webrtc';
+  getUserMedia} from 'react-native-webrtc';
 
 
 var pc;
@@ -43,25 +35,25 @@ export default class AdminWebRTCChat extends Component{
     super(props);
     this.state = { 
         sdpAnswerLoaded: false,
-        isMicrophoneMute: false
+        isMicrophoneMute: false,
+        streamUrl: null
      };
   }
 
   componentWillMount(){
     console.log('About to connect!!');
-    this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
-
+    
     var self = this;
 
     this._getLocalStream(true, function(stream) {
         localStream = stream;
         var options = {
             videoStream: localStream,
-            onicecandidate : function (event, error) {
+            onicecandidate : function (event) {
                 console.log('onicecandidate', event.candidate);
                 if (event.candidate) {
                   console.log("3. Presenter - Sending Ice Cnadidate")
-                  self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
+                  self.props.publishEvent({type: 'onIceCandidate', data: { roomId: self.props.chat.roomId, candidate: event }});
                 }
             }
         }
@@ -70,9 +62,9 @@ export default class AdminWebRTCChat extends Component{
           if(error) return onError(error);
 
           console.log('1. Presenter - Generating offer');
-          this.generateOffer(function(error, offer){
+          this.generateOffer(function(offer){
               console.log('2. Presenter - Offer generated')
-              self.props.startPresenter({roomId: self.props.chat.roomId, sdpOffer: offer});
+              self.props.publishEvent({type: 'presenter', data: {roomId: self.props.chat.roomId, sdpOffer: offer}});
               self._startWebRtcAsPresenter();
          });
         });
@@ -81,36 +73,33 @@ export default class AdminWebRTCChat extends Component{
 
   componentWillUpdate(){
     
-    if(this.props.webrtc.presenter.iceCandidates.length > 0){
-      iceCandidatesCount = this.props.webrtc.presenter.iceCandidates.length;
-      //console.log("4. Presenter - Adding Ice Candidate")
-      pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.presenter.iceCandidates[iceCandidatesCount -1]));
-    }
+    // if(this.props.webrtc.presenter.iceCandidates.length > 0){
+    //   iceCandidatesCount = this.props.webrtc.presenter.iceCandidates.length;
+    //   //console.log("4. Presenter - Adding Ice Candidate")
+    //   pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.presenter.iceCandidates[iceCandidatesCount -1]));
+    // }
 
-    if(this.props.webrtc.presenter.sdpAnswer){
-        if(!this.state.sdpAnswerLoaded){
-            console.log('5. Presenter - Processing Presenter Answer');
-            kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
-              console.log('hi presenter');
-            });
-            this.setState({sdpAnswerLoaded: true});
-        }
-      }
+    // if(this.props.webrtc.presenter.sdpAnswer){
+    //     if(!this.state.sdpAnswerLoaded){
+    //         console.log('5. Presenter - Processing Presenter Answer');
+    //         kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
+    //           console.log('hi presenter');
+    //         });
+    //         this.setState({sdpAnswerLoaded: true});
+    //     }
+    //   }
   }
 
   componentWillUnmount(){
     localStream.getTracks().forEach(t => t.stop());
     localStream.release();
-    this.props.disconnect({ roomId: this.props.chat.roomId });
+    this.props.goBack();
     iceCandidatesCount = 0;
     kurentoPeer.dispose();
     pc = null;
   }
 
   _getLocalStream(isFront, callback) {
-
-    let videoSourceId;
-
     if (Platform.OS === 'ios') {
       MediaStreamTrack.getSources(sourceInfos => {
         console.log("sourceInfos: ", sourceInfos);
@@ -191,11 +180,6 @@ _getMediaOptions(){
 
       var self = this;
       pc = kurentoPeer.peerConnection;
-      //console.log("1. Creating Peer Connection.")
-      
-      function logError(error){
-        console.log(error);
-      }
 
       pc.onnegotiationneeded = function () {
         console.log('onnegotiationneeded');
@@ -222,20 +206,20 @@ _getMediaOptions(){
           }
       };
     
-      self.props.updateStreamUrl(localStream.toURL());
+      self.setState({streamUrl: event.stream.toURL()});
       pc.addStream(localStream);
  }
 
   _endCall(){
      InCallManager.stop();
-     this.props.navigation.goBack();
+     this.props.goBack();
   }
 
   _setMute(){
     this.setState({ isMicrophoneMute: !this.state.isMicrophoneMute }, () => {
       let tracks = localStream.getTracks();
       if (tracks.length > 0) {
-          tracks.forEach((track, index, array) => {
+          tracks.forEach((track) => {
               if(track.kind === 'audio'){
                 track.enabled = !this.state.isMicrophoneMute;
               }
@@ -246,14 +230,12 @@ _getMediaOptions(){
   }
 
   render() {
-       if(this.props.webrtc.hasError){
-          return <View>
-            <Text>There was an error connecting to the socket. Go Back and try again</Text>
-          </View>
+       if(this.props.hasError){
+          return <ScreenLoader message='Error connecting. Try again.' goBack={() => {this._endCall() }}/>
         }
 
         return (
-          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
+          <RTCView streamURL={this.state.streamUrl} style={styles.remoteView}  objectFit ='cover'>
               <View style={styles.videoCommands}>
                 <TouchableHighlight onPress={()=>{ this._setMute()}} style={styles.muteBtn}>
                  {
@@ -275,15 +257,13 @@ _getMediaOptions(){
 AdminWebRTCChat.propTypes = {
   chat: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  webrtc: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  connect: PropTypes.func.isRequired,
-  disconnect: PropTypes.func.isRequired,
-  sendOnIceCandidate: PropTypes.func.isRequired,
-  startPresenter: PropTypes.func.isRequired,
-  updateStreamUrl: PropTypes.func.isRequired,
-  navigation: PropTypes.object.isRequired,
-  network: PropTypes.object.isRequired
+  network: PropTypes.object.isRequired,
+  publishEvent: PropTypes.func.isRequired,
+  iceCandidates: PropTypes.array.isRequired,
+  sdpAnswer: PropTypes.object.isRequired,
+  hasError: PropTypes.bool.isRequired,
+  goBack: PropTypes.func.isRequired
 }
 
 var styles = StyleSheet.create({

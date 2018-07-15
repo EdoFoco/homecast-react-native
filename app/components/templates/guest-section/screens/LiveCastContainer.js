@@ -18,7 +18,6 @@ class LiveCastContainer extends Component{
     this.state = {
       socketId: null,
       roomStatus: {},
-      presenterResponse: {},
       iceCandidates: [],
       viewerResponse: {},
       webRtcError: false
