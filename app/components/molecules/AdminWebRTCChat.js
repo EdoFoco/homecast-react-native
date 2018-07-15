@@ -62,13 +62,31 @@ export default class AdminWebRTCChat extends Component{
           if(error) return onError(error);
 
           console.log('1. Presenter - Generating offer');
-          this.generateOffer(function(offer){
+          this.generateOffer(function(error, offer){
               console.log('2. Presenter - Offer generated')
               self.props.publishEvent({type: 'presenter', data: {roomId: self.props.chat.roomId, sdpOffer: offer}});
               self._startWebRtcAsPresenter();
          });
         });
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.iceCandidates.length > prevProps.iceCandidates.length) {
+      console.log("6. Adding Ice Candidate")
+      var candidate = this.props.iceCandidates[this.props.iceCandidates.length -1];
+      if(pc && candidate) pc.addIceCandidate(new RTCIceCandidate(candidate));
+    }
+
+    if(this.props.sdpAnswer){
+      if(!this.state.sdpAnswerLoaded){
+       // console.log('5. Presenter - Processing Presenter Answer');
+        this.setState({sdpAnswerLoaded: true});
+        kurentoPeer.processAnswer(this.props.sdpAnswer, function(){
+          console.log('Presenter initialised.');
+        });
+      }
+    }
   }
 
   componentWillUpdate(){
@@ -206,7 +224,7 @@ _getMediaOptions(){
           }
       };
     
-      self.setState({streamUrl: event.stream.toURL()});
+      self.setState({streamUrl: localStream.toURL()});
       pc.addStream(localStream);
  }
 

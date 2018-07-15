@@ -21,7 +21,9 @@ class LiveCastContainer extends Component{
       socketId: null,
       roomStatus: {},
       iceCandidates: [],
-      presenterResponse: {},
+      presenterResponse: {
+        sdpAnswer: null
+      },
       webRtcError: false
     }
   }
@@ -92,12 +94,12 @@ class LiveCastContainer extends Component{
               user={this.props.user} 
               chat={this.props.chat}
               sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}
-              navigation={this.props.navigation}
               network={this.props.network}
               publishEvent={(event) => { SocketService.instance.publishEvent(this.props.chat.roomId, event) }}
               iceCandidates={this.state.iceCandidates}
               sdpAnswer={this.state.presenterResponse.sdpAnswer}
-              hasError={this.state.hasError}
+              hasError={this.state.webRtcError}
+              goBack={() => {this.goBack()}}
               />
           </View>
       );
