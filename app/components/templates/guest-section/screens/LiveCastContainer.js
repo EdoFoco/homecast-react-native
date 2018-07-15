@@ -124,7 +124,6 @@ const mapStateToProps = ( state ) => {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
         chat: state.chat,
-        webrtc: state.webrtc
     }
 };
 

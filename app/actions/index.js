@@ -1,7 +1,6 @@
 import * as UserActions from './User';
 import * as NavigatorActions from './Navigator';
 import * as SectionActions from './Section';
-import * as WebRTC from './WebRTC';
 import * as Chat from './Chat';
 import * as Properties from './Properties';
 import * as Viewings from './Viewings';
@@ -16,7 +15,6 @@ export const ActionCreators = Object.assign({},
   UserActions,
   NavigatorActions,
   SectionActions,
-  WebRTC,
   Chat,
   Properties,
   ErrorHandler,

@@ -8,7 +8,6 @@ import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import storage from 'redux-persist/lib/storage';
-import createSocketMiddleware from './app/libs/middlewares/SocketClusterMiddleware';
 import {Linking} from 'react-native';
 import LinkRoutes from './app/libs/routing/LinkRoutes';
 import SignalChecker from './app/libs/network/SignalChecker';
@@ -24,7 +23,6 @@ import {
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 
-let socketIoMiddleware = createSocketMiddleware();
 let navMiddleware = createReactNavigationReduxMiddleware(
   "root",
   state => state.nav,
@@ -34,7 +32,7 @@ const addListener = createReduxBoundAddListener("root");
 const persistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['webrtc', 'network', 'location']
+  blacklist: [ 'network', 'location']
 };
 
 const errorHandler = (e, isFatal) => {

@@ -17,7 +17,6 @@ import { landlordPropertiesNav }from './NavReducer';
 import { genericNav } from './NavReducer';
 import user from './User';
 import section from './Section';
-import webrtc from './NewWebRTC';
 import chat from './Chat';
 import properties from './Properties';
 import viewings from './Viewings';
@@ -47,7 +46,6 @@ const AppReducer = combineReducers({
 
   user,
   section,
-  webrtc,
   chat,
   properties,
   viewings,
