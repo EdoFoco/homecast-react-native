@@ -101,6 +101,10 @@ export default class WebRTCChat extends Component{
           self.setState({connectionStatus: event.target.iceConnectionState});
 
           if(event.target.iceConnectionState == 'completed'){
+            setTimeout(() => {
+              getStats();
+            }, 100);
+
             InCallManager.start(); // audio/video, default: audio
             InCallManager.setForceSpeakerphoneOn(true);
             InCallManager.setKeepScreenOn(true);
@@ -118,13 +122,16 @@ export default class WebRTCChat extends Component{
 
        function getStats() {
           if(pc){
-            console.log(pc.iceConnectionState);
+            //var selector = pc.getReceivers().find(({kind}) => kind == "audio");
+            //var streams = pc._remoteStreams;
+             const track = pc.getRemoteStreams()[0].getVideoTracks()[0];
+            pc.getStats(track, function(report) {
+              console.log('getStats report', report);
+            }, function(err){console.log(err)});
           } 
       }
 
-      setTimeout(() => {
-        getStats();
-      }, 100);
+     
   }
 
   _endCall(){

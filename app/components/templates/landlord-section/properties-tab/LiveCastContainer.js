@@ -87,7 +87,7 @@ class LiveCastContainer extends Component{
 
   render(){
     console.log(this.state.roomStatus);
-    if(this.props.chat.roomId){
+    if(this.props.chat.roomId && this.state.socketId){
       return(
           <View style={styles.container}>
             <AdminWebRTCChat 
