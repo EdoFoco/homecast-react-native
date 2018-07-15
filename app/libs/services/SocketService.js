@@ -4,7 +4,7 @@ import * as types from '../../actions/Types';
 //var options = { host: 'localhost:8000' };
 
 
-var options = { host: 'ec2-34-245-44-121.eu-west-1.compute.amazonaws.com:8000' };
+var options = { host: 'ec2-34-247-46-111.eu-west-1.compute.amazonaws.com:8000' };
 var socket;
 var iceCounter = 0;
 var poller;
@@ -14,7 +14,7 @@ class SocketService {
   
     static instance = SocketService.instance == null ? new SocketService() : this.instance
     
-    connect(connectionData, onError, onSubscribed, onRoomStatus){
+    connect(connectionData, onError, onSubscribed, onRoomStatus, onPresenterResponse, onViewerResponse, onIceCandidate){
         try{
             socket = socketCluster.connect(options);
             console.log('Creating new socket, ' + socket.id);
@@ -26,7 +26,7 @@ class SocketService {
             }.bind(this));
 
             socket.on('connect', function(){
-                this.onConnect(connectionData, onSubscribed, onRoomStatus);
+                this.onConnect(connectionData, onSubscribed, onRoomStatus, onPresenterResponse, onViewerResponse, onIceCandidate);
             }.bind(this));
         }
         catch(e){
@@ -34,7 +34,7 @@ class SocketService {
         }
     }
 
-    onConnect(connectionData, onSubscribed, onRoomStatus) {
+    onConnect(connectionData, onSubscribed, onRoomStatus, onPresenterResponse, onViewerResponse, onIceCandidate) {
         room = socket.subscribe(connectionData.roomId);
                 
         socket.on('subscribe', function(){
@@ -50,12 +50,37 @@ class SocketService {
         room.watch(function(event){
             
             if(event.type === 'client/roomStatus'){
-                onRoomStatus(action.data);
+                onRoomStatus(event.data.roomStatus);
+            }
+
+            if(event.type === 'presenterResponse'){
+                if(onPresenterResponse){
+                    console.log('4. Got presenter response');
+                    console.log(event);
+                    onPresenterResponse(event.data);
+                }
+            }
+
+            if(event.type === 'viewerResponse'){
+                if(onViewerResponse){
+                    console.log('4. Got presenter response');
+                    console.log(event);
+                    onViewerResponse(event.data);
+                }
+            }
+
+            if(event.type === 'iceCandidate'){
+                if(event.data.socketId === socket.id){
+                    iceCounter++;
+                    console.log('iceCandidate RECEIVED', iceCounter + ' ');
+                    console.log(event);
+                    onIceCandidate(event.data);
+                }
             }
         });
     }
 
-   
+    
     startPoller(connectionData){
         poller = setInterval(() => { 
             if(!socket)
@@ -64,6 +89,9 @@ class SocketService {
         }, 3000);
     }
 
+    publishEvent(roomId, event){
+        socket.publish(roomId, event);
+    }
    
 
     kill(){

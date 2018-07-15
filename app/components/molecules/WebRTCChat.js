@@ -18,8 +18,6 @@ import {
   RTCView,
 } from 'react-native-webrtc';
 
-
-
 var pc;
 var iceCandidatesCount = 0;
 var kurentoPeer;
@@ -31,7 +29,9 @@ export default class WebRTCChat extends Component{
     super(props);
     this.state = { 
         sdpAnswerLoaded: false,
-        isAudioMute: false
+        isAudioMute: false,
+        connectionStatus: 'Connecting',
+        streamUrl: null
      };
   }
   
@@ -43,7 +43,8 @@ export default class WebRTCChat extends Component{
             console.log('onicecandidate', event.candidate);
             if (event.candidate) {
               console.log("5. Ice Candidate Received")
-              self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
+              self.props.publishEvent({type: 'onIceCandidate', data: { roomId: self.props.chat.roomId, candidate: event }});
+              //self.props.sendOnIceCandidate({roomId: self.props.chat.roomId, candidate: event});
             }
           }
       }
@@ -54,30 +55,42 @@ export default class WebRTCChat extends Component{
 			console.log('Viewer about to generate offer');
 			this.generateOffer(function(error, offer){
           console.log(error);
-          self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
+          self.props.publishEvent({type: 'viewer', data: {roomId: self.props.chat.roomId, sdpOffer: offer}});
+         // self.props.startViewer({roomId: self.props.chat.roomId, sdpOffer: offer});
           self._startWebRtcAsViewer();   
       });
     });
   }
 
-  componentWillUpdate(){
-    if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.iceCandidates.length > prevProps.iceCandidates.length) {
       iceCandidatesCount = this.props.webrtc.viewer.iceCandidates.length;
       console.log("6. Adding Ice Candidate")
       console.log(counter);
       counter++;
-      if(pc) pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.viewer.iceCandidates[iceCandidatesCount -1]));
+      var candidate = this.props.iceCandidates[this.props.iceCandidates.length -1];
+      console.log('length:' + this.props.iceCandidates.length + 'candiate: ' + candidate.candidate);
+      if(pc && candidate) pc.addIceCandidate(new RTCIceCandidate(candidate));
     }
+  }
+  componentWillUpdate(){
+    // if(this.props.webrtc.viewer.iceCandidates.length > iceCandidatesCount){
+    //   iceCandidatesCount = this.props.webrtc.viewer.iceCandidates.length;
+    //   console.log("6. Adding Ice Candidate")
+    //   console.log(counter);
+    //   counter++;
+    //   if(pc) pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.viewer.iceCandidates[iceCandidatesCount -1]));
+    // }
 
-    if(this.props.webrtc.viewer.sdpAnswer){
-      if(!this.state.sdpAnswerLoaded){
-       // console.log('5. Presenter - Processing Presenter Answer');
-        this.setState({sdpAnswerLoaded: true});
-        kurentoPeer.processAnswer(this.props.webrtc.viewer.sdpAnswer, function(){
-          console.log('hi viewer');
-        });
-    }
-    }
+    // if(this.props.webrtc.viewer.sdpAnswer){
+    //   if(!this.state.sdpAnswerLoaded){
+    //    // console.log('5. Presenter - Processing Presenter Answer');
+    //     this.setState({sdpAnswerLoaded: true});
+    //     kurentoPeer.processAnswer(this.props.webrtc.viewer.sdpAnswer, function(){
+    //       console.log('hi viewer');
+    //     });
+    // }
+    // }
   }
 
   componentWillUnmount(){
@@ -100,10 +113,13 @@ export default class WebRTCChat extends Component{
       }
 
       pc.oniceconnectionstatechange = function(event) {
-            console.log("7. Ice Connection State Changed - get stats")
+          console.log("7. Ice Connection State Changed - get stats")
 
           console.log('oniceconnectionstatechange', event.target.iceConnectionState);
-          self.props.updateConnectionStatus(event.target.iceConnectionState);
+
+          //self.props.updateConnectionStatus(event.target.iceConnectionState);
+          self.setState({connectionStatus: event.target.iceConnectionState});
+
           if(event.target.iceConnectionState == 'completed'){
             InCallManager.start(); // audio/video, default: audio
             InCallManager.setForceSpeakerphoneOn(true);
@@ -112,7 +128,8 @@ export default class WebRTCChat extends Component{
       };
       
       pc.onaddstream = function (event) {
-          self.props.updateStreamUrl(event.stream.toURL());
+          self.setState({streamUrl: event.stream.toURL()});
+          //self.props.updateStreamUrl(event.stream.toURL());
           console.log("8. Stream has been added");
 
           console.log('onaddstream', event.stream);
@@ -133,7 +150,7 @@ export default class WebRTCChat extends Component{
 
   _endCall(){
     InCallManager.stop();
-    this.props.navigation.goBack();
+    this.props.goBack();
   }
 
   _setAudioMute(){
@@ -150,12 +167,12 @@ export default class WebRTCChat extends Component{
           </View>
         }
         
-        if(this.props.webrtc.status != 'completed'){
-          return <ScreenLoader message={this.props.webrtc.status} goBack={() => {this.props.navigation.goBack() }}/>
+        if(this.state.connectionStatus != 'completed'){
+          return <ScreenLoader message={this.state.connectionStatus } goBack={() => {this.props.goBack() }}/>
         }
 
         return (
-          <RTCView streamURL={this.props.webrtc.viewer.streamUrl} style={styles.remoteView}  objectFit ='cover'>
+          <RTCView streamURL={this.state.streamUrl} style={styles.remoteView}  objectFit ='cover'>
                 <View style={styles.videoCommands}>
                   <TouchableHighlight onPress={()=>{ this._setAudioMute()}} style={styles.muteBtn}>
                         <MCIcon name="volume-off" style={styles.muteIcon} />
@@ -182,7 +199,9 @@ WebRTCChat.PropTypes = {
   startViewer: PropTypes.func.isRequired,
   updateStreamUrl: PropTypes.func.isRequired,
   updateConnectionStatus: PropTypes.func.isRequired,
-  navigation: PropTypes.object.isRequired
+  goBack: PropTypes.func.isRequired,
+  publishEvent: PropTypes.func.isRequired,
+  iceCandidates: PropTypes.array.isRequired
 }
 
 var styles = StyleSheet.create({

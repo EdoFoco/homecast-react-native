@@ -17,7 +17,9 @@ class LiveCastContainer extends Component{
     super(props);
     this.state = {
       socketId: null,
-      roomStatus: {}
+      roomStatus: {},
+      presenterResponse: {},
+      iceCandidates: []
     }
   }
 
@@ -35,14 +37,20 @@ class LiveCastContainer extends Component{
         isPresenter: false
       };
 
-      SocketService.instance.connect(connectionData, this.onError, (socketId) => {this.onSubscribed(socketId)});
+      SocketService.instance.connect(connectionData, this.onError, 
+        (socketId) => {this.onSubscribed(socketId)},
+        (roomStatus) => {this.onRoomStatus(roomStatus)},
+        null,
+        (viewerResponse) => {this.onViewerResponse(viewerResponse)},
+        (candidate) => {this.onIceCandidate(candidate)}
+      );
 
       //this.props.connect({ roomId: this.props.chat.roomId, username: 'edo', isPresenter: false });
     });
   }
 
   onError(err){
-    console.log(this.props.user.info.name);
+    //console.log(this.props.user.info.name);
     console.log(err);
   }
 
@@ -53,6 +61,25 @@ class LiveCastContainer extends Component{
 
   onRoomStatus(status){
     this.setState({roomStatus: status});
+    console.log(this.state);
+  }
+
+  onViewerResponse(viewerResponse){
+    this.setState({viewerResponse: viewerResponse})
+    console.log(this.state);
+  }
+
+  onIceCandidate(candidate){
+    var candidates = [...this.state.iceCandidates];
+    console.log('candidate:' + candidate.candidate.candidate);
+    candidates.push(candidate.candidate);
+    this.setState({iceCandidates: candidates});
+    console.log(this.state);
+  }
+
+  goBack(){
+    SocketService.instance.kill();
+    this.props.navigation.goBack();
   }
 
   componentWillUnmount(){
@@ -60,9 +87,9 @@ class LiveCastContainer extends Component{
   }
 
   render(){
-    if(!this.props.webrtc.roomStatus.presenterConnected){
+    if(!this.state.roomStatus.presenterConnected){
       return(
-        <ScreenLoader message={'WAITING FOR PRESENTER'} goBack={() => {this.props.navigation.goBack() }} />
+        <ScreenLoader message={'WAITING FOR PRESENTER'} goBack={() => {this.goBack() }} />
       )
     }
 
@@ -80,7 +107,9 @@ class LiveCastContainer extends Component{
                 sendOnIceCandidate={(data) => {this.props.sendOnIceCandidate(data)}}
                 updateStreamUrl={(data) => {this.props.updateStreamUrl(data)}}
                 updateConnectionStatus={(data) => {this.props.updateConnectionStatus(data)}}
-                navigation={this.props.navigation}
+                goBack={() => {this.goBack()}}
+                publishEvent={(event) => { SocketService.instance.publishEvent(this.props.chat.roomId, event) }}
+                iceCandidates={this.state.iceCandidates}
               />
           </View>
       );
