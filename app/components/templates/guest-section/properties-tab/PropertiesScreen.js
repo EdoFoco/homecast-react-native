@@ -187,23 +187,18 @@ const styles = StyleSheet.create({
   },
   menuWrapper: {
     backgroundColor: 'white',
-    paddingTop: 30,
+    paddingTop: 20,
     alignItems: 'center',
-    paddingBottom: 10,
-    paddingBottom: 30,
+    paddingBottom: 20,
     borderBottomWidth: 0.5,
     borderColor: Colors.LIGHT_GRAY
-    // shadowColor: 'black',
-    // shadowOffset: { width: 0, height: 1 },
-    // shadowOpacity: 0.6,
   },
   menuWrapperActive: {
     backgroundColor: 'white',
-    paddingTop: 30,
+    paddingTop: 20,
     alignItems: 'center',
     paddingBottom: 10,
     flex: 1,
-    paddingBottom: 10,
   },
   menuTitleContainer: {
     flexDirection: 'row',

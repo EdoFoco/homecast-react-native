@@ -2,7 +2,6 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EditPropertyActions from './EditPropertyActions';
 import Autocomplete from './Autocomplete';
 import LocationSuggestions from './LocationSuggestions';
@@ -10,7 +9,6 @@ import {
     StyleSheet,
     View,
     Text,
-    Dimensions,
     Keyboard
   } from 'react-native';
 

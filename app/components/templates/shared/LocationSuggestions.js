@@ -2,21 +2,16 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import EditPropertyActions from './EditPropertyActions';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-    TextInput,
     StyleSheet,
     View,
     Text,
-    Dimensions,
     TouchableHighlight,
     FlatList
   } from 'react-native';
 
 export default class LocationSuggestions extends Component{
-
    
     _selectAddress(suggestion){
         this.props.onPress(suggestion.item);
@@ -39,7 +34,7 @@ export default class LocationSuggestions extends Component{
                 style={{flex: 1}}
                 data={this.props.suggestions}
                 renderItem={(suggestion) => this._renderRow(suggestion)}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(index) => index.toString()}
                 removeClippedSubviews={false}
                 keyboardShouldPersistTaps={'handled'}
             />     
@@ -58,7 +53,7 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: Colors.LIGHT_GRAY,
+        borderBottomColor: Colors.WHITE_SMOKE,
     },
     suggestionText: {
         fontSize: FontSizes.SMALL_TEXT,
