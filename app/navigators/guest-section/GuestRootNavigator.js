@@ -33,7 +33,6 @@ const configuration = {
   backBehavior: 'none',
   mode: 'modal',
   tabBarOptions: {
-    activeTintColor: Colors.RED,
     showLabel: false,
 		style:{
       backgroundColor: 'white',

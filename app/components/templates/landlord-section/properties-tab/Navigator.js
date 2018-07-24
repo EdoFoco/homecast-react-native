@@ -24,7 +24,7 @@ const stackConfiguration = {
   navigationOptions: {
     headerTintColor: Colors.RED,
     headerStyle: {
-      backgroundColor: 'white'
+      backgroundColor: Colors.DARK_BLUE
     }
   }
 }

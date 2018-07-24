@@ -31,6 +31,7 @@ class ChatsContainer extends Component{
   render() {
     return (
       <View style={styles.container}>
+          <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
           <ChatsScreen chats={this.props.chats} user={this.props.user} goToScreen={(chat) => {this._goToChatScreen(chat)}} getChats={this.props.getChats} >Chat</ChatsScreen>
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
@@ -65,7 +66,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(ChatsContainer);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
     justifyContent: 'center',
     backgroundColor: 'white',
   }

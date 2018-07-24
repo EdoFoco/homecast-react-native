@@ -1,10 +1,11 @@
 import React from 'react';
-import { AppRegistry, Alert, Text, TextInput } from 'react-native';
+import { AppRegistry, Alert, Text, TextInput, View, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import AppReducer from './app/reducers';
 import MainScreen from './app/components/templates/MainScreen';
 import thunk from 'redux-thunk';
+import * as Colors from './app/components/helpers/ColorPallette';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import storage from 'redux-persist/lib/storage';
@@ -154,7 +155,13 @@ class HomecastApp extends React.Component {
     return (
       <Provider store={this.store}>
         <PersistGate loading={null} persistor={this.persistor}>
-          <MainScreen addListener={addListener}/>
+          <View style={{flex: 1}}>
+           <StatusBar
+              backgroundColor="blue"
+              barStyle="light-content"
+            />
+            <MainScreen addListener={addListener}/>
+          </View>
         </PersistGate>
       </Provider>
     );

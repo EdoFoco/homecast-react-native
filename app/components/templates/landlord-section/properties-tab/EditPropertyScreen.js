@@ -70,7 +70,7 @@ EditPropertyScreen.navigationOptions = ({ navigation }) => {
     return(
       {
         title: 'Edit Listing',
-        headerRight: <TouchableHighlight onPress={() => { setParams({showAddViewingModal: true}) }}><Text style={{fontSize: 30, color: Colors.RED, marginRight: 20}}>+</Text></TouchableHighlight>,
+        headerRight: <TouchableHighlight onPress={() => { setParams({showAddViewingModal: true}) }}><Text style={{fontSize: 30, color: Colors.RED, marginRight: 20}}>+</Text></TouchableHighlight>
       }
     );
   }

@@ -101,9 +101,9 @@ class PropertiesScreen extends Component{
   }
 
   render() {
-    console.log(this.state.isSearching);
     return (
       <View style={styles.container}>
+        <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
          <View style={this.state.isSearching && this.props.location.suggestions.length > 0 ? styles.menuWrapperActive : styles.menuWrapper}>
           <View style={styles.autocompleteContainer}>
             <FastImage style={styles.logo} source={require('../../../../img/homecast_logo_color_6.png')} resizeMode={FastImage.resizeMode.cover}/>

@@ -1,8 +1,4 @@
 import React, { Component} from 'react';
-import { connect } from 'react-redux';
-import { ActionCreators } from '../../../actions';
-import { bindActionCreators } from 'redux';
-import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
@@ -16,7 +12,6 @@ import {
   TouchableHighlight,
   View,
   ScrollView,
-  Button,
   Dimensions,
   RefreshControl
 } from 'react-native';
@@ -58,7 +53,6 @@ export default class ViewingScreen extends Component{
     let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
     let day = new Date(`${date}`).getDate();
     let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
-    let year = new Date(`${date}`).toLocaleString('en-us', {  year: 'numeric' });
 
     return `${weekday}, ${day} ${month}`;
   }
@@ -74,11 +68,10 @@ export default class ViewingScreen extends Component{
   render() {
     return(
         <View style={{flex: 1}}>
-              <View style={{backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20 }}>
+              <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20}}>
                   <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
                     <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
                   </TouchableHighlight>
-                  <Text style={styles.availabilityTitle}>Availability</Text>
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}} refreshControl={<RefreshControl
@@ -129,8 +122,6 @@ ViewingScreen.propTypes = {
     joinLiveCast: PropTypes.func.isRequired,
     contactAgent: PropTypes.func.isRequired
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -206,7 +197,7 @@ const styles = StyleSheet.create({
   },
   availabilityValue: {
     fontSize: FontSizes.DEFAULT,
-    flex: 0.6,
+    flex: 1,
     textAlign: 'right',
     color: Colors.AQUA_GREEN,
     paddingBottom: 5

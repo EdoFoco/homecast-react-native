@@ -87,6 +87,7 @@ class ViewingsScreen extends Component{
     if(this.props.viewingReservations.length == 0) {
       return(
         <View style={styles.noViewingsContainer}>
+          <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
           <Text style={styles.noViewingsMessage}>You haven't reserved a spot for any property. Choose a property and reserve a spot for a Live viewing.</Text>
         </View>
       )
@@ -94,7 +95,8 @@ class ViewingsScreen extends Component{
 
     return (
       <View style={styles.container}>
-         <FlatList
+        <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
+        <FlatList
           data={this.props.viewingReservations}
           renderItem={(reservation) => this._renderRow(reservation)}
           keyExtractor={(item, index) => index.toString()}
@@ -134,7 +136,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(ViewingsScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
     justifyContent: 'center',
     backgroundColor: 'white',
   },

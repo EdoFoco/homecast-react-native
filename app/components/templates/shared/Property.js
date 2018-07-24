@@ -255,11 +255,10 @@ const styles = StyleSheet.create({
     },
   menuWrapper: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: Colors.DARK_BLUE,
    // width: Dimensions.get('window').width, 
-    paddingTop: 30,
+    paddingTop: 20,
     alignItems: 'center',
-    paddingBottom: 10
   },
   menuContainer: {
     flexDirection: 'row',

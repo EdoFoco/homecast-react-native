@@ -45,13 +45,6 @@ class PropertyContainer extends Component{
   }
 }
 
-PropertyContainer.navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.property.name}`,
-    headerTintColor: Colors.RED,
-    headerStyle: {  borderBottomWidth: 0, backgroundColor: 'white', shadowColor: 'white' }
-  });
-  
-
 const mapStateToProps = (state, navigation) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
