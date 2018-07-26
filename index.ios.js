@@ -58,7 +58,9 @@ const errorHandler = (e, isFatal) => {
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
   }
-  GAClient.gaClientInstance.trackException(e, isFatal);
+  if(e){
+    GAClient.gaClientInstance.trackException(e.message, isFatal);
+  }
 };
 
 setJSExceptionHandler(errorHandler, true);

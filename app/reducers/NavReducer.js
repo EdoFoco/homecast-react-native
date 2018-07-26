@@ -2,6 +2,7 @@ import { GuestTabBarNavigator } from '../navigators/guest-section/GuestTabBarNav
 import { GuestRootNavigator } from '../navigators/guest-section/GuestRootNavigator';
 
 import { LandlordRootNavigator } from '../navigators/landlord-section/LandlordRootNavigator';
+import { LandlordViewingsNavigator } from '../components/templates/landlord-section/viewings-tab/Navigator';
 
 import { GuestViewingsNavigator } from '../components/templates/guest-section/viewings-tab/Navigator';
 import { GuestPropertiesNavigator } from '../components/templates/guest-section/properties-tab/Navigator';
@@ -17,6 +18,7 @@ const initalGuestTabNavigatorState = GuestTabBarNavigator.router.getStateForActi
 const initialGuestRootNavigatorState = GuestRootNavigator.router.getStateForAction(GuestRootNavigator.router.getActionForPathAndParams('TabBar'));
 const initialLandlordTabNavigatorState = LandlordTabBarNavigator.router.getStateForAction(LandlordTabBarNavigator.router.getActionForPathAndParams('PropertiesTab'));
 const initialViewingsNavigatorState = GuestViewingsNavigator.router.getStateForAction(GuestViewingsNavigator.router.getActionForPathAndParams('ViewingScreen'));
+const initialLandlordViewingsNavigatorState = LandlordViewingsNavigator.router.getStateForAction(LandlordViewingsNavigator.router.getActionForPathAndParams('ViewingScreen'));
 const initalGuestPropertiesState =  GuestPropertiesNavigator.router.getStateForAction(GuestPropertiesNavigator.router.getActionForPathAndParams('PropertiesPropertyScreen'));
 const initialChatsState =  GuestChatsNavigator.router.getStateForAction(GuestChatsNavigator.router.getActionForPathAndParams('Chat'));
 const initialFavouritesState =  GuestFavouritesNavigator.router.getStateForAction(GuestFavouritesNavigator.router.getActionForPathAndParams('PropertyScreen'));
@@ -139,6 +141,21 @@ export const guestViewingsNav = (state = initialViewingsNavigatorState, action) 
       return initialViewingsNavigatorState;
     case types.VIEWINGS_TAB_GO_TO_VIEWING:
       return GuestViewingsNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'ViewingScreen', params: {viewingId: action.viewingId, property: action.property}})
+      );
+    default:
+      return nextState || state;
+  }
+};
+
+export const landlordViewingsNav = (state = initialLandlordViewingsNavigatorState, action) => {
+  const nextState = LandlordViewingsNavigator.router.getStateForAction(action, state);
+
+  switch(action.type){
+    case 'Navigation/RESET_VIEWING_TAB':
+      return initialLandlordViewingsNavigatorState;
+    case types.VIEWINGS_TAB_GO_TO_VIEWING:
+      return LandlordViewingsNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'ViewingScreen', params: {viewingId: action.viewingId, property: action.property}})
       );
     default:

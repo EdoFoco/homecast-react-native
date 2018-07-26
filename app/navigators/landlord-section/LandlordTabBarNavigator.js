@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import PropertiesScreen from '../../components/templates/landlord-section/properties-tab/PropertiesScreen';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
+import ViewingsContainer from '../../components/templates/landlord-section/viewings-tab/ViewingsContainer';
 import * as Colors from '../../components/helpers/ColorPallette';
 import {
   createReduxBoundAddListener,
@@ -14,6 +15,9 @@ const routeConfiguration = {
   },
   OptionsTab: {
     screen: OptionsTab
+  },
+  ViewingsTab: {
+    screen: ViewingsContainer
   }
 }
 

@@ -52,6 +52,7 @@ class PropertiesScreen extends Component{
   render() {
     return (
       <View style={styles.container}>
+          <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
           <FlatList
             data={this.props.properties}
             renderItem={(property) => this._renderRow(property)}
