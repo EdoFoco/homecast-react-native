@@ -4,8 +4,7 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import * as Colors from '../../components/helpers/ColorPallette';
 import LandlordTabBar from './LandlordTabBarNavigator';
 import LandlordPropertiesNavigator from '../../components/templates/landlord-section/properties-tab/Navigator';
-import GuestViewingsNavigator  from '../../components/templates/guest-section/viewings-tab/Navigator';
-import GuestChatsNavigator  from '../../components/templates/guest-section/chats-tab/Navigator';
+import LandlordViewingsNavigator from '../../components/templates/landlord-section/viewings-tab/Navigator';
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
@@ -14,6 +13,9 @@ const routeConfiguration = {
   },
   PropertyStack: {
     screen: LandlordPropertiesNavigator
+  },
+  ViewingsStack: {
+    screen: LandlordViewingsNavigator
   }
 }
 

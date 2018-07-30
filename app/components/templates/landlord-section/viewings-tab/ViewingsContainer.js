@@ -20,6 +20,12 @@ import {
 
 class ViewingsContainer extends Component{
  
+    _goToViewing(viewingId, property){
+       this.props.goToGuestViewingsScreen(viewingId, property);
+       this.props.navigation.navigate('ViewingsStack');
+      }
+
+      
     _toDateString(date){
         let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
         let day = new Date(`${date}`).getDate();
@@ -94,11 +100,6 @@ const mapStateToProps = (state) => {
     var sortedViewings = viewings.sort((a, b) => {
         return new Date(a.date_time) - new Date(b.date_time);
     });
-
-    // for( viewing of sortedViewings){
-    //     var property = properties.find(p => p.viewings.find( v => v.id == viewing.id));
-    //     viewing.property = property;
-    // }
 
     return {
         user: state.user,

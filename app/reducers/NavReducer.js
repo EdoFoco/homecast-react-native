@@ -133,7 +133,7 @@ export const guestPropertiesNav = (state = initalGuestPropertiesState, action) =
 };
 
 
-export const guestViewingsNav = (state = initialViewingsNavigatorState, action) => {
+export const viewingsNav = (state = initialViewingsNavigatorState, action) => {
   const nextState = GuestViewingsNavigator.router.getStateForAction(action, state);
 
   switch(action.type){
@@ -148,20 +148,6 @@ export const guestViewingsNav = (state = initialViewingsNavigatorState, action) 
   }
 };
 
-export const landlordViewingsNav = (state = initialLandlordViewingsNavigatorState, action) => {
-  const nextState = LandlordViewingsNavigator.router.getStateForAction(action, state);
-
-  switch(action.type){
-    case 'Navigation/RESET_VIEWING_TAB':
-      return initialLandlordViewingsNavigatorState;
-    case types.VIEWINGS_TAB_GO_TO_VIEWING:
-      return LandlordViewingsNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'ViewingScreen', params: {viewingId: action.viewingId, property: action.property}})
-      );
-    default:
-      return nextState || state;
-  }
-};
 
 export const chatsNav = (state = initialChatsState, action) => {
   const nextState = GuestChatsNavigator.router.getStateForAction(action, state);

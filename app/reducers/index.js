@@ -2,9 +2,7 @@ import * as types from '../actions/Types';
 import { combineReducers } from 'redux';
 import { OptionsNavigator } from '../components/templates/shared/options-tab/Navigator';
 
-import { landlordViewingsNav  } from './NavReducer';
-
-import { guestViewingsNav  } from './NavReducer';
+import { viewingsNav  } from './NavReducer';
 import { guestTabBar }from './NavReducer';
 import { guestRootNav }from './NavReducer';
 
@@ -35,12 +33,11 @@ const AppReducer = combineReducers({
   guestRootNav,
   guestPropertiesNav,
   guestFavouritesNav: favouritesNav,
-  guestViewingsNav,
+  viewingsNav,
   guestChatsNav: chatsNav,
   optionsNav: (state, action) => OptionsNavigator.router.getStateForAction(action,state),
   genericNav,
   landlordRootNav,
-  landlordViewingsNav,
 
   //Landlord Navigators
   landlordTabBar: landlordTabBar,

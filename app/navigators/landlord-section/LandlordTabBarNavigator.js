@@ -13,11 +13,11 @@ const routeConfiguration = {
   PropertiesTab: { 
     screen: PropertiesScreen
   },
-  OptionsTab: {
-    screen: OptionsTab
-  },
   ViewingsTab: {
     screen: ViewingsContainer
+  },
+  OptionsTab: {
+    screen: OptionsTab
   }
 }
 

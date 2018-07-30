@@ -40,7 +40,7 @@ class GuestViewingsTab extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.guestViewingsNav
+        navigationState: state.viewingsNav
     }
 }
 
