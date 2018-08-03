@@ -3,11 +3,10 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Colors from '../../../helpers/ColorPallette';
-import PropertiesScreen from './PropertiesScreen';
 import AddPropertyScreen from './AddPropertyScreen';
 import EditPropertyScreen from './EditPropertyScreen';
-import ViewingContainer from './ViewingContainer';
-import LiveCastContainer from './LiveCastContainer';
+import ViewingContainer from '../screens/ViewingContainer';
+import LiveCastContainer from '../screens/LiveCastContainer';
 import UploadPhotosScreen from './UploadPhotosScreen';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 

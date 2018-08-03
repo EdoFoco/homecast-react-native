@@ -41,7 +41,7 @@ class LiveCastContainer extends Component{
         isPresenter: true
       };
 
-      SocketService.instance.connect(connectionData, this.onError, 
+      SocketService.instance.connect(connectionData, (error) => { this.onError(error)}, 
         (socketId) => {this.onSubscribed(socketId)},
         (roomStatus) => {this.onRoomStatus(roomStatus)},
         (presenterResponse) => {this.onPresenterResponse(presenterResponse)},
