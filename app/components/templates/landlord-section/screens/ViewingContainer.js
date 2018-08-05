@@ -22,7 +22,7 @@ class ViewingScreen extends Component{
   }
 
   _joinLiveCast(){
-    this.props.navigation.navigate('LiveCastScreen', {viewing: this.props.viewing})
+    this.props.navigation.navigate('LiveCast', {viewing: this.props.viewing})
   }
   
   render() {

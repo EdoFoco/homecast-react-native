@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import ViewingContainer from '../screens/ViewingContainer';
 import CreateChatContainer from '../screens/CreateChatContainer';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import LiveCastContainer from '../screens/LiveCastContainer';
 
 const routeConfiguration = {
     ViewingScreen: { screen: ViewingContainer },
-    CreateChatContainer: { screen: CreateChatContainer }
+    CreateChatContainer: { screen: CreateChatContainer },
+    LiveCast: { screen: LiveCastContainer },
 }
 
 const stackConfiguration = {

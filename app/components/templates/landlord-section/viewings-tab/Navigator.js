@@ -9,7 +9,7 @@ import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     ViewingScreen: { screen: ViewingContainer },
-    LiveCastScreen: { screen: LiveCastContainer, navigationOptions: { tabBarVisible: false, header: null } }
+    LiveCast: { screen: LiveCastContainer, navigationOptions: { tabBarVisible: false, header: null } }
 }
 
 const stackConfiguration = {

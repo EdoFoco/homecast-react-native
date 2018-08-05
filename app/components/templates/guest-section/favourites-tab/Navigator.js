@@ -5,11 +5,13 @@ import PropertyContainer from '../screens/PropertyContainer';
 import ViewingContainer from '../screens/ViewingContainer';
 import CreateChatContainer from '../screens/CreateChatContainer';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import LiveCastContainer from '../screens/LiveCastContainer';
 
 const routeConfiguration = {
     PropertyScreen: { screen: PropertyContainer },
     PropertyViewings: { screen: ViewingContainer },
-    CreateChatContainer: { screen: CreateChatContainer }
+    CreateChatContainer: { screen: CreateChatContainer },
+    LiveCast: { screen: LiveCastContainer },
 }
 
 const stackConfiguration = {
