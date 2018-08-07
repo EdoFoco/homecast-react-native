@@ -8,7 +8,7 @@ import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
@@ -30,8 +30,7 @@ class ViewingsContainer extends Component{
         let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
         let day = new Date(`${date}`).getDate();
         let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
-        let year = new Date(`${date}`).toLocaleString('en-us', {  year: 'numeric' });
-    
+
         return `${weekday}, ${day} ${month}`;
       }
     
@@ -41,23 +40,43 @@ class ViewingsContainer extends Component{
         return (
           <TouchableHighlight onPress={() => {this._goToViewing(viewing.id, property)}}>
             <View style={styles.viewingContainer}>
+                <View style={styles.badge}></View>
                 <View style={styles.viewingDateContainer}>
-                    <Text style={styles.dateStyle}>{this._toDateString(viewing.date_time)}</Text>
                     <Text style={styles.viewingTime}>{new Date(`${viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
-                </View>    
-                <Text style={styles.descriptionText}>{property.address.replace(', UK', '')}</Text>
+                </View> 
                 <View style={styles.detailsContainer}>
-                    <View style={styles.participantsContainer}>
-                        <Text style={styles.participants}>{10 - viewing.capacity}</Text>
-                        <Text style={styles.participantsLabel}>Attendee(s)</Text>
-                    </View>
-                    <FastImage style={styles.propertyThumb} source={{url: property.images[0].url}} />
+                  <MCIcon name="check-circle" style={styles.icon} />
+                  <Text style={styles.descriptionText}>{property.address.split(',')[0]}</Text>
+                  <Text style={styles.participantsLabel}>{10 - viewing.capacity} Attendee(s)</Text>
                 </View>
+                
             </View>
           </TouchableHighlight>
           )
       }
     
+      _renderViewingsByDate(item){
+        var date = item.item;
+        var viewings = this.props.viewings.filter(v => {
+          let dateText = this._toDateString(v.date_time);
+          return dateText === date;
+        });
+
+        return(
+          <View>
+            <View style={styles.dividerContainer}>
+              <Text style={styles.dividerText}>{this._toDateString(date)}</Text>
+            </View>
+            <FlatList
+                data={viewings}
+                renderItem={(viewing) => this._renderRow(viewing)}
+                keyExtractor={(item, index) => index.toString()}
+                removeClippedSubviews={false}
+              />
+          </View>
+        )
+      }
+
       render() {
         if(this.props.viewings.length == 0) {
           return(
@@ -71,12 +90,14 @@ class ViewingsContainer extends Component{
         return (
           <View style={styles.container}>
             <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
+
             <FlatList
-              data={this.props.viewings}
-              renderItem={(viewing) => this._renderRow(viewing)}
+              data={this.props.dates}
+              renderItem={(date) => this._renderViewingsByDate(date)}
               keyExtractor={(item, index) => index.toString()}
               removeClippedSubviews={false}
             />
+            
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
           </View>
     
@@ -91,7 +112,6 @@ ViewingsContainer.navigationOptions = {
     ),
 };
 
-
 const mapStateToProps = (state) => {
     var properties = [...state.properties.propertiesList];
     var viewings = properties.map(p => p.viewings);
@@ -101,11 +121,20 @@ const mapStateToProps = (state) => {
         return new Date(a.date_time) - new Date(b.date_time);
     });
 
+    var dates = [...new Set(sortedViewings.map(v => {
+      let weekday = new Date(`${v.date_time}`).toLocaleString('en-us', {  weekday: 'short' });
+      let day = new Date(`${v.date_time}`).getDate();
+      let month = new Date(`${v.date_time}`).toLocaleString('en-us', {  month: 'short' });
+      let year = new Date(`${v.date_time}`).toLocaleString('en-us', {  year: 'numeric' });
+      return `${weekday}, ${day} ${month}`;
+    }))];
+   
     return {
         user: state.user,
         network: state.network,
         viewings: sortedViewings,
-        properties: state.properties.propertiesList
+        properties: state.properties.propertiesList,
+        dates: dates
     }
 };
 
@@ -122,164 +151,92 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
-  viewingRow:{
-    flex: 1,
-    alignSelf: 'stretch',
-    paddingBottom: 10,
-    paddingTop: 10,
-    borderBottomColor: Colors.LIGHT_GRAY,
-    //borderBottomWidth: 1,
+  viewingDateContainer: {
+    flex: 0.3,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
-  },
-  viewingDateCell: {
-    width: 100,
-    alignSelf: 'flex-start',
-  },
-  propertyName: {
-    fontSize: FontSizes.DEFAULT,
-    textAlign: 'left',
-    flex: 1,
-    paddingLeft: 10,
+    borderRightWidth: 0.5,
+    borderColor: Colors.VERY_LIGHT_GRAY
   },
   viewingTime:{
-    flex: 0.7,
-    fontSize: FontSizes.DEFAULT,
-    textAlign: 'right',
-    color: Colors.DARK_GREY,
-    paddingRight: 10,
-    fontWeight: 'bold'
-  },
-  propertyThumb: {
-    height: 120,
-    width: 200,
-    flex: 0.5,
-    borderRadius: 5
-  },
-  propertyDescriptionWrapper: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: 'blue'
-  },
-  propertyTitle: {
+      fontSize: FontSizes.DEFAULT,
       color: Colors.DARK_GREY,
-      fontSize: FontSizes.DEFAULT
-  },
-  descriptionText: {
-      color: Colors.LIGHT_GRAY,
-      fontSize: FontSizes.DEFAULT
-  }, 
-  weekDayStyle: {
-    color: 'white',
-    fontSize: FontSizes.DEFAULT,
-  },
-  viewingDateContainer: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  viewingTime:{
-      fontSize: FontSizes.MEDIUM_BIG,
-      textAlign: 'right',
-      color: Colors.DARK_GREY,
-      alignSelf: 'flex-end'
-  },
+      fontWeight: 'bold',
+      alignSelf: 'center',
+      justifyContent: 'center',
+    },
   dateStyle:{
-      fontSize: FontSizes.MEDIUM_BIG,
-      color: Colors.DARK_GREY,
-      flex: 0.9,
+      fontSize: FontSizes.DEFAULT,
+      color: Colors.LIGHT_GRAY,
+      flex: 0.3,
       textAlign: 'left',
-      alignSelf: 'flex-end'
   },
   viewingContainer: {
-    padding: 10,
-    paddingTop: 15,
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.LIGHT_GRAY,
-    paddingBottom: 20,
-    flex: 1
-  },
-  priceWrapper: {
-    flexDirection: 'row',
-  },
-  price: {
-    fontSize: FontSizes.TITLE,
-    fontWeight: 'bold',
-  },
-  priceUnit: {
-    fontSize: FontSizes.DEFAULT,
-    paddingTop: 7
-  },
-  iconWrapper: {
-    alignItems: 'center'
-  },
-  
-  iconsContainer: {
-    marginTop: 10,
-    flexDirection: 'row',
-  },
-  descriptionIcon: {
-    fontSize: FontSizes.DEFAULT,
-    color: Colors.DARK_GREY
-  },
-  iconText: {
-    marginLeft: 5,
-    marginRight:10,
-    color: Colors.DARK_GREY,
-  },
-  viewingsContainer: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingRight: 10,
     flex: 1,
     flexDirection: 'row',
+  },
+  noViewingsContainer: {
+    flex: 1,
+    backgroundColor: 'white',
     justifyContent: 'center',
-},
-viewingTitleWrapper: {
-    marginTop: 0,
-    borderRadius: 5,
-    flex: 0.7,
-    justifyContent: 'center',
-    justifyContent: 'flex-start'
-},
-viewingsTitle: {
+    paddingRight: 40,
+    paddingLeft: 40
+  },
+  noViewingsMessage: {
     color: Colors.LIGHT_GRAY,
+    alignSelf: 'center',
     fontSize: FontSizes.DEFAULT,
-    alignSelf: 'flex-start',
-},
-videoIcon: {
-   color: Colors.AQUA_GREEN,
-   fontSize: FontSizes.TITLE,
-   alignSelf: 'flex-start',
-},
-noViewingsContainer: {
-  flex: 1,
-  backgroundColor: 'white',
-  justifyContent: 'center',
-  paddingRight: 40,
-  paddingLeft: 40
-},
-noViewingsMessage: {
-  color: Colors.LIGHT_GRAY,
-  alignSelf: 'center',
-  fontSize: FontSizes.DEFAULT,
-  textAlign: 'center'
-},
-detailsContainer: {
-    flexDirection: 'row',
-    flex: 1
-},
-participantsContainer:{
-    flex: 0.5,
-    alignItems: 'center',
-    justifyContent: 'center',
-},
-participants: {
-    fontSize: FontSizes.TITLE,
-    color: Colors.AQUA_GREEN
-},
-participantsLabel: {
-    color: Colors.AQUA_GREEN,
+    textAlign: 'center'
+  },
+  detailsContainer: {
+     flex: 0.7
+  },
+  participantsContainer:{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row'
+  },
+  participants: {
+      fontSize: FontSizes.DEFAULT,
+      color: Colors.LIGHT_GRAY
+  },
+  participantsLabel: {
+      fontSize: FontSizes.DEFAULT,
+      color: Colors.LIGHT_GRAY,
+      marginTop: 10,
+      marginLeft:20
+  },
+  dividerContainer: {
+    backgroundColor: Colors.WHITE_SMOKE,
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingLeft: 10,
+  },
+  dividerText: {
+    fontSize: FontSizes.DEFAULT, 
+    color: Colors.LIGHT_GRAY,
+    fontWeight: 'bold'
+  },
+  badge: {
+    backgroundColor: Colors.AQUA_GREEN,
+    height: 80,
+    width: 10
+  },
+  descriptionText: {
+    marginLeft: 20,
+    marginTop: 10,
+    marginRight: 10,
     fontSize: FontSizes.DEFAULT
-}
+  },
+  icon: {
+    color: Colors.AQUA_GREEN,
+    position: 'absolute',
+    left: -12,
+    fontSize: 22,
+    top: 15,
+    backgroundColor: 'white'
+  }
 });

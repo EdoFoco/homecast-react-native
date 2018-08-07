@@ -15,7 +15,7 @@ const routeConfiguration = {
     AddPropertyScreen: { screen: AddPropertyScreen },
     ViewingScreen: { screen: ViewingContainer },
     UploadPhotosScreen: { screen: UploadPhotosScreen },
-    LiveCastScreen: { screen: LiveCastContainer, navigationOptions: { tabBarVisible: false, header: null } }
+    LiveCast: { screen: LiveCastContainer, navigationOptions: { tabBarVisible: false, header: null } }
 }
 
 const stackConfiguration = {

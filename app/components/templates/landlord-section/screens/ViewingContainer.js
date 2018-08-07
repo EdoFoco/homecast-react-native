@@ -2,18 +2,10 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
-import PropertyRow from '../../../organisms/PropertyRow';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import * as Colors from '../../../helpers/ColorPallette';
-import * as FontSizes from '../../../helpers/FontSizes';
 import AdminViewingScreen from '../../shared/AdminViewingScreen';
 
 import {
-  StyleSheet,
-  Text,
-  View
- } from 'react-native';
+  StyleSheet } from 'react-native';
 
 class ViewingScreen extends Component{
   
@@ -37,7 +29,7 @@ class ViewingScreen extends Component{
   }
 }
 
-ViewingScreen.navigationOptions = ({ navigation }) => {
+ViewingScreen.navigationOptions = () => {
     return {
       title: 'Viewing'
   }
@@ -61,9 +53,3 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewingScreen);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white'
-  }
-});
