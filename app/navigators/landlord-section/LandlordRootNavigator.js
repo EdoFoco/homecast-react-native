@@ -6,7 +6,7 @@ import LandlordTabBar from './LandlordTabBarNavigator';
 import LandlordPropertiesNavigator from '../../components/templates/landlord-section/properties-tab/Navigator';
 import LandlordViewingsNavigator from '../../components/templates/landlord-section/viewings-tab/Navigator';
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
-
+import GuestChatsNavigator from '../../components/templates/guest-section/chats-tab/Navigator';
 const routeConfiguration = {
   TabBar: { 
     screen: LandlordTabBar
@@ -16,6 +16,9 @@ const routeConfiguration = {
   },
   ViewingsStack: {
     screen: LandlordViewingsNavigator
+  },
+  ChatsStack: {
+    screen: GuestChatsNavigator
   }
 }
 

@@ -2,12 +2,11 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
-import PropertyRow from '../../../organisms/PropertyRow';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import FastImage from 'react-native-fast-image';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
@@ -66,7 +65,9 @@ class PropertiesScreen extends Component{
 
 PropertiesScreen.navigationOptions = ({ navigation }) => {
     return {
-      title: 'Listings',
+      tabBarIcon: ({ tintColor }) => (
+        <FontAwesomeIcon name="home" size={24} color={tintColor} style={{height: 24, width: 24}} />
+      ),
       headerRight: <TouchableHighlight onPress={() => { navigation.navigate('AddPropertyScreen')}}><Text style={{fontSize: 30, color: Colors.RED, marginRight: 20}}>+</Text></TouchableHighlight>,
   }
   

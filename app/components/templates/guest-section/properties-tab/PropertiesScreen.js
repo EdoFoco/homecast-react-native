@@ -154,8 +154,6 @@ class PropertiesScreen extends Component{
 
 
 PropertiesScreen.navigationOptions = {
-  title: 'Properties',
-  tabBarLabel: null,
   tabBarIcon: ({ tintColor }) => (
       <Icon name="home" size={24} color={tintColor} style={{height: 24, width: 24}} />
     )

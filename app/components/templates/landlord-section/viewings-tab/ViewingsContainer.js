@@ -5,10 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
@@ -45,7 +42,7 @@ class ViewingsContainer extends Component{
                     <Text style={styles.viewingTime}>{new Date(`${viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                 </View> 
                 <View style={styles.detailsContainer}>
-                  <MCIcon name="check-circle" style={styles.icon} />
+                  <Icon name="check-circle" style={styles.icon} />
                   <Text style={styles.descriptionText}>{property.address.split(',')[0]}</Text>
                   <Text style={styles.participantsLabel}>{10 - viewing.capacity} Attendee(s)</Text>
                 </View>
@@ -106,7 +103,6 @@ class ViewingsContainer extends Component{
 }
 
 ViewingsContainer.navigationOptions = {
-  tabBarLabel: 'Viewings',
   tabBarIcon: ({ tintColor }) => (
       <Icon name="calendar-clock"  size={24} color={tintColor} style={{height: 24, width: 24}} />
     ),

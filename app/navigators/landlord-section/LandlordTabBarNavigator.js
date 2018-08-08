@@ -5,6 +5,7 @@ import PropertiesScreen from '../../components/templates/landlord-section/proper
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 import ViewingsContainer from '../../components/templates/landlord-section/viewings-tab/ViewingsContainer';
 import * as Colors from '../../components/helpers/ColorPallette';
+import ChatsContainer from '../../components/templates/guest-section/chats-tab/ChatsContainer';
 import {
   createReduxBoundAddListener,
 } from 'react-navigation-redux-helpers';
@@ -12,6 +13,9 @@ import {
 const routeConfiguration = {
   PropertiesTab: { 
     screen: PropertiesScreen
+  },
+  ChatsTab: {
+    screen: ChatsContainer
   },
   ViewingsTab: {
     screen: ViewingsContainer
@@ -25,9 +29,12 @@ const tabBarConfiguration = {
   headerMode: 'screen',
   backBehavior: 'none',
   tabBarOptions: {
-    activeTintColor: Colors.RED,
+    activeTintColor: Colors.AQUA_GREEN,
+    inactiveTintColor: Colors.WHITE_SMOKE,
+    showLabel: false,
 		style:{
-      backgroundColor: 'white',
+      backgroundColor: Colors.DARK_BLUE,
+      height: 60
     } 
   }
 }

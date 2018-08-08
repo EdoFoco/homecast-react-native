@@ -7,7 +7,6 @@ import FavouritesScreen from '../../components/templates/guest-section/favourite
 import ViewingsScreen from '../../components/templates/guest-section/viewings-tab/ViewingsScreen';
 import OptionsTab from '../../components/templates/shared/options-tab/Navigator';
 import ChatsContainer from '../../components/templates/guest-section/chats-tab/ChatsContainer';
-import NetworkErrorMessage from '../../components/templates/shared/NetworkErrorMessage';
 import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
