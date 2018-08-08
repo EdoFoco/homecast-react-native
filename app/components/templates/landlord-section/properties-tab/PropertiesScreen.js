@@ -32,16 +32,11 @@ class PropertiesScreen extends Component{
     return (
         <TouchableHighlight onPress={() => {this._onPress(property)}}>
           <View style={styles.listingCell}>
+            <FastImage style={styles.listingImage} source={{url: property.images[0].url}}/>
             <View style={styles.listingDescription}>
-              <Text style={styles.listingTitle}>{property.name}</Text>
-              <View style={styles.iconsContainer}>
-                <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                <Text style={styles.iconText}>{property.bedrooms}</Text>
-                <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                <Text style={styles.iconText}>{property.bathrooms}</Text>
-              </View>
+              <Text style={styles.listingTitle}>{property.address.replace(', UK', '')}</Text>
+              <Text style={styles.active}>{property.listing_active ? "Active" : "Inactive"}</Text>
             </View>
-              <FastImage style={styles.listingImage} source={{url: property.thumbnail}}/>
           </View>
         </TouchableHighlight>
           
@@ -108,8 +103,8 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   listingDescription: {
-    flex: 0.5,
-    paddingLeft: 10
+    flex: 1,
+    margin: 5
   },
   iconsContainer: {
     marginTop: 10,
@@ -128,11 +123,16 @@ const styles = StyleSheet.create({
   },
   listingImage: {
     height: 100,
-    alignSelf: 'flex-end',
-    right: 0,
-    flex: 0.5
+    width: 150,
+    margin: 5,
+    borderRadius: 5
   },
   listingTitle: {
+    fontSize: FontSizes.DEFAULT
+  },
+  active: {
+    marginTop: 5,
+    color: Colors.LIGHT_GRAY,
     fontSize: FontSizes.DEFAULT
   }
 });
