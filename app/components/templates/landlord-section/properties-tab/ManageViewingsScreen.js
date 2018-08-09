@@ -9,7 +9,18 @@ import * as FontSizes from '../../../helpers/FontSizes';
 import { View, TouchableHighlight, StyleSheet, Text } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-class EditPropertyScreen extends Component{
+class ManageViewingsScreen extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+        showAddViewingModal: false
+    }
+  }
+
+  _showAddViewingModal(){
+      this.setState({ showAddViewingModal: !this.state.showAddViewingModal });
+  }
 
   render() {
     return (
@@ -19,39 +30,27 @@ class EditPropertyScreen extends Component{
                 <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
               </TouchableHighlight>
               <Text style={styles.menuText}>{this.props.property.address}</Text>
+              <TouchableHighlight style={styles.addViewingButton} onPress={() => {this._showAddViewingModal()}}>
+                <MaterialIcons name="plus" style={styles.addViewingIcon}/>
+              </TouchableHighlight>
           </View>
             <View style={styles.fieldsForm}> 
-                  <EditPropertyForm 
-                    user={this.props.user}
-                    property={this.props.property}
-                    updateProperty={this.props.updateProperty}
-                    user={this.props.user}
-                    getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
-                    updateLocationSuggestions={(suggestions) => {this.props.updateLocationSuggestions(suggestions)}} 
-                    autocompleteSuggestions={this.props.autocompleteSuggestions}
-                    goToScreen={(screen) => {this.props.navigation.navigate(screen, {property: this.props.property})}}
-                  /> 
-                  </View>
-                  <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.navigation.navigate('ManageViewingsScreen', {property: this.props.property})}}>
-                    <Text style={styles.ctaText}>Manage Viewings</Text>
-                  </TouchableHighlight>
-                  {/* :
-                  <AddViewingForm 
+                <AddViewingForm 
                   propertyId={this.props.property.id} 
                   userId={this.props.user.info.id} 
                   viewings={this.props.property.viewings}
-                  isModalVisible={this.props.navigation.state.params.showAddViewingModal}
+                  isModalVisible={this.state.showAddViewingModal}
                   showModal={(showModal) => { this._showAddViewingModal(showModal)}}
                   createViewing={(propertyId, userId, viewingInfo) => this.props.createViewing(propertyId, userId, viewingInfo)}
                   goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property}) }}
-                /> */}
-              }
+                /> 
+            </View>
         </View>
     )
   }
 }
 
-EditPropertyScreen.navigationOptions = ({ navigation }) => {
+ManageViewingsScreen.navigationOptions = ({ navigation }) => {
   return( { header: null });
 };
 
@@ -67,7 +66,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPropertyScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageViewingsScreen);
 
 var styles = StyleSheet.create({
     menuWrapper: {
@@ -114,17 +113,16 @@ var styles = StyleSheet.create({
       paddingBottom: 5,
       flex: 0.9
     },
-    ctaButton: {
-      backgroundColor: Colors.AQUA_GREEN,
-      flex: 0.1,
-      justifyContent: 'center'
-    },
-    ctaText: {
-      color: 'white',
-      textAlign: 'center',
-      fontSize: FontSizes.DEFAULT
-    },
     fieldsForm: {
-      flex: 0.9
+      flex: 1
+    },
+    addViewingButton: {
+        flex: 0.1,
+        justifyContent: 'flex-end',
+        marginRight: 10,
+    },
+    addViewingIcon: {
+        color: Colors.AQUA_GREEN,
+        fontSize: FontSizes.TITLE
     }
 });

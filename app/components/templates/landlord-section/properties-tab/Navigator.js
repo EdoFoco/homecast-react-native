@@ -7,11 +7,13 @@ import AddPropertyScreen from './AddPropertyScreen';
 import EditPropertyScreen from './EditPropertyScreen';
 import ViewingContainer from '../screens/ViewingContainer';
 import LiveCastContainer from '../screens/LiveCastContainer';
+import ManageViewingsScreen from './ManageViewingsScreen';
 import UploadPhotosScreen from './UploadPhotosScreen';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     EditPropertyScreen: { screen: EditPropertyScreen },
+    ManageViewingsScreen: { screen: ManageViewingsScreen },
     AddPropertyScreen: { screen: AddPropertyScreen },
     ViewingScreen: { screen: ViewingContainer },
     UploadPhotosScreen: { screen: UploadPhotosScreen },

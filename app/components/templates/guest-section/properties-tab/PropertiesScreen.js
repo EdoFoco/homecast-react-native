@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   menuWrapper: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.DARK_BLUE,
     paddingTop: 20,
     alignItems: 'center',
     paddingBottom: 20,
@@ -192,10 +192,9 @@ const styles = StyleSheet.create({
     borderColor: Colors.LIGHT_GRAY
   },
   menuWrapperActive: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.DARK_BLUE,
     paddingTop: 20,
     alignItems: 'center',
-    paddingBottom: 10,
     flex: 1,
   },
   menuTitleContainer: {
@@ -229,8 +228,9 @@ const styles = StyleSheet.create({
   locationSuggestionsContainer: {
     flex: 1,
     alignSelf: 'stretch',
-    marginRight: 20,
-    marginLeft: 20,
+    backgroundColor: 'white',
+    paddingRight: 20,
+    paddingLeft: 20
   },
   filterIcon: {
     color: Colors.AQUA_GREEN,

@@ -35,7 +35,17 @@ class PropertiesScreen extends Component{
             <FastImage style={styles.listingImage} source={{url: property.images[0].url}}/>
             <View style={styles.listingDescription}>
               <Text style={styles.listingTitle}>{property.address.replace(', UK', '')}</Text>
-              <Text style={styles.active}>{property.listing_active ? "Active" : "Inactive"}</Text>
+              {
+                property.listing_active ? 
+                <Text style={styles.active}>
+                  <Icon name="check-circle" style={styles.activeIcon} />
+                     Active
+                </Text> :
+                <Text style={styles.active}>
+                  <Icon name="check-circle" style={styles.inactiveIcon} />
+                  Inactive
+                </Text> 
+              }
             </View>
           </View>
         </TouchableHighlight>
@@ -133,6 +143,15 @@ const styles = StyleSheet.create({
   active: {
     marginTop: 5,
     color: Colors.LIGHT_GRAY,
-    fontSize: FontSizes.DEFAULT
+    fontSize: FontSizes.DEFAULT,
+    justifyContent: 'center'
+  },
+  activeIcon: {
+    fontSize: 20,
+    color: Colors.AQUA_GREEN
+  },
+  inactiveIcon: {
+    fontSize: 20,
+    color: Colors.LIGHT_GRAY
   }
 });
