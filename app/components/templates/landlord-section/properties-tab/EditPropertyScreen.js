@@ -32,19 +32,6 @@ class EditPropertyScreen extends Component{
                     goToScreen={(screen) => {this.props.navigation.navigate(screen, {property: this.props.property})}}
                   /> 
                   </View>
-                  <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.navigation.navigate('ManageViewingsScreen', {property: this.props.property})}}>
-                    <Text style={styles.ctaText}>Manage Viewings</Text>
-                  </TouchableHighlight>
-                  {/* :
-                  <AddViewingForm 
-                  propertyId={this.props.property.id} 
-                  userId={this.props.user.info.id} 
-                  viewings={this.props.property.viewings}
-                  isModalVisible={this.props.navigation.state.params.showAddViewingModal}
-                  showModal={(showModal) => { this._showAddViewingModal(showModal)}}
-                  createViewing={(propertyId, userId, viewingInfo) => this.props.createViewing(propertyId, userId, viewingInfo)}
-                  goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property}) }}
-                /> */}
               }
         </View>
     )
@@ -114,17 +101,7 @@ var styles = StyleSheet.create({
       paddingBottom: 5,
       flex: 0.9
     },
-    ctaButton: {
-      backgroundColor: Colors.AQUA_GREEN,
-      flex: 0.1,
-      justifyContent: 'center'
-    },
-    ctaText: {
-      color: 'white',
-      textAlign: 'center',
-      fontSize: FontSizes.DEFAULT
-    },
     fieldsForm: {
-      flex: 0.9
+      flex: 1
     }
 });

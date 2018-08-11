@@ -109,6 +109,7 @@ class PropertiesScreen extends Component{
             <FastImage style={styles.logo} source={require('../../../../img/homecast_logo_color_6.png')} resizeMode={FastImage.resizeMode.cover}/>
             <Autocomplete
                 textValue={this.state.locationSearchValue}  
+                style={{marginTop: 30}}
                 placeholder="Type a location" 
                 height={40}
                 getLocationSuggestions={(text) => {this.props.getAddressSuggestions(text, 'geocode')}}
@@ -118,7 +119,7 @@ class PropertiesScreen extends Component{
                 />
             <MCIcon name="filter-variant" style={styles.filterIcon} onPress={() => { this.setState({showFiltersModal: !this.state.showFiltersModal }) }}/>
           </View>
-          <View style={styles.locationSuggestionsContainer}>
+          <View style={this.state.isSearching && this.props.location.suggestions.length > 0 ? styles.locationSuggestionsContainer : { marginTop: 0, flex: 1}}>
             <LocationSuggestions 
                 style={styles.locationSuggestions}
                 suggestions={this.props.location.suggestions} 
@@ -185,17 +186,17 @@ const styles = StyleSheet.create({
   },
   menuWrapper: {
     backgroundColor: Colors.DARK_BLUE,
-    paddingTop: 20,
     alignItems: 'center',
     paddingBottom: 20,
     borderBottomWidth: 0.5,
-    borderColor: Colors.LIGHT_GRAY
+    borderColor: Colors.LIGHT_GRAY,
+    paddingTop: 10
   },
   menuWrapperActive: {
     backgroundColor: Colors.DARK_BLUE,
-    paddingTop: 20,
     alignItems: 'center',
     flex: 1,
+    paddingTop: 10
   },
   menuTitleContainer: {
     flexDirection: 'row',
@@ -230,7 +231,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     backgroundColor: 'white',
     paddingRight: 20,
-    paddingLeft: 20
+    paddingLeft: 20,
+    marginTop: 20
   },
   filterIcon: {
     color: Colors.AQUA_GREEN,

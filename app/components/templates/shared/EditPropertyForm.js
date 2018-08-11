@@ -172,7 +172,7 @@ export default class EditPropertyForm extends Component{
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
                 <View style={styles.container}>
-                    <ImageBackground style={styles.propertyThumbnail} source={{url: this.props.property.thumbnail}}>
+                    <ImageBackground style={styles.propertyThumbnail} source={{url: this.props.property.images[0].url}}>
                         <TouchableHighlight style={styles.opaqueLayer} onPress={(screen) => {this.props.goToScreen('UploadPhotosScreen')}}>
                             <Text style={styles.photosBtn}>Photos</Text>
                         </TouchableHighlight>
@@ -250,7 +250,10 @@ export default class EditPropertyForm extends Component{
                 </View>
             </ScrollView>
                 {
-                    !this.state.showForm ? null :
+                    !this.state.showForm ? 
+                    <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
+                        <Text style={styles.ctaText}>Manage Viewings</Text>
+                    </TouchableHighlight> :
                     <View>
                         <TouchableHighlight style={styles.formOverlay} onPress={() => {this._cancelChanges()}}><Text></Text></TouchableHighlight>
                         <View style={styles.formContainer} onPress={() => {console.log('do nothing')}}>
@@ -381,6 +384,16 @@ const styles = StyleSheet.create({
     },
     autoCompleteControl: {
         flex: 1
-    }
+    },
+    ctaButton: {
+        backgroundColor: Colors.AQUA_GREEN,
+        flex: 0.1,
+        justifyContent: 'center'
+      },
+      ctaText: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: FontSizes.DEFAULT
+      },
   });
 

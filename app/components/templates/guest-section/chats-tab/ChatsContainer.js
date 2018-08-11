@@ -9,9 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   StyleSheet,
-  View,
-  FlatList,
-  Text
+  View
 } from 'react-native';
 
 class ChatsContainer extends Component{
