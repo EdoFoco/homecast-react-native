@@ -31,7 +31,7 @@ class ViewingScreen extends Component{
 
 ViewingScreen.navigationOptions = () => {
     return {
-      title: 'Viewing'
+      header: null
   }
 };
 
