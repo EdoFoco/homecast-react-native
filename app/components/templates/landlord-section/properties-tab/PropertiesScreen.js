@@ -8,6 +8,7 @@ import * as FontSizes from '../../../helpers/FontSizes';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AutocompleteControl from '../../shared/AutocompleteControl';
+import AdminPropertyRow from '../../shared/AdminPropertyRow';
 
 import {
   StyleSheet,
@@ -50,27 +51,8 @@ class PropertiesScreen extends Component{
  _renderRow = function({item}){
     let property = item;
     return (
-        <TouchableHighlight onPress={() => {this._onPress(property)}}>
-          <View style={styles.listingCell}>
-            <FastImage style={styles.listingImage} source={{url: property.images.length > 0 ? property.images[0].url : ''}}/>
-            <View style={styles.listingDescription}>
-              <Text style={styles.listingTitle}>{property.address.replace(', UK', '')}</Text>
-              {
-                property.listing_active ? 
-                <Text style={styles.active}>
-                  <Icon name="check-circle" style={styles.activeIcon} />
-                     Active
-                </Text> :
-                <Text style={styles.active}>
-                  <Icon name="check-circle" style={styles.inactiveIcon} />
-                  Inactive
-                </Text> 
-              }
-            </View>
-          </View>
-        </TouchableHighlight>
-          
-        )
+        <AdminPropertyRow onPress={() => {this._onPress(property)}} property={property} />
+    )
   }
 
   render() {
@@ -151,57 +133,6 @@ const styles = StyleSheet.create({
       color: 'white',
       textAlign: 'center',
       fontSize: FontSizes.DEFAULT
-  },
-  listingCell: {
-    flexDirection: 'row',
-    flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.WHITE_SMOKE,
-    paddingTop: 5,
-    paddingBottom: 5
-  },
-  listingDescription: {
-    flex: 1,
-    margin: 5
-  },
-  iconsContainer: {
-    marginTop: 10,
-    flexDirection: 'row',
-    flex: 1
-  },
-  descriptionIcon: {
-    fontSize: 16,
-    marginRight: 10,
-    color: Colors.LIGHT_GRAY
-  },
-  iconText: {
-      marginLeft: 5,
-      marginRight:10,
-      color: Colors.LIGHT_GRAY
-  },
-  listingImage: {
-    height: 100,
-    width: 150,
-    margin: 5,
-    borderRadius: 5,
-    backgroundColor: 'rgba(0,0,0,0.6)'
-  },
-  listingTitle: {
-    fontSize: FontSizes.DEFAULT
-  },
-  active: {
-    marginTop: 5,
-    color: Colors.LIGHT_GRAY,
-    fontSize: FontSizes.DEFAULT,
-    justifyContent: 'center'
-  },
-  activeIcon: {
-    fontSize: 20,
-    color: Colors.AQUA_GREEN
-  },
-  inactiveIcon: {
-    fontSize: 20,
-    color: Colors.LIGHT_GRAY
   },
   formOverlay: {
     position: 'absolute',

@@ -58,14 +58,6 @@ export default class EditPropertyForm extends Component{
 
   _handleChangeActive(value) {
       this.setState({property: {...this.state.property, listing_active: value}}, this._updateProperty);
-      /*this.props.updateProperty({...this.state.property, listing_active: value}, this.props.user.info.id)
-      .then((property) => {
-          console.log('success updating property');
-          this._hideForm();
-      })
-      .catch((e) => {
-          console.error(e);
-      });*/
   }
 
   _showForm(shouldShow, formTarget){
@@ -370,10 +362,10 @@ const styles = StyleSheet.create({
         flex: 0.1,
         justifyContent: 'center'
       },
-      ctaText: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: FontSizes.DEFAULT
-      },
+    ctaText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: FontSizes.DEFAULT
+    },
   });
 

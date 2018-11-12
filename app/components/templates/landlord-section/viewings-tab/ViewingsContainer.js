@@ -78,8 +78,10 @@ class ViewingsContainer extends Component{
         if(this.props.viewings.length == 0) {
           return(
             <View style={styles.noViewingsContainer}>
-              <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
-              <Text style={styles.noViewingsMessage}>You haven't created any viewings. Choose a property and create a live viewing.</Text>
+              <Text style={styles.noViewingsMessage}>You haven't added any viewings. Choose a property and add a live viewing.</Text>
+              <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.navigation.navigate('PropertiesList')}}>
+                <Text style={styles.ctaText}>Add Viewing</Text>
+              </TouchableHighlight>
             </View>
           )
         }
@@ -94,6 +96,10 @@ class ViewingsContainer extends Component{
               keyExtractor={(item, index) => index.toString()}
               removeClippedSubviews={false}
             />
+
+            <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
+                <Text style={styles.ctaText}>Create Viewing</Text>
+            </TouchableHighlight>
             
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
           </View>
@@ -177,14 +183,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
-    paddingRight: 40,
-    paddingLeft: 40
   },
   noViewingsMessage: {
     color: Colors.LIGHT_GRAY,
     alignSelf: 'center',
     fontSize: FontSizes.DEFAULT,
-    textAlign: 'center'
+    textAlign: 'center',
+    flex: 0.9,
+    padding: 40
   },
   detailsContainer: {
      flex: 0.7
@@ -234,5 +240,15 @@ const styles = StyleSheet.create({
     fontSize: 22,
     top: 15,
     backgroundColor: 'white'
-  }
+  },
+  ctaButton: {
+    backgroundColor: Colors.AQUA_GREEN,
+    flex: 0.1,
+    justifyContent: 'center'
+  },
+  ctaText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: FontSizes.DEFAULT
+  },
 });
