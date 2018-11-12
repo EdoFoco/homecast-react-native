@@ -2,25 +2,13 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import EditPropertyForm from '../../shared/EditPropertyForm';
-import AddViewingForm from '../../shared/AddViewingForm';
+import ManageViewingsForm from '../../shared/ManageViewingsForm';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import { View, TouchableHighlight, StyleSheet, Text } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class ManageViewingsScreen extends Component{
-
-  constructor(props){
-    super(props);
-    this.state = {
-        showAddViewingModal: false
-    }
-  }
-
-  _showAddViewingModal(){
-      this.setState({ showAddViewingModal: !this.state.showAddViewingModal });
-  }
 
   render() {
     return (
@@ -30,17 +18,12 @@ class ManageViewingsScreen extends Component{
                 <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
               </TouchableHighlight>
               <Text style={styles.menuText}>{this.props.property.address}</Text>
-              <TouchableHighlight style={styles.addViewingButton} onPress={() => {this._showAddViewingModal()}}>
-                <MaterialIcons name="plus" style={styles.addViewingIcon}/>
-              </TouchableHighlight>
           </View>
             <View style={styles.fieldsForm}> 
-                <AddViewingForm 
+                <ManageViewingsForm 
                   propertyId={this.props.property.id} 
                   userId={this.props.user.info.id} 
                   viewings={this.props.property.viewings}
-                  isModalVisible={this.state.showAddViewingModal}
-                  showModal={(showModal) => { this._showAddViewingModal(showModal)}}
                   createViewing={(propertyId, userId, viewingInfo) => this.props.createViewing(propertyId, userId, viewingInfo)}
                   goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property}) }}
                 /> 

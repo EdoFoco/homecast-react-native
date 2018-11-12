@@ -23,6 +23,7 @@ export default class AutocompleteControl extends Component{
     }
 
     _selectLocation(suggestion){
+        console.log(suggestion);
         this.setState({locationSearchValue: suggestion.description})
         this.props.updateLocationSuggestions([]);
         this.setState({selectedLocation : suggestion});
@@ -69,7 +70,7 @@ export default class AutocompleteControl extends Component{
                 <View style={{flex: 0.2}}>
                     <EditPropertyActions 
                         property={this.props.property}
-                        updateProperty={() => {this.props.updateProperty()}}
+                        updateProperty={() => {this.props.updateProperty(this.state.selectedLocation.place_id)}}
                         cancelChanges={() => {this.props.cancelChanges()}}
                         enabled={this.state.selectedLocation ? true : false}
                     />
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
         flex:0.1
     },
     locationSuggestionsContainer: {
+        paddingTop: 10,
         flex: 0.7,
     }
 })    

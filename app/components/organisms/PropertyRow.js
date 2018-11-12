@@ -150,7 +150,8 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         height: 250,
-        borderRadius: 5
+        borderRadius: 5,
+        backgroundColor: 'rgba(0,0,0,0.2)'
     },
     propertContainer: {
         flex: 1,

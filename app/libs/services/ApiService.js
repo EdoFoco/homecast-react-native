@@ -8,8 +8,8 @@ class ApiService {
 
     constructor(){
         this.apiClient = axios.create({
-            //baseURL: 'http://192.168.43.245:8111',
-            baseURL: 'https://api.homecastapp.com',
+            baseURL: 'http://localhost:8111',
+            //baseURL: 'https://api.homecastapp.com',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -69,6 +69,10 @@ class ApiService {
         return await this.apiClient.get(`api/properties/${propertyid}`);
     }
 
+    async createProperty(id){
+        return await this.apiClient.post('api/properties', { google_place_id: id });
+    }
+
      async getUserProperties(userId){
         
         return await this.apiClient.get(`api/users/${userId}/properties`);
@@ -104,6 +108,10 @@ class ApiService {
         return await this.apiClient.post(`api/properties/${ propertyId }/viewings`, viewingInfo);
      }
 
+     async deleteViewing(viewingId){
+        return await this.apiClient.delete(`api/viewings/${viewingId}`);
+     }
+
      async deleteViewingReservation(userId, viewingId){
         
         return await this.apiClient.delete(`api/users/${ userId }/viewing-reservations/${viewingId}`);
@@ -115,7 +123,6 @@ class ApiService {
      }
 
      async updateProperty(property){
-        
         return await this.apiClient.put(`api/properties/${property.id}`, property);
     }
 

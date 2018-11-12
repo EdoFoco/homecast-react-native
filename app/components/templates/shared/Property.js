@@ -49,21 +49,18 @@ export default class Property extends Component{
 
   _renderImage = ({item}) => {
     let image = item;
-    if(image){
-      return(  
-        <View style={{ width:  Dimensions.get('window').width }}>
-          <FastImage
-              style={styles.backgroundImage}
-              source={{
-                  uri: image.url,
-                  priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-          />
-        </View>
-      )   
-    }
-    return null;
+    return(  
+      <View style={{ width:  Dimensions.get('window').width }}>
+        <FastImage
+            style={styles.backgroundImage}
+            source={{
+                uri: image ? image.url : '',
+                priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
+        />
+      </View>
+    ) 
   }
 
   _renderViewingItem({item}){
@@ -79,7 +76,7 @@ export default class Property extends Component{
           refreshing={this.state.isRefreshing}
           onRefresh={() => {this._refresh()}}
         />} >
-        <View style={{flexDirection: 'row', marginBottom: 20}} >
+        <View style={{flexDirection: 'row', marginBottom: 20, 'flex': 1, 'backgroundColor': 'black'}} >
              <FlatList
                   style={styles.imagesContainer}
                   data={this.props.currentProperty.images}
@@ -135,16 +132,9 @@ export default class Property extends Component{
             <Text style={styles.sectionTitle}>Description</Text>
           </View>    
          <View style={styles.descriptionContainer}>
-            { 
-              this.props.currentProperty.description_sections.map((section, index) => {
-                 return ( 
-                    <View key={index}>
-                        <Text style={styles.propertyDescription}>{section.description}</Text>
-                    </View>
-                  )
-              })
-             }
-           
+            <View key={index}>
+                <Text style={styles.propertyDescription}>{this.props.currentProperty.description}</Text>
+            </View>
          </View>
         <View style={styles.sectionTitleContainer}>
           <Text style={styles.sectionTitle}>Map</Text>
@@ -415,7 +405,9 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   imagesContainer: {
-    height: 200
+    height: 200,
+    width: 250,
+    backgroundColor: 'rgba(0,0,0,0.6)'
   },
   horizontalViewingContainer: {
     maxHeight: 200

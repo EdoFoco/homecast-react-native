@@ -8,8 +8,7 @@ import {
     TextInput,
     StyleSheet,
     View,
-    Text,
-    Dimensions
+    Text
   } from 'react-native';
 
 export default class TextControl extends Component{
@@ -29,9 +28,10 @@ export default class TextControl extends Component{
             <View style={{flex: 0.8, margin: 10}}>
                 <Text style={styles.title}>{this.props.title}</Text>
                 <Text style={styles.description}>{this.props.description}</Text>
-                <TextInput style={styles.textInput}
+                <TextInput style={this.props.multiline ? styles.textInputLong : styles.textInput}
                     value={this.props.value}
                     onChangeText={(text) => {this.props.handleChange(text)}}
+                    multiline={true} 
                 />
 
             </View>
@@ -40,7 +40,7 @@ export default class TextControl extends Component{
                     property={this.props.property}
                     updateProperty={() => {this.props.updateProperty()}}
                     cancelChanges={() => {this.props.cancelChanges()}}
-                    enabled={true}
+                    enabled={this.props.multiline ? true : false}
                 />
             </View>
         </View>
@@ -55,7 +55,8 @@ TextControl.propTypes ={
     description: PropTypes.string.isRequired,
     updateProperty: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
-    cancelChanges: PropTypes.func.isRequired
+    cancelChanges: PropTypes.func.isRequired,
+    multiline: PropTypes.bool
 }
 
 const styles = StyleSheet.create({
@@ -73,6 +74,14 @@ const styles = StyleSheet.create({
     textInput: {
         borderWidth: 1,
         height: 50,
+        marginTop: 20,
+        borderColor: Colors.LIGHT_GRAY,
+        borderRadius: 10,
+        paddingLeft: 10,
+    },
+    textInputLong: {
+        borderWidth: 1,
+        flex: 1,
         marginTop: 20,
         borderColor: Colors.LIGHT_GRAY,
         borderRadius: 10,

@@ -7,16 +7,25 @@ import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AutocompleteControl from '../../shared/AutocompleteControl';
 
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from 'react-native';
 
 class PropertiesScreen extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      showAddPropertyModal: false
+    }
+  }
 
   componentWillMount(){
     this.props.getUserProperties(this.props.user.info.id);
@@ -27,12 +36,23 @@ class PropertiesScreen extends Component{
       this.props.navigation.navigate('PropertyStack');
   }
 
+  _showAddPropertyModal(){
+    this.setState({showAddPropertyModal: !this.state.showAddPropertyModal});
+  }
+
+  _createProperty(placeId){
+    this.props.createProperty(placeId, this.props.user.info.id)
+    .then(()=>{
+      this.setState({showAddPropertyModal: !this.state.showAddPropertyModal});
+    });
+  }
+
  _renderRow = function({item}){
     let property = item;
     return (
         <TouchableHighlight onPress={() => {this._onPress(property)}}>
           <View style={styles.listingCell}>
-            <FastImage style={styles.listingImage} source={{url: property.images[0].url}}/>
+            <FastImage style={styles.listingImage} source={{url: property.images.length > 0 ? property.images[0].url : ''}}/>
             <View style={styles.listingDescription}>
               <Text style={styles.listingTitle}>{property.address.replace(', UK', '')}</Text>
               {
@@ -56,13 +76,34 @@ class PropertiesScreen extends Component{
   render() {
     return (
       <View style={styles.container}>
-          <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
           <FlatList
+            style={{flex: 0.9}}
             data={this.props.properties}
             renderItem={(property) => this._renderRow(property)}
             keyExtractor={(item, index) => index.toString()}
             removeClippedSubviews={false}
           />
+            {
+              !this.state.showAddPropertyModal ? 
+                <TouchableHighlight style={styles.addPropertyButton} onPress={() => {this._showAddPropertyModal()}}>
+                    <Text style={styles.addPropertyTxt}>Add Property</Text> 
+                </TouchableHighlight> :
+                <View>
+                  <TouchableHighlight style={styles.formOverlay} onPress={() => {this._showAddPropertyModal()}}><Text></Text></TouchableHighlight>
+                  <View style={styles.formContainer} onPress={() => {console.log('do nothing')}}>
+                    <AutocompleteControl
+                      style={styles.autoCompleteControl}
+                      title="Property Address"
+                      description=""
+                      placeholder="Type an address"
+                      updateProperty = {(property) => this._createProperty(property)}
+                      getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
+                      updateLocationSuggestions={(suggestions) => {this.props.updateLocationSuggestions(suggestions)}} 
+                      suggestions={this.props.autocompleteSuggestions}
+                  />
+                  </View>
+              </View>
+          }
       </View>
     )
   }
@@ -84,7 +125,8 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        properties: state.properties.propertiesList
+        properties: state.properties.propertiesList,
+        autocompleteSuggestions: state.location.suggestions
     }
 };
 
@@ -97,12 +139,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(PropertiesScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingTop: 10
+  },
+  addPropertyButton: {
+    backgroundColor: Colors.AQUA_GREEN,
+    flex: 0.1,
+    justifyContent: 'center'
   },
   addPropertyTxt: {
-    color: 'white',
-    fontSize: FontSizes.DEFAULT,
-    alignSelf: 'center'
+      color: 'white',
+      textAlign: 'center',
+      fontSize: FontSizes.DEFAULT
   },
   listingCell: {
     flexDirection: 'row',
@@ -135,7 +183,8 @@ const styles = StyleSheet.create({
     height: 100,
     width: 150,
     margin: 5,
-    borderRadius: 5
+    borderRadius: 5,
+    backgroundColor: 'rgba(0,0,0,0.6)'
   },
   listingTitle: {
     fontSize: FontSizes.DEFAULT
@@ -153,5 +202,26 @@ const styles = StyleSheet.create({
   inactiveIcon: {
     fontSize: 20,
     color: Colors.LIGHT_GRAY
-  }
+  },
+  formOverlay: {
+    position: 'absolute',
+    alignSelf: 'center',
+    height:  Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    bottom: 0,
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)'
+  },
+  formContainer: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    flex: 1,
+    height:  400,
+    left: 0,
+    right: 0,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
+  },
 });

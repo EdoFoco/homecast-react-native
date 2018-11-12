@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import EditPropertyForm from '../../shared/EditPropertyForm';
-import AddViewingForm from '../../shared/AddViewingForm';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import { View, TouchableHighlight, StyleSheet, Text } from 'react-native';

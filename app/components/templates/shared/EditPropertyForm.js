@@ -1,6 +1,4 @@
 import React, { Component} from 'react';
-import PropertyRow from '../../organisms/PropertyRow';
-import DropdownControl from './DropdownControl';
 import TextControl from './TextControl';
 import NumericUnitControl from './NumericUnitControl';
 import RoomsControl from './RoomsControl';
@@ -35,12 +33,15 @@ export default class EditPropertyForm extends Component{
      };
   }
 
-  _updateProperty(){
+  _updateProperty(placeId){
+    var property = {...this.state.property};
+    property.google_place_id = placeId;
+    this.setState({property, property});
     this.props.updateProperty(this.state.property, this.props.user.info.id)
-    .then((property) => {
-        console.log('success updating property');
-        this._hideForm();
-    })
+    .then(() => {
+            console.log('success updating property');
+            this._hideForm();
+        })
     .catch((e) => {
         console.error(e);
     });
@@ -83,7 +84,7 @@ export default class EditPropertyForm extends Component{
                 <TextControl 
                     value={this.state.property.name} 
                     handleChange={(value) => { this.setState({property: {...this.state.property, name: value}})}} 
-                    updateProperty={() => this._updateProperty()}
+                    updateProperty={(placeId) => this._updateProperty(placeId)}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
                     property={this.state.property}
@@ -94,14 +95,16 @@ export default class EditPropertyForm extends Component{
         }
         case 'description': {
             return (
-                <DescriptionSectionsControl 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, description_sections: value}})}} 
-                    property={this.state.property}
+                <TextControl 
+                    value={this.state.property.description} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, description: value}})}} 
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
                     title="Description"
-                    description="Tell us more about your property. (e.g. Key Features, Stations, Nearby Shops)"
+                    description="Describe the property"
+                    multiline={true}
                 />
              )
         }
@@ -135,27 +138,13 @@ export default class EditPropertyForm extends Component{
                 />
             )
         }
-        case 'minimum_rental_period': {
-            return (
-                <NumericUnitControl 
-                    value={this.state.property.minimum_rental_period} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, minimum_rental_period: value}})}} 
-                    updateProperty={() => this._updateProperty()}
-                    cancelChanges={() => {this._cancelChanges()}}
-                    hideForm={() => {this._hideForm()}}
-                    property={this.state.property}
-                    unit="Months"
-                    title="Rental Period"
-                    description="What's the minimum rental period (leave blank if none)"
-                />
-            )
-        }
-
+      
         case 'address': {
             return <AutocompleteControl
                     style={styles.autoCompleteControl}
                     title="Property Address"
                     description=""
+                    updateProperty={() => this._updateProperty()}
                     placeholder="Type an address" 
                     getLocationSuggestions={(text) => {this.props.getLocationSuggestions(text, 'address')}} 
                     suggestions={this.props.autocompleteSuggestions}
@@ -172,8 +161,8 @@ export default class EditPropertyForm extends Component{
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
                 <View style={styles.container}>
-                    <ImageBackground style={styles.propertyThumbnail} source={{url: this.props.property.images[0].url}}>
-                        <TouchableHighlight style={styles.opaqueLayer} onPress={(screen) => {this.props.goToScreen('UploadPhotosScreen')}}>
+                    <ImageBackground style={styles.propertyThumbnail} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}}>
+                        <TouchableHighlight style={styles.opaqueLayer} onPress={() => { this.props.goToScreen('UploadPhotosScreen'); }}>
                             <Text style={styles.photosBtn}>Photos</Text>
                         </TouchableHighlight>
                     </ImageBackground>
@@ -188,6 +177,15 @@ export default class EditPropertyForm extends Component{
                     </View>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
+                            <Text style={styles.sectionTitle}>Address</Text>
+                            <Text style={styles.sectionValue}>{this.props.property.address}</Text>
+                        </View>
+                        <View style={styles.sectionActionContainer}>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'address')}}>Edit</Text>
+                        </View>
+                    </View>
+                    <View style={styles.propertyDetailCell}>
+                        <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Name</Text>
                             <Text style={styles.sectionValue}>{this.state.property.name}</Text>
                         </View>
@@ -198,7 +196,7 @@ export default class EditPropertyForm extends Component{
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Description</Text>
-                            <Text style={styles.sectionValue}>{this.state.property.description_sections[0].description}</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.description}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
                             <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'description')}}>Edit</Text>
@@ -227,24 +225,6 @@ export default class EditPropertyForm extends Component{
                         </View>
                         <View style={styles.sectionActionContainer}>
                             <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'rooms')}}>Edit</Text>
-                        </View>
-                    </View>
-                    <View style={styles.propertyDetailCell}>
-                        <View style={styles.detailColumn}>
-                            <Text style={styles.sectionTitle}>Address</Text>
-                            <Text style={styles.sectionValue}>{this.props.property.address}</Text>
-                        </View>
-                        <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'address')}}>Edit</Text>
-                        </View>
-                    </View>
-                    <View style={styles.propertyDetailCell}>
-                        <View style={styles.detailColumn}>
-                            <Text style={styles.sectionTitle}>Minimum Rental Period</Text>
-                            <Text style={styles.sectionValue}>{this.state.property.minimum_rental_period} Months</Text>
-                        </View>
-                        <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'minimum_rental_period')}}>Edit</Text>
                         </View>
                     </View>
                 </View>

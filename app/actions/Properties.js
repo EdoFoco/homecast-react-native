@@ -2,6 +2,19 @@ import * as types from './Types';
 import * as ErrorHandler from './ErrorHandler';
 import ApiServiceFactory from '../libs/services/ApiServiceFactory';
 
+export function createProperty(placeId, userId){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            await apiService.createProperty(placeId);
+            dispatch(getUserProperties(userId))
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+    }
+}
+
 export function updatePropertiesList(properties){
     return {
         type: types.UPDATE_PROPERTIES_LIST,
