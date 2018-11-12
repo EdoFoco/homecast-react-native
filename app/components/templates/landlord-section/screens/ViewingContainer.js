@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import AdminViewingScreen from '../../shared/AdminViewingScreen';
-
-import {
-  StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
 class ViewingScreen extends Component{
   
@@ -17,14 +15,30 @@ class ViewingScreen extends Component{
     this.props.navigation.navigate('LiveCast', {viewing: this.props.viewing})
   }
   
+  _deleteViewing(){
+    this.props.deleteViewing(this.props.viewing.id)
+    .then(() => {
+      return this.props.navigation.goBack();
+    })
+    .then(() => {
+      return this.props.getProperty(this.props.property.id);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
   render() {
     return (
-      <AdminViewingScreen 
+      <View style={{flex: 1}}>
+        <AdminViewingScreen 
             viewing={this.props.viewing}
             property={this.props.property}
             user={this.props.user}
             joinLiveCast={() => {this._joinLiveCast()}}
-       />
+            deleteViewing={() => {this._deleteViewing()}}
+        />
+      </View>
     )
   }
 }

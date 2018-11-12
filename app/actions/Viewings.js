@@ -28,6 +28,18 @@ export function removeFromFavourites(userId, propertyId){
       }
 }
 
+export function deleteViewing(propertyId){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            await apiService.deleteViewing(propertyId);
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+      }
+}
+
 export function createViewingReservation(userId, viewingId){
     return async (dispatch, getState) => {
         try{
