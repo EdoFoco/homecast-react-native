@@ -19,7 +19,8 @@ export default class LocationSuggestions extends Component{
 
     _renderRow(suggestion){
         return(
-            <TouchableHighlight key={suggestion.item.place_id} style={styles.suggestionRow} onPress={() => {this.props.onPress(suggestion.item)}}>
+            <TouchableHighlight key={suggestion.item.place_id} style={styles.suggestionRow} onPress={() => {
+                   this.props.onPress(suggestion.item)}}>
                 <View style={styles.rowContainer}>
                     <MaterialIcons name="map-marker" style={styles.pin}/>
                     <Text style={styles.suggestionText}>{suggestion.item.description}</Text>

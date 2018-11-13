@@ -2,7 +2,6 @@ import React, { Component} from 'react';
 import TextControl from './TextControl';
 import NumericUnitControl from './NumericUnitControl';
 import RoomsControl from './RoomsControl';
-import DescriptionSectionsControl from './DescriptionSectionsControl';
 import AutocompleteControl from './AutocompleteControl';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
@@ -33,10 +32,15 @@ export default class EditPropertyForm extends Component{
      };
   }
 
-  _updateProperty(placeId){
+  _updatePropertyWithPlaceId(placeId){
+    console.log(placeId);
+
     var property = {...this.state.property};
     property.google_place_id = placeId;
-    this.setState({property, property});
+    this.setState({property: property}, this._updateProperty);
+  }
+
+  _updateProperty(){
     this.props.updateProperty(this.state.property, this.props.user.info.id)
     .then(() => {
             console.log('success updating property');
@@ -58,14 +62,6 @@ export default class EditPropertyForm extends Component{
 
   _handleChangeActive(value) {
       this.setState({property: {...this.state.property, listing_active: value}}, this._updateProperty);
-      /*this.props.updateProperty({...this.state.property, listing_active: value}, this.props.user.info.id)
-      .then((property) => {
-          console.log('success updating property');
-          this._hideForm();
-      })
-      .catch((e) => {
-          console.error(e);
-      });*/
   }
 
   _showForm(shouldShow, formTarget){
@@ -84,7 +80,7 @@ export default class EditPropertyForm extends Component{
                 <TextControl 
                     value={this.state.property.name} 
                     handleChange={(value) => { this.setState({property: {...this.state.property, name: value}})}} 
-                    updateProperty={(placeId) => this._updateProperty(placeId)}
+                    updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
                     property={this.state.property}
@@ -144,7 +140,7 @@ export default class EditPropertyForm extends Component{
                     style={styles.autoCompleteControl}
                     title="Property Address"
                     description=""
-                    updateProperty={() => this._updateProperty()}
+                    updateProperty={(placeId) => this._updatePropertyWithPlaceId(placeId)}
                     placeholder="Type an address" 
                     getLocationSuggestions={(text) => {this.props.getLocationSuggestions(text, 'address')}} 
                     suggestions={this.props.autocompleteSuggestions}

@@ -70,7 +70,9 @@ export default class AutocompleteControl extends Component{
                 <View style={{flex: 0.2}}>
                     <EditPropertyActions 
                         property={this.props.property}
-                        updateProperty={() => {this.props.updateProperty(this.state.selectedLocation.place_id)}}
+                        updateProperty={() => {
+                            console.log(this.state.selectedLocation);
+                            this.props.updateProperty(this.state.selectedLocation.place_id)}}
                         cancelChanges={() => {this.props.cancelChanges()}}
                         enabled={this.state.selectedLocation ? true : false}
                     />
