@@ -107,15 +107,6 @@ export default class PropertyRow extends Component{
                                 <Text style={styles.viewingDate}> Not scheduled</Text> :
                                 <Text style={styles.viewingDate}> {this._toDateString(this.props.property.viewings[0].date_time)}</Text>
                         }
-                        {/* <FlatList
-                            style={styles.imagesContainer}
-                            data={this.props.property.viewings}
-                            renderItem={(viewing) => this._renderViewing(viewing)}
-                            keyExtractor={(index) => index.toString()}
-                            removeClippedSubviews={false}
-                            horizontal
-                            pagingEnabled
-                        /> */}
                     </View>
                 </View>
             </TouchableHighlight>
@@ -143,10 +134,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderColor: Colors.LIGHT_GRAY,
         paddingBottom: 20
-        //paddingTop: 20
     },
     imagesContainer:{
         flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        height: 250
     },
     backgroundImage: {
         height: 250,
