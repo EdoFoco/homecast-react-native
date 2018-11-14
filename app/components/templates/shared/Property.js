@@ -29,8 +29,6 @@ export default class Property extends Component{
     }
    }
    
-  _keyExtractor = (index) => index.toString();
-  
   _toDateString(date){
     let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
     let day = new Date(`${date}`).getDate();
@@ -77,15 +75,15 @@ export default class Property extends Component{
           onRefresh={() => {this._refresh()}}
         />} >
         <View style={{flexDirection: 'row', marginBottom: 20, 'flex': 1, 'backgroundColor': 'black'}} >
-             <FlatList
-                  style={styles.imagesContainer}
-                  data={this.props.currentProperty.images}
-                  renderItem={(image) => this._renderImage(image)}
-                  keyExtractor={(index) => index.toString()}
-                  removeClippedSubviews={false}
-                  horizontal
-                  pagingEnabled
-              />
+          <FlatList
+              style={styles.imagesContainer}
+              data={this.props.currentProperty.images}
+              renderItem={(image) => this._renderImage(image)}
+              keyExtractor={(index) => index.toString()}
+              removeClippedSubviews={false}
+              horizontal
+              pagingEnabled
+          />
             {/* <FastImage source={{uri: this.props.currentProperty.thumbnail}} resizeMode={FastImage.resizeMode.cover} style={styles.backgroundImage} /> */}
         </View>
         <View style={{ flex: 1}}>
@@ -132,7 +130,7 @@ export default class Property extends Component{
             <Text style={styles.sectionTitle}>Description</Text>
           </View>    
          <View style={styles.descriptionContainer}>
-            <View key={index}>
+            <View>
                 <Text style={styles.propertyDescription}>{this.props.currentProperty.description}</Text>
             </View>
          </View>
