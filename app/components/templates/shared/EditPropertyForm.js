@@ -119,18 +119,50 @@ export default class EditPropertyForm extends Component{
                 />
             )
         }
-        case 'rooms': {
+        case 'bedrooms': {
             return (
-                <RoomsControl 
-                    property={this.state.property} 
+                <NumericUnitControl 
+                    value={this.state.property.bedrooms} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, bedrooms: value}})}} 
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
-                    handleChangeBedrooms={(value) => { this.setState({property: {...this.state.property, bedrooms: value}})}} 
-                    handleChangeLivingrooms={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}} 
-                    handleChangeBathrooms={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}} 
-                    title="Rooms"
-                    description="How many rooms does your flat have?"
+                    property={this.state.property}
+                    unit="bedroom(s)"
+                    title="Bedrooms"
+                    description="Number of bedrooms"
+                />
+            )
+        }
+
+        case 'bathrooms': {
+            return (
+                <NumericUnitControl 
+                    value={this.state.property.bathrooms} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
+                    unit="bathrooms(s)"
+                    title="Bathrooms"
+                    description="Number of bathrooms"
+                />
+            )
+        }
+
+        case 'livingrooms': {
+            return (
+                <NumericUnitControl 
+                    value={this.state.property.living_rooms} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
+                    unit="rooms(s)"
+                    title="Living Rooms"
+                    description="Number of living rooms"
                 />
             )
         }
@@ -209,18 +241,29 @@ export default class EditPropertyForm extends Component{
                     </View>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
-                            <Text style={styles.sectionTitle}>Rooms</Text>
-                            <View style={styles.iconsContainer}>
-                                <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                                <Text style={styles.iconText}>{this.state.property.bedrooms}</Text>
-                                <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                                <Text style={styles.iconText}>{this.state.property.bathrooms}</Text>
-                                <MaterialIcons name="sofa" style={styles.descriptionIconBig}/>
-                                <Text style={styles.iconText}>{this.state.property.bathrooms}</Text>
-                        </View>
+                            <Text style={styles.sectionTitle}>Bedrooms</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.bedrooms}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'rooms')}}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'bedrooms')}}>Edit</Text>
+                        </View>
+                    </View>
+                    <View style={styles.propertyDetailCell}>
+                        <View style={styles.detailColumn}>
+                            <Text style={styles.sectionTitle}>Bathrooms</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.bathrooms}</Text>
+                        </View>
+                        <View style={styles.sectionActionContainer}>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'bathrooms')}}>Edit</Text>
+                        </View>
+                    </View>
+                    <View style={styles.propertyDetailCell}>
+                        <View style={styles.detailColumn}>
+                            <Text style={styles.sectionTitle}>Living Rooms</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.living_rooms}</Text>
+                        </View>
+                        <View style={styles.sectionActionContainer}>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'livingrooms')}}>Edit</Text>
                         </View>
                     </View>
                 </View>
