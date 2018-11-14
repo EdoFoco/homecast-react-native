@@ -40,7 +40,7 @@ export default class TextControl extends Component{
                     property={this.props.property}
                     updateProperty={() => {this.props.updateProperty()}}
                     cancelChanges={() => {this.props.cancelChanges()}}
-                    enabled={this.props.multiline ? true : false}
+                    enabled={true}
                 />
             </View>
         </View>

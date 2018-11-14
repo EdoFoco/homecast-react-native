@@ -2,7 +2,6 @@ import React, { Component} from 'react';
 import TextControl from './TextControl';
 import NumericUnitControl from './NumericUnitControl';
 import RoomsControl from './RoomsControl';
-import DescriptionSectionsControl from './DescriptionSectionsControl';
 import AutocompleteControl from './AutocompleteControl';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
@@ -33,10 +32,15 @@ export default class EditPropertyForm extends Component{
      };
   }
 
-  _updateProperty(placeId){
+  _updatePropertyWithPlaceId(placeId){
+    console.log(placeId);
+
     var property = {...this.state.property};
     property.google_place_id = placeId;
-    this.setState({property, property});
+    this.setState({property: property}, this._updateProperty);
+  }
+
+  _updateProperty(){
     this.props.updateProperty(this.state.property, this.props.user.info.id)
     .then(() => {
             console.log('success updating property');
@@ -76,7 +80,7 @@ export default class EditPropertyForm extends Component{
                 <TextControl 
                     value={this.state.property.name} 
                     handleChange={(value) => { this.setState({property: {...this.state.property, name: value}})}} 
-                    updateProperty={(placeId) => this._updateProperty(placeId)}
+                    updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
                     property={this.state.property}
@@ -115,18 +119,50 @@ export default class EditPropertyForm extends Component{
                 />
             )
         }
-        case 'rooms': {
+        case 'bedrooms': {
             return (
-                <RoomsControl 
-                    property={this.state.property} 
+                <NumericUnitControl 
+                    value={this.state.property.bedrooms} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, bedrooms: value}})}} 
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
-                    handleChangeBedrooms={(value) => { this.setState({property: {...this.state.property, bedrooms: value}})}} 
-                    handleChangeLivingrooms={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}} 
-                    handleChangeBathrooms={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}} 
-                    title="Rooms"
-                    description="How many rooms does your flat have?"
+                    property={this.state.property}
+                    unit="bedroom(s)"
+                    title="Bedrooms"
+                    description="Number of bedrooms"
+                />
+            )
+        }
+
+        case 'bathrooms': {
+            return (
+                <NumericUnitControl 
+                    value={this.state.property.bathrooms} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
+                    unit="bathrooms(s)"
+                    title="Bathrooms"
+                    description="Number of bathrooms"
+                />
+            )
+        }
+
+        case 'livingrooms': {
+            return (
+                <NumericUnitControl 
+                    value={this.state.property.living_rooms} 
+                    handleChange={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}} 
+                    updateProperty={() => this._updateProperty()}
+                    cancelChanges={() => {this._cancelChanges()}}
+                    hideForm={() => {this._hideForm()}}
+                    property={this.state.property}
+                    unit="rooms(s)"
+                    title="Living Rooms"
+                    description="Number of living rooms"
                 />
             )
         }
@@ -136,7 +172,7 @@ export default class EditPropertyForm extends Component{
                     style={styles.autoCompleteControl}
                     title="Property Address"
                     description=""
-                    updateProperty={() => this._updateProperty()}
+                    updateProperty={(placeId) => this._updatePropertyWithPlaceId(placeId)}
                     placeholder="Type an address" 
                     getLocationSuggestions={(text) => {this.props.getLocationSuggestions(text, 'address')}} 
                     suggestions={this.props.autocompleteSuggestions}
@@ -205,18 +241,29 @@ export default class EditPropertyForm extends Component{
                     </View>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
-                            <Text style={styles.sectionTitle}>Rooms</Text>
-                            <View style={styles.iconsContainer}>
-                                <FontAwesomeIcon name="bed" style={styles.descriptionIcon} /> 
-                                <Text style={styles.iconText}>{this.state.property.bedrooms}</Text>
-                                <FontAwesomeIcon name="bath" style={styles.descriptionIcon} /> 
-                                <Text style={styles.iconText}>{this.state.property.bathrooms}</Text>
-                                <MaterialIcons name="sofa" style={styles.descriptionIconBig}/>
-                                <Text style={styles.iconText}>{this.state.property.bathrooms}</Text>
-                        </View>
+                            <Text style={styles.sectionTitle}>Bedrooms</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.bedrooms}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'rooms')}}>Edit</Text>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'bedrooms')}}>Edit</Text>
+                        </View>
+                    </View>
+                    <View style={styles.propertyDetailCell}>
+                        <View style={styles.detailColumn}>
+                            <Text style={styles.sectionTitle}>Bathrooms</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.bathrooms}</Text>
+                        </View>
+                        <View style={styles.sectionActionContainer}>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'bathrooms')}}>Edit</Text>
+                        </View>
+                    </View>
+                    <View style={styles.propertyDetailCell}>
+                        <View style={styles.detailColumn}>
+                            <Text style={styles.sectionTitle}>Living Rooms</Text>
+                            <Text style={styles.sectionValue}>{this.state.property.living_rooms}</Text>
+                        </View>
+                        <View style={styles.sectionActionContainer}>
+                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'livingrooms')}}>Edit</Text>
                         </View>
                     </View>
                 </View>

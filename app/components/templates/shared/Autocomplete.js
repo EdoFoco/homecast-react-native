@@ -2,25 +2,27 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import EditPropertyActions from './EditPropertyActions';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
     TextInput,
     StyleSheet,
     View,
-    Text,
-    Dimensions,
-    TouchableHighlight,
-    FlatList
-  } from 'react-native';
+    TouchableHighlight  
+} from 'react-native';
 
 export default class Autocomplete extends Component{
 
+    debouncerTimeout;
+
     _textChanged(text) {
-        this.props.getLocationSuggestions(text);
+        if(this.debouncerTimeout){
+            clearInterval(this.debouncerTimeout);
+        }
         this.props.onChange(text);
+        this.debouncerTimeout = setTimeout(() => {this.props.getLocationSuggestions(text)}, 500);
     }
 
+    
     render() {
         return (
             <View style={styles.container}>

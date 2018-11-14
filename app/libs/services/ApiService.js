@@ -123,6 +123,7 @@ class ApiService {
      }
 
      async updateProperty(property){
+        console.log(property);
         return await this.apiClient.put(`api/properties/${property.id}`, property);
     }
 
