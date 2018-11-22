@@ -73,29 +73,6 @@ var styles = StyleSheet.create({
       paddingTop: 20,
       alignItems: 'center',
     },
-    activeTab: {
-      flex: 0.5, 
-      backgroundColor: Colors.DARK_BLUE,
-      justifyContent: 'center'
-    },
-    activeTabText: {
-      fontSize: FontSizes.DEFAULT,
-      color: Colors.AQUA_GREEN,
-      alignSelf: 'center',
-    },
-    tab: {
-      flex: 0.5,
-      backgroundColor: Colors.DARK_BLUE,
-      justifyContent: 'center',
-    },
-    tabText: {
-      fontSize: FontSizes.DEFAULT,
-      color: 'white',
-      alignSelf: 'center',
-    },
-    tabContent: {
-      flex: 1,
-    },
     backButton: {
       alignSelf: 'center'
     },

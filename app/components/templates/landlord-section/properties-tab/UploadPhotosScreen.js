@@ -2,32 +2,21 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
-import PropertyRow from '../../../organisms/PropertyRow';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import GridView from 'react-native-super-grid';
 import FastImage from 'react-native-fast-image';
 import ImagePicker from 'react-native-image-crop-picker';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {
-    BallIndicator,
-    BarIndicator,
-    DotIndicator,
-    MaterialIndicator,
-    PacmanIndicator,
-    PulseIndicator,
-    SkypeIndicator,
-    UIActivityIndicator,
-    WaveIndicator
-  } from 'react-native-indicators';
+    PulseIndicator  } from 'react-native-indicators';
 
 import {
   StyleSheet,
   Text,
   View,
-  Dimensions,
   TouchableHighlight
 } from 'react-native';
 
@@ -43,19 +32,6 @@ class UploadPhotosScreen extends Component{
        }
    }
 
-  componentWillMount() {
-    this.props.navigation.setParams({ showImagePicker: () => 
-        {
-            this._renderImagePicker();
-        } 
-    });
-    this.props.navigation.setParams({ cancelEditing: () => 
-        {
-            this._cancelEditing();
-        } })
-    this.props.navigation.setParams({ isEditing : this.state.isEditing });
-  }
-
   _updateProgress(progressEvent){
     this.setState({uploadPercentage: progressEvent.loaded / progressEvent.total * 100});
   }
@@ -67,9 +43,6 @@ class UploadPhotosScreen extends Component{
   }
 
   _renderImagePicker(){
-      var options = {
-        title: 'Select Media',
-      };
 
       ImagePicker.openPicker({
         width: 645,
@@ -88,25 +61,12 @@ class UploadPhotosScreen extends Component{
        });
     }
 
-  _showUploadProgress(){
-    <View style={styles.statusBar}>
-        <View style={styles.progress} width={this.state.uploadPercentage}></View>
-    </View>
-  }
-
   _renderSpinner(){
     return(
         <View style={styles.spinnerContainer}>
             <View style={styles.spinnerWindow}>
-                {
-                    this.state.uploadPercentage == 100 ? <Text>Optimizing...</Text> : <Text>Uploading...</Text>
-                }
-                
-                {
-                        this.state.uploadPercentage == 100 ? null : this._showUploadProgress()
-                }
-                
-                <PulseIndicator color='blue' size={100} color={'rgba(38,166,154, 0.8)'}/>
+                <PulseIndicator color='blue' size={80} color={'rgba(38,166,154, 0.8)'}/>
+                <Text style={{fontSize: FontSizes.MEDIUM_BIG, marginTop: 20}}>Uploading...</Text>
             </View>
         </View>
     )
@@ -171,6 +131,15 @@ class UploadPhotosScreen extends Component{
   render() {
     return (
         <View style={styles.container}>
+            <View style={styles.menuWrapper}>
+                <TouchableHighlight style={styles.backButton} onPress={() => {this.props.returnToLandlordTabBar()}}>
+                    <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
+                </TouchableHighlight>
+                <Text style={styles.menuText}>Media</Text>
+                <TouchableHighlight style={{alignItems: 'flex-end', flex: 0.1 }}onPress={!this.state.isEditing ? () => { this._renderImagePicker()} : () => { this._cancelEditing()}}>
+                    <MCIcon style={{fontSize: 30, color: Colors.AQUA_GREEN, marginRight: 10}} name={!this.state.isEditing ? 'plus' : 'close'} />
+                </TouchableHighlight>
+            </View>
             <GridView
                 itemDimension={100}
                 items={this.props.property.images}
@@ -192,14 +161,7 @@ class UploadPhotosScreen extends Component{
 }
 
 UploadPhotosScreen.navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-
-    return {
-      title: 'Media',
-      headerRight: <TouchableHighlight onPress={!params.isEditing ? () => { params.showImagePicker()} : () => { params.cancelEditing()}}>
-                        <MCIcon style={{fontSize: 30, color: Colors.RED, marginRight: 20}} name={!params.isEditing ? 'plus' : 'close'} />
-                   </TouchableHighlight>
-     }
+    return( { header: null });
 };
 
 const mapStateToProps = (state, navigation) => {
@@ -221,6 +183,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  menuText: {
+    color: Colors.AQUA_GREEN,
+    fontSize: FontSizes.MEDIUM_BIG,
+    alignSelf: 'center',
+    textAlign: 'center',
+    paddingBottom: 5,
+    flex: 0.8
+  },
+  backButton: {
+    alignSelf: 'center',
+    flex: 0.1
+  },
+  backButtonIcon: {
+    fontSize: 45,
+    color: Colors.AQUA_GREEN,
+  },
   imageConatiner: {
     flex: 1
   },
@@ -237,18 +215,20 @@ const styles = StyleSheet.create({
       bottom: 0,
       left: 0,
       right: 0,
+      paddingBottom: 200,
       backgroundColor: 'rgba(0,0,0,0.6)',
       justifyContent: 'center',
       alignItems: 'center'
   },
   spinnerWindow: {
       borderRadius: 5,
-      height: 200,
-      width: 200,
+      width: 150,
+      height: 150,
       backgroundColor: 'white',
       alignSelf: 'center',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      padding: 10
   },
   statusBar: {
       height: 3,
@@ -285,7 +265,13 @@ const styles = StyleSheet.create({
       position: 'absolute',
       bottom: 1,
       right: 1,
-      color: 'blue',
+      color: Colors.AQUA_GREEN,
       fontSize: FontSizes.TITLE
-  }
+  },
+  menuWrapper: {
+    flexDirection: 'row',
+    backgroundColor: Colors.DARK_BLUE,
+    paddingTop: 20,
+    alignItems: 'center',
+  },
 });
