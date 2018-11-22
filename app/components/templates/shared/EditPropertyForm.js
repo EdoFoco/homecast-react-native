@@ -185,6 +185,9 @@ export default class EditPropertyForm extends Component{
   }
 
   render() {
+    if(!this.props.property){
+        return <View></View>
+    }
     return (
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
@@ -194,6 +197,11 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.photosBtn}>Photos</Text>
                         </TouchableHighlight>
                     </ImageBackground>
+                    <View style={styles.deletePropertyCell}>
+                        <TouchableHighlight style={styles.deleteButton} onPress={() => {this.props.deleteProperty()}}>
+                            <Text style={styles.ctaText}>Delete Property</Text>
+                        </TouchableHighlight>
+                    </View>
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Status</Text>
@@ -281,7 +289,6 @@ export default class EditPropertyForm extends Component{
                             }
                         </View>
                     </View>
-                    
                 }
         </View>
     )
@@ -295,7 +302,8 @@ EditPropertyForm.propTypes = {
     getLocationSuggestions: PropTypes.func.isRequired,
     updateLocationSuggestions: PropTypes.func.isRequired,
     autocompleteSuggestions: PropTypes.array.isRequired,
-    updateLocationSuggestions: PropTypes.func.isRequired
+    updateLocationSuggestions: PropTypes.func.isRequired,
+    deleteProperty: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -330,7 +338,14 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: Colors.LIGHT_GRAY,
         padding: 10,
-        
+    },
+    deletePropertyCell: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        borderTopWidth: 1,
+        borderTopColor: Colors.LIGHT_GRAY,
+        padding: 10,
     },
     detailsColumn: {
         flex: 1,
@@ -410,9 +425,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
       },
     ctaText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: FontSizes.DEFAULT
+        color: 'white',
+        textAlign: 'center',
+        fontSize: FontSizes.DEFAULT
     },
+    deleteButton: {
+        backgroundColor: Colors.RED,
+        height: 60,
+        justifyContent: 'center',
+        borderRadius: 10,
+        flex: 1
+    }
   });
 

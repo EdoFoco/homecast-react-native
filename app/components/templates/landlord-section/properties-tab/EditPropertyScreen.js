@@ -10,6 +10,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class EditPropertyScreen extends Component{
 
+  _deleteProperty(){
+    this.props.deleteProperty(this.props.property.id, this.props.user.info.id)
+    .then(() => {
+      this.props.navigation.goBack();
+    })
+  }
+
   render() {
     return (
         <View style={{flex: 1}}>
@@ -29,6 +36,7 @@ class EditPropertyScreen extends Component{
                     updateLocationSuggestions={(suggestions) => {this.props.updateLocationSuggestions(suggestions)}} 
                     autocompleteSuggestions={this.props.autocompleteSuggestions}
                     goToScreen={(screen) => {this.props.navigation.navigate(screen, {property: this.props.property})}}
+                    deleteProperty={() => { this._deleteProperty() }}
                   /> 
                   </View>
               }

@@ -163,6 +163,10 @@ class ApiService {
         return await this.apiClient.delete(`api/properties/${propertyId}/photos/${id}`);
     }
 
+    async deleteProperty(propertyId){
+        return await this.apiClient.delete(`api/properties/${propertyId}`);
+    }
+
     async getChats(){
         return await this.apiClient.get(`api/chats`);
     }

@@ -18,7 +18,7 @@ import {
 class ViewingsContainer extends Component{
  
     _goToViewing(viewingId, property){
-       this.props.goToGuestViewingsScreen(viewingId, property);
+       this.props.goToLandlordViewingsScreen(viewingId, property);
        this.props.navigation.navigate('ViewingsStack');
       }
 
@@ -97,10 +97,6 @@ class ViewingsContainer extends Component{
               removeClippedSubviews={false}
             />
 
-            <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
-                <Text style={styles.ctaText}>Create Viewing</Text>
-            </TouchableHighlight>
-            
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
           </View>
     

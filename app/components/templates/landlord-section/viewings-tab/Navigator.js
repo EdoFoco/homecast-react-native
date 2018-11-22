@@ -3,12 +3,10 @@ import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
 import ViewingContainer from '../screens/ViewingContainer';
 import LiveCastContainer from '../screens/LiveCastContainer';
-import PropertiesListContainer from '../viewings-tab/PropertiesListContainer';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 const routeConfiguration = {
     ViewingScreen: { screen: ViewingContainer },
-    PropertiesList: {screen: PropertiesListContainer},
     LiveCast: { screen: LiveCastContainer, navigationOptions: { tabBarVisible: false, header: null } }
 }
 
@@ -42,7 +40,7 @@ class LandlordViewingsTab extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        navigationState: state.viewingsNav
+        navigationState: state.landlordViewingsNav
     }
 }
 

@@ -33,7 +33,7 @@ const addListener = createReduxBoundAddListener("root");
 const persistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: [ 'network', 'location', 'viewingsNav']
+  blacklist: [ 'network', 'location']
 };
 
 const errorHandler = (e, isFatal) => {

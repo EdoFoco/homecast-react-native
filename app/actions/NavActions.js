@@ -83,7 +83,15 @@ export function goToGuestFavouritesPropertyScreen(property){
 
 export function goToGuestViewingsScreen(viewingId, property){
     return {
-        type: types.VIEWINGS_TAB_GO_TO_VIEWING,
+        type: types.GUEST_VIEWINGS_TAB_GO_TO_VIEWING,
+        viewingId: viewingId,
+        property: property
+    }
+}
+
+export function goToLandlordViewingsScreen(viewingId, property){
+    return {
+        type: types.LANDLORD_VIEWINGS_TAB_GO_TO_VIEWING,
         viewingId: viewingId,
         property: property
     }

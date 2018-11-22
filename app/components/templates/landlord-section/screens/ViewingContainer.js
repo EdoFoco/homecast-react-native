@@ -37,6 +37,7 @@ class ViewingScreen extends Component{
             user={this.props.user}
             joinLiveCast={() => {this._joinLiveCast()}}
             deleteViewing={() => {this._deleteViewing()}}
+            network={this.props.network}
         />
       </View>
     )

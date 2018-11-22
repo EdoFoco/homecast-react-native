@@ -1,8 +1,4 @@
 import React, { Component} from 'react';
-import { connect } from 'react-redux';
-import { ActionCreators } from '../../../actions';
-import { bindActionCreators } from 'redux';
-import DateCell from './DateCell';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
@@ -16,12 +12,10 @@ import {
   TouchableHighlight,
   View,
   ScrollView,
-  Button,
   Dimensions
 } from 'react-native';
 
 export default class AdminViewingScreen extends Component{
-
   
   _renderCTA(){
     return ( 
@@ -37,7 +31,6 @@ export default class AdminViewingScreen extends Component{
     let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
     let day = new Date(`${date}`).getDate();
     let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
-    let year = new Date(`${date}`).toLocaleString('en-us', {  year: 'numeric' });
 
     return `${weekday}, ${day} ${month}`;
   }
@@ -50,7 +43,7 @@ export default class AdminViewingScreen extends Component{
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
-                <FastImage style={styles.propertyImage} source={{url: this.props.property.images[0].url}} />
+                <FastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>

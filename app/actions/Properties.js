@@ -15,6 +15,19 @@ export function createProperty(placeId, userId){
     }
 }
 
+export function deleteProperty(propertyId, userId){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            await apiService.deleteProperty(propertyId);
+            dispatch(getUserProperties(userId))
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+    }
+}
+
 export function updatePropertiesList(properties){
     return {
         type: types.UPDATE_PROPERTIES_LIST,

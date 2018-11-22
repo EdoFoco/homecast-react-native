@@ -46,7 +46,7 @@ class ViewingsScreen extends Component{
     return (
       <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing.id, reservation.viewing.property)}}>
         <View style={styles.viewingContainer}>
-              <FastImage style={styles.propertyThumb} source={{url: reservation.viewing.property.images[0].url}} />
+              <FastImage style={styles.propertyThumb} source={{url: reservation.viewing.property.images.length > 0 ? reservation.viewing.property.images[0].url : ''}} />
               <View style={styles.propertyDescriptionWrapper}>
                 <View style={styles.leftWrapper}>
                     <View style={styles.priceWrapper}>
