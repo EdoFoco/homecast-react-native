@@ -5,6 +5,7 @@ import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ModalBox from '../shared/ModalBox';
 
 import {
   StyleSheet,
@@ -17,14 +18,11 @@ import {
 
 export default class AdminViewingScreen extends Component{
   
-  _renderCTA(){
-    return ( 
-        <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
-            <Text style={styles.ctaText}>
-                Start Live Cast
-           </Text>
-        </TouchableHighlight>
-        )
+  constructor(props){
+    super(props);
+    this.state = {
+      showCancelDialogue: false
+    }
   }
 
   _toDateString(date){
@@ -33,6 +31,10 @@ export default class AdminViewingScreen extends Component{
     let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
 
     return `${weekday}, ${day} ${month}`;
+  }
+
+  _showModal(){
+    this.setState({showCancelDialogue: true});
   }
  
   render() {
@@ -74,10 +76,19 @@ export default class AdminViewingScreen extends Component{
                 </TouchableHighlight>
             </ScrollView>
             <View style={styles.deleteViewingContainer}>
-              <TouchableHighlight style={styles.deleteButton} onPress={() => {this.props.deleteViewing()}}>
+              <TouchableHighlight style={styles.deleteButton} onPress={() => {this._showModal()}}>
                 <Text style={styles.deleteViewingText}>Cancel Viewing</Text>
               </TouchableHighlight>
             </View>
+            {
+              !this.state.showCancelDialogue ? null :
+              <ModalBox 
+                close={() => this.setState({showCancelDialogue: false})}
+                delete={() => this.props.deleteViewing()}
+                description="Are you sure you want to cancel this viewing?"
+                deleteText="Cancel Viewing"
+              />
+            }
         </View>
     )
   }

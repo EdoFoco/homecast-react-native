@@ -1,14 +1,11 @@
 import React, { Component} from 'react';
 import TextControl from './TextControl';
 import NumericUnitControl from './NumericUnitControl';
-import RoomsControl from './RoomsControl';
 import AutocompleteControl from './AutocompleteControl';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import ModalBox from './ModalBox';
 import {
     StyleSheet,
     Text,
@@ -28,7 +25,8 @@ export default class EditPropertyForm extends Component{
     this.state = { 
         property: this.props.property,
         showForm: false,
-        formTarget: null
+        formTarget: null,
+        showDeleteModal: false
      };
   }
 
@@ -276,7 +274,7 @@ export default class EditPropertyForm extends Component{
                     </View>
                 </View>
                 <View style={styles.deletePropertyCell}>
-                    <TouchableHighlight style={styles.deleteButton} onPress={() => {this.props.deleteProperty()}}>
+                    <TouchableHighlight style={styles.deleteButton} onPress={() => {this.setState({showDeleteModal: true})}}>
                         <Text style={styles.ctaText}>Delete Property</Text>
                     </TouchableHighlight>
                 </View>
@@ -286,12 +284,21 @@ export default class EditPropertyForm extends Component{
                     null :
                     <View>
                         <TouchableHighlight style={styles.formOverlay} onPress={() => {this._cancelChanges()}}><Text></Text></TouchableHighlight>
-                        <View style={styles.formContainer} onPress={() => {console.log('do nothing')}}>
+                        <View style={styles.formContainer}>
                             {
                                 this._showControl()
                             }
                         </View>
                     </View>
+                }
+                {
+                    !this.state.showDeleteModal ? null :
+                    <ModalBox 
+                        close={() => this.setState({showDeleteModal: false})}
+                        delete={() => this.props.deleteProperty()}
+                        description="Are you sure you want to delete this property?"
+                        deleteText="Delete Property"
+                    />
                 }
         </View>
     )

@@ -7,7 +7,6 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import ViewingRow from './ViewingRow';
 
 import {
-    TextInput,
     StyleSheet,
     TouchableHighlight,
     TouchableOpacity,

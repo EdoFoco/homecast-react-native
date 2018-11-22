@@ -16,17 +16,16 @@ class ViewingScreen extends Component{
   }
   
   _deleteViewing(){
-    return this.props.goBack();
-    // this.props.deleteViewing(this.props.viewing.id)
-    // .then(() => {
-    //   return this.props.getProperty(this.props.property.id);
-    // })
-    // .then(() => {
-    //   return this.props.navigation.goBack();
-    // })
-    // .catch((e) => {
-    //   console.error(e);
-    // })
+    this.props.deleteViewing(this.props.viewing.id)
+    .then(() => {
+      return this.props.getProperty(this.props.property.id);
+    })
+    .then(() => {
+      return this.props.goBack();
+    })
+    .catch((e) => {
+      console.error(e);
+    })
   }
 
   render() {
