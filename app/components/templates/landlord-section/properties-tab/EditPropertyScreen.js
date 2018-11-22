@@ -13,15 +13,18 @@ class EditPropertyScreen extends Component{
   _deleteProperty(){
     this.props.deleteProperty(this.props.property.id, this.props.user.info.id)
     .then(() => {
-      this.props.navigation.goBack();
+      this.props.returnToLandlordTabBar();
     })
   }
 
   render() {
+    if(!this.props.property){
+      return <View></View>
+    }
     return (
         <View style={{flex: 1}}>
           <View style={styles.menuWrapper}>
-              <TouchableHighlight style={styles.backButton} onPress={() => {this.props.navigation.goBack()}}>
+              <TouchableHighlight style={styles.backButton} onPress={() => {this.props.returnToLandlordTabBar()}}>
                 <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
               </TouchableHighlight>
               <Text style={styles.menuText}>{this.props.property.address}</Text>

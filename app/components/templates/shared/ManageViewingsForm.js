@@ -80,9 +80,12 @@ export default class ManageViewingsForm extends Component{
         <View style={styles.container}>
             {
                 this.props.viewings.length == 0 ?
-                <Text style={styles.noViewingsText}>
-                    Add a viewing slots and start live streaming your flat.
-                </Text> :
+                <View style={{flex: 0.9}}>
+                    <Text style={styles.noViewingsText}>
+                        Add a viewing slots and start live streaming your flat.
+                    </Text>
+                </View>
+                :
                 <View style={{flex: 0.9}}>
                     <FlatList
                         data={this.props.viewings}

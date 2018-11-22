@@ -2,19 +2,15 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import Property from '../../shared/Property';
-import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 
 class PropertyContainer extends Component{
 
   componentWillMount(){
-   
     this.props.updateCurrentProperty(this.props.currentProperty);
-    
     this.props.getViewingReservations(this.props.user.info.id)
     .catch((error) => {
       console.error(error);

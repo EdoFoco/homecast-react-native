@@ -58,6 +58,11 @@ export function returnToGuestTabBar(){
     }
 }
 
+export function returnToLandlordTabBar(){
+    return {
+        type: types.RETURN_TO_LANDLORD_TAB_BAR
+    }
+}
 
 //New
 export function goToGuestPropertyScreen(property){
@@ -89,10 +94,11 @@ export function goToGuestViewingsScreen(viewingId, property){
     }
 }
 
-export function goToLandlordViewingsScreen(viewingId, property){
+export function goToLandlordViewingsScreen(viewingId, property, goBack){
     return {
         type: types.LANDLORD_VIEWINGS_TAB_GO_TO_VIEWING,
         viewingId: viewingId,
-        property: property
+        property: property,
+        goBack: goBack
     }
 }

@@ -25,7 +25,7 @@ class ManageViewingsScreen extends Component{
                   userId={this.props.user.info.id} 
                   viewings={this.props.property.viewings}
                   createViewing={(propertyId, userId, viewingInfo) => this.props.createViewing(propertyId, userId, viewingInfo)}
-                  goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property}) }}
+                  goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property, goBack: () => {this.props.navigation.goBack()}}) }}
                 /> 
             </View>
         </View>

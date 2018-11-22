@@ -16,16 +16,17 @@ class ViewingScreen extends Component{
   }
   
   _deleteViewing(){
-    this.props.deleteViewing(this.props.viewing.id)
-    .then(() => {
-      return this.props.navigation.goBack();
-    })
-    .then(() => {
-      return this.props.getProperty(this.props.property.id);
-    })
-    .catch((e) => {
-      console.error(e);
-    })
+    return this.props.goBack();
+    // this.props.deleteViewing(this.props.viewing.id)
+    // .then(() => {
+    //   return this.props.getProperty(this.props.property.id);
+    // })
+    // .then(() => {
+    //   return this.props.navigation.goBack();
+    // })
+    // .catch((e) => {
+    //   console.error(e);
+    // })
   }
 
   render() {
@@ -54,11 +55,13 @@ ViewingScreen.navigationOptions = () => {
 const mapStateToProps = (state, {navigation}) => {
      
   let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.property.id);
+  
   return {
       property: property,
       viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
       user: state.user,
-      network: state.network
+      network: state.network,
+      goBack: navigation.state.params.goBack
     }
 };
 

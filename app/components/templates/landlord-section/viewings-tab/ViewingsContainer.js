@@ -18,7 +18,7 @@ import {
 class ViewingsContainer extends Component{
  
     _goToViewing(viewingId, property){
-       this.props.goToLandlordViewingsScreen(viewingId, property);
+       this.props.goToLandlordViewingsScreen(viewingId, property, () => {console.log('hi')});
        this.props.navigation.navigate('ViewingsStack');
       }
 

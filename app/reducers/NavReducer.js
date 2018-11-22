@@ -64,6 +64,10 @@ export const landlordRootNav = (state = initialLandlordRootNavigatorState, actio
   const nextState = LandlordRootNavigator.router.getStateForAction(action, state);
 
   switch(action.type){
+    case types.RETURN_TO_LANDLORD_TAB_BAR:
+      return LandlordRootNavigator.router.getStateForAction(
+        NavigationActions.back()
+      );
     case types.GOTO_SECTION:
       return initialLandlordRootNavigatorState;
     default:
@@ -156,7 +160,7 @@ export const landlordViewingsNav = (state = initialLandlordViewingsNavigatorStat
       return initialLandlordViewingsNavigatorState;
     case types.LANDLORD_VIEWINGS_TAB_GO_TO_VIEWING:
       return LandlordViewingsNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'ViewingScreen', params: {viewingId: action.viewingId, property: action.property}})
+        NavigationActions.navigate({ routeName: 'ViewingScreen', params: {viewingId: action.viewingId, property: action.property, goBack: action.goBack} })
       );
     default:
       return nextState || state;

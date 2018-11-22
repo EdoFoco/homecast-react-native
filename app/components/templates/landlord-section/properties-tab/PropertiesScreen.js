@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
-import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AutocompleteControl from '../../shared/AutocompleteControl';
 import AdminPropertyRow from '../../shared/AdminPropertyRow';
 

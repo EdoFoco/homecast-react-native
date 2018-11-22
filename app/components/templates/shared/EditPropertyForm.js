@@ -198,8 +198,8 @@ export default class EditPropertyForm extends Component{
                         </TouchableHighlight>
                     </ImageBackground>
                     <View style={styles.deletePropertyCell}>
-                        <TouchableHighlight style={styles.deleteButton} onPress={() => {this.props.deleteProperty()}}>
-                            <Text style={styles.ctaText}>Delete Property</Text>
+                        <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
+                            <Text style={styles.ctaText}>Manage Viewings</Text>
                         </TouchableHighlight>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -275,12 +275,15 @@ export default class EditPropertyForm extends Component{
                         </View>
                     </View>
                 </View>
+                <View style={styles.deletePropertyCell}>
+                    <TouchableHighlight style={styles.deleteButton} onPress={() => {this.props.deleteProperty()}}>
+                        <Text style={styles.ctaText}>Delete Property</Text>
+                    </TouchableHighlight>
+                </View>
             </ScrollView>
                 {
                     !this.state.showForm ? 
-                    <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
-                        <Text style={styles.ctaText}>Manage Viewings</Text>
-                    </TouchableHighlight> :
+                    null :
                     <View>
                         <TouchableHighlight style={styles.formOverlay} onPress={() => {this._cancelChanges()}}><Text></Text></TouchableHighlight>
                         <View style={styles.formContainer} onPress={() => {console.log('do nothing')}}>
@@ -345,7 +348,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderTopWidth: 1,
         borderTopColor: Colors.LIGHT_GRAY,
-        padding: 10,
     },
     detailsColumn: {
         flex: 1,
@@ -421,8 +423,11 @@ const styles = StyleSheet.create({
     },
     ctaButton: {
         backgroundColor: Colors.AQUA_GREEN,
-        flex: 0.1,
-        justifyContent: 'center'
+        flex: 1,
+        height: 60,
+        justifyContent: 'center',
+        borderRadius: 10,
+        margin: 10
       },
     ctaText: {
         color: 'white',
@@ -433,7 +438,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.RED,
         height: 60,
         justifyContent: 'center',
-        borderRadius: 10,
         flex: 1
     }
   });

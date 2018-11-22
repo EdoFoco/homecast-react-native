@@ -36,6 +36,9 @@ export default class AdminViewingScreen extends Component{
   }
  
   render() {
+    if(!this.props.viewing){
+      return <View></View>
+    }
     return(
         <View style={{backgroundColor: 'white', flex: 1}}>
               <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', padding: 20 }}>
@@ -50,6 +53,13 @@ export default class AdminViewingScreen extends Component{
                     <Text style={styles.weekDayStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                   </View>
                 </View>
+                <View style={styles.buttonContainer}>
+                  <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
+                      <Text style={styles.ctaText}>
+                          Start Live Cast
+                      </Text>
+                  </TouchableHighlight>
+                </View>
                 <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>Invite a Viewer</Text>
@@ -62,15 +72,11 @@ export default class AdminViewingScreen extends Component{
                         <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.deleteViewing()}}>
-                    <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>Delete Viewing</Text>
-                        <FontAwesomeIcon name="trash-o" style={styles.buttonIcon} /> 
-                    </View>
-                </TouchableHighlight>
             </ScrollView>
-            <View style={styles.joinCastContainer}>
-               {this._renderCTA()}
+            <View style={styles.deleteViewingContainer}>
+              <TouchableHighlight style={styles.deleteButton} onPress={() => {this.props.deleteViewing()}}>
+                <Text style={styles.deleteViewingText}>Cancel Viewing</Text>
+              </TouchableHighlight>
             </View>
         </View>
     )
@@ -82,7 +88,8 @@ AdminViewingScreen.propTypes = {
     property: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     joinLiveCast: PropTypes.func.isRequired,
-    network: PropTypes.object.isRequired
+    network: PropTypes.object.isRequired,
+    deleteViewing: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -204,11 +211,11 @@ const styles = StyleSheet.create({
       textAlign: 'left',
       alignSelf: 'stretch'
   },
-  joinCastContainer: {
+  deleteViewingContainer: {
       backgroundColor: 'white',
       alignSelf: 'stretch',
       justifyContent: 'center',
-      flex: 0.15
+      flex: 0.1
   },
   ctaBtnRed: {
     backgroundColor: Colors.RED,
@@ -218,7 +225,10 @@ const styles = StyleSheet.create({
   ctaBtnGreen: {
     backgroundColor: Colors.AQUA_GREEN,
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: 10,
+    height: 60,
+    borderRadius: 10
   },
   ctaText: {
       color: 'white',
@@ -265,5 +275,16 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 90,
     padding: 20,
+  },
+  deleteButton: {
+    flex: 1,
+    backgroundColor: Colors.RED,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  deleteViewingText: {
+    color: Colors.WHITE_SMOKE,
+    textAlign: 'center',
+    fontSize: FontSizes.DEFAULT
   }
 });

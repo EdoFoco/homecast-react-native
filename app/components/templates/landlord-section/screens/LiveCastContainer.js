@@ -11,8 +11,6 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-
-
 class LiveCastContainer extends Component{
 
   constructor(props){
