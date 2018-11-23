@@ -87,7 +87,13 @@ export default class ViewingScreen extends Component{
                     <Text style={styles.weekDayStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                   </View>
                 </View>
-
+                <View style={styles.capacityContainer}>
+                    <Text style={styles.capacityText}>There are only {this.props.viewing.capacity} spots left for this viewing.</Text>
+                    <View style={styles.buttonTextContainer}>
+                        <Text style={styles.buttonText}>View Property</Text>
+                        <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
+                    </View>
+                </View>
                 <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>View Property</Text>
@@ -138,20 +144,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     backgroundColor: Colors.React
-  },
-  viewingTitle: {
-    marginTop: 20,
-    fontSize: 26,
-  },
-  viewingDay: {
-    fontSize: 40
-  },
-  viewingMonth: {
-    fontSize: 26
-  },
-  viewingTime: {
-    fontSize: 25,
-    marginTop: 10
   },
   sectionContainer: {
     flex: 1,
@@ -217,27 +209,6 @@ const styles = StyleSheet.create({
   secureBtnText: {
     fontSize: FontSizes.DEFAULT,
     color: 'white',
-  },
-  userDetails: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    marginTop: 10
-  },
-  userImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginTop: 10
-  },
-  userName: {
-      fontSize: FontSizes.DEFAULT
-  },
-  userAbout: {
-      marginTop: 10,
-      fontSize: FontSizes.DEFAULT,
-      color: Colors.DARK_GREY,
-      textAlign: 'left',
-      alignSelf: 'stretch'
   },
   joinCastContainer: {
       backgroundColor: 'white',
@@ -307,5 +278,13 @@ const styles = StyleSheet.create({
   backButtonIcon: {
     fontSize: 45,
     color: Colors.AQUA_GREEN,
+  },
+  capacityContainer:{
+    flex: 1,
+    alignSelf: 'stretch',
+    padding: 10
+  },
+  capacityText: {
+    fontSize: FontSizes.MEDIUM_BIG
   }
 });

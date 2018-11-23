@@ -38,7 +38,6 @@ _setNotifications(){
         path: `homecast://guest/properties/${this.props.property.id}/viewings/${this.props.viewing.id}`
     });
 
-    console.log(notification1);
     const date1 = new Date(this.props.viewing.date_time);
     date1.setMinutes(date1.getMinutes() - 15);
 
