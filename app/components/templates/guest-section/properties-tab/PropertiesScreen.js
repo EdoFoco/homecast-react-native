@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
-import * as FontSizes from '../../../helpers/FontSizes';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet, FlatList, TouchableHighlight, Dimensions, Text, Keyboard, TextInput } from 'react-native';
 import FastImage from 'react-native-fast-image';

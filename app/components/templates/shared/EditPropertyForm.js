@@ -6,11 +6,11 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
 import ModalBox from './ModalBox';
+import PlaceholderFastImage from './PlaceholderFastImage';
 import {
     StyleSheet,
     Text,
     View,
-    ImageBackground,
     TouchableHighlight,
     ScrollView,
     Switch,
@@ -190,11 +190,11 @@ export default class EditPropertyForm extends Component{
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
                 <View style={styles.container}>
-                    <ImageBackground style={styles.propertyThumbnail} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}}>
+                    <PlaceholderFastImage style={styles.propertyThumbnail} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}}>
                         <TouchableHighlight style={styles.opaqueLayer} onPress={() => { this.props.goToScreen('UploadPhotosScreen'); }}>
-                            <Text style={styles.photosBtn}>Photos</Text>
+                            <Text style={styles.photosBtn}>Manage Media</Text>
                         </TouchableHighlight>
-                    </ImageBackground>
+                    </PlaceholderFastImage>
                     <View style={styles.deletePropertyCell}>
                         <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
                             <Text style={styles.ctaText}>Manage Viewings</Text>
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
         color: Colors.DARK_GREY
     },
     propertyThumbnail: {
-        height: 180,
+        height: 250,
         alignSelf: 'stretch'
     },
     opaqueLayer: {
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     photosBtn:{
       color: 'white',
       alignSelf: 'center',
-      fontSize: FontSizes.DEFAULT
+      fontSize: FontSizes.MEDIUM_BIG
     },
     propertyDetailCell: {
         flexDirection: 'row',

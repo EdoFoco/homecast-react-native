@@ -78,10 +78,7 @@ class ViewingsContainer extends Component{
         if(this.props.viewings.length == 0) {
           return(
             <View style={styles.noViewingsContainer}>
-              <Text style={styles.noViewingsMessage}>You haven't added any viewings. Choose a property and add a live viewing.</Text>
-              <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.navigation.navigate('PropertiesList')}}>
-                <Text style={styles.ctaText}>Add Viewing</Text>
-              </TouchableHighlight>
+              <Text style={styles.noViewingsMessage}>You haven't added any viewings yet. Manage your viewings through the properties tab.</Text>
             </View>
           )
         }
@@ -236,15 +233,5 @@ const styles = StyleSheet.create({
     fontSize: 22,
     top: 15,
     backgroundColor: 'white'
-  },
-  ctaButton: {
-    backgroundColor: Colors.AQUA_GREEN,
-    flex: 0.1,
-    justifyContent: 'center'
-  },
-  ctaText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: FontSizes.DEFAULT
   },
 });

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
 import FastImage from 'react-native-fast-image';
+import PlaceholderFastImage from '../templates/shared/PlaceholderFastImage';
 import {
     StyleSheet,
     TouchableHighlight,
@@ -22,24 +23,12 @@ export default class PropertyRow extends Component{
     if(image){
       return(  
         <TouchableHighlight style={{ width:  Dimensions.get('window').width, padding: 10, paddingTop: 15 }} onPress={() => this.props.onPress(this.props.property)}>
-          <FastImage
-              style={styles.backgroundImage}
-              source={{
-                  uri: image.url,
-                  priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-          />
+          <PlaceholderFastImage style={styles.backgroundImage} 
+            source={{uri: image.url, priority: FastImage.priority.normal}} 
+            resizeMode={FastImage.resizeMode.cover} />
         </TouchableHighlight>
       )   
     }
-  }
-
-  _renderViewing(item){
-      let viewing = item.item;
-      return(
-        <ViewingCell viewing={viewing} />
-      )
   }
 
   _toDateString(date){
@@ -137,13 +126,11 @@ const styles = StyleSheet.create({
     },
     imagesContainer:{
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.6)',
         height: 250
     },
     backgroundImage: {
         height: 250,
         borderRadius: 5,
-        backgroundColor: 'rgba(0,0,0,0.2)'
     },
     propertContainer: {
         flex: 1,

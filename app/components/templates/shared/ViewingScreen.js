@@ -5,6 +5,7 @@ import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import PlaceholderFastImage from './PlaceholderFastImage';
 
 import {
   StyleSheet,
@@ -28,14 +29,14 @@ export default class ViewingScreen extends Component{
 
   _renderCTA(){
     var date = new Date(`${this.props.viewing.date_time}`);
-    if(date < new Date()){
-        return ( 
-        <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
-            <Text style={styles.ctaText}>
-                Join Live Cast
-           </Text>
-        </TouchableHighlight>)
-   }
+  //   if(date < new Date()){
+  //       return ( 
+  //       <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
+  //           <Text style={styles.ctaText}>
+  //               Join Live Cast
+  //          </Text>
+  //       </TouchableHighlight>)
+  //  }
     
     if(this.props.reservation){
         return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id)}}>
@@ -74,11 +75,12 @@ export default class ViewingScreen extends Component{
                   </TouchableHighlight>
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
-            <ScrollView style={{backgroundColor: 'white', flex: 0.85}} refreshControl={<RefreshControl
-                refreshing={this.state.isRefreshing}
-                onRefresh={() => {this._refresh()}}
-              />} >>
-                <FastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
+            <ScrollView style={{backgroundColor: 'white', flex: 0.9}} refreshControl={
+              <RefreshControl
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={() => {this._refresh()}}
+                />} >
+                <PlaceholderFastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
@@ -241,7 +243,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       alignSelf: 'stretch',
       justifyContent: 'center',
-      flex: 0.15
+      flex: 0.1
   },
   ctaBtnRed: {
     backgroundColor: Colors.RED,
@@ -259,7 +261,6 @@ const styles = StyleSheet.create({
       fontSize: FontSizes.DEFAULT
   },
   propertyImage: {
-    flex: 1,
     height: 250
   },
   imageOverlay:{

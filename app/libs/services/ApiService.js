@@ -26,7 +26,7 @@ class ApiService {
     }
 
     async signup(info){
-        
+        console.log(info);
         var resp  = await this.apiClient.post('api/auth/signup', info);
         console.log(resp);
         return resp;

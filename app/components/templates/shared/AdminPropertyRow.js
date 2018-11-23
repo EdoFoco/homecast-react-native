@@ -2,22 +2,19 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PlaceholderFastImage from './PlaceholderFastImage';
 import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  View,
-  ScrollView,
-  Dimensions
-} from 'react-native';
+  View} from 'react-native';
 
 export default class AdminPropertyRow extends Component{
     render(){
         return(<TouchableHighlight onPress={() => {this.props.onPress()}}>
           <View style={styles.listingCell}>
-            <FastImage style={styles.listingImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}}/>
+            <PlaceholderFastImage style={styles.listingImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}}/>
             <View style={styles.listingDescription}>
               <Text style={styles.listingTitle}>{this.props.property.address.replace(', UK', '')}</Text>
               {
@@ -54,14 +51,13 @@ var styles = StyleSheet.create({
       },
       listingDescription: {
         flex: 1,
-        margin: 5
+        margin: 10
       },
       listingImage: {
         height: 100,
         width: 150,
         margin: 5,
         borderRadius: 5,
-        backgroundColor: 'rgba(0,0,0,0.6)'
       },
       listingTitle: {
         fontSize: FontSizes.DEFAULT

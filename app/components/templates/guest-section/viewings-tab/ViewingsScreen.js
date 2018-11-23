@@ -5,11 +5,10 @@ import { bindActionCreators } from 'redux';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import PlaceholderFastImage from '../../shared/PlaceholderFastImage';
 import {
   StyleSheet,
   Text,
@@ -46,7 +45,7 @@ class ViewingsScreen extends Component{
     return (
       <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing.id, reservation.viewing.property)}}>
         <View style={styles.viewingContainer}>
-              <FastImage style={styles.propertyThumb} source={{url: reservation.viewing.property.images.length > 0 ? reservation.viewing.property.images[0].url : ''}} />
+              <PlaceholderFastImage style={styles.propertyThumb} source={{url: reservation.viewing.property.images.length > 0 ? reservation.viewing.property.images[0].url : ''}} />
               <View style={styles.propertyDescriptionWrapper}>
                 <View style={styles.leftWrapper}>
                     <View style={styles.priceWrapper}>

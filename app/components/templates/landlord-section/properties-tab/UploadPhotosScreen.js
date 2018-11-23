@@ -132,7 +132,7 @@ class UploadPhotosScreen extends Component{
     return (
         <View style={styles.container}>
             <View style={styles.menuWrapper}>
-                <TouchableHighlight style={styles.backButton} onPress={() => {this.props.returnToLandlordTabBar()}}>
+                <TouchableHighlight style={styles.backButton} onPress={() => {this.props.navigation.goBack()}}>
                     <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
                 </TouchableHighlight>
                 <Text style={styles.menuText}>Media</Text>

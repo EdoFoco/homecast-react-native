@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import FastImage from 'react-native-fast-image';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ModalBox from '../shared/ModalBox';
-
+import PlaceholderFastImage from './PlaceholderFastImage';
 import {
   StyleSheet,
   Text,
@@ -48,7 +47,7 @@ export default class AdminViewingScreen extends Component{
                   <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
               </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
-                <FastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
+                <PlaceholderFastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
@@ -247,7 +246,6 @@ const styles = StyleSheet.create({
       fontSize: FontSizes.DEFAULT
   },
   propertyImage: {
-    flex: 1,
     height: 250
   },
   imageOverlay:{

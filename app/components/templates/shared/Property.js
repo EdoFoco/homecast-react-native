@@ -5,6 +5,7 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
 import ViewingRow from './ViewingRow';
+import PlaceholderFastImage from './PlaceholderFastImage';
 import FastImage from 'react-native-fast-image';
 import MapView, { Marker } from 'react-native-maps';
 import {
@@ -49,13 +50,12 @@ export default class Property extends Component{
     let image = item;
     return(  
       <View style={{ width:  Dimensions.get('window').width }}>
-        <FastImage
+        <PlaceholderFastImage
             style={styles.backgroundImage}
             source={{
                 uri: image ? image.url : '',
                 priority: FastImage.priority.normal,
             }}
-            resizeMode={FastImage.resizeMode.cover}
         />
       </View>
     ) 
@@ -213,7 +213,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   backgroundImage: {
-  //  flex: 1,
     height: 250,
   },
   tabContainer:{
@@ -403,8 +402,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   imagesContainer: {
-    height: 200,
-    width: 250,
+    height: 250,
     backgroundColor: 'rgba(0,0,0,0.6)'
   },
   horizontalViewingContainer: {

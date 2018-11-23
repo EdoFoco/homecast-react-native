@@ -1,5 +1,4 @@
 import * as types from './Types';
-import { AsyncStorage } from 'react-native';
 import * as ErrorHandler from './ErrorHandler';
 import ApiServiceFactory from '../libs/services/ApiServiceFactory';
 
@@ -34,7 +33,7 @@ export function logout(){
 
 
 export function login(credentials){
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
             var resp = await apiService.login(credentials);
@@ -48,7 +47,7 @@ export function login(credentials){
 }
 
 export function signup(info){
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
             var resp = await apiService.signup(info);
@@ -62,7 +61,7 @@ export function signup(info){
 }
 
 export function getLoggedInUser(){
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
             var resp = await apiService.getLoggedInUser();
@@ -76,7 +75,7 @@ export function getLoggedInUser(){
 }
 
 export function updateDeviceToken($userId, $token){
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
             await apiService.updateDeviceToken($userId, $token);

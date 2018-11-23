@@ -67,7 +67,6 @@ class AuthForm extends Component{
         name: this.state.signupName,
         email: this.state.signupEmail,
         password: this.state.signupPassword,
-        about: "Hello"
     }
     console.log(info);
     this.props.signup(info)
