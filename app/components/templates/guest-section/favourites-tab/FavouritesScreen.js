@@ -60,7 +60,6 @@ class FavouritesScreen extends Component{
     if(this.props.properties.length == 0){
       return(
         <View style={styles.noFavouritesContainer}>
-          <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
           <Text style={styles.noFavouritesMessage}>Shortlist the best properties by adding them to your favourites.</Text>
         </View>
       )

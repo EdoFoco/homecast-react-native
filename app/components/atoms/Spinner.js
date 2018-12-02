@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
-import { Animated, Easing, StyleSheet, View } from 'react-native';
-import {
-    BallIndicator,
-    BarIndicator,
-    DotIndicator,
-    MaterialIndicator,
-    PacmanIndicator,
-    PulseIndicator,
-    SkypeIndicator,
-    UIActivityIndicator,
-    WaveIndicator
-  } from 'react-native-indicators';
-
+import { View } from 'react-native';
+import {PulseIndicator  } from 'react-native-indicators';
 
 export default class Spinner extends Component{
     

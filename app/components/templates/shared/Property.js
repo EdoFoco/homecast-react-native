@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     paddingLeft: 15,
     borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 0,
     borderColor: Colors.LIGHT_GRAY,
     marginTop: 10,
     paddingTop: 20,

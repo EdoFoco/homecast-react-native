@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
     StyleSheet,
     View,
@@ -15,6 +16,7 @@ export default class ModalBox extends Component{
     return (
         <TouchableHighlight style={styles.container} onPress={this.props.close}>
             <View style={styles.box}>
+                <MaterialIcons name="alert-circle-outline" style={styles.alertIcon}/>
                 <Text style={styles.descriptionText} multiline={true}>{this.props.description}</Text>
                 <TouchableHighlight style={styles.deleteButton} onPress={this.props.delete}>
                     <Text style={styles.deleteButtonText}>{this.props.deleteText}</Text>
@@ -55,7 +57,9 @@ const styles = StyleSheet.create({
         padding: 10
     },
     descriptionText:{
-        fontSize: FontSizes.MEDIUM_BIG
+        fontSize: FontSizes.DEFAULT,
+        color: Colors.VERY_LIGHT_GRAY,
+        textAlign: 'center'
     },
     closeButton: {
         borderColor: Colors.VERY_LIGHT_GRAY,
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     closeButtonText: {
-        fontSize: FontSizes.MEDIUM_BIG,
+        fontSize: FontSizes.DEFAULT,
         color: Colors.DARK_GREY
     },
     deleteButton: {
@@ -79,11 +83,17 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40,
+        marginTop: 20,
         padding: 10
     },
     deleteButtonText: {
-        fontSize: FontSizes.MEDIUM_BIG,
+        fontSize: FontSizes.DEFAULT,
         color: 'white',
     },
+    alertIcon: {
+        fontSize: 40,
+        color: Colors.RED,
+        alignSelf: 'center',
+        marginBottom: 20
+    }
 })    

@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomWidth: 0.5,
-        borderColor: Colors.LIGHT_GRAY,
+        borderColor: Colors.VERY_LIGHT_GRAY,
         paddingBottom: 20
     },
     imagesContainer:{

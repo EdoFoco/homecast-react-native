@@ -42,10 +42,11 @@ export default class AdminViewingScreen extends Component{
     }
     return(
         <View style={{backgroundColor: 'white', flex: 1}}>
-              <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', padding: 20 }}>
-                  <Text style={styles.availabilityTitle}>Availability</Text>
-                  <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
-              </View>
+           <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20}}>
+                <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                  <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
+                </TouchableHighlight>
+            </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
                 <PlaceholderFastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
                 <View style={styles.imageOverlay}>
@@ -54,10 +55,16 @@ export default class AdminViewingScreen extends Component{
                     <Text style={styles.weekDayStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                   </View>
                 </View>
+                <View style={styles.capacityContainer}>
+                  <MaterialIcons name="check-circle-outline" style={styles.confirmationIcon}/>
+                  <Text style={styles.capacityText}>
+                    Your viewing is confirmed. It's time to invite people to join your live stream!
+                  </Text>
+                </View>
                 <View style={styles.buttonContainer}>
                   <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
                       <Text style={styles.ctaText}>
-                          Start Live Cast
+                          Start Live Stream
                       </Text>
                   </TouchableHighlight>
                 </View>
@@ -99,7 +106,8 @@ AdminViewingScreen.propTypes = {
     user: PropTypes.object.isRequired,
     joinLiveCast: PropTypes.func.isRequired,
     network: PropTypes.object.isRequired,
-    deleteViewing: PropTypes.func.isRequired
+    deleteViewing: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -295,5 +303,30 @@ const styles = StyleSheet.create({
     color: Colors.WHITE_SMOKE,
     textAlign: 'center',
     fontSize: FontSizes.DEFAULT
-  }
+  },
+  capacityContainer:{
+    flex: 1,
+    alignSelf: 'stretch',
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  capacityText: {
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.VERY_LIGHT_GRAY,
+    marginLeft: 10,
+  },
+  confirmationIcon: {
+    fontSize: 32,
+    color: Colors.AQUA_GREEN
+  },
+  backButton: {
+    flex: 0.1,
+    alignSelf: 'center'
+  },
+  backButtonIcon: {
+    fontSize: 45,
+    color: Colors.AQUA_GREEN,
+  },
 });

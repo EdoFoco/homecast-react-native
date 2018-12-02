@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import FastImage from 'react-native-fast-image';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PlaceholderFastImage from './PlaceholderFastImage';
 
@@ -69,12 +68,11 @@ export default class ViewingScreen extends Component{
   render() {
     return(
         <View style={{flex: 1}}>
-              <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20}}>
-                  <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
-                    <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
-                  </TouchableHighlight>
-                  <Text style={styles.availabilityValue}>{this.props.viewing.capacity} slots left</Text>
-              </View>
+            <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20}}>
+                <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                  <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
+                </TouchableHighlight>
+            </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.9}} refreshControl={
               <RefreshControl
                   refreshing={this.state.isRefreshing}
@@ -87,13 +85,24 @@ export default class ViewingScreen extends Component{
                     <Text style={styles.weekDayStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                   </View>
                 </View>
-                <View style={styles.capacityContainer}>
-                    <Text style={styles.capacityText}>There are only {this.props.viewing.capacity} spots left for this viewing.</Text>
-                    <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>View Property</Text>
-                        <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
+                
+                  {
+                    this.props.reservation ? 
+                    <View style={styles.capacityContainer}>
+                      <MaterialIcons name="check-circle-outline" style={styles.confirmationIcon}/>
+                      <Text style={styles.capacityText}>
+                        You're viewing is confirmed.
+                      </Text>
                     </View>
-                </View>
+                    :
+                    <View style={styles.capacityContainer}>
+                      <MaterialIcons name="alert-outline" style={styles.warningIcon}/>
+                      <Text style={styles.capacityText}>
+                        There are only {this.props.viewing.capacity} spots left for this viewing.
+                      </Text>
+                    </View>
+                  }
+                    
                 <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>View Property</Text>
@@ -282,9 +291,22 @@ const styles = StyleSheet.create({
   capacityContainer:{
     flex: 1,
     alignSelf: 'stretch',
-    padding: 10
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   capacityText: {
-    fontSize: FontSizes.MEDIUM_BIG
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.VERY_LIGHT_GRAY,
+    marginLeft: 10,
+  },
+  warningIcon: {
+    fontSize: 32,
+    color: Colors.WARNING
+  },
+  confirmationIcon: {
+    fontSize: 32,
+    color: Colors.AQUA_GREEN
   }
 });

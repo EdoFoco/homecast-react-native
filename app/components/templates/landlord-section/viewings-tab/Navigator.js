@@ -1,7 +1,7 @@
 import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
-import ViewingContainer from '../screens/ViewingContainer';
+import ViewingContainer from './ViewingContainer';
 import LiveCastContainer from '../screens/LiveCastContainer';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 

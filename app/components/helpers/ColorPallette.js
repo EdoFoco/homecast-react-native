@@ -11,3 +11,4 @@ export const DARK_GREY = '#424242';
 export const LIGHT_GRAY = '#757575';
 export const VERY_LIGHT_GRAY = '#BDBDBD';
 export const WHITE_SMOKE = '#ECF0F1';
+export const WARNING = '#f1c40f';

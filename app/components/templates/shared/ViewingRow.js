@@ -43,7 +43,7 @@ ViewingRow.propTypes ={
 const styles = StyleSheet.create({
     viewingRow:{
         flex: 1,
-        borderBottomColor: Colors.LIGHT_GRAY,
+        borderBottomColor: Colors.VERY_LIGHT_GRAY,
         borderBottomWidth: 0.5,
         flexDirection: 'row',
         justifyContent: 'center',
