@@ -69,7 +69,7 @@ export default class AdminViewingScreen extends Component{
                 </TouchableHighlight>
             </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.85}}>
-                <PlaceholderFastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
+                <PlaceholderFastImage style={styles.propertyImage} source={{uri: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>

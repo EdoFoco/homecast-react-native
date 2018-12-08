@@ -188,15 +188,15 @@ export default class EditPropertyForm extends Component{
     if(!this.props.property){
         return <View></View>
     }
+   
     return (
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
                 <View style={styles.container}>
-                    <PlaceholderFastImage style={styles.propertyThumbnail} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}}>
-                        <TouchableHighlight style={styles.opaqueLayer} onPress={() => { this.props.goToScreen('UploadPhotosScreen'); }}>
-                            <Text style={styles.photosBtn}>Manage Media</Text>
-                        </TouchableHighlight>
-                    </PlaceholderFastImage>
+                    <PlaceholderFastImage style={styles.propertyThumbnail} source={{uri: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
+                    <TouchableHighlight style={styles.opaqueLayer} onPress={() => { this.props.goToScreen('UploadPhotosScreen'); }}>
+                        <Text style={styles.photosBtn}>Manage Media</Text>
+                    </TouchableHighlight>
                     <View style={styles.deletePropertyCell}>
                         <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
                             <Text style={styles.ctaText}>Manage Viewings</Text>
@@ -340,7 +340,11 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch'
     },
     opaqueLayer: {
-        flex: 1,
+        height: 250,
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
         alignSelf: 'stretch',
         backgroundColor: 'rgba(0,0,0,0.6)',
         justifyContent: 'center'

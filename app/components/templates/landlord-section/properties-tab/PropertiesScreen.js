@@ -48,6 +48,7 @@ class PropertiesScreen extends Component{
 
  _renderRow = function({item}){
     let property = item;
+    console.log(property);
     return (
         <AdminPropertyRow onPress={() => {this._onPress(property)}} property={property} />
     )
