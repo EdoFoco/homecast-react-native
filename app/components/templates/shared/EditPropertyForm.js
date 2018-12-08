@@ -7,6 +7,7 @@ import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
 import ModalBox from './ModalBox';
 import PlaceholderFastImage from './PlaceholderFastImage';
+import StatusBox from './StatusBox';
 import {
     StyleSheet,
     Text,
@@ -26,13 +27,14 @@ export default class EditPropertyForm extends Component{
         property: this.props.property,
         showForm: false,
         formTarget: null,
-        showDeleteModal: false
+        showDeleteModal: false,
+        showStatusBox: false,
+        statusBoxSuccess: false,
+        statusBoxText: ''
      };
   }
 
   _updatePropertyWithPlaceId(placeId){
-    console.log(placeId);
-
     var property = {...this.state.property};
     property.google_place_id = placeId;
     this.setState({property: property}, this._updateProperty);
@@ -41,11 +43,11 @@ export default class EditPropertyForm extends Component{
   _updateProperty(){
     this.props.updateProperty(this.state.property, this.props.user.info.id)
     .then(() => {
-            console.log('success updating property');
+            this.setState({showStatusBox: true, statusBoxSuccess: true, statusBoxText: 'Property updated!'})
             this._hideForm();
         })
     .catch((e) => {
-        console.error(e);
+        this.setState({showStatusBox: true, statusBoxSuccess: false, statusBoxText: 'There was a problem updating the information. Are all the details in the correct format?'})
     });
   }
 
@@ -203,7 +205,7 @@ export default class EditPropertyForm extends Component{
                     <View style={styles.propertyDetailCell}>
                         <View style={styles.detailColumn}>
                             <Text style={styles.sectionTitle}>Status</Text>
-                            <Text style={styles.sectionValue}>Unlisted</Text>
+                            <Text style={styles.sectionValue}>{this.props.property.listing_active ? 'Listing active' : 'Listing Inactive'}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
                             <Switch style={styles.activeSwitch} onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/>
@@ -298,6 +300,14 @@ export default class EditPropertyForm extends Component{
                         delete={() => this.props.deleteProperty()}
                         description="Are you sure you want to delete this property?"
                         deleteText="Delete Property"
+                    />
+                }
+                {
+                    !this.state.showStatusBox ? null :
+                    <StatusBox 
+                        close={() => {this.setState({showStatusBox: false})}}
+                        isSuccess={this.state.statusBoxSuccess}
+                        text={this.state.statusBoxText}
                     />
                 }
         </View>
