@@ -10,19 +10,20 @@ import {
     TouchableHighlight
   } from 'react-native';
 
-export default class ModalBox extends Component{
+export default class StatusBox extends Component{
 
   render() {
     return (
         <TouchableHighlight style={styles.container} onPress={this.props.close}>
             <View style={styles.box}>
-                <MaterialIcons name="alert-circle-outline" style={styles.alertIcon}/>
-                <Text style={styles.descriptionText} multiline={true}>{this.props.description}</Text>
-                <TouchableHighlight style={styles.deleteButton} onPress={this.props.delete}>
-                    <Text style={styles.deleteButtonText}>{this.props.deleteText}</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.closeButton} onPress={this.props.close}>
-                    <Text style={styles.closeButtonText}>Back</Text>
+                {
+                    this.props.isSuccess ?
+                    <MaterialIcons name="check-circle-outline" style={styles.successIcon}/> :
+                    <MaterialIcons name="alert-circle-outline" style={styles.errorIcon}/>
+                } 
+                <Text style={styles.descriptionText} multiline={true}>{this.props.text}</Text>
+                 <TouchableHighlight style={styles.closeButton} onPress={this.props.close}>
+                    <Text style={styles.closeButtonText}>Close</Text>
                 </TouchableHighlight>
             </View>
         </TouchableHighlight>
@@ -30,11 +31,10 @@ export default class ModalBox extends Component{
   }
 }
 
-ModalBox.PropTypes = {
+StatusBox.PropTypes = {
     close: PropTypes.func.isRequired,
-    delete: PropTypes.func.isRequired,
-    deleteText: PropTypes.func.isRequired,
-    description: PropTypes.string.isRequired
+    isSuccess: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired
 }
 
 
@@ -68,31 +68,22 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 20,
         padding: 5
     },
     closeButtonText: {
         fontSize: FontSizes.DEFAULT,
         color: Colors.DARK_GREY
     },
-    deleteButton: {
-        borderColor: Colors.RED,
-        backgroundColor: Colors.RED,
-        borderWidth: 1,
-        borderRadius: 10,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-        padding: 5
-    },
-    deleteButtonText: {
-        fontSize: FontSizes.DEFAULT,
-        color: 'white',
-    },
-    alertIcon: {
+    errorIcon: {
         fontSize: 50,
         color: Colors.RED,
+        alignSelf: 'center',
+        marginBottom: 20
+    },
+    successIcon: {
+        fontSize: 50,
+        color: Colors.AQUA_GREEN,
         alignSelf: 'center',
         marginBottom: 20
     }

@@ -2,25 +2,32 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ModalBox from '../shared/ModalBox';
 import PlaceholderFastImage from './PlaceholderFastImage';
+import GenericTextControl from './GenericTextControl';
 import {
   StyleSheet,
   Text,
   TouchableHighlight,
   View,
   ScrollView,
-  Dimensions
+  Dimensions,
+  TextInput
 } from 'react-native';
+import StatusBox from './StatusBox';
 
 export default class AdminViewingScreen extends Component{
   
   constructor(props){
     super(props);
     this.state = {
-      showCancelDialogue: false
+      showCancelDialogue: false,
+      showForm: false,
+      invitationEmail: '',
+      showStatusBox: false,
+      isStatusSuccess: false,
+      statusBoxText: ''
     }
   }
 
@@ -34,6 +41,20 @@ export default class AdminViewingScreen extends Component{
 
   _showModal(){
     this.setState({showCancelDialogue: true});
+  }
+
+  _resetEmailInvitation(){
+    this.setState({invitationEmail: '', showForm: false});
+  }
+
+  _sendViewingInvitation(){
+    this.props.sendInvitationEmail(this.props.viewing.id, this.state.invitationEmail)
+    .then(() => {
+      this.setState({showForm: false, invitationEmail: '', statusBoxText: 'Viewing invitation sent!', isStatusSuccess: true, showStatusBox: true});
+    })
+    .catch(() => {
+      this.setState({showForm: false, invitationEmail: '', statusBoxText: 'There was a problem sending this viewing invitation. Is the email in the correct format?', isStatusSuccess: false, showStatusBox: true});
+    })
   }
  
   render() {
@@ -68,16 +89,10 @@ export default class AdminViewingScreen extends Component{
                       </Text>
                   </TouchableHighlight>
                 </View>
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
+                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.setState({showForm: true})}}>
                     <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>Invite a Viewer</Text>
+                        <Text style={styles.buttonText}>Invite a viewer via Email</Text>
                         <MaterialIcons name="account-plus" style={styles.buttonIconMaterial}/>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
-                    <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>Contact Viewers</Text>
-                        <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
             </ScrollView>
@@ -87,12 +102,37 @@ export default class AdminViewingScreen extends Component{
               </TouchableHighlight>
             </View>
             {
+              !this.state.showForm ? 
+                  null :
+                  <View>
+                      <TouchableHighlight style={styles.formOverlay} onPress={() => {this._resetEmailInvitation()}}><Text></Text></TouchableHighlight>
+                      <View style={styles.formContainer}>
+                          <GenericTextControl 
+                            value={this.state.invitationEmail}
+                            handleChange={(value) => { this.setState({invitationEmail: value})}} 
+                            title="Email"
+                            description="Insert the recipients email here" />
+                            <TouchableHighlight style={styles.primaryCtaBtnGreen} onPress={() => {this._sendViewingInvitation()}}>
+                              <Text style={styles.ctaText}>Send Invitation</Text>
+                            </TouchableHighlight> 
+                      </View>
+                  </View>
+                }
+            {
               !this.state.showCancelDialogue ? null :
               <ModalBox 
                 close={() => this.setState({showCancelDialogue: false})}
                 delete={() => this.props.deleteViewing()}
                 description="Are you sure you want to cancel this viewing?"
                 deleteText="Cancel Viewing"
+              />
+            }
+            {
+              !this.state.showStatusBox ? null :
+              <StatusBox 
+                close={() => {this.setState({showStatusBox: false})}}
+                isSuccess={this.state.isStatusSuccess}
+                text={this.state.statusBoxText}
               />
             }
         </View>
@@ -107,7 +147,8 @@ AdminViewingScreen.propTypes = {
     joinLiveCast: PropTypes.func.isRequired,
     network: PropTypes.object.isRequired,
     deleteViewing: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired
+    goBack: PropTypes.func.isRequired,
+    sendInvitationEmail: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -248,6 +289,11 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10
   },
+  primaryCtaBtnGreen: {
+    backgroundColor: Colors.AQUA_GREEN,
+    flex: 0.2,
+    justifyContent: 'center',
+  },
   ctaText: {
       color: 'white',
       textAlign: 'center',
@@ -328,5 +374,27 @@ const styles = StyleSheet.create({
   backButtonIcon: {
     fontSize: 45,
     color: Colors.AQUA_GREEN,
+  },
+  formOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignSelf: 'center',
+    height:  Dimensions.get('window').height,
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)'
+  },
+  formContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    flex: 1,
+    height:  400,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
   },
 });

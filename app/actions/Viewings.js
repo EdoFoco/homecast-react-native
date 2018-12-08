@@ -94,6 +94,19 @@ export function getViewingReservations(userId){
       }
 }
 
+export function sendViewingInvitationEmail(viewingId, email){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.sendViewingInvitationEmail(viewingId, email);
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+      }
+}
+
 function handleError(error, dispatch){
     console.warn(error);
     var action = ErrorHandler.getActionForError(error);

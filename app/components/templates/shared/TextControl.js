@@ -2,8 +2,8 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EditPropertyActions from './EditPropertyActions';
+import GenericTextControl from './GenericTextControl';
 import {
     TextInput,
     StyleSheet,
@@ -25,16 +25,13 @@ export default class TextControl extends Component{
   render() {
     return (
         <View style={styles.container}>
-            <View style={{flex: 0.8, margin: 10}}>
-                <Text style={styles.title}>{this.props.title}</Text>
-                <Text style={styles.description}>{this.props.description}</Text>
-                <TextInput style={this.props.multiline ? styles.textInputLong : styles.textInput}
-                    value={this.props.value}
-                    onChangeText={(text) => {this.props.handleChange(text)}}
-                    multiline={true} 
-                />
-
-            </View>
+            <GenericTextControl 
+                value={this.props.value}
+                handleChange={(text) => {this.props.handleChange(text)}} 
+                title={this.props.title}
+                description={this.props.description}
+                multiline={this.props.multiline} 
+            />
             <View style={{flex: 0.2}}>
                 <EditPropertyActions 
                     property={this.props.property}
@@ -74,14 +71,6 @@ const styles = StyleSheet.create({
     textInput: {
         borderWidth: 1,
         height: 50,
-        marginTop: 20,
-        borderColor: Colors.LIGHT_GRAY,
-        borderRadius: 10,
-        paddingLeft: 10,
-    },
-    textInputLong: {
-        borderWidth: 1,
-        flex: 1,
         marginTop: 20,
         borderColor: Colors.LIGHT_GRAY,
         borderRadius: 10,

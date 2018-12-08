@@ -186,6 +186,10 @@ class ApiService {
     async updateDeviceToken(userId, token){
         return await this.apiClient.post(`api/users/${userId}/token`, { token: token });
     }
+
+    async sendViewingInvitationEmail(viewingId, email){
+        return await this.apiClient.post(`api/viewings/${viewingId}/invitations`, { user_email: email });
+    }
 }
 
 export default ApiService
