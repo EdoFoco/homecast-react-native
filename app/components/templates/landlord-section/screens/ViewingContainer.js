@@ -21,7 +21,7 @@ class ViewingScreen extends Component{
       return this.props.getProperty(this.props.property.id);
     })
     .then(() => {
-      return this.props.goBack();
+      return this.props.navigation.goBack();
     })
     .catch((e) => {
       console.error(e);

@@ -38,7 +38,7 @@ class ViewingScreen extends Component{
             joinLiveCast={() => {this._joinLiveCast()}}
             deleteViewing={() => {this._deleteViewing()}}
             network={this.props.network}
-            goBack={this.props.navigation.goBack}
+            goBack={() => {this.props.goBack()}}
             sendInvitationEmail={(viewingId, email) => {return this.props.sendViewingInvitationEmail(viewingId, email)}}
         />
       </View>

@@ -82,3 +82,6 @@ export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 
 //General Reducers
 export const RESET_REDUCERS = 'RESET_REDUCERS';
+
+//HTTP
+export const BAD_REQUEST = 'BAD_REQUEST';

@@ -12,7 +12,6 @@ import {
 
 export default class AdminPropertyRow extends Component{
     render(){
-        console.log(this.props.property.images);
         return(<TouchableHighlight onPress={() => {this.props.onPress()}}>
           <View style={styles.listingCell}>
             <PlaceholderFastImage style={styles.listingImage} source={{uri: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}}/>

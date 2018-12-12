@@ -159,8 +159,8 @@ class ApiService {
         return await this.apiClient.post(`api/properties/${propertyId}/photos`, formData, config);
     }
 
-    async deletePropertyImage(propertyId, id){
-        return await this.apiClient.delete(`api/properties/${propertyId}/photos/${id}`);
+    async deletePropertyImages(propertyId, ids){
+        return await this.apiClient.delete(`api/properties/${propertyId}/photos?ids=${ids.join(',')}`);
     }
 
     async deleteProperty(propertyId){
@@ -189,6 +189,10 @@ class ApiService {
 
     async sendViewingInvitationEmail(viewingId, email){
         return await this.apiClient.post(`api/viewings/${viewingId}/invitations`, { user_email: email });
+    }
+
+    async activateProperty(propertyId, isActive){
+        return await this.apiClient.post(`api/properties/${propertyId}/activation`, { listing_active: isActive });
     }
 }
 

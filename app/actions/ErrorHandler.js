@@ -6,13 +6,13 @@ export function getActionForError(error){
         return showNetworkError(true);
     }
     if(error.response && error.response.status){
-        console.log(error.response.request.responseURL);
-        console.log(error.response.data.error.errors);
         switch(error.response.status){
             case 400:
                 if(error.response.data.error === 'token_invalid' || error.response.data.error === 'token_not_provided'){
                     return handleUnauthorized();
                 }
+                
+                return handleBadRequest(error.response.data.error.message);
             case 403:
             case 401:
                 return handleUnauthorized();
@@ -40,4 +40,8 @@ export function resetReducers(){
     return {
         type: types.RESET_REDUCERS
     }
+}
+
+export function handleBadRequest(message){
+    throw { statusCode: 400, message: message };
 }

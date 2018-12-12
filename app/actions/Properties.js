@@ -140,10 +140,7 @@ export function getProperty(propertyId){
     return async (dispatch, getState) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
-
-            var deleteImageTasks = imageIds.map(id => apiService.deletePropertyImage(propertyId, id));
-            await Promise.all(deleteImageTasks);
-            
+            await apiService.deletePropertyImages(propertyId, imageIds);
             return dispatch(getUserProperties(userId));
         }
         catch(error){
@@ -170,6 +167,20 @@ export function importProperty(propertyId, userId, url){
         try{
             var apiService = await ApiServiceFactory.getInstance();
             var resp = await apiService.importProperty(propertyId, url)
+            dispatch(getUserProperties(userId));
+            return resp.data;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+      }
+  }
+
+  export function activateProperty(userId, propertyId, isActive){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.activateProperty(propertyId, isActive)
             dispatch(getUserProperties(userId));
             return resp.data;
         }

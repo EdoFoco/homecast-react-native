@@ -28,6 +28,10 @@ export default class EditPropertyForm extends Component{
         showForm: false,
         formTarget: null,
         showDeleteModal: false,
+        deleteModalAction: null,
+        deleteModalDescription: '',
+        deleteModalCloseAction: null,
+        deleteModalButtonText: '',
         showStatusBox: false,
         statusBoxSuccess: false,
         statusBoxText: ''
@@ -60,8 +64,17 @@ export default class EditPropertyForm extends Component{
       this.setState({showForm: false, formTarget: null});
   }
 
-  _handleChangeActive(value) {
-      this.setState({property: {...this.state.property, listing_active: value}}, this._updateProperty);
+  _handleChangeActive(isActive) {
+      this.props.activateProperty(isActive)
+      .then(() => {
+        this.setState({property: {...this.state.property, listing_active: isActive}});
+      })
+      .then(() => {
+        this.setState({showStatusBox: true, statusBoxSuccess: true, statusBoxText: `Your listing is ${ isActive ? 'active' : 'inactive'}!`})
+      })
+      .catch((e) => {
+          this.setState({showStatusBox: true, statusBoxSuccess: false, statusBoxText: e.statusCode == 400 ? e.message : 'There was a problem activating your listing.'});
+      });
   }
 
   _showForm(shouldShow, formTarget){
@@ -71,6 +84,17 @@ export default class EditPropertyForm extends Component{
     else{
         this._hideForm();
     }
+  }
+
+  _deleteProperty(){
+    this.setState({
+        deleteModalAction: this.props.deleteProperty,
+        deleteModalCloseAction: this.setState({showDeleteModal: false}),
+        deleteModalButtonText: "Delete Property",
+        deleteModalDescription: "Are you sure you want to delete this property? All viewings will be cancelled as well."
+    });
+
+    this.setState({showDeleteModal: true});
   }
 
   _showControl(){
@@ -276,7 +300,7 @@ export default class EditPropertyForm extends Component{
                     </View>
                 </View>
                 <View style={styles.deletePropertyCell}>
-                    <TouchableHighlight style={styles.deleteButton} onPress={() => {this.setState({showDeleteModal: true})}}>
+                    <TouchableHighlight style={styles.deleteButton} onPress={() => {this._deleteProperty()}}>
                         <Text style={styles.ctaText}>Delete Property</Text>
                     </TouchableHighlight>
                 </View>
@@ -296,7 +320,7 @@ export default class EditPropertyForm extends Component{
                 {
                     !this.state.showDeleteModal ? null :
                     <ModalBox 
-                        close={() => this.setState({showDeleteModal: false})}
+                        close={() => this.setState({showDeleteModal: true})}
                         delete={() => this.props.deleteProperty()}
                         description="Are you sure you want to delete this property?"
                         deleteText="Delete Property"
@@ -323,7 +347,8 @@ EditPropertyForm.propTypes = {
     updateLocationSuggestions: PropTypes.func.isRequired,
     autocompleteSuggestions: PropTypes.array.isRequired,
     updateLocationSuggestions: PropTypes.func.isRequired,
-    deleteProperty: PropTypes.func.isRequired
+    deleteProperty: PropTypes.func.isRequired,
+    activateProperty: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
