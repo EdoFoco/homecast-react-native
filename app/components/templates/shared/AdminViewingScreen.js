@@ -61,6 +61,8 @@ export default class AdminViewingScreen extends Component{
     if(!this.props.viewing){
       return <View></View>
     }
+
+    var time = new Date();
     return(
         <View style={{backgroundColor: 'white', flex: 1}}>
            <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20}}>
@@ -77,29 +79,57 @@ export default class AdminViewingScreen extends Component{
                   </View>
                 </View>
                 <View style={styles.capacityContainer}>
-                  <MaterialIcons name="check-circle-outline" style={styles.confirmationIcon}/>
+                  <MaterialIcons name={this.props.viewing.status.status == 'ACTIVE' ? "check-circle-outline" : 'alert-circle-outline' } style={this.props.viewing.status.status == 'ACTIVE' ? styles.confirmationIcon : styles.warningIcon }/>
                   <Text style={styles.capacityText}>
-                    Your viewing is confirmed. It's time to invite people to join your live stream!
+                    {
+                      this.props.viewing.status.status == 'ACTIVE' ?
+                      'Your viewing is confirmed. It\'s time to invite people to join your live stream!' :
+                      'This viewing is cancelled'
+                    }
                   </Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                  <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
-                      <Text style={styles.ctaText}>
-                          Start Live Stream
-                      </Text>
-                  </TouchableHighlight>
+                   {
+                     this.props.viewing.status.status == 'ACTIVE' ?
+                      <TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.joinLiveCast()}}>
+                        <Text style={styles.ctaText}>
+                            Start Live Stream
+                        </Text>
+                      </TouchableHighlight> :
+                      <TouchableHighlight style={styles.ctaBtnDisabled} onPress={() => {}}>
+                          <Text style={styles.ctaText}>
+                              Start Live Stream
+                          </Text>
+                      </TouchableHighlight>
+                   }
+                  
                 </View>
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.setState({showForm: true})}}>
-                    <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>Invite a viewer via Email</Text>
-                        <MaterialIcons name="account-plus" style={styles.buttonIconMaterial}/>
-                    </View>
-                </TouchableHighlight>
+                {
+                  this.props.viewing.status.status == 'ACTIVE' ?
+                  <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.setState({showForm: true})}}>
+                      <View style={styles.buttonTextContainer}>
+                          <Text style={styles.buttonText}>Invite a viewer via Email</Text>
+                          <MaterialIcons name="account-plus" style={styles.buttonIconMaterial}/>
+                      </View>
+                  </TouchableHighlight> :
+                  <TouchableHighlight style={styles.buttonContainer} onPress={() => {}}>
+                      <View style={styles.buttonTextContainer}>
+                          <Text style={styles.buttonText}>Invite a viewer via Email</Text>
+                          <MaterialIcons name="account-plus" style={styles.buttonIconMaterial}/>
+                      </View>
+                  </TouchableHighlight>
+                }
             </ScrollView>
             <View style={styles.deleteViewingContainer}>
+            {
+              this.props.viewing.status.status == 'ACTIVE' ?
               <TouchableHighlight style={styles.deleteButton} onPress={() => {this._showModal()}}>
-                <Text style={styles.deleteViewingText}>Cancel Viewing</Text>
+                <Text style={styles.deleteViewingText}>Cancel Viewing</Text> 
+              </TouchableHighlight> :
+              <TouchableHighlight style={styles.deleteButtonDisabled} onPress={() => {}}>
+                <Text style={styles.deleteViewingText}>Cancel Viewing</Text> 
               </TouchableHighlight>
+            }
             </View>
             {
               !this.state.showForm ? 
@@ -289,6 +319,14 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10
   },
+  ctaBtnDisabled: {
+    backgroundColor: Colors.VERY_LIGHT_GRAY,
+    flex: 1,
+    justifyContent: 'center',
+    margin: 10,
+    height: 60,
+    borderRadius: 10
+  },
   primaryCtaBtnGreen: {
     backgroundColor: Colors.AQUA_GREEN,
     flex: 0.2,
@@ -345,6 +383,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  deleteButtonDisabled: {
+    flex: 1,
+    backgroundColor: Colors.VERY_LIGHT_GRAY,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   deleteViewingText: {
     color: Colors.WHITE_SMOKE,
     textAlign: 'center',
@@ -360,12 +404,16 @@ const styles = StyleSheet.create({
   },
   capacityText: {
     fontSize: FontSizes.DEFAULT,
-    color: Colors.VERY_LIGHT_GRAY,
+    color: Colors.LIGHT_GRAY,
     marginLeft: 10,
   },
   confirmationIcon: {
     fontSize: 32,
     color: Colors.AQUA_GREEN
+  },
+  warningIcon: {
+    fontSize: 32,
+    color: Colors.RED
   },
   backButton: {
     flex: 0.1,

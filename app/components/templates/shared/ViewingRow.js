@@ -25,6 +25,8 @@ export default class ViewingRow extends Component{
         <TouchableHighlight onPress={() => {this.props.goToViewing(this.props.viewing.id)}}>
             <View style={styles.viewingRow}>
                 <View style={styles.viewingDateContainer}>
+                <Text>{this.props.viewing.status.status}</Text>
+
                     <Text style={styles.viewingTime}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                     <Text style={styles.dateStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                 </View>

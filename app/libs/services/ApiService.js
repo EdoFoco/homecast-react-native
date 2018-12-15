@@ -104,7 +104,6 @@ class ApiService {
      }
 
       async createViewing(propertyId, viewingInfo){
-        
         return await this.apiClient.post(`api/properties/${ propertyId }/viewings`, viewingInfo);
      }
 
