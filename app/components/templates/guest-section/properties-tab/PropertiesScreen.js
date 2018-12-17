@@ -27,13 +27,15 @@ class PropertiesScreen extends Component{
     }
   }
 
-  componentWillMount(){
-    this.props.getProperties();
-  }
-
   _onPress(property){
-      this.props.goToGuestPropertyScreen(property);
-      this.props.navigation.navigate('PropertyStack');
+      this.props.getPropertyViewings(property.id)
+      .then(() => {
+        this.props.goToGuestPropertyScreen(property);
+        this.props.navigation.navigate('PropertyStack');
+      })
+      .catch((e) => {
+        console.log(e);
+      })
   }
 
   _addToFavourites(userId, propertyId){
@@ -146,7 +148,6 @@ class PropertiesScreen extends Component{
 
         <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
-
     )
   }
   

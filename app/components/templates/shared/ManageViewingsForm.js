@@ -87,6 +87,7 @@ export default class ManageViewingsForm extends Component{
                 :
                 <View style={{flex: 0.9}}>
                     <FlatList
+                        extraData={this.props}
                         data={this.props.viewings}
                         renderItem={(viewing) => this._renderRow(viewing)}
                         keyExtractor={(item, index) => index.toString()}

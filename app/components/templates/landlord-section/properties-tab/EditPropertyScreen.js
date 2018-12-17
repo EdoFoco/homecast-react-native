@@ -41,6 +41,7 @@ class EditPropertyScreen extends Component{
                     goToScreen={(screen) => {this.props.navigation.navigate(screen, {property: this.props.property})}}
                     deleteProperty={() => { this._deleteProperty() }}
                     activateProperty={async (isActive) => { await this.props.activateProperty(this.props.user.info.id, this.props.property.id, isActive)}}
+                    getPropertyViewings={async (propertyId) => { await this.props.getPropertyViewings(propertyId) }}
                   /> 
                   </View>
               }

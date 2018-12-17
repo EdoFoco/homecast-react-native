@@ -18,8 +18,14 @@ import {
 class FavouritesScreen extends Component{
 
   _onPress(property){
-    this.props.goToGuestFavouritesPropertyScreen(property);
-    this.props.navigation.navigate('FavouritesStack');
+    this.props.getPropertyViewings(property.id)
+    .then(() => {
+      this.props.goToGuestFavouritesPropertyScreen(property);
+      this.props.navigation.navigate('FavouritesStack');
+    })
+    .catch((e) => {
+      console.log(e);
+    })
   }
 
   _addToFavourites(userId, propertyId){

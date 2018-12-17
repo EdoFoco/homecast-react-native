@@ -18,7 +18,7 @@ class ViewingScreen extends Component{
   _deleteViewing(){
     this.props.deleteViewing(this.props.viewing.id)
     .then(() => {
-      return this.props.getProperty(this.props.property.id);
+      return this.props.getPropertyViewings(this.props.property.id);
     })
     .then(() => {
       return this.props.goBack();

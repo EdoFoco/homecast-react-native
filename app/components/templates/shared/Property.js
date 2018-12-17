@@ -39,13 +39,6 @@ export default class Property extends Component{
     return `${weekday}, ${day} ${month} ${year}`;
   }
 
-  _renderItem = ({item}) => {
-    let viewing = item;
-    return (
-      <ViewingRow viewing={viewing} goToViewing={(viewingId) => {this.props.goToViewing(viewingId, this.props.currentProperty)}} />
-    )
-  };
-
   _renderImage = ({item}) => {
     let image = item;
     return(  
@@ -63,6 +56,10 @@ export default class Property extends Component{
 
   _renderViewingItem({item}){
     let viewing = item;
+    if(viewing.status.status != 'ACTIVE'){
+      return;
+    }
+
     return (
       <ViewingRow viewing={viewing} goToViewing={() => {this.props.goToViewing(viewing.id, this.props.currentProperty)}}/>
     )
@@ -114,13 +111,13 @@ export default class Property extends Component{
         </View>
         <View style={{marginBottom: 20, marginTop: 10, paddingBottom: 20, flex:1}}>
         {
-          this.props.currentProperty.viewings.length == 0 ?
+          !this.props.currentProperty.viewings || this.props.currentProperty.viewings.length == 0 ?
           <Text style={styles.noViewingsText}>There are no viewings scheduled for this property. Contact the agent to ask for availability.</Text> :
           <FlatList
               style={styles.horizontalViewingContainer}
               data={this.props.currentProperty.viewings}
               renderItem={(viewing) => this._renderViewingItem(viewing)}
-              keyExtractor={(index) => index.toString()}
+              keyExtractor={(item, index) => index.toString()}
               removeClippedSubviews={false}
               
           />

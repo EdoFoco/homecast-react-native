@@ -18,10 +18,22 @@ class OptionsScreen extends Component{
 
   _onPress(){
      if(this.props.section.sectionName === 'guest'){
-        this.props.goToSection('landlord');
+        this.props.getUserProperties(this.props.user.info.id)
+        .then(() => {
+          this.props.goToSection('landlord');
+        })
+        .catch((e) => {
+          console.log(e);
+        })
      }
      else{
-         this.props.goToSection('guest');
+         this.props.getProperties()
+         .then(() => {
+           this.props.goToSection('guest');
+         })
+         .catch(() => {
+           console.log(e);
+         })
      }
   }
 

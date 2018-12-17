@@ -97,22 +97,18 @@ export default class EditPropertyForm extends Component{
     this.setState({showDeleteModal: true});
   }
 
+  _manageViewings(){
+      this.props.getPropertyViewings(this.props.property.id)
+      .then(() => {
+        this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})
+      })
+      .catch(() => {
+          console.log(e);
+      })
+  }
+
   _showControl(){
     switch(this.state.formTarget){
-        case 'name': {
-            return (
-                <TextControl 
-                    value={this.state.property.name} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, name: value}})}} 
-                    updateProperty={() => this._updateProperty()}
-                    cancelChanges={() => {this._cancelChanges()}}
-                    hideForm={() => {this._hideForm()}}
-                    property={this.state.property}
-                    title="Name"
-                    description="Give a name to your property"
-                />
-             )
-        }
         case 'description': {
             return (
                 <TextControl 
@@ -222,7 +218,7 @@ export default class EditPropertyForm extends Component{
                         <Text style={styles.photosBtn}>Manage Media</Text>
                     </TouchableHighlight>
                     <View style={styles.deletePropertyCell}>
-                        <TouchableHighlight style={styles.ctaButton} onPress={() => {this.props.goToScreen('ManageViewingsScreen', {property: this.props.property})}}>
+                        <TouchableHighlight style={styles.ctaButton} onPress={() => {this._manageViewings()}}>
                             <Text style={styles.ctaText}>Manage Viewings</Text>
                         </TouchableHighlight>
                     </View>
@@ -242,15 +238,6 @@ export default class EditPropertyForm extends Component{
                         </View>
                         <View style={styles.sectionActionContainer}>
                             <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'address')}}>Edit</Text>
-                        </View>
-                    </View>
-                    <View style={styles.propertyDetailCell}>
-                        <View style={styles.detailColumn}>
-                            <Text style={styles.sectionTitle}>Name</Text>
-                            <Text style={styles.sectionValue}>{this.state.property.name}</Text>
-                        </View>
-                        <View style={styles.sectionActionContainer}>
-                            <Text style={styles.editSectionTxt} onPress={() => {this._showForm(true, 'name')}}>Edit</Text>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -348,7 +335,8 @@ EditPropertyForm.propTypes = {
     autocompleteSuggestions: PropTypes.array.isRequired,
     updateLocationSuggestions: PropTypes.func.isRequired,
     deleteProperty: PropTypes.func.isRequired,
-    activateProperty: PropTypes.func.isRequired
+    activateProperty: PropTypes.func.isRequired,
+    getPropertyViewings: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

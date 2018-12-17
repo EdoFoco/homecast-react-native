@@ -26,10 +26,6 @@ class PropertiesScreen extends Component{
     }
   }
 
-  componentWillMount(){
-    this.props.getUserProperties(this.props.user.info.id);
-  }
-
   _onPress(property){
       this.props.goToLandlordPropertyScreen(property);
       this.props.navigation.navigate('PropertyStack');

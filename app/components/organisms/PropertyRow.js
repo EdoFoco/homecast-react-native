@@ -92,9 +92,9 @@ export default class PropertyRow extends Component{
                             <Text style={styles.viewingsTitle}> Next Live Viewing: </Text>
                         </View>
                         {
-                                this.props.property.viewings.length == 0 ?
+                                !this.props.property.nextViewing  ?
                                 <Text style={styles.viewingDate}> Not scheduled</Text> :
-                                <Text style={styles.viewingDate}> {this._toDateString(this.props.property.viewings[0].date_time)}</Text>
+                                <Text style={styles.viewingDate}> {this._toDateString(this.props.property.nextViewing.date_time)}</Text>
                         }
                     </View>
                 </View>

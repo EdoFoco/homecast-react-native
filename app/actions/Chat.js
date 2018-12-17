@@ -139,7 +139,7 @@ function handleError(error, dispatch){
     console.warn(error);
     var action = ErrorHandler.getActionForError(error);
     if(action){
-        return dispatch(action);
+        dispatch(action);
     }
     throw error;
 }

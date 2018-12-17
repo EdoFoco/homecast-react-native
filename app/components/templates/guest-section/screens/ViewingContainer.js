@@ -10,14 +10,10 @@ import firebase from 'react-native-firebase';
 
 class ViewingContainer extends Component{
 
-  componentWillMount(){
-      this.props.getViewingReservations(this.props.user.info.id);
-  }
-
  _reserveSpot(userId, viewingId){
     return this.props.createViewingReservation(userId, viewingId)
     .then(() => {
-        return this.props.getProperty(this.props.property.id);
+        return this.props.getPropertyViewing(this.props.viewing.id);
     })
     .then(() => {
         return this._setNotifications();
@@ -71,7 +67,7 @@ _cancelNotifications(){
  _cancelViewingReservation(userId, reservationId){
     return this.props.cancelViewingReservation(userId, reservationId)
     .then(() => {
-        return this.props.getProperty(this.props.property.id);
+        return this.props.getPropertyViewing(this.props.viewing.id);
     })
     .then(() => {
         this._cancelNotifications();
@@ -132,8 +128,8 @@ const mapStateToProps = (state, {navigation}) => {
     let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.property.id);
     return {
         property: property,
-        viewing: property.viewings.find(v => v.id === navigation.state.params.viewingId),
-        reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewingId),
+        viewing: navigation.state.params.viewing,
+        reservation: state.viewings.viewingReservations.find(r => r.viewing.id === navigation.state.params.viewing.id),
         user: state.user,
         network: state.network
     }

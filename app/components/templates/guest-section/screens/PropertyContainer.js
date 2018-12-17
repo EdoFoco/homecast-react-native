@@ -9,17 +9,17 @@ import { View, StyleSheet } from 'react-native';
 
 class PropertyContainer extends Component{
 
-  componentWillMount(){
-    //this.props.updateCurrentProperty(this.props.currentProperty);
-    this.props.getProperty(this.props.currentProperty.id);
-    this.props.getViewingReservations(this.props.user.info.id)
-    .catch((error) => {
-      console.error(error);
-    })
-  }
-
   _goToViewing(viewingId){
-      this.props.navigation.navigate('PropertyViewings', { viewingId: viewingId, property: this.props.currentProperty});
+      this.props.getViewingReservations(this.props.user.info.id)
+      .then(() => {
+        return this.props.getViewing(viewingId);
+      })
+      .then((viewing) => {
+        return this.props.navigation.navigate('PropertyViewings', { viewing: viewing, property: this.props.currentProperty});
+      })
+      .catch((e) => {
+        console.log(e);
+      })
     }
   
   render() {

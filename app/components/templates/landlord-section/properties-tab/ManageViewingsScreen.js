@@ -23,7 +23,7 @@ class ManageViewingsScreen extends Component{
                 <ManageViewingsForm 
                   propertyId={this.props.property.id} 
                   userId={this.props.user.info.id} 
-                  viewings={this.props.property.viewings}
+                  viewings={this.props.viewings}
                   createViewing={(propertyId, userId, viewingInfo) => this.props.createViewing(propertyId, userId, viewingInfo)}
                   goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property, goBack: () => {this.props.navigation.goBack()}}) }}
                 /> 
@@ -38,9 +38,11 @@ ManageViewingsScreen.navigationOptions = ({ navigation }) => {
 };
 
 const mapStateToProps = (state, navigation) => {
+    let property = state.properties.propertiesList.find(p => p.id == navigation.navigation.state.params.property.id)
     return {
         user: state.user,
-        property: state.properties.propertiesList.find(p => p.id == navigation.navigation.state.params.property.id),
+        property: property,
+        viewings : property.viewings,
         autocompleteSuggestions: state.location.suggestions,
       }
 };

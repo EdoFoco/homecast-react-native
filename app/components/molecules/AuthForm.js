@@ -48,6 +48,8 @@ class AuthForm extends Component{
             GAClient.gaClientInstance.trackLogin(user.user.id);
 
             await this.props.updateAuthToken(user.token);
+            await this.props.getProperties();
+            
             var hasPermission = await firebase.messaging().hasPermission();
             if(!hasPermission){
                 await firebase.messaging().requestPermission();
@@ -172,26 +174,6 @@ class AuthForm extends Component{
                     }
                     </View>
                 </TouchableWithoutFeedback>
-                {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        
-                    <View style={styles.opaqueLayer}>
-                        
-                        <View style={styles.formContainer}>
-                            
-                            <Form style={styles.form}
-                                ref="form"
-                                type={Person}
-                                options={options}
-                            />
-                            <TouchableHighlight style={styles.loginBtn} onPress={this._onPress.bind(this)} underlayColor='#99d9f4'>
-                                <Text style={styles.buttonText}>Login</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight style={styles.signupBtn} underlayColor='#99d9f4'>
-                                <Text style={styles.buttonText}>Create Account</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
-                    </TouchableWithoutFeedback> */}
             </View>
         );
      

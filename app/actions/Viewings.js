@@ -2,6 +2,14 @@ import * as types from './Types';
 import * as ErrorHandler from './ErrorHandler';
 import ApiServiceFactory from '../libs/services/ApiServiceFactory';
 
+export function updatePropertyViewings(propertyId, viewings){
+    return {
+        type: types.UPDATE_PROPERTY_VIEWINGS,
+        viewings: viewings,
+        propertyId: propertyId
+    }
+}
+
 export function updateViewing(viewing){
     return {
         type: types.UPDATE_VIEWING,
@@ -66,6 +74,20 @@ export function cancelViewingReservation(userId, viewingId){
       }
 }
 
+export function getPropertyViewings(propertyId){
+    return async (dispatch, getState) => {
+        try{
+            var apiService = await ApiServiceFactory.getInstance();
+            var resp = await apiService.getPropertyViewings(propertyId)
+            dispatch(updatePropertyViewings(propertyId, resp.data.viewings));
+            return resp.data.viewings;
+        }
+        catch(error){
+            handleError(error, dispatch);
+        }
+      }
+}
+
 export function getViewing(viewingId){
     return async (dispatch, getState) => {
         try{
@@ -111,7 +133,7 @@ function handleError(error, dispatch){
     console.warn(error);
     var action = ErrorHandler.getActionForError(error);
     if(action){
-        return dispatch(action);
+        dispatch(action);
     }
     throw error;
 }

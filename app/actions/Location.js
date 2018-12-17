@@ -27,7 +27,7 @@ export function getAddressSuggestions(text, type){
     console.warn(error);
     var action = ErrorHandler.getActionForError(error);
     if(action){
-        return dispatch(action);
+        dispatch(action);
     }
     throw error;
 }

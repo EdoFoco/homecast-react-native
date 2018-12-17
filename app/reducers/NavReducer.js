@@ -145,7 +145,7 @@ export const guestViewingsNav = (state = initialViewingsNavigatorState, action) 
       return initialViewingsNavigatorState;
     case types.GUEST_VIEWINGS_TAB_GO_TO_VIEWING:
       return GuestViewingsNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'ViewingScreen', params: {viewingId: action.viewingId, property: action.property}})
+        NavigationActions.navigate({ routeName: 'ViewingScreen', params: {viewing: action.viewing, property: action.property}})
       );
     default:
       return nextState || state;

@@ -86,10 +86,10 @@ export function goToGuestFavouritesPropertyScreen(property){
     }
 }
 
-export function goToGuestViewingsScreen(viewingId, property){
+export function goToGuestViewingsScreen(viewing, property){
     return {
         type: types.GUEST_VIEWINGS_TAB_GO_TO_VIEWING,
-        viewingId: viewingId,
+        viewing: viewing,
         property: property
     }
 }

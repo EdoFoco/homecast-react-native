@@ -27,8 +27,14 @@ class ViewingsScreen extends Component{
   }
 
   _goToViewing(viewingId, property){
-    this.props.goToGuestViewingsScreen(viewingId, property);
-    this.props.navigation.navigate('ViewingsStack');
+    this.props.getViewing(viewingId)
+    .then((viewing) => {
+      this.props.goToGuestViewingsScreen(viewing, property);
+      this.props.navigation.navigate('ViewingsStack');
+    })
+    .catch((e) => {
+      console.log(e);
+    });
   }
 
   _toDateString(date){
