@@ -38,9 +38,15 @@ export default class ViewingScreen extends Component{
   //  }
     
     if(this.props.reservation){
+      if(this.props.reservation.viewing.status.status == 'ACTIVE'){
         return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id)}}>
-            <Text style={styles.ctaText}>Cancel Reservation </Text>
+          <Text style={styles.ctaText}>Cancel Reservation </Text>
         </TouchableHighlight>)
+      }
+      return (
+        <TouchableHighlight style={styles.ctaBtnDisabled} onPress={() => {}}>
+            <Text style={styles.ctaText}>Cancel Reservation </Text>
+        </TouchableHighlight>) 
     }
     else{
         return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.createViewingReservation(this.props.user.info.id, this.props.viewing.id)}}>
@@ -78,7 +84,7 @@ export default class ViewingScreen extends Component{
                   refreshing={this.state.isRefreshing}
                   onRefresh={() => {this._refresh()}}
                 />} >
-                <PlaceholderFastImage style={styles.propertyImage} source={{url: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
+                <PlaceholderFastImage style={styles.propertyImage} source={{uri: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
                 <View style={styles.imageOverlay}>
                   <View style={styles.dateContainer}>
                     <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
@@ -89,23 +95,36 @@ export default class ViewingScreen extends Component{
                   {
                     this.props.reservation ? 
                     <View style={styles.capacityContainer}>
-                      <MaterialIcons name="check-circle-outline" style={styles.confirmationIcon}/>
+                      <MaterialIcons name={this.props.viewing.status.status == 'ACTIVE' ? "check-circle-outline" : 'alert-circle-outline' } style={this.props.viewing.status.status == 'ACTIVE' ? styles.confirmationIcon : styles.alertIcon }/>
                       <Text style={styles.capacityText}>
-                        You're viewing is confirmed.
+                        {
+                          this.props.viewing.status.status == 'ACTIVE' ?
+                          'Your viewing is confirmed. You will receive a notification and will be able to join the live stream closer to the date.' :
+                          'This viewing was cancelled by the agent'
+                        }
                       </Text>
                     </View>
                     :
                     <View style={styles.capacityContainer}>
                       <MaterialIcons name="alert-outline" style={styles.warningIcon}/>
                       <Text style={styles.capacityText}>
-                        There are only {this.props.viewing.capacity} spots left for this viewing.
+                        There are only {this.props.viewing.capacity} spots left for this viewing. Remember to reserve a slot.
                       </Text>
                     </View>
                   }
-                    
+                  {
+                    this.props.viewing.status.status == 'ACTIVE' ?
+                    <TouchableHighlight style={styles.joinLiveCast} onPress={() => {this.props.joinLiveCast()}}>
+                      <Text style={styles.ctaText}>Join Live Cast</Text>
+                    </TouchableHighlight>
+                    :
+                    <TouchableHighlight style={styles.joinLiveCastDisabled} onPress={() => {}}>
+                      <Text style={styles.ctaText}>Join Live Cast</Text>
+                    </TouchableHighlight>
+                  }
                 <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
                     <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>View Property</Text>
+                        <Text style={styles.buttonText}>View Property Details</Text>
                         <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
                     </View>
                 </TouchableHighlight>
@@ -235,6 +254,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
+  ctaBtnDisabled: {
+    backgroundColor: Colors.VERY_LIGHT_GRAY,
+    flex: 1,
+    justifyContent: 'center'
+  },
   ctaText: {
       color: 'white',
       textAlign: 'center',
@@ -292,14 +316,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     padding: 20,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
   capacityText: {
     fontSize: FontSizes.DEFAULT,
-    color: Colors.VERY_LIGHT_GRAY,
+    color: Colors.LIGHT_GRAY,
     marginLeft: 10,
+    paddingRight: 20
+  },
+  alertIcon: {
+    fontSize: 32,
+    color: Colors.RED
   },
   warningIcon: {
     fontSize: 32,
@@ -308,5 +338,21 @@ const styles = StyleSheet.create({
   confirmationIcon: {
     fontSize: 32,
     color: Colors.AQUA_GREEN
+  },
+  joinLiveCast: {
+    backgroundColor: Colors.AQUA_GREEN,
+    flex: 1,
+    justifyContent: 'center',
+    margin: 10,
+    height: 60,
+    borderRadius: 10
+  },
+  joinLiveCastDisabled: {
+    backgroundColor: Colors.VERY_LIGHT_GRAY,
+    flex: 1,
+    justifyContent: 'center',
+    margin: 10,
+    height: 60,
+    borderRadius: 10
   }
 });

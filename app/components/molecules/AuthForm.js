@@ -64,25 +64,29 @@ class AuthForm extends Component{
     }
   }
 
-  _signup() {
+  async _signup() {
     var info = {
         name: this.state.signupName,
         email: this.state.signupEmail,
         password: this.state.signupPassword,
     }
-    console.log(info);
-    this.props.signup(info)
-    .then(() => {
+
+    try{
+        await this.props.signup(info);
+        var user = await this.props.login({ email: info.email, password: info.password });
+        if(!user){
+            throw new Error();
+        }
+    
         GAClient.gaClientInstance.trackSignup();
-        return this.props.login({ email: info.email, password: info.password })
-    })
-    .then((resp) => {
-        return this.props.updateAuthToken(resp.token)
-    })
-    .catch((error) => {
-        console.log(error);
+        
+        await this.props.updateAuthToken(user.token);
+        await this.props.getProperties();
+    }
+    catch(e){
+        console.log(e);
         this.props.handleUnauthorized();
-    });
+    }
   }
 
   _showLoginScreen(){
@@ -145,7 +149,7 @@ class AuthForm extends Component{
                         onChangeText={(text) => this.setState({signupPassword: text})}></TextInput>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableHighlight style={styles.signupButton} onPress={() => {this._signup()}}>
+                    <TouchableHighlight style={styles.signupButton} onPress={async () => {await this._signup()}}>
                             <View>
                                 <Text style={styles.buttonText}>SIGN UP</Text>
                             </View>

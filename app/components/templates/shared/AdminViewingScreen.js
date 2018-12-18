@@ -13,7 +13,6 @@ import {
   View,
   ScrollView,
   Dimensions,
-  TextInput
 } from 'react-native';
 import StatusBox from './StatusBox';
 
@@ -398,6 +397,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     padding: 20,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center'

@@ -2,15 +2,11 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import * as Colors from '../../../helpers/ColorPallette';
-import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import ChatScreen from '../../shared/ChatScreen';
 
 import {
   StyleSheet,
-  View,
-  FlatList,
-  Text
+  View
 } from 'react-native';
 
 
@@ -36,7 +32,7 @@ ChatContainer.navigationOptions = {
 };
 
 const mapStateToProps = (state, {navigation}) => {
-    
+    console.log(navigation.state.params);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,

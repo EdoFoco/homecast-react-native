@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
-import * as Colors from '../../components/helpers/ColorPallette';
-import GuestTabBar from './GuestTabBarNavigator';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../../actions';import GuestTabBar from './GuestTabBarNavigator';
 import PropertiesNavigator  from '../../components/templates/guest-section/properties-tab/Navigator';
 import FavouritesNavigator  from '../../components/templates/guest-section/favourites-tab/Navigator';
 import GuestViewingsNavigator  from '../../components/templates/guest-section/viewings-tab/Navigator';
@@ -77,6 +77,8 @@ const mapStateToProps = (state) => {
     network: state.network
   }
 }
+
+
 
 
 export default connect(mapStateToProps)(GuestRootNav)

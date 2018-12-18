@@ -39,7 +39,10 @@ class MainScreen extends Component {
        return this.props.handleUnauthorized();
     })
     .then(() => {
-      return this.props.getProperties();
+      if(this.props.section == 'guest'){
+        return this.props.getProperties();
+      }
+      return(this.props.getUserProperties(this.props.user.info.id));
     })
     .then(() => {
       return this.props.updateAuthenticatingState(false);
@@ -87,8 +90,6 @@ MainScreen.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-    console.log('Main Screen Section');
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         isAuthenticating: state.user.isAuthenticating,

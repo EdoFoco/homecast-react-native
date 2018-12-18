@@ -9,7 +9,7 @@ import LiveCastContainer from '../screens/LiveCastContainer';
 
 const routeConfiguration = {
     PropertyScreen: { screen: PropertyContainer },
-    PropertyViewings: { screen: ViewingContainer },
+    PropertyViewing: { screen: ViewingContainer },
     CreateChatContainer: { screen: CreateChatContainer },
     LiveCast: { screen: LiveCastContainer },
 }

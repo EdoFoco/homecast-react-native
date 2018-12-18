@@ -81,7 +81,6 @@ export default class Property extends Component{
               horizontal
               pagingEnabled
           />
-            {/* <FastImage source={{uri: this.props.currentProperty.thumbnail}} resizeMode={FastImage.resizeMode.cover} style={styles.backgroundImage} /> */}
         </View>
         <View style={{ flex: 1}}>
           <View style={styles.titleContainer}>

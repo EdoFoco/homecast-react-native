@@ -51,7 +51,7 @@ class ViewingsScreen extends Component{
     return (
       <TouchableHighlight onPress={() => {this._goToViewing(reservation.viewing.id, reservation.viewing.property)}}>
         <View style={styles.viewingContainer}>
-              <PlaceholderFastImage style={styles.propertyThumb} source={{url: reservation.viewing.property.images.length > 0 ? reservation.viewing.property.images[0].url : ''}} />
+              <PlaceholderFastImage style={styles.propertyThumb} source={{uri: reservation.viewing.property.images.length > 0 ? reservation.viewing.property.images[0].url : ''}} />
               <View style={styles.propertyDescriptionWrapper}>
                 <View style={styles.leftWrapper}>
                     <View style={styles.priceWrapper}>
@@ -74,16 +74,27 @@ class ViewingsScreen extends Component{
                   </View>
                 </View>
                 <View style={styles.viewingsContainer}>
-                    <MaterialCommunityIcon name="calendar-clock" style={styles.videoIcon} />
-                    <View style={styles.viewingTitleWrapper}>
-                        <Text style={styles.viewingsTitle}> Viewing Confirmed </Text>
-                    </View>
+                    {
+                      reservation.viewing.status.status == 'ACTIVE' ? 
+                      <View style={styles.statusContainer}>
+                        <MaterialCommunityIcon name="calendar-clock" style={styles.confirmationIcon} />
+                        <View style={styles.viewingTitleWrapper}>
+                            <Text style={styles.viewingsTitle}> Viewing Confirmed </Text>
+                        </View>
+                      </View> :
+                      <View style={styles.statusContainer}>
+                        <MaterialCommunityIcon name="alert-circle-outline" style={styles.alertIcon} />
+                        <View style={styles.viewingTitleWrapper}>
+                            <Text style={styles.viewingsTitle}> Viewing Cancelled </Text>
+                        </View>
+                      </View>
+                    }
                     <View style={styles.viewingDateContainer}>
                       <Text style={styles.viewingTime}>{new Date(`${reservation.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                       <Text style={styles.dateStyle}>{this._toDateString(reservation.viewing.date_time)}</Text>
                   </View>                        
                 </View>
-                             </View>
+            </View>
       </TouchableHighlight>
       )
   }
@@ -252,11 +263,9 @@ const styles = StyleSheet.create({
   },
   viewingsContainer: {
     paddingTop: 20,
-    paddingBottom: 20,
     paddingRight: 10,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
 },
 viewingTitleWrapper: {
     marginTop: 0,
@@ -270,10 +279,23 @@ viewingsTitle: {
     fontSize: FontSizes.DEFAULT,
     alignSelf: 'flex-start',
 },
-videoIcon: {
+statusContainer: {
+  alignSelf: 'flex-start',
+  flex: 0.8,
+  flexDirection: 'row',
+  alignItems: 'center'
+},
+confirmationIcon: {
    color: Colors.AQUA_GREEN,
-   fontSize: FontSizes.TITLE,
+   fontSize: 32,
    alignSelf: 'flex-start',
+   marginRight: 10
+},
+alertIcon: {
+  color: Colors.RED,
+  fontSize: 32,
+  alignSelf: 'flex-start',
+  marginRight: 10
 },
 noViewingsContainer: {
   flex: 1,

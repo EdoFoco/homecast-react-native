@@ -13,13 +13,21 @@ export default class PlaceHolderFastImage extends Component {
   }
 
   onLoadEnd(){
-    this.setState({loaded: true})
+    this.setState({loaded: true}, () => {console.log(this.state)});
   }
 
   render() {
     let img = resolveAssetSource(require('../../../img/property_placeholder.jpg'));
     img.width = this.props.style.width;
     img.height = this.props.style.height;
+
+    let source = img;
+    if(this.props.source.uri && this.props.source.uri != ""){
+      source = this.props.source;
+    }
+
+    console.log(source);
+    
     return <View style={[this.props.style]}>
       {
         this.state.loaded ? null :
@@ -30,9 +38,9 @@ export default class PlaceHolderFastImage extends Component {
           />
        }
       <FastImage 
-        source={this.props.source}
-        style={[this.props.style, this.state.loaded ? {} : {width: 0, height: 0}]}
-        onLoadEnd={this.onLoadEnd.bind(this)}
+        source={source}
+        style={this.props.style}
+        onLoadEnd={() => {this.onLoadEnd() }}
         resizeMode={this.props.resizeMode ? this.props.resizeMode : FastImage.resizeMode.cover}
       />
     </View>

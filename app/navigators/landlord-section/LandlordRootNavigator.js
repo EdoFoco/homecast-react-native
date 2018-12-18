@@ -66,12 +66,11 @@ class LandlordRootNav extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
  return {
     navigationState: state.landlordRootNav,
+    user: state.user
   }
 }
-
 
 export default connect(mapStateToProps)(LandlordRootNav)

@@ -80,8 +80,6 @@ class PropertiesScreen extends Component{
     this.props.updateLocationSuggestions([]);
     GAClient.gaClientInstance.trackLocationFilter(suggestion.description);
     Keyboard.dismiss();
-
-    
   }
 
   _handleLocationTextChange(text){

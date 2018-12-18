@@ -10,7 +10,7 @@ import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 const routeConfiguration = {
     LiveCast: { screen: LiveCastContainer },
     PropertiesPropertyScreen: { screen: PropertyContainer },
-    PropertyViewings: { screen: ViewingContainer },
+    PropertyViewing: { screen: ViewingContainer },
     CreateChatContainer: { screen: CreateChatContainer }
 }
 

@@ -19,8 +19,8 @@ export default class ChatsScreen extends Component{
         super(props);
         this.state = {
             isRefreshing: false,
-            chats: this.props.chats,
-            textValue: ""
+            textValue: "",
+            filteredChats: []
         }
     }
 
@@ -48,11 +48,15 @@ export default class ChatsScreen extends Component{
         })
     }
  
+    _goToChatScreen(chat){
+        this.props.goToScreen(chat);
+    }
+
     _renderChatRow(item) {
         var chat = item.item;
 
         return(
-            <TouchableHighlight onPress={() => {this.props.goToScreen(chat)}}>
+            <TouchableHighlight onPress={() => {this._goToChatScreen(chat)}}>
                 <View style={styles.chatRow}>
                     {
                         !chat.last_message.sender_profile_picture ? 
@@ -76,15 +80,12 @@ export default class ChatsScreen extends Component{
 
     _textChanged(text){
         if(text && text != ""){
-            let visibleChats = [...this.state.chats];
-            visibleChats = visibleChats.filter(c => {
-                let chatString = JSON.stringify(c);
-                return chatString.indexOf(text) > -1;
-            });
-            this.setState({chats: visibleChats});
+            let visibleChats = [...this.props.chats];
+            visibleChats = visibleChats.filter(c => c.sender_name.indexOf('text') > -1);
+            this.setState({filteredChats: visibleChats});
         }
         else{
-            this.setState({chats: this.props.chats});
+            this.setState({filteredChats: []});
         }
     }
 
@@ -110,12 +111,13 @@ export default class ChatsScreen extends Component{
                     />
                 </View>
                <FlatList
-                    data={this.state.chats}
+                    data={this.state.filteredChats.length > 0 ? this.state.filteredChats : this.props.chats}
                     renderItem={(chat) => this._renderChatRow(chat)}
                     keyExtractor={(item, index) => index.toString()}
                     removeClippedSubviews={false}
                     refreshing={this.state.isRefreshing}
                     onRefresh={() => this._refresh()}
+                    extraData={this.props}
                 />
             </View>
         )
@@ -126,7 +128,8 @@ ChatsScreen.propTypes ={
   chats: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
   goToScreen: PropTypes.func.isRequired,
-  getChats: PropTypes.func.isRequired
+  getChats: PropTypes.func.isRequired,
+  getMessages: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

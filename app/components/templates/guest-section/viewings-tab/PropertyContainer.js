@@ -22,10 +22,6 @@ class PropertyContainer extends Component{
       })
     }
   
-  _goBack(){
-    return this.props.returnToGuestTabBar()
-  }
-
   render() {
     return (
         <View style={styles.container}>
@@ -35,7 +31,7 @@ class PropertyContainer extends Component{
             propertyScreen={this.props.propertyScreen}
             goToViewing={(viewingId) => { return this._goToViewing(viewingId)}}
             updatePropertyActiveTab={(index) => { return this.props.updatePropertyActiveTab(index)}}
-            goBack={() => {this._goBack()}}
+            goBack={() => {this.props.navigation.goBack()}}
             getProperty={this.props.getProperty}
             contactAgent={() => {this.props.navigation.navigate('CreateChatContainer', {recipientIds : [this.props.user.info.id, this.props.currentProperty.user.id] })}}
             showContactAgent={this.props.user.info.id != this.props.currentProperty.user.id}

@@ -1,15 +1,19 @@
 import React from 'react';
 import { addNavigationHelpers, StackNavigator  } from 'react-navigation';
 import { connect } from 'react-redux';
-import ViewingContainer from '../screens/ViewingContainer';
+import ViewingReservationContainer from './ViewingReservationContainer';
 import CreateChatContainer from '../screens/CreateChatContainer';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import LiveCastContainer from '../screens/LiveCastContainer';
+import PropertyContainer from './PropertyContainer';
+import ViewingContainer from '../screens/ViewingContainer';
 
 const routeConfiguration = {
-    ViewingScreen: { screen: ViewingContainer },
+    ViewingScreen: { screen: ViewingReservationContainer },
     CreateChatContainer: { screen: CreateChatContainer },
     LiveCast: { screen: LiveCastContainer },
+    PropertyScreen: { screen: PropertyContainer},
+    PropertyViewing: { screen: ViewingContainer }
 }
 
 const stackConfiguration = {

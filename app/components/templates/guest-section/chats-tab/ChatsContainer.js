@@ -30,7 +30,12 @@ class ChatsContainer extends Component{
     return (
       <View style={styles.container}>
           <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
-          <ChatsScreen chats={this.props.chats} user={this.props.user} goToScreen={(chat) => {this._goToChatScreen(chat)}} getChats={this.props.getChats} >Chat</ChatsScreen>
+          <ChatsScreen 
+            chats={this.props.chats} 
+            user={this.props.user} 
+            goToScreen={(chat) => {this._goToChatScreen(chat)}} 
+            getChats={this.props.getChats} 
+            getMessages={async (chatId, page) => { return await this.props.getMessages(chatId, page)}}>Chat</ChatsScreen>
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
     )
@@ -46,7 +51,7 @@ ChatsContainer.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-    
+    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,

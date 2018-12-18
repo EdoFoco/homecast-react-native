@@ -9,10 +9,8 @@ import GridView from 'react-native-super-grid';
 import FastImage from 'react-native-fast-image';
 import ImagePicker from 'react-native-image-crop-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import {
-    PulseIndicator  } from 'react-native-indicators';
-
+import { PulseIndicator  } from 'react-native-indicators';
+import StatusBox from '../../shared/StatusBox';
 import {
   StyleSheet,
   Text,
@@ -28,7 +26,10 @@ class UploadPhotosScreen extends Component{
          showSpinner: false,
          uploadPercentage: 0,
          isEditing: false,
-         selectedImages: []
+         selectedImages: [],
+         showStatusBox: false,
+         statusBoxSuccess: true,
+         statusBoxText: ''
        }
    }
 
@@ -43,7 +44,6 @@ class UploadPhotosScreen extends Component{
   }
 
   _renderImagePicker(){
-
       ImagePicker.openPicker({
         width: 645,
         height: 430,
@@ -97,6 +97,9 @@ class UploadPhotosScreen extends Component{
       .then(() => {
           this._cancelEditing();
       })
+      .catch((e) => {
+          this.setState({statusBoxSuccess: false, statusBoxText: e.message, showStatusBox: true})
+      });
   }
 
   _renderItem(item){
@@ -154,7 +157,14 @@ class UploadPhotosScreen extends Component{
                 !this.state.showSpinner ? null :
                 this._renderSpinner()
             }
-            
+            {
+                !this.state.showStatusBox ? null :
+                <StatusBox 
+                close={() => {this.setState({showStatusBox: false})}}
+                isSuccess={this.state.statusBoxSuccess}
+                text={this.state.statusBoxText}
+                />
+            }
         </View>
     )
   }

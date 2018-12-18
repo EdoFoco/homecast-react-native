@@ -8,7 +8,7 @@ import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet } from 'react-native';
 import firebase from 'react-native-firebase';
 
-class ViewingContainer extends Component{
+class ViewingReservationContainer extends Component{
 
  _reserveSpot(userId, viewingId){
     return this.props.createViewingReservation(userId, viewingId)
@@ -79,9 +79,9 @@ _cancelNotifications(){
   
   _goToProperty(){
     return this.props.getProperty(this.props.property.id)
-    .then((property) => {
-        this.props.navigation.goBack();
-    })
+    .then(() => {
+            this.props.navigation.navigate('PropertyScreen', { property: this.props.property });
+        })
     .catch((error) => {
         console.error(error);
     });
@@ -107,7 +107,7 @@ _cancelNotifications(){
                 getProperty={this.props.getProperty}
                 joinLiveCast={() => {this._joinLiveCast()}}
                 navigation={this.props.navigation}
-                goBack={() => {this.props.navigation.state.params.goBack ? this.props.navigation.state.params.goBack() : this.props.navigation.goBack()}}
+                goBack={() => {this.props.returnToGuestTabBar()}}
                 contactAgent={() => {this.props.navigation.navigate('CreateChatContainer', {recipientIds : [this.props.user.info.id, this.props.property.user.id] })}}
             />
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
@@ -118,7 +118,7 @@ _cancelNotifications(){
 }
 
 
-ViewingContainer.navigationOptions = function({navigation}) {
+ViewingReservationContainer.navigationOptions = function({navigation}) {
     console.log(navigation);
     return { title: `Viewing - ${navigation.state.params.property.name}` }
 };
@@ -139,7 +139,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewingContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewingReservationContainer);
 
 const styles = StyleSheet.create({
     container: {
