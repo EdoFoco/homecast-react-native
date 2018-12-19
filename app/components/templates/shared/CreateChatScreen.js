@@ -156,7 +156,7 @@ CreateChatScreen.propTypes ={
   user: PropTypes.object.isRequired,
   createChat: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  recipientIds: PropTypes.array.isRequired,
+  recipients: PropTypes.array.isRequired,
   goBack: PropTypes.func.isRequired
 }
 

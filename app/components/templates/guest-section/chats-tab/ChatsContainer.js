@@ -35,7 +35,8 @@ class ChatsContainer extends Component{
             user={this.props.user} 
             goToScreen={(chat) => {this._goToChatScreen(chat)}} 
             getChats={this.props.getChats} 
-            getMessages={async (chatId, page) => { return await this.props.getMessages(chatId, page)}}>Chat</ChatsScreen>
+            getMessages={async (chatId, page) => { return await this.props.getMessages(chatId, page)}}
+            >Chat</ChatsScreen>
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
     )

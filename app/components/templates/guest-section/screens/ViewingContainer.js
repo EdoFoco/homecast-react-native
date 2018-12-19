@@ -108,7 +108,7 @@ _cancelNotifications(){
                 joinLiveCast={() => {this._joinLiveCast()}}
                 navigation={this.props.navigation}
                 goBack={() => {this.props.navigation.state.params.goBack ? this.props.navigation.state.params.goBack() : this.props.navigation.goBack()}}
-                contactAgent={() => {this.props.navigation.navigate('CreateChatContainer', {recipientIds : [this.props.user.info.id, this.props.property.user.id] })}}
+                contactAgent={() => {this.props.navigation.navigate('CreateChatContainer', {recipients : [this.props.user.info, this.props.property.user] })}}
             />
             <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>

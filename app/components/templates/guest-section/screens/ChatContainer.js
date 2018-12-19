@@ -20,15 +20,15 @@ class ChatContainer extends Component{
             chat={this.props.chat} 
             getMessages={this.props.getMessages}
             sendMessage={this.props.sendMessage}
+            goBack={() => {this.props.section.sectionName == 'guest' ? this.props.returnToGuestTabBar() : this.props.returnToLandlordTabBar()}}
         />
       </View>
     )
   }
-  
 }
 
 ChatContainer.navigationOptions = {
-  title: 'Chat',
+    header: null
 };
 
 const mapStateToProps = (state, {navigation}) => {
@@ -37,7 +37,8 @@ const mapStateToProps = (state, {navigation}) => {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
         network: state.network,
-        chat: navigation.state.params.chat
+        chat: navigation.state.params.chat,
+        section: state.section
     }
 };
 

@@ -2,28 +2,65 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import * as Colors from '../../../helpers/ColorPallette';
-import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import CreateChatScreen from '../../shared/CreateChatScreen';
+import ChatScreen from '../../shared/ChatScreen';
 
 import {
   StyleSheet,
-  View,
-  FlatList,
-  Text
-} from 'react-native';
+  View} from 'react-native';
 
 
 class CreateChatContainer extends Component{
 
+  constructor(props){
+    super(props);
+    this.state = {
+      chat: {
+        users: this.props.navigation.state.params.recipients
+      }
+    }
+  }
+
+  _sendMessage(chatId, text){
+    var recipientIds = this.props.recipients.map(r => r.id);
+    if(!chatId){
+      return this.props.createChat(recipientIds)
+      .then((chat) => {
+        this.setState({ chat: chat });
+        return this.props.sendMessage(chat.id, text);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+    }
+
+    return this.props.sendMessage(this.state.chat.id, text);
+  }
+
+  async _returnEmptyChat(){
+    return { messages: [], current_page: 0, last_page: 0 };
+  }
+
+  _getMessages(page){
+    if(this.state.chat.id){
+      return this.props.getMessages(this.state.chat.id, page);
+    }
+    return this._returnEmptyChat();
+  }
+  
   render() {
+    
     return (
       <View style={styles.container}>
-        <CreateChatScreen 
+        <ChatScreen 
             user={this.props.user} 
-            createChat={this.props.createChat} 
-            sendMessage={this.props.sendMessage}
-            recipientIds={this.props.recipientIds}
+            chat={this.state.chat} 
+            getMessages={(page) => { return new Promise((resolve, reject) => {
+              resolve(this._getMessages(page));
+              })}}
+            sendMessage={(chatId, text) => {
+              return new Promise((resolve, reject) => {
+                  resolve(this._sendMessage(chatId, text));
+              })}}
             goBack={this.props.navigation.goBack}
         />
       </View>
@@ -33,12 +70,12 @@ class CreateChatContainer extends Component{
 }
 
 const mapStateToProps = (state, {navigation}) => {
-    
+    console.log(navigation.state.params);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
         network: state.network,
-        recipientIds: navigation.state.params.recipientIds
+        recipients: navigation.state.params.recipients
     }
 };
 

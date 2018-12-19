@@ -68,10 +68,14 @@ export default class ChatScreen extends Component{
     _getMessages(){
         return this.props.getMessages(this.props.chat.id, this.state.currentPage)
         .then((resp) => {
+            console.log(this.props.chat.id);
+            console.log(this.state.currentPage);
+            console.log(resp);
             this.setState({ messages: resp.data, currentPage: resp.current_page, lastPage: resp.last_page });
         })
         .catch((e) => {
             console.log(e);
+            clearInterval(this.chatPoll);
         });
     }
 
@@ -91,7 +95,6 @@ export default class ChatScreen extends Component{
                 </View>
             )
         }
-
         return(
             <View style={styles.messageLeft}>
                 <View style={styles.messageWrapperLeft}>
@@ -122,8 +125,17 @@ export default class ChatScreen extends Component{
     }
 
     render() {
+        console.log(this.props.chat);
+        var sender = this.props.chat.users.find(u => u.id != this.props.user.info.id);
+
         return (
             <View style={styles.container}>
+                <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20, justifyContent: 'center'}}>
+                    <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                        <MCIcon name="chevron-left" style={styles.backButtonIcon}/>
+                    </TouchableHighlight>
+                    <Text style={styles.menuText}>{sender.name}</Text>
+                </View>
                 <Animated.View style={{height: this.viewHeight}}>
                 {
                     this.state.isLoadingMessages ? 
@@ -161,7 +173,8 @@ ChatScreen.propTypes ={
   chat: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   getMessages: PropTypes.func.isRequired,
-  sendMessage: PropTypes.func.isRequired
+  sendMessage: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -219,7 +232,7 @@ const styles = StyleSheet.create({
         height: 60,
         flex: 0.1,
         justifyContent: 'center',
-        justifyContent: 'flex-end'
+        marginBottom: 8,
     },
     messageInput: {
         flex: 0.9,
@@ -229,7 +242,8 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'white',
         marginBottom: 5,
-        marginTop: 5
+        marginTop: 5,
+        fontSize: FontSizes.DEFAULT
     },
     sendButton: {
         alignItems: 'center',
@@ -269,5 +283,21 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Colors.DARK_GREY,
         padding: 0
+    },
+    backButton: {
+        flex: 0.1,
+        alignSelf: 'center'
+    },
+    backButtonIcon: {
+        fontSize: 45,
+        color: Colors.AQUA_GREEN,
+    },
+    menuText: {
+        color: Colors.AQUA_GREEN,
+        fontSize: FontSizes.MEDIUM_BIG,
+        paddingBottom: 5,
+        flex: 0.9,
+        textAlign: 'center',
+        paddingRight: 40
     }
 })    
