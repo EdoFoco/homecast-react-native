@@ -2,8 +2,6 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FastImage from 'react-native-fast-image';
 import {
     StyleSheet,
     View,
@@ -52,27 +50,33 @@ export default class ChatsScreen extends Component{
         this.props.goToScreen(chat);
     }
 
+    _toDateString(date){
+        let day = new Date(`${date}`).getDate();
+        let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
+        
+        return `${month} ${day}`;
+    }
+
     _renderChatRow(item) {
         var chat = item.item;
 
         return(
             <TouchableHighlight onPress={() => {this._goToChatScreen(chat)}}>
                 <View style={styles.chatRow}>
-                    {
-                        !chat.last_message.sender_profile_picture ? 
-                        <FastImage style={styles.rowImage}  source={require('../../../img/dummy_avatar.png')} resizeMode={FastImage.resizeMode.contain} /> :
-                        <FastImage style={styles.rowImage}  source={{  uri: chat.last_message.sender_profile_picture, priority: FastImage.priority.cover }} resizeMode={FastImage.resizeMode.cover} />
-                    }
+                    <View style={styles.unreadIconContainer}>
+                        {
+                            chat.wasRead ? null:
+                            <View style={styles.unreadIcon}></View>
+                        }
+                    </View>
+
                     <View style={styles.rowDescriptionContainer}>
-                        <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
+                        <View style={{flexDirection: 'row', flex: 1}}>
+                            <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
+                            <Text style={styles.lastMessageTime}>{this._toDateString(chat.last_message.created_at)}</Text>
+                        </View>
                         <Text style={styles.lastMessage} numberOfLines={1}>{chat.last_message.body}</Text>
                     </View>
-                    {
-                        chat.wasRead ? null:
-                        <View style={styles.unreadIconContainer}>
-                            <View style={styles.unreadIcon}></View>
-                        </View>
-                    }
                 </View>
             </TouchableHighlight>
         )
@@ -150,12 +154,17 @@ const styles = StyleSheet.create({
         borderRadius: 25
     },
     rowDescriptionContainer: {
-       paddingLeft: 20,
        flex: 1
     },
     rowTitle: {
         fontWeight: 'bold',
-        fontSize: FontSizes.DEFAULT
+        fontSize: FontSizes.DEFAULT,
+        flex: 0.9
+    },
+    lastMessageTime: {
+        fontSize: FontSizes.SMALL_TEXT,
+        flex: 0.2,
+        color: Colors.LIGHT_GRAY
     },
     lastMessage: {
         fontSize: FontSizes.SMALL_TEXT,
@@ -193,10 +202,10 @@ const styles = StyleSheet.create({
     },
     unreadIconContainer: {
         justifyContent: 'center',
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
+        width: 20
     },
     unreadIcon: {
-        alignSelf: 'center',
         width: 10,
         height: 10,
         borderRadius: 10,

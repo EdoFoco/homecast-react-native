@@ -2,7 +2,6 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import * as Colors from '../../../helpers/ColorPallette';
 import * as FontSizes from '../../../helpers/FontSizes';
 

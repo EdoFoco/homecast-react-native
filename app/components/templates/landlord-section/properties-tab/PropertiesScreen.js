@@ -53,13 +53,20 @@ class PropertiesScreen extends Component{
   render() {
     return (
       <View style={styles.container}>
-          <FlatList
-            style={{flex: 0.9}}
-            data={this.props.properties}
-            renderItem={(property) => this._renderRow(property)}
-            keyExtractor={(item, index) => index.toString()}
-            removeClippedSubviews={false}
-          />
+            {
+              this.props.properties.length == 0 ?
+              <View style={styles.welcomeTextContainer}>
+                <Text style={styles.welcomeText}>Welcome to Homecast.</Text>
+                <Text style={styles.welcomeText}>Get started by adding your property listings.</Text>
+              </View>:
+              <FlatList
+                style={{flex: 0.9}}
+                data={this.props.properties}
+                renderItem={(property) => this._renderRow(property)}
+                keyExtractor={(item, index) => index.toString()}
+                removeClippedSubviews={false}
+              />
+            }
             {
               !this.state.showAddPropertyModal ? 
                 <TouchableHighlight style={styles.addPropertyButton} onPress={() => {this._showAddPropertyModal()}}>
@@ -150,4 +157,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10
   },
+  welcomeTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  welcomeText: {
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.LIGHT_GRAY
+  }
 });

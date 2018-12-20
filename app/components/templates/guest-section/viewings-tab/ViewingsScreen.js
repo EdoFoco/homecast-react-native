@@ -103,8 +103,7 @@ class ViewingsScreen extends Component{
     if(this.props.viewingReservations.length == 0) {
       return(
         <View style={styles.noViewingsContainer}>
-          <View style={{height: 25, backgroundColor: Colors.DARK_BLUE}}></View>
-          <Text style={styles.noViewingsMessage}>You haven't reserved a spot for any property. Choose a property and reserve a spot for a Live viewing.</Text>
+          <Text style={styles.noViewingsMessage}>Live viewings fill up quickly. Make sure to reserve a spot and access your viewings from here.</Text>
         </View>
       )
     }
