@@ -73,9 +73,9 @@ export default class ChatsScreen extends Component{
                     <View style={styles.rowDescriptionContainer}>
                         <View style={{flexDirection: 'row', flex: 1}}>
                             <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
-                            <Text style={styles.lastMessageTime}>{this._toDateString(chat.last_message.created_at)}</Text>
+                            <Text style={styles.lastMessageTime}>{this._toDateString(chat.updated_at)}</Text>
                         </View>
-                        <Text style={styles.lastMessage} numberOfLines={1}>{chat.last_message.body}</Text>
+                        <Text style={styles.lastMessage} numberOfLines={1}>{chat.last_message}</Text>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -84,7 +84,7 @@ export default class ChatsScreen extends Component{
 
     _textChanged(text){
         if(text && text != ""){
-            let visibleChats = [...this.props.chats];
+            let visibleChats = [...this.props.chats.data];
             visibleChats = visibleChats.filter(c => c.sender_name.indexOf('text') > -1);
             this.setState({filteredChats: visibleChats});
         }
@@ -115,7 +115,7 @@ export default class ChatsScreen extends Component{
                     />
                 </View>
                <FlatList
-                    data={this.state.filteredChats.length > 0 ? this.state.filteredChats : this.props.chats}
+                    data={this.state.filteredChats.length > 0 ? this.state.filteredChats : this.props.chats.data}
                     renderItem={(chat) => this._renderChatRow(chat)}
                     keyExtractor={(item, index) => index.toString()}
                     removeClippedSubviews={false}
@@ -154,7 +154,8 @@ const styles = StyleSheet.create({
         borderRadius: 25
     },
     rowDescriptionContainer: {
-       flex: 1
+       flex: 1,
+       marginLeft: 10
     },
     rowTitle: {
         fontWeight: 'bold',
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     unreadIconContainer: {
         justifyContent: 'center',
         alignItems: 'flex-start',
-        width: 20
+        width: 10,
     },
     unreadIcon: {
         width: 10,
@@ -212,6 +213,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.AQUA_GREEN,
         shadowOffset:{  width: 0,  height: 0,  },
         shadowColor: Colors.AQUA_GREEN,
-        shadowOpacity: 1.0,
+        shadowOpacity: 0.4,
     }
 })    

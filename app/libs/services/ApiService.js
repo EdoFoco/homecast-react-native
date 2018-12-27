@@ -175,7 +175,7 @@ class ApiService {
     }
 
     async getMessages(chatId, page){
-        return await this.apiClient.get(`api/chats/${chatId}/messages`);
+        return await this.apiClient.get(`api/chats/${chatId}/messages?page=${page}`);
     }
 
     async sendMessage(chatId, message){

@@ -107,6 +107,7 @@ export function createChat(participantIds){
   }
 
 export function getMessages(chatId, page){
+    console.log(page);
     return async (dispatch, getState) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();

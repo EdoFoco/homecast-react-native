@@ -68,15 +68,31 @@ export default class ChatScreen extends Component{
     _getMessages(){
         return this.props.getMessages(this.props.chat.id, this.state.currentPage)
         .then((resp) => {
-            console.log(this.props.chat.id);
-            console.log(this.state.currentPage);
-            console.log(resp);
-            this.setState({ messages: resp.data, currentPage: resp.current_page, lastPage: resp.last_page });
+            let prevMessages = [...this.state.messages];
+            let newMessages = prevMessages;
+            resp.data.forEach((message) => {
+                let index = prevMessages.findIndex(m => m.id == message.id);
+                if(index == -1){
+                    newMessages.push(message);
+                }
+            });
+            
+            this.setState({ messages: newMessages, lastPage: resp.last_page });
         })
         .catch((e) => {
             console.log(e);
             clearInterval(this.chatPoll);
         });
+    }
+
+    _getNextMessages(){
+        if(this.state.currentPage == this.state.lastPage){
+            return;
+        }
+        console.log('hi');
+
+        this.setState({'currentPage': this.state.currentPage + 1}, this._getMessages);
+        console.log(this.state);
     }
 
     _renderMessageRow(item){
@@ -147,6 +163,8 @@ export default class ChatScreen extends Component{
                         renderItem={(message) => this._renderMessageRow(message)}
                         keyExtractor={(item, index) => index.toString()}
                         removeClippedSubviews={false}
+                        onEndReached={() => {this._getNextMessages()}}
+                        onEndReachedThreshold={0.5}
                         pagingEnabled
                     />
                 }
