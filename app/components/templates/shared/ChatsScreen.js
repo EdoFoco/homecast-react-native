@@ -84,9 +84,15 @@ export default class ChatsScreen extends Component{
 
     _textChanged(text){
         if(text && text != ""){
-            let visibleChats = [...this.props.chats.data];
-            visibleChats = visibleChats.filter(c => c.sender_name.indexOf('text') > -1);
-            this.setState({filteredChats: visibleChats});
+            let chats = {...this.props.chats};
+            let filteredMessages = [];
+            chats.data.forEach((message) => {
+                let users = message.users.filter(u => u.id != this.props.user.info.id && u.name.indexOf(text) > -1);
+                if(users.length > 0){
+                    filteredMessages.push(message);
+                }
+            });
+            this.setState({filteredChats: filteredMessages});
         }
         else{
             this.setState({filteredChats: []});
