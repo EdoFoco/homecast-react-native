@@ -13,6 +13,8 @@ import {
 
 export default class ChatsScreen extends Component{
 
+    debouncerTimeout;
+
     constructor(props){
         super(props);
         this.state = {
@@ -83,20 +85,13 @@ export default class ChatsScreen extends Component{
     }
 
     _textChanged(text){
-        if(text && text != ""){
-            let chats = {...this.props.chats};
-            let filteredMessages = [];
-            chats.data.forEach((message) => {
-                let users = message.users.filter(u => u.id != this.props.user.info.id && u.name.indexOf(text) > -1);
-                if(users.length > 0){
-                    filteredMessages.push(message);
-                }
-            });
-            this.setState({filteredChats: filteredMessages});
+        this.setState({textValue: text});
+        console.log(this.state.textValue);
+
+        if(this.debouncerTimeout){
+            clearInterval(this.debouncerTimeout);
         }
-        else{
-            this.setState({filteredChats: []});
-        }
+        this.debouncerTimeout = setTimeout(() => {this.props.getChats(null, text)}, 250);
     }
 
     _onFocus(){
@@ -105,6 +100,16 @@ export default class ChatsScreen extends Component{
 
     _onEndFocus(){
 
+    }
+
+    _loadMoreChats(){
+        if(this.state.textValue != ""){
+            return;
+        }
+
+        if(this.props.chats.current_page < this.props.chats.last_page){
+            this.props.getChats(this.props.chats.current_page + 1);
+        }
     }
 
     render() {
@@ -128,6 +133,7 @@ export default class ChatsScreen extends Component{
                     refreshing={this.state.isRefreshing}
                     onRefresh={() => this._refresh()}
                     extraData={this.props}
+                    onEndReached={() => {this._loadMoreChats()}}
                 />
             </View>
         )
@@ -182,7 +188,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.DARK_BLUE,
         flexDirection: 'row',
         justifyContent: 'center',
-        padding: 10
+        padding: 10,
+        paddingTop: 30
     },
     textInput: {
         borderWidth: 0.3,

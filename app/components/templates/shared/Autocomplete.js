@@ -19,7 +19,7 @@ export default class Autocomplete extends Component{
             clearInterval(this.debouncerTimeout);
         }
         this.props.onChange(text);
-        this.debouncerTimeout = setTimeout(() => {this.props.getLocationSuggestions(text)}, 500);
+        this.debouncerTimeout = setTimeout(() => {this.props.getLocationSuggestions(text)}, 250);
     }
 
     

@@ -166,8 +166,24 @@ class ApiService {
         return await this.apiClient.delete(`api/properties/${propertyId}`);
     }
 
-    async getChats(){
-        return await this.apiClient.get(`api/chats`);
+    async getChats(page, senderNameQuery){
+        var url = 'api/chats';
+        if(page || senderNameQuery){
+            url += '?';
+
+            if(page){
+                url += `page=${page}`;
+            }
+
+            if(page && senderNameQuery){
+                url += '&';
+            }
+
+            if(senderNameQuery){
+                url += `sender_name=${senderNameQuery}`;
+            }
+        }
+        return await this.apiClient.get(url);
     }
 
     async createChat(participantIds){

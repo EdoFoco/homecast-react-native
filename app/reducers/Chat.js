@@ -29,7 +29,19 @@
         case types.UPDATE_ROOM_ID:
             return { ...state,  roomId: action.roomId };
         case types.UPDATE_CHATS:
-            return { ...state, chats: action.chats }
+            if(action.chats.current_page > 1){
+                let allChats = [...state.chats.data];
+                action.chats.data.forEach((chat) => {
+                    let existingChat = allChats.find(c => c.id == chat.id);
+                    if(!existingChat){
+                        allChats.push(chat);
+                    }
+                });
+    
+                action.chats.data = allChats;
+            }
+
+            return { ...state, chats: action.chats };
         case types.SERVER_DISCONNECT:
             return initialChatState;
         default:

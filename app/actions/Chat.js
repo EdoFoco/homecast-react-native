@@ -78,11 +78,11 @@ export function updateChats(chats){
     }
 }
 
-export function getChats(){
+export function getChats(page, senderNameQuery){
     return async (dispatch, getState) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
-            var resp = await apiService.getChats();
+            var resp = await apiService.getChats(page, senderNameQuery);
             dispatch(updateChats(resp.data));
             return resp.data;
         }
