@@ -108,7 +108,7 @@ ViewingsContainer.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-    var properties = [...state.properties.propertiesList];
+    var properties = [...state.properties.listings];
     var viewings = properties.map(p => p.viewings);
     viewings = [].concat.apply([], viewings);
 
@@ -128,7 +128,7 @@ const mapStateToProps = (state) => {
         user: state.user,
         network: state.network,
         viewings: sortedViewings,
-        properties: state.properties.propertiesList,
+        properties: state.properties.listings,
         dates: dates
     }
 };

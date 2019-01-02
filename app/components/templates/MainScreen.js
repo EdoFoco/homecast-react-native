@@ -39,10 +39,12 @@ class MainScreen extends Component {
        return this.props.handleUnauthorized();
     })
     .then(() => {
-      if(this.props.section == 'guest'){
+      if(this.props.section.sectionName == 'guest'){
         return this.props.getProperties();
       }
-      return(this.props.getUserProperties(this.props.user.info.id));
+      else{
+        return(this.props.getUserProperties(this.props.user.id));
+      }
     })
     .then(() => {
       return this.props.updateAuthenticatingState(false);

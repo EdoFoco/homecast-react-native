@@ -69,11 +69,7 @@ export default class AutocompleteControl extends Component{
                 </View>
                 <View style={{flex: 0.2}}>
                     <EditPropertyActions 
-                        property={this.props.property}
-                        updateProperty={() => {
-                            console.log(this.state.selectedLocation);
-                            this.props.updateProperty(this.state.selectedLocation.place_id)}}
-                        cancelChanges={() => {this.props.cancelChanges()}}
+                        updateProperty={() => {this.props.updateProperty(this.state.selectedLocation.place_id)}}
                         enabled={this.state.selectedLocation ? true : false}
                     />
                 </View>
@@ -85,8 +81,6 @@ export default class AutocompleteControl extends Component{
 AutocompleteControl.propTypes ={
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    property: PropTypes.object.isRequired,
-    cancelChanges: PropTypes.func.isRequired,
     updateProperty: PropTypes.func.isRequired,
     placeholder: PropTypes.string.isRequired,
     getLocationSuggestions: PropTypes.func.isRequired,

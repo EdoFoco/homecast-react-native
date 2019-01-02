@@ -28,10 +28,12 @@ export function deleteProperty(propertyId, userId){
     }
 }
 
-export function updatePropertiesList(properties){
+export function updatePropertiesList(listings, currentPage, nextPage){
     return {
         type: types.UPDATE_PROPERTIES_LIST,
-        properties: properties
+        listings: listings,
+        current_page: currentPage,
+        next_page: nextPage
     }
 }
 
@@ -66,13 +68,13 @@ export function removeFromFavourites(userId, propertyId){
       }
 }
 
-export function getProperties(filters) {
+export function getProperties(filters, page) {
     return async (dispatch, getState) => {
         try{
             var apiService = await ApiServiceFactory.getInstance();
-            var resp = await apiService.getProperties(filters);
-            dispatch(updatePropertiesList(resp.data.properties));
-            return resp.data.properties;
+            var resp = await apiService.getProperties(filters, page);
+            dispatch(updatePropertiesList(resp.data.data, resp.data.current_page, resp.data.next_page));
+            return resp.data;
         }
         catch(error){
             handleError(error, dispatch);

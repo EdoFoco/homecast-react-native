@@ -13,7 +13,7 @@ export default class PlaceHolderFastImage extends Component {
   }
 
   onLoadEnd(){
-    this.setState({loaded: true}, () => {console.log(this.state)});
+    this.setState({loaded: true});
   }
 
   render() {
@@ -26,8 +26,6 @@ export default class PlaceHolderFastImage extends Component {
       source = this.props.source;
     }
 
-    console.log(source);
-    
     return <View style={[this.props.style]}>
       {
         this.state.loaded ? null :

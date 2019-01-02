@@ -38,7 +38,7 @@ ManageViewingsScreen.navigationOptions = ({ navigation }) => {
 };
 
 const mapStateToProps = (state, navigation) => {
-    let property = state.properties.propertiesList.find(p => p.id == navigation.navigation.state.params.property.id)
+    let property = state.properties.listings.find(p => p.id == navigation.navigation.state.params.property.id)
     return {
         user: state.user,
         property: property,

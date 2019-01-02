@@ -96,7 +96,7 @@ FavouritesScreen.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-    let properties = state.properties.propertiesList
+    let properties = state.properties.listings
     .filter(function(property){
       return property.isFavourite;
     });

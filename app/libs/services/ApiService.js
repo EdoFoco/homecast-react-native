@@ -46,22 +46,27 @@ class ApiService {
         return await this.apiClient.get('api/users/me');
     }
 
-     async getProperties(filters){
+     async getProperties(filters, page){
         
-        var path = 'api/properties';
+        var url = 'api/properties';
 
-        if(!filters){
-            return await this.apiClient.get(path);
-        }
+        if(filters || page){
+            url += '?';
 
-        path = 'api/properties?';
-        Object.keys(filters).forEach(filter => {
-            if(filters[filter]){
-                path += `${filter}=${filters[filter]}&`;
+            if(filters){
+                Object.keys(filters).forEach(filter => {
+                    if(filters[filter]){
+                        url += `${filter}=${filters[filter]}&`;
+                    }
+                });
             }
-        });
 
-        return await this.apiClient.get(path);
+            if(page){
+                url += `page=${page}`;
+            }
+        }
+        
+        return await this.apiClient.get(url);
     }
 
      async getProperty(propertyid){

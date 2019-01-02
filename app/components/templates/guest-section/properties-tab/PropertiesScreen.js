@@ -59,7 +59,7 @@ class PropertiesScreen extends Component{
     });
   }
 
- _renderRow = function({item}){
+ _renderRow({item}){
     let property = item;
     return (
         <PropertyRow 
@@ -99,6 +99,17 @@ class PropertiesScreen extends Component{
     });
   }
 
+  _loadMoreProperties(){
+    if(this.props.properties.current_page == this.props.properties.last_page){
+      return;
+    }
+
+    this.props.getProperties(null, this.props.properties.current_page + 1)
+    .catch((e) => {
+      console.log(e);
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -127,12 +138,14 @@ class PropertiesScreen extends Component{
         </View>
        
         <FlatList
-          data={this.props.properties}
+          data={this.props.properties.listings}
           renderItem={(property) => this._renderRow(property)}
           keyExtractor={(item, index) => index.toString()}
           removeClippedSubviews={false}
           refreshing={this.state.isRefreshing}
           onRefresh={() => this._refresh()}
+          onEndReached={() => { this._loadMoreProperties()}}
+          onEndReachedThreshold={0.3}
         />
 
         {
@@ -151,7 +164,6 @@ class PropertiesScreen extends Component{
   
 }
 
-
 PropertiesScreen.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
       <Icon name="home" size={24} color={tintColor} style={{height: 24, width: 24}} />
@@ -159,11 +171,11 @@ PropertiesScreen.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-     
+    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        properties: state.properties.propertiesList,
+        properties: state.properties,
         network: state.network,
         location: state.location,
         searchFilters: state.filters.searchFilters

@@ -25,27 +25,14 @@ export default class EditPropertyActions extends Component{
 }
 
 EditPropertyActions.propTypes ={
-    property: PropTypes.object.isRequired,
-    saveProperty: PropTypes.func.isRequired,
-    cancelChanges: PropTypes.func.isRequired,
-    enabled: PropTypes.object
+    updateProperty: PropTypes.func.isRequired,
+    enabled: PropTypes.bool
 }
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         flex: 1
-    },
-    cancelButton: {
-        backgroundColor: 'white',
-        alignSelf: 'center',
-        borderWidth: 1,
-        height: 50,
-        justifyContent: 'center',
-        paddingRight: 10,
-        paddingLeft: 10,
-        borderColor: Colors.LIGHT_GRAY,
-        width: Dimensions.get('window').width - 20,
     },
     buttonTextDark:{
         color: Colors.DARK_GREY,

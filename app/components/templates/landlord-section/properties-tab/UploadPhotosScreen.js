@@ -178,7 +178,7 @@ const mapStateToProps = (state, navigation) => {
      
     return {
         user: state.user,
-        property: state.properties.propertiesList.find(p => p.id == navigation.navigation.state.params.property.id)
+        property: state.properties.listings.find(p => p.id == navigation.navigation.state.params.property.id)
     }
 };
 

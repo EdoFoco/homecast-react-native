@@ -125,7 +125,7 @@ ViewingReservationContainer.navigationOptions = function({navigation}) {
 
 
 const mapStateToProps = (state, {navigation}) => {
-    let property = state.properties.propertiesList.find(p => p.id === navigation.state.params.property.id);
+    let property = state.properties.listings.find(p => p.id === navigation.state.params.property.id);
     return {
         property: property,
         viewing: navigation.state.params.viewing,

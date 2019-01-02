@@ -35,7 +35,6 @@ export default class LocationSuggestions extends Component{
                 style={{flex: 1}}
                 data={this.props.suggestions}
                 renderItem={(suggestion) => this._renderRow(suggestion)}
-                keyExtractor={(index) => index.toString()}
                 removeClippedSubviews={false}
                 keyboardShouldPersistTaps={'handled'}
             />     

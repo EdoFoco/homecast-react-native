@@ -46,8 +46,8 @@ const mapStateToProps = (state, navigation) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
-        currentProperty: state.properties.propertiesList.find(p => p.id === navigation.navigation.state.params.property.id),
-        currentPropertyViewings: state.properties.propertiesList.find(p => p.id === navigation.navigation.state.params.property.id).viewings,
+        currentProperty: state.properties.listings.find(p => p.id === navigation.navigation.state.params.property.id),
+        currentPropertyViewings: state.properties.listings.find(p => p.id === navigation.navigation.state.params.property.id).viewings,
         propertyScreen: state.propertyScreen,
         properties: state.properties,
         network: state.network

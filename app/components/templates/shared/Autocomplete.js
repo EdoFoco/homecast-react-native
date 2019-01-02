@@ -30,6 +30,7 @@ export default class Autocomplete extends Component{
                     <TextInput style={styles.textInput}
                         placeholder={this.props.placeholder}
                         value={this.props.textValue}
+                        keyExtractor={(index) => index.toString()}
                         height={this.props.height ? this.props.height : 50}
                         onChangeText={(text) => {this._textChanged(text)}}
                         onFocus={this.props.onFocus ? () => { this.props.onFocus() } : null}
@@ -41,7 +42,6 @@ export default class Autocomplete extends Component{
                             <MaterialIcons name="close-circle" style={styles.buttonIcon}/>
                         </TouchableHighlight>
                     }
-                   
                 </View>
             </View>
         )
