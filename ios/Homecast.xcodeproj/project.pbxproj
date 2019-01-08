@@ -64,7 +64,6 @@
 		960B6D611EE41EC100375E9C /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D601EE41EC100375E9C /* WebRTC.framework */; };
 		960B6D621EE41F4F00375E9C /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D601EE41EC100375E9C /* WebRTC.framework */; };
 		960B6D631EE41F4F00375E9C /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 960B6D601EE41EC100375E9C /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		96203D1020DFE113003E3BD5 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96203CE920DFE0F1003E3BD5 /* libRCTGoogleAnalyticsBridge.a */; };
 		96203D1220DFE131003E3BD5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96203D1120DFE131003E3BD5 /* CoreData.framework */; };
 		96203D1420DFE145003E3BD5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96203D1320DFE145003E3BD5 /* SystemConfiguration.framework */; };
 		96203D1620DFE152003E3BD5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 96203D1520DFE152003E3BD5 /* libz.tbd */; };
@@ -305,13 +304,6 @@
 			remoteGlobalIDString = 35A2221F1CB493700015FD5C;
 			remoteInfo = RCTWebRTC;
 		};
-		96203CE820DFE0F1003E3BD5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 96203CDE20DFE0F1003E3BD5 /* RCTGoogleAnalyticsBridge.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A79185C61C30694E001236A6;
-			remoteInfo = RCTGoogleAnalyticsBridge;
-		};
 		96268D4520BC24810001C69C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CFBC9416AFA84119824C7DBF /* ReactNativeExceptionHandler.xcodeproj */;
@@ -500,7 +492,6 @@
 		960B6D5B1EE41BB500375E9C /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		960B6D5D1EE41BBC00375E9C /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		960B6D601EE41EC100375E9C /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../node_modules/react-native-webrtc/ios/WebRTC.framework"; sourceTree = "<group>"; };
-		96203CDE20DFE0F1003E3BD5 /* RCTGoogleAnalyticsBridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGoogleAnalyticsBridge.xcodeproj; path = "../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/RCTGoogleAnalyticsBridge.xcodeproj"; sourceTree = "<group>"; };
 		96203D1120DFE131003E3BD5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		96203D1320DFE145003E3BD5 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		96203D1520DFE152003E3BD5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -586,7 +577,6 @@
 				96203D1620DFE152003E3BD5 /* libz.tbd in Frameworks */,
 				96203D1420DFE145003E3BD5 /* SystemConfiguration.framework in Frameworks */,
 				96203D1220DFE131003E3BD5 /* CoreData.framework in Frameworks */,
-				96203D1020DFE113003E3BD5 /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				96732CE120B018EA0059CB94 /* libSplashScreen.a in Frameworks */,
 				960B6D5F1EE41DCF00375E9C /* WebRTC.framework in Frameworks */,
 				960B6D5E1EE41BBC00375E9C /* libstdc++.tbd in Frameworks */,
@@ -809,7 +799,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				96203CDE20DFE0F1003E3BD5 /* RCTGoogleAnalyticsBridge.xcodeproj */,
 				96732CDB20B018CE0059CB94 /* SplashScreen.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -923,14 +912,6 @@
 				179779A93E481D103127EF0C /* libPods-Homecast.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		96203CDF20DFE0F1003E3BD5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				96203CE920DFE0F1003E3BD5 /* libRCTGoogleAnalyticsBridge.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		96268D4220BC247D0001C69C /* Products */ = {
@@ -1201,10 +1182,6 @@
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
 				{
-					ProductGroup = 96203CDF20DFE0F1003E3BD5 /* Products */;
-					ProjectRef = 96203CDE20DFE0F1003E3BD5 /* RCTGoogleAnalyticsBridge.xcodeproj */;
-				},
-				{
 					ProductGroup = 00C302BC1ABCB91800DB3ED1 /* Products */;
 					ProjectRef = 00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */;
 				},
@@ -1463,13 +1440,6 @@
 			fileType = archive.ar;
 			path = libRCTWebRTC.a;
 			remoteRef = 960B6D391EE4147700375E9C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		96203CE920DFE0F1003E3BD5 /* libRCTGoogleAnalyticsBridge.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTGoogleAnalyticsBridge.a;
-			remoteRef = 96203CE820DFE0F1003E3BD5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		96268D4620BC24810001C69C /* libReactNativeExceptionHandler.a */ = {
