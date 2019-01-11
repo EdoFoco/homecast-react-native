@@ -13,149 +13,101 @@ import {
   TouchableHighlight,
   Text} from 'react-native';
 
- import {
-  RTCIceCandidate,
-  RTCView,
-} from 'react-native-webrtc';
-
-var pc;
-var kurentoPeer;
+ import { RTCView } from 'react-native-webrtc';
+ import WebRtcAdaptor from '../../libs/third-party/AntMedia/WebRtcAdaptor';
 
 export default class WebRTCChat extends Component{
  
+  webRTCAdaptor = null;
+
   constructor(props) {
     super(props);
     this.state = { 
         sdpAnswerLoaded: false,
         isAudioMute: false,
         connectionStatus: 'Connecting',
-        streamUrl: null
+        stream: null
      };
   }
-  
-  componentWillMount(){
-    var self = this;
-    
-    var kurentoOptions = {
-          onicecandidate: function (event) {
-            console.log('onicecandidate', event.candidate);
-            if (event.candidate) {
-              console.log("5. Ice Candidate Received")
-              self.props.publishEvent({type: 'onIceCandidate', data: { roomId: self.props.chat.roomId, candidate: event }});
-            }
+
+  componentDidMount(){
+    var pc_config = null;
+
+    var sdpConstraints = {
+      OfferToReceiveAudio : true,
+      OfferToReceiveVideo : true
+
+    };
+
+    var mediaConstraints = {
+      video : false,
+      audio : false
+	  };
+
+    console.log('Initliazing webrtc');
+    this.webRTCAdaptor = new WebRtcAdaptor({
+      mediaConstraints : mediaConstraints,
+      peerconnection_config : pc_config,
+      sdp_constraints : sdpConstraints,
+      isPlayMode : true,
+      debug : true,
+      remoteStream: this.state.stream,
+      setRemoteSource: (source) => {this.setState({stream: source})},
+      callback : (info, description) => {
+        if (info == "initialized") {
+          console.log("initialized");
+          this.setState({connectionStatus: 'initialized'});
+         } else if (info == "play_started") {
+          //joined the stream
+          console.log("play started");
+          this.setState({connectionStatus: 'play started'});
+        // } else if (info == "newStreamAvailable"){
+        //   console.log('New stream found');
+        //  // this.setState({stream: description});
+        } else if (info == "play_finished") {
+          //leaved the stream
+          console.log("play finished");
+          this.setState({connectionStatus: 'play finished'});
+        } else if (info == "closed") {
+          //console.log("Connection closed");
+          if (typeof description != "undefined") {
+            console.log("Connecton closed: "
+                + JSON.stringify(description));
           }
+          this.setState({connectionStatus: 'disconnected'});
+        }
+      },
+      callbackError : (error) => {
+        //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
+  
+        console.log("error callback: " + JSON.stringify(error));
+        this.setState({hasError: true});
       }
-
-    kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(kurentoOptions, function(error) {
-			if(error) return onError(error);
-
-			console.log('Viewer about to generate offer');
-			this.generateOffer(function(error, offer){
-          console.log(error);
-          self.props.publishEvent({type: 'viewer', data: {roomId: self.props.chat.roomId, sdpOffer: offer}});
-          self._startWebRtcAsViewer();   
-      });
     });
+
+    this.webRTCAdaptor.initialize();
+
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.iceCandidates.length > prevProps.iceCandidates.length) {
-      console.log("6. Adding Ice Candidate")
-      var candidate = this.props.iceCandidates[this.props.iceCandidates.length -1];
-      if(pc && candidate) pc.addIceCandidate(new RTCIceCandidate(candidate));
-    }
-
-    if(this.props.sdpAnswer){
-      if(!this.state.sdpAnswerLoaded){
-       // console.log('5. Presenter - Processing Presenter Answer');
-        this.setState({sdpAnswerLoaded: true});
-        kurentoPeer.processAnswer(this.props.sdpAnswer, function(){
-          console.log('Viewer initialised.');
-        });
-      }
-    }
+  start(){
+    this.webRTCAdaptor.play('stream1', null);
   }
   
-  componentWillUnmount(){
-    kurentoPeer.dispose();
-    pc = null;
-    counter = 0;
-  }
-
- _startWebRtcAsViewer  = function(){
-
-      var self = this;
-      pc = kurentoPeer.peerConnection;
-      console.log("1. Creating Peer Connection.")
-      
-
-      pc.onnegotiationneeded = function () {
-        console.log('onnegotiationneeded');
-        console.log("2. Negotiation needed, lets create an offer.")
-      }
-
-      pc.oniceconnectionstatechange = function(event) {
-          console.log("7. Ice Connection State Changed - get stats")
-          console.log('oniceconnectionstatechange', event.target.iceConnectionState);
-
-          self.setState({connectionStatus: event.target.iceConnectionState});
-
-          if(event.target.iceConnectionState == 'completed'){
-            setTimeout(() => {
-              getStats();
-            }, 100);
-
-            InCallManager.start(); // audio/video, default: audio
-            InCallManager.setForceSpeakerphoneOn(true);
-            InCallManager.setKeepScreenOn(true);
-          }
-      };
-      
-      pc.onaddstream = function (event) {
-          self.setState({streamUrl: event.stream.toURL()});
-          console.log("8. Stream has been added");
-
-          console.log('onaddstream', event.stream);
-          console.log(event.stream.toURL());
-       
-       };
-
-       function getStats() {
-          if(pc){
-            //var selector = pc.getReceivers().find(({kind}) => kind == "audio");
-            //var streams = pc._remoteStreams;
-             const track = pc.getRemoteStreams()[0].getVideoTracks()[0];
-            pc.getStats(track, function(report) {
-              console.log('getStats report', report);
-            }, function(err){console.log(err)});
-          } 
-      }
-
-     
-  }
-
-  _endCall(){
-    InCallManager.stop();
-    this.props.goBack();
-  }
-
-  _setAudioMute(){
-    this.setState({ isAudioMute: !this.state.isAudioMute }, () => {
-     // InCallManager.setMicrophoneMute(this.state.isMicrophoneMute);
-    });
-  }
-
   render() {
     if(this.props.hasError){
       return <ScreenLoader message='Error connecting. Try again.' goBack={() => {this.props.goBack() }}/>
     }
-    
-    if(this.state.connectionStatus != 'completed'){
-      return <ScreenLoader message={this.state.connectionStatus } goBack={() => {this.props.goBack() }}/>
+
+    if(this.state.connectionStatus != 'play started' || !this.state.stream){
+      return <View>
+        <TouchableHighlight onPress={() => {this.start()}}><Text>Play</Text></TouchableHighlight>
+      </View>
+     // return <ScreenLoader message={this.state.connectionStatus } goBack={() => {this.props.goBack() }}/>
     }
 
+    
     return (
-      <RTCView streamURL={this.state.streamUrl} style={styles.remoteView}  objectFit ='cover'>
+      <RTCView streamURL={this.state.stream.toURL()} style={styles.remoteView}  objectFit ='cover'>
             <View style={styles.videoCommands}>
               <TouchableHighlight onPress={()=>{ this._setAudioMute()}} style={styles.muteBtn}>
                     <MCIcon name="volume-off" style={styles.muteIcon} />
