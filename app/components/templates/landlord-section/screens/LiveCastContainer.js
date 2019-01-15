@@ -38,44 +38,7 @@ class LiveCastContainer extends Component{
         username: this.props.user.info.name,
         isPresenter: true
       };
-
-      SocketService.instance.connect(connectionData, (error) => { this.onError(error)}, 
-        (socketId) => {this.onSubscribed(socketId)},
-        (roomStatus) => {this.onRoomStatus(roomStatus)},
-        (presenterResponse) => {this.onPresenterResponse(presenterResponse)},
-        null,
-        (candidate) => {this.onIceCandidate(candidate)}
-      );
     });
-  }
-
-
-  onError(err){
-    console.log(err);
-    this.setState({webRtcError: true});
-  }
-
-  onSubscribed(socketId){
-    console.log(this.props.user.info.name);
-    this.setState({socketId: socketId});
-  }
-
-  onRoomStatus(status){
-    this.setState({roomStatus: status});
-    console.log(this.state);
-  }
-
-  onPresenterResponse(presenterResponse){
-    this.setState({presenterResponse: presenterResponse})
-    console.log(this.state);
-  }
-
-  onIceCandidate(candidate){
-    var candidates = [...this.state.iceCandidates];
-    console.log('candidate:' + candidate.candidate.candidate);
-    candidates.push(candidate.candidate);
-    this.setState({iceCandidates: candidates});
-    console.log(this.state);
   }
 
   goBack(){
@@ -85,7 +48,7 @@ class LiveCastContainer extends Component{
 
   render(){
     console.log(this.state.roomStatus);
-    if(this.props.chat.roomId && this.state.socketId){
+    //if(this.props.chat.roomId && this.state.socketId){
       return(
           <View style={styles.container}>
             <AdminWebRTCChat 
@@ -93,19 +56,16 @@ class LiveCastContainer extends Component{
               chat={this.props.chat}
               sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}
               network={this.props.network}
-              publishEvent={(event) => { SocketService.instance.publishEvent(this.props.chat.roomId, event) }}
-              iceCandidates={this.state.iceCandidates}
-              sdpAnswer={this.state.presenterResponse.sdpAnswer}
               hasError={this.state.webRtcError}
               goBack={() => {this.goBack()}}
               />
           </View>
       );
     }
-    else{
-      return (<TouchableHighlight style={{marginTop: 150}}onPress={() => {this.goBack()}}><Text>Loading webrtc</Text></TouchableHighlight>);
-    }
-  }
+    // else{
+    //   return (<TouchableHighlight style={{marginTop: 150}}onPress={() => {this.goBack()}}><Text>Loading webrtc</Text></TouchableHighlight>);
+    // }
+  //}
   
 }
 

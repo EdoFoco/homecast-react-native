@@ -2,7 +2,9 @@ import WSAdaptor from './WSAdaptor';
 import {
 	RTCIceCandidate,
 	RTCPeerConnection,
-	RTCSessionDescription
+	RTCSessionDescription,
+	MediaStreamTrack,
+	getUserMedia
   } from 'react-native-webrtc';
 
 var thiz;
@@ -11,8 +13,9 @@ export default class WebRTCAdaptor
 	constructor(config){
 		thiz = this;
 
-		thiz.websocketUrl = 'ws://localhost:5080/WebRTCAppEE/websocket',
+		thiz.websocketUrl = 'ws://192.168.100.8:5080/WebRTCAppEE/websocket',
 		thiz.peerconnection_config = null;
+		thiz.mediaConstraints = config.mediaConstraints,
 		thiz.sdp_constraints = null;
 		thiz.remotePeerConnection = new Array();
 		thiz.webSocketAdaptor = null;
@@ -38,73 +41,20 @@ export default class WebRTCAdaptor
 	initialize()
 	{
 		console.log('Initializeing WebRtcAdaptor');
-		if (!thiz.isPlayMode && typeof this.mediaConstraints != "undefined")  
+		if (!thiz.isPlayMode)  
 		{
-			console.log('Its where I dont want it to be');
-			// if it is not play mode and media constraint is defined, try to get user media
-			
-			if (typeof this.mediaConstraints.video != "undefined" && this.mediaConstraints.video != false)
-			{
-	
-				if (this.mediaConstraints.audio.mandatory) 
-				{
-					navigator.mediaDevices.getUserMedia({audio:true, video:false}).then((micStream) =>{
-						navigator.mediaDevices.getUserMedia(this.mediaConstraints)
-						.then((stream) =>
-								{
-							//console.log("audio stream track count: " + audioStream.getAudioTracks().length);
-	
-							var audioContext = new AudioContext();
-							var desktopSoundGainNode = audioContext.createGain();
-	
-							desktopSoundGainNode.gain.value = 1;
-	
-							var audioDestionation = audioContext.createMediaStreamDestination();
-							var audioSource = audioContext.createMediaStreamSource(stream);
-	
-							audioSource.connect(desktopSoundGainNode);
-	
-							thiz.micGainNode = audioContext.createGain();
-							thiz.micGainNode.gain.value = 1;
-							var audioSource2 = audioContext.createMediaStreamSource(micStream);
-							audioSource2.connect(thiz.micGainNode);
-	
-							desktopSoundGainNode.connect(audioDestionation);
-							thiz.micGainNode.connect(audioDestionation);
-	
-							stream.removeTrack(stream.getAudioTracks()[0]);
-							audioDestionation.stream.getAudioTracks().forEach((track) => {
-								stream.addTrack(track);
-							});
-	
-							console.log("Running gotStream");
-							this.gotStream(stream);
-	
-								}).catch((error) => {
-									thiz.callbackError(error.name, error.message);
-								});
-					}).catch((error) => {
-						thiz.callbackError(error.name, error.message);
-					});	
-				}
-				else {
-					this.openStream(this.mediaConstraints);
-				}
-			}
-			else {
-				var media_audio_constraint = { audio: this.mediaConstraints.audio };
-				navigator.mediaDevices.getUserMedia(media_audio_constraint)
-				.then((stream) => {
-					this.gotStream(stream);
-				})
-				.catch((error) => {
-					thiz.callbackError(error.name, error.message);
-				});
-			}
+			console.log('Starting presenter');
+			this.getMedia()
+			.then((stream) => {
+				this.gotStream(stream);
+			})
+			.catch((e) => {
+				console.log(e);
+			})
 		}
 		else {
 			if (thiz.webSocketAdaptor == null || thiz.webSocketAdaptor.isConnected() == false) {
-				thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, (event) => { this.onMessageReceived(event) });
+				thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, (event) => { this.onMessageReceived(event)});
 				thiz.webSocketAdaptor.initialize();
 			}
 		}
@@ -113,96 +63,74 @@ export default class WebRTCAdaptor
 	/**
 	 * Get user media
 	 */
-	getUserMedia(mediaConstraints, audioConstraint) {
-		navigator.mediaDevices.getUserMedia(mediaConstraints)
-		.then((stream) => {
-
-			//this trick, getting audio and video separately, make us add or remove tracks on the fly
-			var audioTrack = stream.getAudioTracks();
-			if (audioTrack.length > 0) {
-				stream.removeTrack(audioTrack[0]);
-			}
-					
-			//add callback if desktop is sharing
-			if (mediaConstraints.video != "undefined" 
-				  && typeof mediaConstraints.video.mandatory != "undefined"
-				  && typeof mediaConstraints.video.mandatory.chromeMediaSource != "undefined"
-				  && mediaConstraints.video.mandatory.chromeMediaSource == "desktop") {
-				
-				stream.getVideoTracks()[0].onended = (event) => {
-					thiz.callback("screen_share_stopped");
-				}
+	getMedia() {
+		var isFront = true;
+		return MediaStreamTrack.getSources()
+		.then((sourceInfos) => {
+			console.log(sourceInfos);
+			let videoSourceId;
+			for (let i = 0; i < sourceInfos.length; i++) {
+			  const sourceInfo = sourceInfos[i];
+			  if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
+				videoSourceId = sourceInfo.id;
+			  }
 			}
 
-			//now get only audio to add this stream
-			if (audioConstraint != "undefined" && audioConstraint != false) {
-				var media_audio_constraint = { audio: audioConstraint};
-				navigator.mediaDevices.getUserMedia(media_audio_constraint)
-				.then((audioStream) => {
-					stream.addTrack(audioStream.getAudioTracks()[0]);
-					this.gotStream(stream);
-				})
-				.catch((error) => {
-					thiz.callbackError(error.name, error.message);
-				});
-			}
-			else {
-				this.gotStream(stream);
-			}
+			return videoSourceId;
 		})
-		.catch((error) => {
-			thiz.callbackError(error.name, error.message);
-		});
+		.then((videoSourceId) => {
+			return getUserMedia({
+				audio: true,
+				video: {
+				  mandatory: {
+					minWidth: 500, // Provide your own width, height and frame rate here
+					minHeight: 300,
+					minFrameRate: 30
+				  },
+				//   facingMode: (isFront ? "user" : "environment"),
+				   optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
+				}
+			});
+		})
+		.catch((e) => {
+			console.log(e);
+		 });
+		// MediaStreamTrack.getSources(sourceInfos => {
+		// 	console.log(sourceInfos);
+		// 	let videoSourceId;
+		// 	for (let i = 0; i < sourceInfos.length; i++) {
+		// 	  const sourceInfo = sourceInfos[i];
+		// 	  if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
+		// 		videoSourceId = sourceInfo.id;
+		// 	  }
+		// 	}
+		// 	getUserMedia({
+		// 	  audio: true,
+		// 	  video: {
+		// 		mandatory: {
+		// 		  minWidth: 500, // Provide your own width, height and frame rate here
+		// 		  minHeight: 300,
+		// 		  minFrameRate: 30
+		// 		},
+		// 		facingMode: (isFront ? "user" : "environment"),
+		// 		optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
+		// 	  }
+		// 	}, function (stream) {
+		// 	  console.log('dddd', stream);
+		// 	  callback(stream);
+		// 	}, logError);
+		//   });
+
+		// var mediaOptions = this._getMediaOptions();
+    
+		// getUserMedia(mediaOptions, function (stream) {
+		//   console.log('getUserMedia success', stream);
+		//   callback(stream);
+		// }, function(error){
+		//   console.log(error)
+		// });
 	}
 
-	/**
-	 * Open media stream, it may be screen, camera or audio
-	 */
-	openStream(mediaConstraints) {
-		this.mediaConstraints = mediaConstraints;
-		var audioConstraint = false;
-		if (typeof mediaConstraints.audio != "undefined" && mediaConstraints.audio != false) {
-			audioConstraint = mediaConstraints.audio;
-		}
-		if (typeof mediaConstraints.video != "undefined" && mediaConstraints.video == "screen") {
-			var callback = (message) =>
-			{
-				if (message.data == "rtcmulticonnection-extension-loaded") {
-					console.log("rtcmulticonnection-extension-loaded parameter is received");
-					window.postMessage("get-sourceId", "*");
-				}
-				else if (message.data == "PermissionDeniedError") {
-					console.log("Permission denied error");
-					thiz.callbackError("screen_share_permission_denied");
-				}
-				else if (message.data && message.data.sourceId) {
-					var mediaConstraints = {
-							audio: false,
-							video: {
-								mandatory: {
-									chromeMediaSource: 'desktop',
-									chromeMediaSourceId: message.data.sourceId,
-								},
-								optional: []
-							}
-					};
-
-					this.getUserMedia(mediaConstraints, audioConstraint);
-
-					//remove event listener
-					window.removeEventListener("message", callback);	    
-				}
-
-			}
-			window.addEventListener("message", callback, false);
-
-			window.postMessage("are-you-there", "*");
-		}
-		else {
-			this.getUserMedia(mediaConstraints, audioConstraint);
-		}
-	}
-	
 	/**
 	 * Closes stream, if you want to stop peer connection, call stop(streamId)
 	 */
@@ -321,10 +249,11 @@ export default class WebRTCAdaptor
 
 	gotStream(stream) 
 	{	
+		console.log(stream);
 		this.localStream = stream;
-		this.localVideo.srcObject = stream;
+		this.setRemoteSource(this.localStream);
 		if (thiz.webSocketAdaptor == null || thiz.webSocketAdaptor.isConnected() == false) {
-			thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, this.onMessageReceived);
+			thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, (event) => { this.onMessageReceived(event)});
 			thiz.webSocketAdaptor.initialize();
 		}
 	};
@@ -352,9 +281,8 @@ export default class WebRTCAdaptor
 	}
 
 	switchVideoSource(streamId, mediaConstraints, onEndedCallback) {
-		navigator.mediaDevices.getUserMedia(mediaConstraints)
+		this.getMedia(mediaConstraints)
 		.then((stream) => {
-
 			if (thiz.remotePeerConnection[streamId] != null) {
 				var videoTrackSender = thiz.remotePeerConnection[streamId].getSenders().find((s) => {
 					return s.track.kind == "video";
@@ -370,18 +298,39 @@ export default class WebRTCAdaptor
 			else {
 				this.arrangeStreams(stream, onEndedCallback);	
 			}
-
 		})
 		.catch((error) => {
 			thiz.callbackError(error.name);
 		});
+		// navigator.mediaDevices.getUserMedia(mediaConstraints)
+		// .then((stream) => {
+
+		// 	if (thiz.remotePeerConnection[streamId] != null) {
+		// 		var videoTrackSender = thiz.remotePeerConnection[streamId].getSenders().find((s) => {
+		// 			return s.track.kind == "video";
+		// 		});
+
+		// 		videoTrackSender.replaceTrack(stream.getVideoTracks()[0]).then((result) => {
+		// 			this.arrangeStreams(stream, onEndedCallback);
+
+		// 		}).catch((error) => {
+		// 			console.log(error.name);
+		// 		});
+		// 	}
+		// 	else {
+		// 		this.arrangeStreams(stream, onEndedCallback);	
+		// 	}
+
+		// })
+		// .catch((error) => {
+		// 	thiz.callbackError(error.name);
+		// });
 	}
 
 
 	onTrack(event, streamId) {
 		if (this.remoteStream != null) {
 			this.setRemoteSource(event.streams[0]);
-			this.remoteStream.srcObject = event.streams[0];
 			console.log('Received remote stream');
 		}
 		else {

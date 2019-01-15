@@ -5,7 +5,6 @@ import * as Colors from '../helpers/ColorPallette';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ScreenLoader from '../molecules/ScreenLoader';
 import InCallManager from 'react-native-incall-manager';
-import kurentoUtils from '../../libs/third-party/kurento';
 import { 
   View,
   StyleSheet,
@@ -58,18 +57,12 @@ export default class WebRTCChat extends Component{
           console.log("initialized");
           this.setState({connectionStatus: 'initialized'});
          } else if (info == "play_started") {
-          //joined the stream
           console.log("play started");
           this.setState({connectionStatus: 'play started'});
-        // } else if (info == "newStreamAvailable"){
-        //   console.log('New stream found');
-        //  // this.setState({stream: description});
         } else if (info == "play_finished") {
-          //leaved the stream
           console.log("play finished");
           this.setState({connectionStatus: 'play finished'});
         } else if (info == "closed") {
-          //console.log("Connection closed");
           if (typeof description != "undefined") {
             console.log("Connecton closed: "
                 + JSON.stringify(description));
@@ -78,8 +71,6 @@ export default class WebRTCChat extends Component{
         }
       },
       callbackError : (error) => {
-        //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
-  
         console.log("error callback: " + JSON.stringify(error));
         this.setState({hasError: true});
       }

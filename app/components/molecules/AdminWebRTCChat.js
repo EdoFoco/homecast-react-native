@@ -5,229 +5,107 @@ import * as Colors from '../helpers/ColorPallette';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import * as FontSizes from '../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import kurentoUtils from '../../libs/third-party/kurento';
 import InCallManager from 'react-native-incall-manager';
 import ScreenLoader from '../molecules/ScreenLoader';
-
+import WebRtcAdaptor from '../../libs/third-party/AntMedia/WebRtcAdaptor';
 import { 
   View,
   StyleSheet,
   Dimensions,
-  Text,
   TouchableHighlight,
-  Platform} from 'react-native';
+  Text} from 'react-native';
 
  import {
-  RTCIceCandidate,
-  RTCView,
-  MediaStreamTrack,
-  getUserMedia} from 'react-native-webrtc';
+  RTCView } from 'react-native-webrtc';
 
 
-var pc;
-var iceCandidatesCount = 0;
 var localStream;
-var kurentoPeer;
 
 export default class AdminWebRTCChat extends Component{
  
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.state = { 
-        sdpAnswerLoaded: false,
-        isMicrophoneMute: false,
-        streamUrl: null
-     };
+    this.state = {
+      connectionStatus: 'Connecting',
+      stream: null
+    }
   }
 
-  componentWillMount(){
-    console.log('About to connect!!');
+  componentDidMount(){
+    var pc_config = null;
+
+    var sdpConstraints = {
+      OfferToReceiveAudio : false,
+      OfferToReceiveVideo : false
+
+    };
     
-    var self = this;
+    var mediaConstraints = {
+      video : true,
+      audio : true
+    };
 
-    this._getLocalStream(true, function(stream) {
-        localStream = stream;
-        var options = {
-            videoStream: localStream,
-            onicecandidate : function (event) {
-                console.log('onicecandidate', event.candidate);
-                if (event.candidate) {
-                  console.log("3. Presenter - Sending Ice Cnadidate")
-                  self.props.publishEvent({type: 'onIceCandidate', data: { roomId: self.props.chat.roomId, candidate: event }});
-                }
-            }
+    this.webRtcAdaptor = new WebRtcAdaptor({
+      mediaConstraints : mediaConstraints,
+      peerconnection_config : pc_config,
+      sdp_constraints : sdpConstraints,
+      debug:true,
+      setRemoteSource: (source) => {this.setState({stream: source})},
+      callback : function(info, description) {
+        if (info == "initialized") {
+          console.log("initialized");
+        } else if (info == "publish_started") {
+          //stream is being published
+          console.log("publish started");
+          //startAnimation();
+        } else if (info == "publish_finished") {
+          //stream is being finished
+          console.log("publish finished");
         }
-
-        kurentoPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
-          if(error) return onError(error);
-
-          console.log('1. Presenter - Generating offer');
-          this.generateOffer(function(error, offer){
-              console.log('2. Presenter - Offer generated')
-              self.props.publishEvent({type: 'presenter', data: {roomId: self.props.chat.roomId, sdpOffer: offer}});
-              self._startWebRtcAsPresenter();
-         });
-        });
+        else if (info == "screen_share_extension_available") {
+          console.log("screen share extension available");
+        }
+        else if (info == "screen_share_stopped") {
+          console.log("screen share stopped");
+        }
+        else if (info == "closed") {
+          //console.log("Connection closed");
+          if (typeof description != "undefined") {
+            console.log("Connecton closed: " + JSON.stringify(description));
+          }
+        }
+      },
+      callbackError : function(error, message) {
+        //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
+              
+        console.log("error callback: " +  JSON.stringify(error));
+        var errorMessage = JSON.stringify(error);
+        if (typeof message != "undefined") {
+          errorMessage = message;
+        }
+        var errorMessage = JSON.stringify(error);
+        if (error.indexOf("NotFoundError") != -1) {
+          errorMessage = "Camera or Mic are not found or not allowed in your device";
+        }
+        else if (error.indexOf("NotReadableError") != -1 || error.indexOf("TrackStartError") != -1) {
+          errorMessage = "Camera or Mic is being used by some other process that does not let read the devices";
+        }
+        else if(error.indexOf("OverconstrainedError") != -1 || error.indexOf("ConstraintNotSatisfiedError") != -1) {
+          errorMessage = "There is no device found that fits your video and audio constraints. You may change video and audio constraints"
+        }
+        else if (error.indexOf("NotAllowedError") != -1 || error.indexOf("PermissionDeniedError") != -1) {
+          errorMessage = "You are not allowed to access camera and mic.";
+        }
+        else if (error.indexOf("TypeError") != -1) {
+          errorMessage = "Video/Audio is required";
+        }
+      
+        console.error(errorMessage);
+      }
     });
+
+    this.webRtcAdaptor.initialize();
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.iceCandidates.length > prevProps.iceCandidates.length) {
-      console.log("6. Adding Ice Candidate")
-      var candidate = this.props.iceCandidates[this.props.iceCandidates.length -1];
-      if(pc && candidate) pc.addIceCandidate(new RTCIceCandidate(candidate));
-    }
-
-    if(this.props.sdpAnswer){
-      if(!this.state.sdpAnswerLoaded){
-       // console.log('5. Presenter - Processing Presenter Answer');
-        this.setState({sdpAnswerLoaded: true});
-        kurentoPeer.processAnswer(this.props.sdpAnswer, function(){
-          console.log('Presenter initialised.');
-        });
-      }
-    }
-  }
-
-  componentWillUpdate(){
-    
-    // if(this.props.webrtc.presenter.iceCandidates.length > 0){
-    //   iceCandidatesCount = this.props.webrtc.presenter.iceCandidates.length;
-    //   //console.log("4. Presenter - Adding Ice Candidate")
-    //   pc.addIceCandidate(new RTCIceCandidate(this.props.webrtc.presenter.iceCandidates[iceCandidatesCount -1]));
-    // }
-
-    // if(this.props.webrtc.presenter.sdpAnswer){
-    //     if(!this.state.sdpAnswerLoaded){
-    //         console.log('5. Presenter - Processing Presenter Answer');
-    //         kurentoPeer.processAnswer(this.props.webrtc.presenter.sdpAnswer, function(){
-    //           console.log('hi presenter');
-    //         });
-    //         this.setState({sdpAnswerLoaded: true});
-    //     }
-    //   }
-  }
-
-  componentWillUnmount(){
-    localStream.getTracks().forEach(t => t.stop());
-    localStream.release();
-    this.props.goBack();
-    iceCandidatesCount = 0;
-    kurentoPeer.dispose();
-    pc = null;
-  }
-
-  _getLocalStream(isFront, callback) {
-    if (Platform.OS === 'ios') {
-      MediaStreamTrack.getSources(sourceInfos => {
-        console.log("sourceInfos: ", sourceInfos);
-  
-        for (const i = 0; i < sourceInfos.length; i++) {
-          const sourceInfo = sourceInfos[i];
-          if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
-            videoSourceId = sourceInfo.id;
-          }
-        }
-      });
-    }
-
-    var mediaOptions = this._getMediaOptions();
-    
-    getUserMedia(mediaOptions, function (stream) {
-      console.log('getUserMedia success', stream);
-      callback(stream);
-    }, function(error){
-      console.log(error)
-    });
-}
-
-_getMediaOptions(){
-  if(!this.props.network){
-    return {
-      audio: true,
-      video: {
-        mandatory: {
-          width: { min: 480, ideal: 720, max: 1080 },
-          height: { min: 640, ideal: 1280, max: 1920 },
-          minFrameRate: 30
-        }
-      }
-    }
-  }
-
-  if(this.props.network.networkType == 'wifi' || this.props.network.signalStrength == '4g'){
-    console.log('Stream in high quality')
-    return {
-      audio: true,
-      video: {
-        mandatory: {
-          width: { min: 480, ideal: 720, max: 1080 },
-          height: { min: 640, ideal: 1280, max: 1920 },
-          minFrameRate: 30
-        }
-      }
-    }
-  }
-  else{
-    console.log('Stream in low quality')
-    return {
-      audio: true,
-      video: {
-        mandatory: {
-          width: { min: 240, ideal: 480, max: 720 },
-          height: { min: 320, ideal: 640, max: 960 },
-          minFrameRate: 25
-        }
-      }
-    }
-  }
-  /*
-  {
-      audio: true,
-      video: {
-        mandatory: {
-          width: { min: 320, ideal: 640, max: 960 },
-          height: { min: 240, ideal: 480, max: 720 },
-          minFrameRate: 25
-        }
-      }
-    }*/ 
-}
-
- _startWebRtcAsPresenter  = function(){
-
-      var self = this;
-      pc = kurentoPeer.peerConnection;
-
-      pc.onnegotiationneeded = function () {
-        console.log('onnegotiationneeded');
-       // if (isOffer) {
-          console.log("2. Negotiation needed, lets create an offer.")
-
-          //createOffer();
-       // }
-      }
-
-      pc.oniceconnectionstatechange = function(event) {
-            console.log("7. Ice Connection State Changed - get stats")
-
-          console.log('oniceconnectionstatechange', event.target.iceConnectionState);
-          if (event.target.iceConnectionState === 'completed') {
-            InCallManager.start();
-            InCallManager.setKeepScreenOn(true);
-            // setTimeout(() => {
-            //   //getStats();
-            // }, 1000);
-          }
-          if (event.target.iceConnectionState === 'connected') {
-            console.log('Connected!!!');
-          }
-      };
-    
-      self.setState({streamUrl: localStream.toURL()});
-      pc.addStream(localStream);
- }
-
   _endCall(){
      InCallManager.stop();
      this.props.goBack();
@@ -252,8 +130,12 @@ _getMediaOptions(){
           return <ScreenLoader message='Error connecting. Try again.' goBack={() => {this._endCall() }}/>
         }
 
+        if(this.state.connectionStatus != 'connected'){
+          return <TouchableHighlight style={{paddingTop: 20}} onPress={() => {	this.webRtcAdaptor.publish('stream1', null); }}><Text>Start</Text></TouchableHighlight>
+        }
+
         return (
-          <RTCView streamURL={this.state.streamUrl} style={styles.remoteView}  objectFit ='cover'>
+          <RTCView streamURL={this.state.stream.toURL()} style={styles.remoteView}  objectFit ='cover'>
               <View style={styles.videoCommands}>
                 <TouchableHighlight onPress={()=>{ this._setMute()}} style={styles.muteBtn}>
                  {
