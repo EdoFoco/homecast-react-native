@@ -40,24 +40,32 @@ export default class WebRTCAdaptor
 	
 	initialize()
 	{
-		console.log('Initializeing WebRtcAdaptor');
-		if (!thiz.isPlayMode)  
-		{
-			console.log('Starting presenter');
-			this.getMedia()
-			.then((stream) => {
-				this.gotStream(stream);
-			})
-			.catch((e) => {
-				console.log(e);
-			})
-		}
-		else {
-			if (thiz.webSocketAdaptor == null || thiz.webSocketAdaptor.isConnected() == false) {
-				thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, (event) => { this.onMessageReceived(event)});
-				thiz.webSocketAdaptor.initialize();
+		return new Promise((resolve, reject) => {
+			console.log('Initializeing WebRtcAdaptor');
+			if (!thiz.isPlayMode)  
+			{
+				console.log('Starting presenter');
+				return this.getMedia()
+				.then((stream) => {
+					this.gotStream(stream);
+				})
+				.then(() => {
+					resolve();
+				})
+				.catch((e) => {
+					console.log(e);
+					reject(e);
+				})
 			}
-		}
+			else {
+				if (thiz.webSocketAdaptor == null || thiz.webSocketAdaptor.isConnected() == false) {
+					thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, (event) => { this.onMessageReceived(event)});
+					return thiz.webSocketAdaptor.initialize();
+				}
+
+				return resolve();
+			}
+		});
 	}
 
 	/**
@@ -91,44 +99,7 @@ export default class WebRTCAdaptor
 				   optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
 				}
 			});
-		})
-		.catch((e) => {
-			console.log(e);
-		 });
-		// MediaStreamTrack.getSources(sourceInfos => {
-		// 	console.log(sourceInfos);
-		// 	let videoSourceId;
-		// 	for (let i = 0; i < sourceInfos.length; i++) {
-		// 	  const sourceInfo = sourceInfos[i];
-		// 	  if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
-		// 		videoSourceId = sourceInfo.id;
-		// 	  }
-		// 	}
-		// 	getUserMedia({
-		// 	  audio: true,
-		// 	  video: {
-		// 		mandatory: {
-		// 		  minWidth: 500, // Provide your own width, height and frame rate here
-		// 		  minHeight: 300,
-		// 		  minFrameRate: 30
-		// 		},
-		// 		facingMode: (isFront ? "user" : "environment"),
-		// 		optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
-		// 	  }
-		// 	}, function (stream) {
-		// 	  console.log('dddd', stream);
-		// 	  callback(stream);
-		// 	}, logError);
-		//   });
-
-		// var mediaOptions = this._getMediaOptions();
-    
-		// getUserMedia(mediaOptions, function (stream) {
-		//   console.log('getUserMedia success', stream);
-		//   callback(stream);
-		// }, function(error){
-		//   console.log(error)
-		// });
+		});
 	}
 
 	/**
@@ -302,29 +273,6 @@ export default class WebRTCAdaptor
 		.catch((error) => {
 			thiz.callbackError(error.name);
 		});
-		// navigator.mediaDevices.getUserMedia(mediaConstraints)
-		// .then((stream) => {
-
-		// 	if (thiz.remotePeerConnection[streamId] != null) {
-		// 		var videoTrackSender = thiz.remotePeerConnection[streamId].getSenders().find((s) => {
-		// 			return s.track.kind == "video";
-		// 		});
-
-		// 		videoTrackSender.replaceTrack(stream.getVideoTracks()[0]).then((result) => {
-		// 			this.arrangeStreams(stream, onEndedCallback);
-
-		// 		}).catch((error) => {
-		// 			console.log(error.name);
-		// 		});
-		// 	}
-		// 	else {
-		// 		this.arrangeStreams(stream, onEndedCallback);	
-		// 	}
-
-		// })
-		// .catch((error) => {
-		// 	thiz.callbackError(error.name);
-		// });
 	}
 
 
@@ -375,17 +323,12 @@ export default class WebRTCAdaptor
 			console.log("Play Stream ID:", thiz.playStreamId, streamId);
 			if (!thiz.playStreamId.includes(streamId)) 
 			{
-				console.log('1');
 				thiz.remotePeerConnection[streamId].addStream(this.localStream);
 			}
 			thiz.remotePeerConnection[streamId].onicecandidate = (event) => {
-				console.log('2');
-
 				this.iceCandidateReceived(event, closedStreamId);
 			}
 			thiz.remotePeerConnection[streamId].onaddstream = function(event) {
-				console.log('3');
-
 				this.onTrack({streams: event.target._remoteStreams}, closedStreamId);
 			}.bind(this);
 		}
@@ -536,9 +479,7 @@ export default class WebRTCAdaptor
 				console.error("set remote description is failed with error: " + error);
 			}
 		});
-
 	}
-
 
 	takeCandidate(idOfTheStream, tmpLabel, tmpCandidate) {
 		var streamId = idOfTheStream;

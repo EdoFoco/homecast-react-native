@@ -27,7 +27,8 @@ export default class AdminWebRTCChat extends Component{
     super(props);
     this.state = {
       connectionStatus: 'Connecting',
-      stream: null
+      stream: null,
+      errorMessage: null
     }
   }
 
@@ -52,6 +53,7 @@ export default class AdminWebRTCChat extends Component{
       debug:true,
       setRemoteSource: (source) => {this.setState({stream: source})},
       callback : function(info, description) {
+        console.log('Staus:', info);
         if (info == "initialized") {
           console.log("initialized");
         } else if (info == "publish_started") {
@@ -61,12 +63,6 @@ export default class AdminWebRTCChat extends Component{
         } else if (info == "publish_finished") {
           //stream is being finished
           console.log("publish finished");
-        }
-        else if (info == "screen_share_extension_available") {
-          console.log("screen share extension available");
-        }
-        else if (info == "screen_share_stopped") {
-          console.log("screen share stopped");
         }
         else if (info == "closed") {
           //console.log("Connection closed");
@@ -99,12 +95,18 @@ export default class AdminWebRTCChat extends Component{
         else if (error.indexOf("TypeError") != -1) {
           errorMessage = "Video/Audio is required";
         }
-      
         console.error(errorMessage);
+        this.setState({ errorMessage: errorMessage });
       }
     });
 
-    this.webRtcAdaptor.initialize();
+    this.webRtcAdaptor.initialize()
+    .then(() => {
+      this.webRtcAdaptor.publish('stream1', null);
+    })
+    .catch((e) => {
+      this.setState({ errorMessage: e.message });
+    })
   }
   _endCall(){
      InCallManager.stop();
