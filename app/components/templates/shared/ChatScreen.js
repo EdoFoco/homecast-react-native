@@ -65,8 +65,8 @@ export default class ChatScreen extends Component{
         }).start();
     }
 
-    _getMessages(){
-        return this.props.getMessages(this.props.chat.id, this.state.currentPage)
+    _getMessages(page){
+        return this.props.getMessages(this.props.chat.id, page ? page : this.state.currentPage)
         .then((resp) => {
             let prevMessages = [...this.state.messages];
             let newMessages = prevMessages;
@@ -77,6 +77,10 @@ export default class ChatScreen extends Component{
                 }
             });
             
+            newMessages = newMessages.sort((a, b) => {
+                return b.id - a.id;
+            });
+            console.log(newMessages);
             this.setState({ messages: newMessages, lastPage: resp.last_page });
         })
         .catch((e) => {
@@ -89,10 +93,7 @@ export default class ChatScreen extends Component{
         if(this.state.currentPage == this.state.lastPage){
             return;
         }
-        console.log('hi');
-
         this.setState({'currentPage': this.state.currentPage + 1}, this._getMessages);
-        console.log(this.state);
     }
 
     _renderMessageRow(item){
@@ -133,7 +134,7 @@ export default class ChatScreen extends Component{
             Keyboard.dismiss();
         })
         .then(() => {
-            return this._getMessages();
+            return this._getMessages(1);
         })
         .then(() => {
             this.setState({ message: null });
