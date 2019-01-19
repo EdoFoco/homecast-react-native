@@ -5,6 +5,7 @@ import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import ViewingRow from './ViewingRow';
+import { MaterialIndicator  } from 'react-native-indicators';
 
 import {
     StyleSheet,
@@ -24,7 +25,8 @@ export default class ManageViewingsForm extends Component{
         isDatePickerVisible: false,
         isTimePickerVisible: false,
         viewingDateTime: new Date(),
-        isModalVisible: false
+        isModalVisible: false,
+        isLoading: false
       };
     }
 
@@ -61,9 +63,15 @@ export default class ManageViewingsForm extends Component{
     let viewingInfo = {
         date_time: this.state.viewingDateTime
     }
+
+    this.setState({isLoading: true});
+
     return this.props.createViewing(this.props.propertyId, this.props.userId, viewingInfo)
     .then(() => {
-        this._showAddViewingModal();
+        return this._showAddViewingModal();
+    })
+    .then(() => {
+        this.setState({isLoading: false});
     });
   }
 
@@ -75,6 +83,13 @@ export default class ManageViewingsForm extends Component{
   }
 
   render() {
+    if(this.state.isLoading){
+        return (
+            <View style={styles.container}>
+                <MaterialIndicator style={{marginBottom: 100 }}color={Colors.AQUA_GREEN} size={50} /> :
+            </View>
+        )
+    }
     return (
         <View style={styles.container}>
             {

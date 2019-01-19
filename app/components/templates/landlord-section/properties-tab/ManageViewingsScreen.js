@@ -11,9 +11,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 class ManageViewingsScreen extends Component{
 
   _createViewing(propertyId, userId, viewingInfo){
+    this.setState({isLoading: true});
     return this.props.createViewing(propertyId, userId, viewingInfo)
     .then(() => {
-      this.props.getPropertyViewings(propertyId);
+      return this.props.getPropertyViewings(propertyId);
     });
   }
   
@@ -27,14 +28,15 @@ class ManageViewingsScreen extends Component{
               <Text style={styles.menuText}>{this.props.property.address}</Text>
           </View>
             <View style={styles.fieldsForm}> 
-                <ManageViewingsForm 
-                  propertyId={this.props.property.id} 
-                  userId={this.props.user.info.id} 
-                  viewings={this.props.viewings}
-                  createViewing={(propertyId, userId, viewingInfo) => this._createViewing(propertyId, userId, viewingInfo)}
-                  goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property, goBack: () => {this.props.navigation.goBack()}}) }}
-                /> 
+              <ManageViewingsForm 
+                propertyId={this.props.property.id} 
+                userId={this.props.user.info.id} 
+                viewings={this.props.viewings}
+                createViewing={(propertyId, userId, viewingInfo) => this._createViewing(propertyId, userId, viewingInfo)}
+                goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property, goBack: () => {this.props.navigation.goBack()}}) }}
+              /> 
             </View>
+          
         </View>
     )
   }
