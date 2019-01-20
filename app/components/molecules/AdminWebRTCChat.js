@@ -101,9 +101,6 @@ export default class AdminWebRTCChat extends Component{
     });
 
     this.webRtcAdaptor.initialize()
-    .then(() => {
-      this.webRtcAdaptor.publish('stream1', null);
-    })
     .catch((e) => {
       this.setState({ errorMessage: e.message });
     })
@@ -127,6 +124,7 @@ export default class AdminWebRTCChat extends Component{
     });
   }
 
+  
   render() {
        if(this.props.hasError){
           return <ScreenLoader message='Error connecting. Try again.' goBack={() => {this._endCall() }}/>

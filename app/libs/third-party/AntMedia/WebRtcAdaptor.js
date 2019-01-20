@@ -13,7 +13,7 @@ export default class WebRTCAdaptor
 	constructor(config){
 		thiz = this;
 
-		thiz.websocketUrl = 'ws://192.168.100.8:5080/WebRTCAppEE/websocket',
+		thiz.websocketUrl = 'ws://ec2-3-8-201-4.eu-west-2.compute.amazonaws.com:5080/WebRTCAppEE/websocket',
 		thiz.peerconnection_config = null;
 		thiz.mediaConstraints = config.mediaConstraints,
 		thiz.sdp_constraints = null;
@@ -47,7 +47,7 @@ export default class WebRTCAdaptor
 				console.log('Starting presenter');
 				return this.getMedia()
 				.then((stream) => {
-					this.gotStream(stream);
+					return this.gotStream(stream);
 				})
 				.then(() => {
 					resolve();
@@ -90,11 +90,11 @@ export default class WebRTCAdaptor
 			return getUserMedia({
 				audio: true,
 				video: {
-				  mandatory: {
-					minWidth: 500, // Provide your own width, height and frame rate here
-					minHeight: 300,
-					minFrameRate: 30
-				  },
+					mandatory: {
+					  width: { min: 480, ideal: 720, max: 1080 },
+					  height: { min: 640, ideal: 1280, max: 1920 },
+					  minFrameRate: 30
+					},			
 				//   facingMode: (isFront ? "user" : "environment"),
 				   optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
 				}
