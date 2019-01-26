@@ -8,6 +8,8 @@ import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import InCallManager from 'react-native-incall-manager';
 import ScreenLoader from '../molecules/ScreenLoader';
 import WebRtcAdaptor from '../../libs/third-party/AntMedia/WebRtcAdaptor';
+import SocketIoService from '../../libs/services/SocketIoService';
+
 import { 
   View,
   StyleSheet,
@@ -26,13 +28,35 @@ export default class AdminWebRTCChat extends Component{
   constructor(props){
     super(props);
     this.state = {
-      connectionStatus: 'Connecting',
+      webRtcConnectionStatus: 'Connecting',
+      chatConnectionStatus: 'Connecting',
+      chatEvents: [],
       stream: null,
       errorMessage: null
     }
   }
 
   componentDidMount(){
+    this._initWebRtcAdaptor();
+    this._initChat();
+  }
+
+  _initChat(){
+    this.socketIoService = new SocketIoService(() => {this._onChatConnected()}, (message) => {this._onMessageReceived(message)} );
+    this.socketIoService.joinRoom(`viewing-${this.props.viewing.id}`, {id: this.props.user.info.id, name: this.props.user.info.name});
+  }
+
+  _onChatConnected(){
+    console.log('Chat Connected');
+    this.setState({ chatConnectionStatus: true });
+    this.socketIoService.joinRoom(`viewing-${this.props.viewing.id}`, { id: this.props.user.info.id, name: this.props.user.info.name });
+  }
+
+  _onMessageReceived(message){
+    console.log('Received Message', message);
+  }
+
+  _initWebRtcAdaptor(){
     var pc_config = null;
 
     var sdpConstraints = {
@@ -53,7 +77,7 @@ export default class AdminWebRTCChat extends Component{
       debug:true,
       setRemoteSource: (source) => {this.setState({stream: source})},
       callback : function(info, description) {
-        console.log('Staus:', info);
+        console.log('Status:', info);
         if (info == "initialized") {
           console.log("initialized");
         } else if (info == "publish_started") {
@@ -71,7 +95,7 @@ export default class AdminWebRTCChat extends Component{
           }
         }
       },
-      callbackError : function(error, message) {
+      onError : function(error, message) {
         //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
               
         console.log("error callback: " +  JSON.stringify(error));
@@ -99,12 +123,8 @@ export default class AdminWebRTCChat extends Component{
         this.setState({ errorMessage: errorMessage });
       }
     });
-
-    this.webRtcAdaptor.initialize()
-    .catch((e) => {
-      this.setState({ errorMessage: e.message });
-    })
   }
+
   _endCall(){
      InCallManager.stop();
      this.props.goBack();
@@ -126,11 +146,17 @@ export default class AdminWebRTCChat extends Component{
 
   
   render() {
+       if(this.state.chatConnectionStatus == 'Connecting' || this.state.webRtcConnectionStatus == 'Connecting'){
+          return(
+              <ScreenLoader message='Getting ready to broadcast...' goBack={() => {this._endCall() }}/>
+          )
+       }
+
        if(this.props.hasError){
           return <ScreenLoader message='Error connecting. Try again.' goBack={() => {this._endCall() }}/>
         }
 
-        if(this.state.connectionStatus != 'connected'){
+        if(this.state.webRtcConnectionStatus != 'connected'){
           return <TouchableHighlight style={{paddingTop: 20}} onPress={() => {	this.webRtcAdaptor.publish('stream1', null); }}><Text>Start</Text></TouchableHighlight>
         }
 
@@ -157,11 +183,10 @@ export default class AdminWebRTCChat extends Component{
 AdminWebRTCChat.propTypes = {
   chat: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  viewing: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired,
   network: PropTypes.object.isRequired,
   publishEvent: PropTypes.func.isRequired,
-  iceCandidates: PropTypes.array.isRequired,
-  sdpAnswer: PropTypes.object.isRequired,
   hasError: PropTypes.bool.isRequired,
   goBack: PropTypes.func.isRequired
 }

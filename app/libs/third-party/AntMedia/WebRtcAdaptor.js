@@ -11,6 +11,7 @@ var thiz;
 export default class WebRTCAdaptor
 {
 	constructor(config){
+		console.log('Initializing WebRtcAdaptor');
 		thiz = this;
 
 		thiz.websocketUrl = 'ws://ec2-3-8-201-4.eu-west-2.compute.amazonaws.com:5080/WebRTCAppEE/websocket',
@@ -25,7 +26,7 @@ export default class WebRTCAdaptor
 		thiz.playStreamId = new Array();
 		thiz.micGainNode = null;
 		thiz.callback = config.callback;
-		thiz.callbackError = config.callbackError;
+		thiz.onError = config.onError;
 		thiz.isPlayMode = false;
 		thiz.setRemoteSource = config.setRemoteSource;
 		thiz.remoteStream = config.remoteStream;
@@ -38,33 +39,12 @@ export default class WebRTCAdaptor
 		}
 	}
 	
-	initialize()
+	startVideo()
 	{
-		return new Promise((resolve, reject) => {
-			console.log('Initializeing WebRtcAdaptor');
-			if (!thiz.isPlayMode)  
-			{
-				console.log('Starting presenter');
-				return this.getMedia()
-				.then((stream) => {
-					return this.gotStream(stream);
-				})
-				.then(() => {
-					resolve();
-				})
-				.catch((e) => {
-					console.log(e);
-					reject(e);
-				})
-			}
-			else {
-				if (thiz.webSocketAdaptor == null || thiz.webSocketAdaptor.isConnected() == false) {
-					thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, (event) => { this.onMessageReceived(event)});
-					return thiz.webSocketAdaptor.initialize();
-				}
-
-				return resolve();
-			}
+		console.log('Starting video');
+		return this.getMedia()
+		.then((stream) => {
+			return this.gotStream(stream);
 		});
 	}
 
@@ -223,10 +203,6 @@ export default class WebRTCAdaptor
 		console.log(stream);
 		this.localStream = stream;
 		this.setRemoteSource(this.localStream);
-		if (thiz.webSocketAdaptor == null || thiz.webSocketAdaptor.isConnected() == false) {
-			thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, thiz.callback, thiz.callbackError, (event) => { this.onMessageReceived(event)});
-			thiz.webSocketAdaptor.initialize();
-		}
 	};
 
 	switchVideoCapture(streamId) {
@@ -271,7 +247,7 @@ export default class WebRTCAdaptor
 			}
 		})
 		.catch((error) => {
-			thiz.callbackError(error.name);
+			thiz.onError(error.name);
 		});
 	}
 
@@ -400,7 +376,7 @@ export default class WebRTCAdaptor
 			track.enabled = false;
 		}
 		else {
-			thiz.callbackError("NoActiveConnection");
+			thiz.onError("NoActiveConnection");
 		}
 	}
 
@@ -410,7 +386,7 @@ export default class WebRTCAdaptor
 			track.enabled = true;
 		}
 		else {
-			thiz.callbackError("NoActiveConnection");
+			thiz.onError("NoActiveConnection");
 		}
 	}
 
@@ -420,12 +396,12 @@ export default class WebRTCAdaptor
 			track.enabled = false;
 		}
 		else {
-			thiz.callbackError("NoActiveConnection");
+			thiz.onError("NoActiveConnection");
 		}
 	}
 
 	/**
-	 * if there is audio it calls callbackError with "AudioAlreadyActive" parameter
+	 * if there is audio it calls onError with "AudioAlreadyActive" parameter
 	 */
 	unmuteLocalMic() {
 		if (thiz.remotePeerConnection != null) {
@@ -433,7 +409,7 @@ export default class WebRTCAdaptor
 			track.enabled = true;
 		}
 		else {
-			thiz.callbackError("NoActiveConnection");
+			thiz.onError("NoActiveConnection");
 		}
 	}
 
@@ -555,7 +531,7 @@ export default class WebRTCAdaptor
 			this.closePeerConnection(obj.streamId);
 		}
 		else if (obj.command == "error") {
-			thiz.callbackError(obj.definition);
+			thiz.onError(obj.definition);
 		}
 		else if (obj.command == "notification") {
 			thiz.callback(obj.definition, obj);

@@ -4,7 +4,7 @@ import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import WebRTCChat from '../../../molecules/WebRTCChat';
 import ScreenLoader from '../../../molecules/ScreenLoader';
-import SocketService from '../../../../libs/services/SocketService';
+import SocketIoService from '../../../../libs/services/SocketIoService';
 
 import {
   StyleSheet,
@@ -37,7 +37,7 @@ class LiveCastContainer extends Component{
   }
 
   goBack(){
-    SocketService.instance.kill();
+    SocketIoService.instance.kill();
     this.props.navigation.goBack();
   }
 
@@ -51,7 +51,7 @@ class LiveCastContainer extends Component{
                 chat={this.props.chat}
                 sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}
                 goBack={() => {this.goBack()}}
-                publishEvent={(event) => { SocketService.instance.publishEvent(this.props.chat.roomId, event) }}
+                publishEvent={(event) => { SocketIoService.instance.publishEvent(this.props.chat.roomId, event) }}
                 iceCandidates={this.state.iceCandidates}
                 sdpAnswer={this.state.viewerResponse.sdpAnswer}
                 hasError={this.state.hasError}

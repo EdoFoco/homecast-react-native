@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import SocketService from '../../../../libs/services/SocketService';
+import SocketIoService from '../../../../libs/services/SocketIoService';
 import AdminWebRTCChat from '../../../molecules/AdminWebRTCChat';
 import {
   StyleSheet,
@@ -30,19 +30,11 @@ class LiveCastContainer extends Component{
     this.props.getViewing(this.props.navigation.state.params.viewing.id)
     .then((resp) => {
       return this.props.updateRoomId(resp.id);
-    })
-    .then(() => {
-      console.log('About to connect!!');
-      var connectionData = {
-        roomId: this.props.navigation.state.params.viewing.id,
-        username: this.props.user.info.name,
-        isPresenter: true
-      };
     });
   }
 
   goBack(){
-    SocketService.instance.kill();
+    SocketIoService.instance.kill();
     this.props.navigation.goBack();
   }
 
@@ -54,6 +46,7 @@ class LiveCastContainer extends Component{
             <AdminWebRTCChat 
               user={this.props.user} 
               chat={this.props.chat}
+              viewing={this.props.navigation.state.params.viewing}
               sendMessage={(roomId, username, message) => { this.props.message(roomId, username, message)}}
               network={this.props.network}
               hasError={this.state.webRtcError}
@@ -91,10 +84,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(LiveCastContainer);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    flex: 1
   },
   
 });
