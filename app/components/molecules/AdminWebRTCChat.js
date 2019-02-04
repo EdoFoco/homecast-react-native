@@ -10,6 +10,7 @@ import ScreenLoader from '../molecules/ScreenLoader';
 import WebRtcAdaptor from '../../libs/third-party/AntMedia/WebRtcAdaptor';
 import SocketIoService from '../../libs/services/SocketIoService';
 import * as SocketStatus from '../../libs/services/SocketStatus';
+import * as WebRtcEvents from '../../libs/third-party/AntMedia/WebRtcEvents';
 import { 
   View,
   StyleSheet,
@@ -56,13 +57,27 @@ export default class AdminWebRTCChat extends Component{
         break;
       case SocketStatus.ERROR_CONNECTING:
         console.log('Socket.Io Connection Error');
+        this._disconnectWebRtcAdaptor();
+        this._disconnectChat();
         this.setState({ errorMessage: "Connection error. \r\n\r\nCheck your internet connection and try again." });
         break;
       case SocketStatus.RECONNECTING:
         console.log('Socket.Io Reconnecting');
+        this.setState({ chatConnectionStatus: SocketStatus.RECONNECTING });
         this.setState({ connectionMessage: "Reconnecting" })
     }
-    
+  }
+
+  _disconnectChat(){
+    if(this.state.chatConnectionStatus != SocketStatus.DISCONNECTED){
+      if(this.state.streamId){
+        this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
+        this.setState({streamId: null});
+       }
+  
+       this.socketIoService.disconnect();
+       this.setState({ chatConnectionStatus: SocketStatus.DISCONNECTED});
+    }
   }
 
   _onMessageReceived(message){
@@ -89,53 +104,9 @@ export default class AdminWebRTCChat extends Component{
       sdp_constraints : sdpConstraints,
       debug: false,
       setRemoteSource: (source) => {this.setState({stream: source})},
-      callback : (info, description) => {
-        console.log('Status:', info);
-        if (info == "initialized") {
-          console.log("initialized");
-        } else if (info == "publish_started") {
-          console.log("publish started");
-          this.socketIoService.addStream(this.props.user.info, this.state.streamId);
-        } else if (info == "publish_finished") {
-          console.log("publish finished");
-          this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
-        }
-        else if (info == "closed") {
-          //console.log("Connection closed");
-          if (typeof description != "undefined") {
-            console.log("Connecton closed: " + JSON.stringify(description));
-          }
-        }
-      },
       onConnect: () => { this._onWebRtcConnected()},
       onEvent: (event, data) => { this._onWebRtcEvent(event, data) },
-      onError : function(error, message) {
-        //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
-              
-        console.log("error callback: " +  JSON.stringify(error));
-        var errorMessage = JSON.stringify(error);
-        if (typeof message != "undefined") {
-          errorMessage = message;
-        }
-        var errorMessage = JSON.stringify(error);
-        if (error.indexOf("NotFoundError") != -1) {
-          errorMessage = "Camera or Mic are not found or not allowed in your device";
-        }
-        else if (error.indexOf("NotReadableError") != -1 || error.indexOf("TrackStartError") != -1) {
-          errorMessage = "Camera or Mic is being used by some other process that does not let read the devices";
-        }
-        else if(error.indexOf("OverconstrainedError") != -1 || error.indexOf("ConstraintNotSatisfiedError") != -1) {
-          errorMessage = "There is no device found that fits your video and audio constraints. You may change video and audio constraints"
-        }
-        else if (error.indexOf("NotAllowedError") != -1 || error.indexOf("PermissionDeniedError") != -1) {
-          errorMessage = "You are not allowed to access camera and mic.";
-        }
-        else if (error.indexOf("TypeError") != -1) {
-          errorMessage = "Video/Audio is required";
-        }
-        console.error(errorMessage);
-        this.setState({ errorMessage: errorMessage });
-      }
+      onError : (error, message) => { this._handleWebRtcError(error) }
     });
   }
 
@@ -156,19 +127,73 @@ export default class AdminWebRTCChat extends Component{
 
   _onWebRtcEvent(event, data) {
     console.log('WebRtcEvent: ', event, data);
+    
+    if(event == WebRtcEvents.PUBLISH_STARTED){
+      console.log("publish started");
+      this.socketIoService.addStream(this.props.user.info, this.state.streamId);
+    } else if (event == WebRtcEvents.PUBLISHED_FINISHED) {
+      console.log("publish finished");
+      this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
+    }
+    else if (event == WebRtcEvents.CLOSED) {
+      this._disconnectChat();
+      
+      if (typeof description != "undefined") {
+        console.log("Connecton closed: " + JSON.stringify(description));
+      }
+    }
+  }
+
+  _handleWebRtcError(error) {
+    this._disconnectWebRtcAdaptor();
+    
+    var errorMessage = 'Connection error. Try again later.';
+    try{
+      errorMessage = JSON.stringify(error);
+    }
+    catch(e){
+      //Do nothing;
+    }
+
+    if (typeof message != "undefined") {
+      errorMessage = message;
+    }
+   
+    if (errorMessage.indexOf("NotFoundError") != -1) {
+      errorMessage = "Camera or Mic are not found or not allowed in your device";
+    }
+    else if (errorMessage.indexOf("NotReadableError") != -1 || errorMessage.indexOf("TrackStartError") != -1) {
+      errorMessage = "Camera or Mic is being used by some other process that does not let read the devices";
+    }
+    else if(errorMessage.indexOf("OverconstrainedError") != -1 || errorMessage.indexOf("ConstraintNotSatisfiedError") != -1) {
+      errorMessage = "There is no device found that fits your video and audio constraints. You may change video and audio constraints"
+    }
+    else if (errorMessage.indexOf("NotAllowedError") != -1 || errorMessage.indexOf("PermissionDeniedError") != -1) {
+      errorMessage = "You are not allowed to access camera and mic.";
+    }
+    else if (errorMessage.indexOf("TypeError") != -1) {
+      errorMessage = "Video/Audio is required";
+    }
+    console.error('WebRtc Error: ', errorMessage);
+    this.setState({ errorMessage: errorMessage });
+  }
+  
+  _disconnectWebRtcAdaptor(){
+    if(this.state.webRtcConnectionStatus != SocketStatus.DISCONNECTED){
+      if(this.state.streamId){
+        this.webRtcAdaptor.closeStream(this.state.streamId);
+      }
+      this.webRtcAdaptor.disconnect();
+      this.setState({webRtcConnectionStatus: SocketStatus.DISCONNECTED});
+    }
   }
 
   _endCall(){
      InCallManager.stop();
-    
-     if(this.state.streamId){
-      this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
-      this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
-      this.webRtcAdaptor.closeStream(this.state.streamId);
-     }
 
-     this.webRtcAdaptor.disconnect();
-     this.socketIoService.disconnect();
+     this._disconnectWebRtcAdaptor();
+     this._disconnectChat();
+     
      this.props.goBack();
   }
 
@@ -185,7 +210,6 @@ export default class AdminWebRTCChat extends Component{
         }   
     });
   }
-
   
   render() {
       console.log(this.state);

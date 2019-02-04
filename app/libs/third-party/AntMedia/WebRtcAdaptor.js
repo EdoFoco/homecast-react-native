@@ -26,7 +26,6 @@ export default class WebRTCAdaptor
 		thiz.audioTrackSender = null;
 		thiz.playStreamId = new Array();
 		thiz.micGainNode = null;
-		thiz.callback = config.callback;
 		thiz.onError = config.onError;
 		thiz.onConnect = config.onConnect;
 		thiz.onEvent = config.onEvent;
@@ -203,7 +202,6 @@ export default class WebRTCAdaptor
 
 	gotStream(stream) 
 	{	
-		//console.log(stream);
 		thiz.localStream = stream;
 		thiz.setRemoteSource(thiz.localStream);
 	};
@@ -266,9 +264,8 @@ export default class WebRTCAdaptor
 					streamId: streamId
 			}
 			thiz.setRemoteSource(event.streams[0]);
-			thiz.callback("newStreamAvailable", dataObj);
+			//thiz.callback("newStreamAvailable", dataObj);
 		}
-
 	}
 
 	iceCandidateReceived(event, streamId) {
@@ -523,13 +520,13 @@ export default class WebRTCAdaptor
 			thiz.onError(obj.definition);
 		}
 		else if (obj.command == "notification") {
-			thiz.callback(obj.definition, obj);
-			if (obj.definition == "play_finished" || obj.definition == "publish_finished") {
-				this.closePeerConnection(obj.streamId);
-			}
+			thiz.onEvent(obj.definition, obj);
+			// if (obj.definition == "play_finished" || obj.definition == "publish_finished") {
+			// 	this.closePeerConnection(obj.streamId);
+			// }
 		}
 		else if (obj.command == "streamInformation") {
-			thiz.callback(obj.command, obj);
+			thiz.onEvent(obj.command, obj);
 		}
 	}
 
