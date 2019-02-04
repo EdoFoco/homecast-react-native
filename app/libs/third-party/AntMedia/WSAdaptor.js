@@ -1,61 +1,40 @@
-//import * as socketCluster from 'socketcluster-client';
-
 export default class WSAdaptor{
 
     connected = false;
     webSocketUrl = '';
     wsConn = null;
-    debug = true;
-    callback = () => {console.log('WSAdaptor: Callback not defined')};
-    callbackError = () => {console.log('WSAdaptor: CallbackError not defined')};
-    onMessage = () => {console.log('WSAdaptor: OnMessage not defined')};
-
-    constructor(webSocketUrl, callback, callbackError, onMessage ){
+   
+    constructor(webSocketUrl, onConnect, onEvent, onError, onMessage ){
         this.webSocketUrl = webSocketUrl;
-        this.callback = callback;
-        this.callbackError = callbackError;
+        this.onConnect = onConnect;
+        this.onEvent = onEvent;
+        this.onError = onError;
         this.onMessage = onMessage;
     }
 
     initialize(){
-        console.log("Initializing WSAdaptor");
-        console.log(this.webSocketUrl);
-        try{
-            this.wsConn = new WebSocket(this.webSocketUrl);
-            console.log(this.wsConn);
-        }
-        catch(e){
-            console.log(e);
-        }
+        this.wsConn = new WebSocket(this.webSocketUrl);
         
         this.wsConn.onopen = () => {
-            console.log('Connected');
-            if (this.debug) {
-                console.log("websocket connected");
-            }
-
             this.connected = true;
-            this.callback("initialized");
+            this.onConnect();
         }
 
         this.wsConn.onmessage = (event) => {
-            // console.log('Message received');
-            // console.log(event);
-			 this.onMessage(event);
+        	 this.onMessage(event);
         }
         
         this.wsConn.onerror = (error) => {
-            console.log('Error occured');
-			console.log(" error occured: " + JSON.stringify(error));
-			this.callbackError(error)
+            console.log('Error connecting to WebRtc Server');
+			this.onError(error)
         }
         
-        this.wsConn.onclose = (event) => {
+        this.wsConn.onclose = (data) => {
             console.log("connection closed.");
 
 			this.connected = false;
 
-			this.callback("closed", event);
+			this.onEvent("closed", data);
 		}
     }
 
@@ -65,10 +44,13 @@ export default class WSAdaptor{
 
     send(text) {
         if (this.wsConn.readyState == 0 || this.wsConn.readyState == 2 || this.wsConn.readyState == 3) {
-            this.callbackError("WebSocketNotConnected");
+            this.onError("WebSocketNotConnected");
             return;
         }
         this.wsConn.send(text);
-        console.log("sent message:" +text);
+    }
+
+    disconnect(){
+        this.wsConn.close();
     }
 }

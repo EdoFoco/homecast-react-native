@@ -8,25 +8,28 @@ import {
   } from 'react-native-webrtc';
 
 var thiz;
+
 export default class WebRTCAdaptor
 {
 	constructor(config){
-		console.log('Initializing WebRtcAdaptor');
 		thiz = this;
+		//thiz.websocketUrl = 'ws://ec2-3-8-201-4.eu-west-2.compute.amazonaws.com:5080/WebRTCAppEE/websocket',
+		thiz.websocketUrl = 'ws://192.168.43.245:5080/WebRTCAppEE/websocket',
 
-		thiz.websocketUrl = 'ws://ec2-3-8-201-4.eu-west-2.compute.amazonaws.com:5080/WebRTCAppEE/websocket',
 		thiz.peerconnection_config = null;
 		thiz.mediaConstraints = config.mediaConstraints,
 		thiz.sdp_constraints = null;
 		thiz.remotePeerConnection = new Array();
 		thiz.webSocketAdaptor = null;
 		thiz.roomName = null;
-		thiz.videoTrackSender = null;
+		thiz.videoTrackSender = null; //Check both of these if they're needed up here - they are not referened
 		thiz.audioTrackSender = null;
 		thiz.playStreamId = new Array();
 		thiz.micGainNode = null;
 		thiz.callback = config.callback;
 		thiz.onError = config.onError;
+		thiz.onConnect = config.onConnect;
+		thiz.onEvent = config.onEvent;
 		thiz.isPlayMode = false;
 		thiz.setRemoteSource = config.setRemoteSource;
 		thiz.remoteStream = config.remoteStream;
@@ -37,11 +40,13 @@ export default class WebRTCAdaptor
 				thiz[key] = config[key];
 			}
 		}
+
+		thiz.webSocketAdaptor = new WSAdaptor(thiz.websocketUrl, () => { thiz.onConnect() }, (event, data) => { thiz.onEvent(event, data)}, thiz.onError, (event) => { this.onMessageReceived(event)});
+		thiz.webSocketAdaptor.initialize();
 	}
 	
-	startVideo()
+	startMedia()
 	{
-		console.log('Starting video');
 		return this.getMedia()
 		.then((stream) => {
 			return this.gotStream(stream);
@@ -55,7 +60,6 @@ export default class WebRTCAdaptor
 		var isFront = true;
 		return MediaStreamTrack.getSources()
 		.then((sourceInfos) => {
-			console.log(sourceInfos);
 			let videoSourceId;
 			for (let i = 0; i < sourceInfos.length; i++) {
 			  const sourceInfo = sourceInfos[i];
@@ -85,18 +89,19 @@ export default class WebRTCAdaptor
 	/**
 	 * Closes stream, if you want to stop peer connection, call stop(streamId)
 	 */
-	closeStream() {
+	closeStream(streamId) {
 		
-		this.localStream.getVideoTracks().forEach((track) => {
+		thiz.localStream.getVideoTracks().forEach((track) => {
 			track.onended = null;
             track.stop();
         });
 		
-		this.localStream.getAudioTracks().forEach((track) => {
+		thiz.localStream.getAudioTracks().forEach((track) => {
 			track.onended = null;
             track.stop();
         });
 		
+		this.stop(streamId);
 	}
 
 	enableMicInMixedAudio(enable) {
@@ -115,8 +120,8 @@ export default class WebRTCAdaptor
 				command : "publish",
 				streamId : streamId,
 				token : token,
-				video: this.mediaConstraints.video == false ? false : true,
-						audio: this.mediaConstraints.audio == false ? false : true,
+				video: thiz.mediaConstraints.video == false ? false : true,
+						audio: thiz.mediaConstraints.audio == false ? false : true,
 		};
 
 		thiz.webSocketAdaptor.send(JSON.stringify(jsCmd));
@@ -132,7 +137,6 @@ export default class WebRTCAdaptor
 		}
 
 		thiz.webSocketAdaptor.send(JSON.stringify(jsCmd));
-
 	}
 
 	play(streamId, token) {
@@ -174,7 +178,6 @@ export default class WebRTCAdaptor
 				command : "leaveFromRoom",
 				room: roomName,
 		};
-		console.log ("leave request is sent for "+ roomName);
 
 		thiz.webSocketAdaptor.send(JSON.stringify(jsCmd));
 	}
@@ -200,9 +203,9 @@ export default class WebRTCAdaptor
 
 	gotStream(stream) 
 	{	
-		console.log(stream);
-		this.localStream = stream;
-		this.setRemoteSource(this.localStream);
+		//console.log(stream);
+		thiz.localStream = stream;
+		thiz.setRemoteSource(thiz.localStream);
 	};
 
 	switchVideoCapture(streamId) {
@@ -215,11 +218,11 @@ export default class WebRTCAdaptor
 	}
 
 	arrangeStreams(stream, onEndedCallback) {
-		var videoTrack = this.localStream.getVideoTracks()[0];
-		this.localStream.removeTrack(videoTrack);
+		var videoTrack = thiz.localStream.getVideoTracks()[0];
+		thiz.localStream.removeTrack(videoTrack);
 		videoTrack.stop();
-		this.localStream.addTrack(stream.getVideoTracks()[0]);
-		this.localVideo.srcObject = this.localStream;
+		thiz.localStream.addTrack(stream.getVideoTracks()[0]);
+		this.localVideo.srcObject = thiz.localStream;
 		if (onEndedCallback != null) {
 			stream.getVideoTracks()[0].onended = (event) => {
 				onEndedCallback(event);
@@ -239,7 +242,7 @@ export default class WebRTCAdaptor
 					this.arrangeStreams(stream, onEndedCallback);
 
 				}).catch((error) => {
-					console.log(error.name);
+					//console.log(error.name);
 				});
 			}
 			else {
@@ -253,16 +256,16 @@ export default class WebRTCAdaptor
 
 
 	onTrack(event, streamId) {
-		if (this.remoteStream != null) {
-			this.setRemoteSource(event.streams[0]);
-			console.log('Received remote stream');
+		if (thiz.remoteStream != null) {
+			thiz.setRemoteSource(event.streams[0]);
+			//console.log('Received remote stream');
 		}
 		else {
 			var dataObj = {
 					track: event.streams[0],
 					streamId: streamId
 			}
-			this.setRemoteSource(event.streams[0]);
+			thiz.setRemoteSource(event.streams[0]);
 			thiz.callback("newStreamAvailable", dataObj);
 		}
 
@@ -280,8 +283,8 @@ export default class WebRTCAdaptor
 			};
 
 			if (thiz.debug) {
-				console.log("sending ice candiate for stream Id " + streamId );
-				console.log(JSON.stringify(event.candidate));
+				//console.log("sending ice candiate for stream Id " + streamId );
+				//console.log(JSON.stringify(event.candidate));
 			}
 
 			thiz.webSocketAdaptor.send(JSON.stringify(jsCmd));
@@ -292,14 +295,14 @@ export default class WebRTCAdaptor
 	initPeerConnection(streamId) {
 		if (thiz.remotePeerConnection[streamId] == null) 
 		{
-			console.log('Created new peer connection');
+			//console.log('Created new peer connection');
 			var closedStreamId = streamId;
-			console.log("stream id in init peer connection: " + streamId + " close dstream id: " + closedStreamId);
+			//console.log("stream id in init peer connection: " + streamId + " close dstream id: " + closedStreamId);
 			thiz.remotePeerConnection[streamId] = new RTCPeerConnection(thiz.peerconnection_config);
-			console.log("Play Stream ID:", thiz.playStreamId, streamId);
+			//console.log("Play Stream ID:", thiz.playStreamId, streamId);
 			if (!thiz.playStreamId.includes(streamId)) 
 			{
-				thiz.remotePeerConnection[streamId].addStream(this.localStream);
+				thiz.remotePeerConnection[streamId].addStream(thiz.localStream);
 			}
 			thiz.remotePeerConnection[streamId].onicecandidate = (event) => {
 				this.iceCandidateReceived(event, closedStreamId);
@@ -345,7 +348,7 @@ export default class WebRTCAdaptor
 		.setLocalDescription(configuration)
 		.then((responose) =>
 				{
-			console.log("Set local description successfully for stream Id " + streamId);
+			//console.log("Set local description successfully for stream Id " + streamId);
 
 			var jsCmd = {
 					command : "takeConfiguration",
@@ -356,8 +359,8 @@ export default class WebRTCAdaptor
 			};
 
 			if (thiz.debug) {
-				console.log("local sdp: ");
-				console.log(configuration.sdp);
+				//console.log("local sdp: ");
+				//console.log(configuration.sdp);
 			}
 
 			thiz.webSocketAdaptor.send(JSON.stringify(jsCmd));
@@ -372,7 +375,7 @@ export default class WebRTCAdaptor
 	turnOffLocalCamera(){
 		if (thiz.remotePeerConnection != null) {
 
-			var track = this.localStream.getVideoTracks()[0];
+			var track = thiz.localStream.getVideoTracks()[0];
 			track.enabled = false;
 		}
 		else {
@@ -382,7 +385,7 @@ export default class WebRTCAdaptor
 
 	turnOnLocalCamera(){
 		if (thiz.remotePeerConnection != null) {
-			var track = this.localStream.getVideoTracks()[0];
+			var track = thiz.localStream.getVideoTracks()[0];
 			track.enabled = true;
 		}
 		else {
@@ -392,7 +395,7 @@ export default class WebRTCAdaptor
 
 	muteLocalMic() {
 		if (thiz.remotePeerConnection != null) {
-			var track = this.localStream.getAudioTracks()[0];
+			var track = thiz.localStream.getAudioTracks()[0];
 			track.enabled = false;
 		}
 		else {
@@ -405,7 +408,7 @@ export default class WebRTCAdaptor
 	 */
 	unmuteLocalMic() {
 		if (thiz.remotePeerConnection != null) {
-			var track = this.localStream.getAudioTracks()[0];
+			var track = thiz.localStream.getAudioTracks()[0];
 			track.enabled = true;
 		}
 		else {
@@ -415,7 +418,7 @@ export default class WebRTCAdaptor
 
 	takeConfiguration(idOfStream, configuration, typeOfConfiguration) 
 	{
-		console.log('taking configuration', idOfStream, typeOfConfiguration);
+		//console.log('taking configuration', idOfStream, typeOfConfiguration);
 
 		var streamId = idOfStream
 		var type = typeOfConfiguration;
@@ -430,24 +433,19 @@ export default class WebRTCAdaptor
 
 			if (thiz.debug) {
 				console.log("set remote description is succesfull with response: " + response + " for stream : " 
-						+ streamId + " and type: " + type);
-				console.log(conf);
+					+ streamId + " and type: " + type);
 			}
 
 			if (type == "offer") {
 				//SDP constraints may be different in play mode
-				console.log("try to create answer for stream id: " + streamId);
-
 				thiz.remotePeerConnection[streamId].createAnswer(thiz.sdp_constraints)
-				.then((configuration) =>
-						{
-					console.log("created answer for stream id: " + streamId);
+				.then((configuration) => {
 					this.gotDescription(configuration, streamId);
-						})
-						.catch((error) =>
-								{
-							console.error("create answer error :" + error);
-								});
+				})
+				.catch((error) =>
+				{
+					console.error("create answer error :" + error);
+				});
 			}
 
 		}).catch((error) => {
@@ -477,7 +475,6 @@ export default class WebRTCAdaptor
 		})
 		.catch((error) =>{ 
 			console.error("ice candiate cannot be added for stream id: " + streamId + " error is: " + error  );
-			console.error(candidate);
 		});
 
 	}
@@ -490,21 +487,14 @@ export default class WebRTCAdaptor
 		thiz.remotePeerConnection[streamId].createOffer(thiz.sdp_constraints)
 		.then((configuration) => {
 			this.gotDescription(configuration, streamId);
-		})
-		.catch((error) => {
-
-			console.error("create offer error for stream id: " + streamId + " error: " + error);
 		});
 	}
 
 	onMessageReceived(event){
 		var obj = JSON.parse(event.data);
-		console.log('MESSAGE: ', obj);
-
+		
 		if (obj.command == "start") 
 		{
-			//this command is received first, when publishing so playmode is false
-
 			if (thiz.debug) {
 				console.log("received start command");
 			}
@@ -527,7 +517,6 @@ export default class WebRTCAdaptor
 			this.takeConfiguration(obj.streamId, obj.sdp, obj.type);
 		}
 		else if (obj.command == "stop") {
-			console.log("Stop command received");
 			this.closePeerConnection(obj.streamId);
 		}
 		else if (obj.command == "error") {
@@ -542,5 +531,9 @@ export default class WebRTCAdaptor
 		else if (obj.command == "streamInformation") {
 			thiz.callback(obj.command, obj);
 		}
+	}
+
+	disconnect(){
+		this.webSocketAdaptor.disconnect();
 	}
 }

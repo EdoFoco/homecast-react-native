@@ -42,7 +42,6 @@ class LiveCastContainer extends Component{
   }
 
   render(){
-   
     if(this.props.chat.roomId){
       return(
           <View style={styles.container}>

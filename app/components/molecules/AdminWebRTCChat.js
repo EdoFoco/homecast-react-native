@@ -9,17 +9,15 @@ import InCallManager from 'react-native-incall-manager';
 import ScreenLoader from '../molecules/ScreenLoader';
 import WebRtcAdaptor from '../../libs/third-party/AntMedia/WebRtcAdaptor';
 import SocketIoService from '../../libs/services/SocketIoService';
-
+import * as SocketStatus from '../../libs/services/SocketStatus';
 import { 
   View,
   StyleSheet,
   Dimensions,
   TouchableHighlight,
-  Text} from 'react-native';
+  } from 'react-native';
 
- import {
-  RTCView } from 'react-native-webrtc';
-
+ import { RTCView } from 'react-native-webrtc';
 
 var localStream;
 
@@ -28,8 +26,10 @@ export default class AdminWebRTCChat extends Component{
   constructor(props){
     super(props);
     this.state = {
-      webRtcConnectionStatus: 'Connecting',
-      chatConnectionStatus: 'Connecting',
+      webRtcConnectionStatus: SocketStatus.CONNECTING,
+      chatConnectionStatus: SocketStatus.CONNECTING,
+      connectionMessage: 'Connecting',
+      streamId: null,
       chatEvents: [],
       stream: null,
       errorMessage: null
@@ -37,19 +37,32 @@ export default class AdminWebRTCChat extends Component{
   }
 
   componentDidMount(){
-    this._initWebRtcAdaptor();
     this._initChat();
   }
 
   _initChat(){
-    this.socketIoService = new SocketIoService(() => {this._onChatConnected()}, (message) => {this._onMessageReceived(message)} );
+    console.log(`viewing-${this.props.viewing.id}`);
+    this.socketIoService = new SocketIoService((status, data) => {this._onChatChangeStatus(status, data)}, (message) => {this._onMessageReceived(message)} );
     this.socketIoService.joinRoom(`viewing-${this.props.viewing.id}`, {id: this.props.user.info.id, name: this.props.user.info.name});
   }
 
-  _onChatConnected(){
-    console.log('Chat Connected');
-    this.setState({ chatConnectionStatus: true });
-    this.socketIoService.joinRoom(`viewing-${this.props.viewing.id}`, { id: this.props.user.info.id, name: this.props.user.info.name });
+  _onChatChangeStatus(status, data){
+    switch(status){
+      case SocketStatus.CONNECTED:
+        console.log('Chat Connected');
+        this.setState({ chatConnectionStatus: SocketStatus.CONNECTED });
+        this.socketIoService.joinRoom(`viewing-${this.props.viewing.id}`, this.props.user.info);
+        this._initWebRtcAdaptor();
+        break;
+      case SocketStatus.ERROR_CONNECTING:
+        console.log('Socket.Io Connection Error');
+        this.setState({ errorMessage: "Connection error. \r\n\r\nCheck your internet connection and try again." });
+        break;
+      case SocketStatus.RECONNECTING:
+        console.log('Socket.Io Reconnecting');
+        this.setState({ connectionMessage: "Reconnecting" })
+    }
+    
   }
 
   _onMessageReceived(message){
@@ -74,19 +87,18 @@ export default class AdminWebRTCChat extends Component{
       mediaConstraints : mediaConstraints,
       peerconnection_config : pc_config,
       sdp_constraints : sdpConstraints,
-      debug:true,
+      debug: false,
       setRemoteSource: (source) => {this.setState({stream: source})},
-      callback : function(info, description) {
+      callback : (info, description) => {
         console.log('Status:', info);
         if (info == "initialized") {
           console.log("initialized");
         } else if (info == "publish_started") {
-          //stream is being published
           console.log("publish started");
-          //startAnimation();
+          this.socketIoService.addStream(this.props.user.info, this.state.streamId);
         } else if (info == "publish_finished") {
-          //stream is being finished
           console.log("publish finished");
+          this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
         }
         else if (info == "closed") {
           //console.log("Connection closed");
@@ -95,6 +107,8 @@ export default class AdminWebRTCChat extends Component{
           }
         }
       },
+      onConnect: () => { this._onWebRtcConnected()},
+      onEvent: (event, data) => { this._onWebRtcEvent(event, data) },
       onError : function(error, message) {
         //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
               
@@ -125,8 +139,36 @@ export default class AdminWebRTCChat extends Component{
     });
   }
 
+  _onWebRtcConnected(){
+    console.log('WebRtc Connected');
+    this.setState({ webRtcConnectionStatus: SocketStatus.CONNECTED });
+    
+    var streamId = Math.random().toString(36).substring(7);
+    this.setState({streamId: streamId});
+    this.webRtcAdaptor.startMedia()
+    .then(() => {
+      this.webRtcAdaptor.publish(streamId);
+    })
+    .catch((e) => {
+      this.setState({errorMessage: 'There was a problem with your camera or microphone.'});
+    });
+  }
+
+  _onWebRtcEvent(event, data) {
+    console.log('WebRtcEvent: ', event, data);
+  }
+
   _endCall(){
      InCallManager.stop();
+    
+     if(this.state.streamId){
+      this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
+      this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
+      this.webRtcAdaptor.closeStream(this.state.streamId);
+     }
+
+     this.webRtcAdaptor.disconnect();
+     this.socketIoService.disconnect();
      this.props.goBack();
   }
 
@@ -146,37 +188,36 @@ export default class AdminWebRTCChat extends Component{
 
   
   render() {
-       if(this.state.chatConnectionStatus == 'Connecting' || this.state.webRtcConnectionStatus == 'Connecting'){
+      console.log(this.state);
+      if(this.state.webRtcConnectionStatus != SocketStatus.CONNECTED || this.state.chatConnectionStatus != SocketStatus.CONNECTED){
+        return <ScreenLoader message={this.state.connectionMessage} errorMessage = { this.state.errorMessage} goBack={() => {this._endCall()}}/>
+      }
+      
+      if(this.state.chatConnectionStatus == SocketStatus.CONNECTING 
+        || this.state.webRtcConnectionStatus == SocketStatus.CONNECTING
+        || this.state.stream == null){
           return(
               <ScreenLoader message='Getting ready to broadcast...' goBack={() => {this._endCall() }}/>
           )
        }
 
-       if(this.props.hasError){
-          return <ScreenLoader message='Error connecting. Try again.' goBack={() => {this._endCall() }}/>
-        }
-
-        if(this.state.webRtcConnectionStatus != 'connected'){
-          return <TouchableHighlight style={{paddingTop: 20}} onPress={() => {	this.webRtcAdaptor.publish('stream1', null); }}><Text>Start</Text></TouchableHighlight>
-        }
-
-        return (
-          <RTCView streamURL={this.state.stream.toURL()} style={styles.remoteView}  objectFit ='cover'>
-              <View style={styles.videoCommands}>
-                <TouchableHighlight onPress={()=>{ this._setMute()}} style={styles.muteBtn}>
-                 {
-                   !this.state.isMicrophoneMute ?
-                   <FontAwesomeIcon name="microphone-slash" style={styles.muteIcon} /> :
-                   <FontAwesomeIcon name="microphone" style={styles.muteIcon} />
-                 }
-                </TouchableHighlight>
-                  <TouchableHighlight style={styles.hangUpBtn} onPress={() => {this._endCall()}}>
-                    <MCIcon name="phone-hangup" style={styles.hangupIcon} />
-                </TouchableHighlight>
-              </View>
-              <Chat chat={this.props.chat} user={this.props.user} sendMessage={(roomId, username, message) => { this.props.sendMessage(roomId, username, message)}}/>
-          </RTCView>
-        );
+      return (
+        <RTCView streamURL={this.state.stream.toURL()} style={styles.remoteView}  objectFit ='cover'>
+            <View style={styles.videoCommands}>
+              <TouchableHighlight onPress={()=>{ this._setMute()}} style={styles.muteBtn}>
+                {
+                  !this.state.isMicrophoneMute ?
+                  <FontAwesomeIcon name="microphone-slash" style={styles.muteIcon} /> :
+                  <FontAwesomeIcon name="microphone" style={styles.muteIcon} />
+                }
+              </TouchableHighlight>
+                <TouchableHighlight style={styles.hangUpBtn} onPress={() => {this._endCall()}}>
+                  <MCIcon name="phone-hangup" style={styles.hangupIcon} />
+              </TouchableHighlight>
+            </View>
+            <Chat chat={this.props.chat} user={this.props.user} sendMessage={(roomId, username, message) => { this.props.sendMessage(roomId, username, message)}}/>
+        </RTCView>
+      );
   }
 }
 

@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight
 } from 'react-native';
 
 class LiveCastContainer extends Component{
@@ -34,12 +33,10 @@ class LiveCastContainer extends Component{
   }
 
   goBack(){
-    SocketIoService.instance.kill();
     this.props.navigation.goBack();
   }
 
   render(){
-    console.log(this.state.roomStatus);
     //if(this.props.chat.roomId && this.state.socketId){
       return(
           <View style={styles.container}>
