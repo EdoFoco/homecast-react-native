@@ -128,7 +128,9 @@ export function getMessages(chatId, page){
         try{
             var apiService = await ApiServiceFactory.getInstance();
             var resp = await apiService.sendMessage(chatId, message);
-            return dispatch(getMessages(chatId));
+            return {
+                type: 'DO_NOTHING'
+            };
         }
         catch(error){
             handleError(error, dispatch);
