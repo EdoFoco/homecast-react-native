@@ -17,4 +17,5 @@ export const ON_PARTICIPANT_JOINED = 'participant joined';
 export const ON_PARTICIPANT_LEFT = 'participant left';
 export const ON_STREAM_REMOVED = 'stream removed';
 export const ON_ROOM_DETAILS = 'room details';
+export const ON_ROOM_JOINED = 'room joined';
 

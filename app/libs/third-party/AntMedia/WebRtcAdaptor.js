@@ -1,4 +1,5 @@
 import WSAdaptor from './WSAdaptor';
+import * as Config from '../../../config';
 import {
 	RTCIceCandidate,
 	RTCPeerConnection,
@@ -14,7 +15,7 @@ export default class WebRTCAdaptor
 	constructor(config){
 		thiz = this;
 		//thiz.websocketUrl = 'ws://ec2-3-8-201-4.eu-west-2.compute.amazonaws.com:5080/WebRTCAppEE/websocket',
-		thiz.websocketUrl = 'ws://192.168.43.245:5080/WebRTCAppEE/websocket',
+		thiz.websocketUrl = Config.MEDIA_SERVER_URL,
 
 		thiz.peerconnection_config = null;
 		thiz.mediaConstraints = config.mediaConstraints,
@@ -489,7 +490,7 @@ export default class WebRTCAdaptor
 
 	onMessageReceived(event){
 		var obj = JSON.parse(event.data);
-		
+		console.log(obj);
 		if (obj.command == "start") 
 		{
 			if (thiz.debug) {

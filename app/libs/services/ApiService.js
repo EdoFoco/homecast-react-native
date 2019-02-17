@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import FormData from 'form-data';
+import * as Config from '../../config';
 
 class ApiService {
   
@@ -8,7 +9,7 @@ class ApiService {
 
     constructor(){
         this.apiClient = axios.create({
-            baseURL: 'http://192.168.43.245:8111',
+            baseURL: Config.HOMECAST_API_URL,
             //baseURL: 'https://api.homecastapp.com',
             headers: {
                 'Accept': 'application/json',

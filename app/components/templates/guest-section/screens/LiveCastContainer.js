@@ -54,6 +54,7 @@ class LiveCastContainer extends Component{
                 iceCandidates={this.state.iceCandidates}
                 sdpAnswer={this.state.viewerResponse.sdpAnswer}
                 hasError={this.state.hasError}
+                viewing={this.props.navigation.state.params.viewing}
               />
           </View>
       );

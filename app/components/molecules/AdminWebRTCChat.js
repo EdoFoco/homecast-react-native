@@ -11,6 +11,8 @@ import WebRtcAdaptor from '../../libs/third-party/AntMedia/WebRtcAdaptor';
 import SocketIoService from '../../libs/services/SocketIoService';
 import * as SocketStatus from '../../libs/services/SocketStatus';
 import * as WebRtcEvents from '../../libs/third-party/AntMedia/WebRtcEvents';
+import * as SocketCommands from '../../libs/services/SocketCommands';
+
 import { 
   View,
   StyleSheet,
@@ -30,6 +32,7 @@ export default class AdminWebRTCChat extends Component{
       webRtcConnectionStatus: SocketStatus.CONNECTING,
       chatConnectionStatus: SocketStatus.CONNECTING,
       connectionMessage: 'Connecting',
+      roomDetails: null,
       streamId: null,
       chatEvents: [],
       stream: null,
@@ -43,8 +46,7 @@ export default class AdminWebRTCChat extends Component{
 
   _initChat(){
     console.log(`viewing-${this.props.viewing.id}`);
-    this.socketIoService = new SocketIoService((status, data) => {this._onChatChangeStatus(status, data)}, (message) => {this._onMessageReceived(message)} );
-    this.socketIoService.joinRoom(`viewing-${this.props.viewing.id}`, {id: this.props.user.info.id, name: this.props.user.info.name});
+    this.socketIoService = new SocketIoService((status, data) => {this._onChatChangeStatus(status, data)}, (message) => {this._onMessageReceived(message)}, (event, data) => { this._onChatEvent(event, data) } );
   }
 
   _onChatChangeStatus(status, data){
@@ -53,7 +55,6 @@ export default class AdminWebRTCChat extends Component{
         console.log('Chat Connected');
         this.setState({ chatConnectionStatus: SocketStatus.CONNECTED });
         this.socketIoService.joinRoom(`viewing-${this.props.viewing.id}`, this.props.user.info);
-        this._initWebRtcAdaptor();
         break;
       case SocketStatus.ERROR_CONNECTING:
         console.log('Socket.Io Connection Error');
@@ -68,14 +69,31 @@ export default class AdminWebRTCChat extends Component{
     }
   }
 
+  _onChatEvent(event, data){
+    console.log(`Chat Event: ${event}`, data);
+    if(event == SocketCommands.ON_ROOM_JOINED){
+        this.socketIoService.getRoomDetails(this.props.user.info);
+    }
+    if(event == SocketCommands.ON_ROOM_DETAILS){
+      var roomDetails = JSON.parse(data);
+      this.setState({ roomDetails: roomDetails});
+      if(this.state.webRtcConnectionStatus != SocketStatus.CONNECTED){
+        this._initWebRtcAdaptor();
+      }
+    }
+  }
+
   _disconnectChat(){
     if(this.state.chatConnectionStatus != SocketStatus.DISCONNECTED){
       if(this.state.streamId){
+        this.webRtcAdaptor.stop(this.state.streamId);
         this.socketIoService.removeStream(this.props.user.info, this.state.streamId);
         this.setState({streamId: null});
        }
   
-       this.socketIoService.disconnect();
+       if(this.socketIoService){
+        this.socketIoService.disconnect();
+       }
        this.setState({ chatConnectionStatus: SocketStatus.DISCONNECTED});
     }
   }
@@ -112,13 +130,17 @@ export default class AdminWebRTCChat extends Component{
 
   _onWebRtcConnected(){
     console.log('WebRtc Connected');
-    this.setState({ webRtcConnectionStatus: SocketStatus.CONNECTED });
     
     var streamId = Math.random().toString(36).substring(7);
     this.setState({streamId: streamId});
     this.webRtcAdaptor.startMedia()
     .then(() => {
       this.webRtcAdaptor.publish(streamId);
+      this.publishTimeout = setTimeout(() => {
+        this.setState({ errorMessage: "There was a problem with your viewing, please try again."});
+        this._disconnectWebRtcAdaptor();
+        this._disconnectChat();
+      }, 10000);
     })
     .catch((e) => {
       this.setState({errorMessage: 'There was a problem with your camera or microphone.'});
@@ -130,6 +152,11 @@ export default class AdminWebRTCChat extends Component{
     
     if(event == WebRtcEvents.PUBLISH_STARTED){
       console.log("publish started");
+      if(this.publishTimeout){
+        clearTimeout(this.publishTimeout);
+      }
+
+      this.setState({ webRtcConnectionStatus: SocketStatus.CONNECTED });
       this.socketIoService.addStream(this.props.user.info, this.state.streamId);
     } else if (event == WebRtcEvents.PUBLISHED_FINISHED) {
       console.log("publish finished");
@@ -179,13 +206,11 @@ export default class AdminWebRTCChat extends Component{
   }
   
   _disconnectWebRtcAdaptor(){
-    if(this.state.webRtcConnectionStatus != SocketStatus.DISCONNECTED){
-      if(this.state.streamId){
-        this.webRtcAdaptor.closeStream(this.state.streamId);
-      }
-      this.webRtcAdaptor.disconnect();
+    if(this.state.webRtcConnectionStatus != SocketStatus.DISCONNECTED && this.webRtcAdaptor){
       this.setState({webRtcConnectionStatus: SocketStatus.DISCONNECTED});
     }
+    this.webRtcAdaptor.disconnect();
+
   }
 
   _endCall(){

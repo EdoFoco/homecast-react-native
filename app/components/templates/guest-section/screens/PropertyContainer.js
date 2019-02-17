@@ -47,8 +47,6 @@ class PropertyContainer extends Component{
 }
 
 const mapStateToProps = (state, navigation) => {
-    console.log('p state');
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,

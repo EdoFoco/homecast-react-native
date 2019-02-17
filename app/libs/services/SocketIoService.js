@@ -1,11 +1,12 @@
 import SocketIOClient from 'socket.io-client';
 import * as Status from './SocketStatus';
 import * as SocketCommands from './SocketCommands';
+import * as Config from '../../config';
 
 export default class SocketIoService {
   
-   constructor(onChangeStatus, onMessageReceived){
-        this.socket = SocketIOClient('http://192.168.43.245:3000', 
+   constructor(onChangeStatus, onMessageReceived, onRoomEvent){
+        this.socket = SocketIOClient(Config.SOCKET_SERVICE_URL, 
         {
             'reconnection': true,
             'reconnectionDelay': 500,
@@ -14,6 +15,7 @@ export default class SocketIoService {
 
         this.onChangeStatus = onChangeStatus;
         this.onMessageReceived = onMessageReceived;
+        this.onRoomEvent = onRoomEvent;
 
         this.socket.on(SocketCommands.ON_CONNECT, () => {
             this.onChangeStatus(Status.CONNECTED);
@@ -40,23 +42,31 @@ export default class SocketIoService {
         });
 
         this.socket.on(SocketCommands.ON_STREAM_ADDED, (data) => {
-            console.log('Stream Added: ', JSON.parse(data));
+            this.onRoomEvent(SocketCommands.ON_STREAM_ADDED, data);
         });
 
         this.socket.on(SocketCommands.ON_PARTICIPANT_JOINED, (data) => {
-            console.log('Participant Joined: ', JSON.parse(data));
+            this.onRoomEvent(SocketCommands.ON_PARTICIPANT_JOINED, data);
         });
 
         this.socket.on(SocketCommands.ON_PARTICIPANT_LEFT, (data) => {
-            console.log('Participant Left: ', JSON.parse(data));
+            this.onRoomEvent(SocketCommands.ON_PARTICIPANT_LEFT, data);
         });
 
         this.socket.on(SocketCommands.ON_STREAM_REMOVED, (data) => {
-            console.log('Stream Removed: ', JSON.parse(data));
+            this.onRoomEvent(SocketCommands.ON_STREAM_REMOVED, data);
         });
 
         this.socket.on(SocketCommands.ON_ROOM_DETAILS, (data) => {
-            console.log('Room Details: ', JSON.parse(data));
+            this.onRoomEvent(SocketCommands.ON_ROOM_DETAILS, data);
+        });
+
+        this.socket.on(SocketCommands.ON_ROOM_JOINED, (data) => {
+            this.onRoomEvent(SocketCommands.ON_ROOM_JOINED);
+        });
+        
+        this.socket.on(SocketCommands.ON_STREAM_ADDED, (data) => {
+            this.onRoomEvent(SocketCommands.ON_STREAM_ADDED, data);
         });
    }
 
@@ -87,7 +97,7 @@ export default class SocketIoService {
        this.socket.emit(SocketCommands.ADD_STREAM, JSON.stringify(data))
    }
 
-   removeStream(user, streamId){
+    removeStream(user, streamId){
         var data = {
             user: user,
             streamId: streamId

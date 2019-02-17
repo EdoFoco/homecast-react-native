@@ -171,7 +171,6 @@ PropertiesScreen.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,
