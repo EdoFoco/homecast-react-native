@@ -4,7 +4,7 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import EntypoIcons from 'react-native-vector-icons/Entypo';
 import {
-   TouchableHighlight,
+   TouchableOpacity,
    View,
    Text,
    StyleSheet
@@ -23,7 +23,7 @@ export default class ViewingRow extends Component{
 
    render() {
     return (
-        <TouchableHighlight onPress={() => {this.props.goToViewing(this.props.viewing.id)}}>
+        <TouchableOpacity activeOpacity={1.0} onPress={() => {this.props.goToViewing(this.props.viewing.id)}}>
             <View style={styles.viewingRow}>
                 <EntypoIcons name="video-camera" style={styles.icon}/>
                 <View style={styles.viewingDateContainer}>
@@ -34,7 +34,7 @@ export default class ViewingRow extends Component{
                 <Text style={styles.viewingTime}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
 
             </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
     )
   }
 }

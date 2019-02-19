@@ -5,20 +5,33 @@ import { bindActionCreators } from 'redux';
 import Property from '../../shared/Property';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import { View, StyleSheet } from 'react-native';
-
+import InteractionBlocker from '../../shared/InteractionBlocker';
+import ErrorScreen from '../../shared/ErrorScreen';
 
 class PropertyContainer extends Component{
 
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoading: false,
+      showErrorScreen: false,
+      errorMessage: null
+    }
+  }
+
   _goToViewing(viewingId){
+      this.setState({isLoading: true});
       this.props.getViewingReservations(this.props.user.info.id)
       .then(() => {
         return this.props.getViewing(viewingId);
       })
       .then((viewing) => {
+        this.setState({isLoading: false});
         return this.props.navigation.navigate('PropertyViewing', { viewing: viewing, property: this.props.currentProperty});
       })
       .catch((e) => {
         console.log(e);
+        this.setState({isLoading: false, showErrorScreen: true });
       })
     }
   
@@ -40,6 +53,14 @@ class PropertyContainer extends Component{
             contactAgent={(message) => {this.props.navigation.navigate('CreateChatContainer', {recipients : [this.props.user.info, this.props.currentProperty.user], message: message })}}
             showContactAgent={this.props.user.info.id != this.props.currentProperty.user.id}
           />
+          {
+            !this.state.isLoading ? null :
+            <InteractionBlocker />
+          }
+          {
+            !this.state.showErrorScreen ? null :
+            <ErrorScreen close={() => { this.setState({showErrorScreen: false, errorMessage: null})}} errorMessage={this.state.errorMessage} />
+          }
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
         </View>
     )

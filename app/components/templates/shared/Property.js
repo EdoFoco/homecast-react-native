@@ -9,7 +9,6 @@ import PlaceholderFastImage from './PlaceholderFastImage';
 import FastImage from 'react-native-fast-image';
 import MapView, { Marker } from 'react-native-maps';
 import ViewingPicker from '../shared/ViewingPicker';
-import ViewingCell from './ViewingCell';
 import {
   StyleSheet,
   Text,
