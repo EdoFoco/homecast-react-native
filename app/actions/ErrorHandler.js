@@ -3,19 +3,22 @@ import { AsyncStorage } from 'react-native';
 
 export function getActionForError(error){
     if(!error.response && error.message.toLowerCase() == 'network error'){
-        return showNetworkError(true);
+        //return showNetworkError(true);
+        return handleNetworkError();
     }
     if(error.response && error.response.status){
-        switch(error.response.status){
-            case 400:
-                if(error.response.data.error === 'token_invalid' || error.response.data.error === 'token_not_provided'){
-                    return handleUnauthorized();
-                }
-                
-                return handleBadRequest(error.response.data.error.message);
-            case 403:
-            case 401:
+        if(error.response.status == 401 || error.response.status == 403){
+            return handleUnauthorized();
+        }
+        else if(error.response.status >= 400 && error.response.status < 500){
+            if(error.response.data.error === 'token_invalid' || error.response.data.error === 'token_not_provided'){
                 return handleUnauthorized();
+            }
+
+            return handleBadRequest();
+        }
+        else{
+            return handleUnknown();
         }
     }
 }
@@ -44,4 +47,12 @@ export function resetReducers(){
 
 export function handleBadRequest(message){
     throw { statusCode: 400, message: message };
+}
+
+export function handleNetworkError(message){
+    throw { message: 'Sorry, something went wrong.' }
+};
+
+export function handleUnknown(){
+    throw { statusCode: 500, message: 'Our engineers are on it. Try again later.'}
 }

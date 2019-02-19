@@ -8,6 +8,8 @@ import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 import AuthForm from '../molecules/AuthForm';
 import { YellowBox } from 'react-native';
+import * as Types from '../../actions/Types';
+import * as ErrorHandler from '../../actions/ErrorHandler';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Module WebRTCModule', 'Module RNInCallManager', 'Remote debugger']);
 import SplashScreen from 'react-native-splash-screen';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
@@ -30,13 +32,10 @@ class MainScreen extends Component {
   componentWillMount(){
     this.props.getLoggedInUser()
     .catch((error) => {
-        console.warn(error);
-        if(typeof error.response !== 'undefined'){
-            if(error.response.status == 401){
-                return this.props.handleUnauthorized();
-            }
+        var action = ErrorHandler.getActionForError(error);
+        if(error.type == Types.UNAUTHORIZED_USER){
+          return this.props.handleUnauthorized();
         }
-       return this.props.handleUnauthorized();
     })
     .then(() => {
       if(this.props.section.sectionName == 'guest'){

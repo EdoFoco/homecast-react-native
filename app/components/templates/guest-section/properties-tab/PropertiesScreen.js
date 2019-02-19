@@ -2,11 +2,10 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
-import { View, StyleSheet, FlatList, TouchableHighlight, Dimensions, Text, Keyboard, TextInput } from 'react-native';
+import { View, StyleSheet, FlatList, Keyboard } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Autocomplete from '../../shared/Autocomplete';
 import LocationSuggestions from '../../shared/LocationSuggestions';
@@ -14,6 +13,8 @@ import FiltersModal from '../../shared/FiltersModal';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GAClient from '../../../../libs/third-party/GoogleAnalytics/ga';
+import InteractionBlocker from '../../shared/InteractionBlocker';
+import ErrorScreen from '../../shared/ErrorScreen';
 
 class PropertiesScreen extends Component{
   
@@ -23,39 +24,54 @@ class PropertiesScreen extends Component{
       isSearching: false,
       locationSearchValue: '',
       showFiltersModal: false,
-      isRefreshing: false
+      isRefreshing: false,
+      isLoading: false,
+      hasError: false,
+      errorMessage: null
     }
   }
 
   _onPress(property){
+      this.setState({isLoading: true});
       this.props.getPropertyViewings(property.id)
       .then(() => {
+        this.setState({isLoading: false});
         this.props.goToGuestPropertyScreen(property);
         this.props.navigation.navigate('PropertyStack');
       })
       .catch((e) => {
         console.log(e);
-      })
+        this.setState({isLoading: false});
+        this.setState({hasError: true, errorMessage: e.message});
+      });
   }
 
   _addToFavourites(userId, propertyId){
+    this.setState({isLoading: true});
     this.props.addToFavourites(userId, propertyId)
     .then(() => {
       return this.props.getProperties();
     })
-    .catch((error) => {
-      console.error("Unahndled when adding to favourites");
+    .then(() => {
+      this.setState({isLoading: false});
+    })
+    .catch(() => {
+      this.setState({isLoading: false});
+      this.setState({hasError: true});
     });
   }
 
   _removeFromFavourites(userId, propertyId){
-   
     this.props.removeFromFavourites(userId, propertyId)
     .then(() => {
       return this.props.getProperties();
     })
-    .catch((error) => {
-      console.error("Unahndled when removing from favourites");
+    .then(() => {
+      this.setState({isLoading: false});
+    })
+    .catch(() => {
+      this.setState({isLoading: false});
+      this.setState({hasError: true});    
     });
   }
 
@@ -106,7 +122,7 @@ class PropertiesScreen extends Component{
 
     this.props.getProperties(null, this.props.properties.current_page + 1)
     .catch((e) => {
-      console.log(e);
+      this.setState({hasError: true}); 
     });
   }
 
@@ -157,6 +173,14 @@ class PropertiesScreen extends Component{
             closeModal={() => {this.setState({showFiltersModal: false})}} />
         }
 
+        {
+          !this.state.isLoading ? null :
+          <InteractionBlocker />
+        }
+        {
+          !this.state.hasError ? null :
+          <ErrorScreen close={() => { this.setState({hasError: false, errorMessage: null})}} errorMessage={this.state.errorMessage} />
+        }
         <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
     )

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ViewingCell from '../templates/shared/ViewingCell';
 import PropTypes from 'prop-types';
 import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
@@ -9,7 +8,7 @@ import FastImage from 'react-native-fast-image';
 import PlaceholderFastImage from '../templates/shared/PlaceholderFastImage';
 import {
     StyleSheet,
-    TouchableHighlight,
+    TouchableWithoutFeedback,
     View,
     Text,
     FlatList,
@@ -22,11 +21,9 @@ export default class PropertyRow extends Component{
     let image = item.item;
     if(image){
       return(  
-        <TouchableHighlight style={{ width:  Dimensions.get('window').width, padding: 10, paddingTop: 15 }} onPress={() => this.props.onPress(this.props.property)}>
           <PlaceholderFastImage style={styles.backgroundImage} 
             source={{uri: image.url, priority: FastImage.priority.normal}} 
             resizeMode={FastImage.resizeMode.cover} />
-        </TouchableHighlight>
       )   
     }
   }
@@ -44,26 +41,28 @@ export default class PropertyRow extends Component{
     return (
         <View style={styles.propertyButton}  underlayColor='rgba(0,0,0,0)'>
             <View style={styles.propertContainer}>
-                <FlatList
-                    style={styles.imagesContainer}
-                    data={this.props.property.images}
-                    renderItem={(image) => this._renderImage(image)}
-                    keyExtractor={(index) => index.toString()}
-                    removeClippedSubviews={false}
-                    horizontal
-                    pagingEnabled
-                />
-                 { !this.props.enableFavourites ? null :
-                    <View style={styles.favouriteIconContainer}>
-                    <MaterialCommunityIcon.Button 
-                        name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
-                        backgroundColor='rgba(0,0,0,0)' 
-                        iconStyle={styles.favouriteIcon} 
-                        onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
-                    </View>
-                }
-            <TouchableHighlight style={{flex:1}} onPress={() => this.props.onPress(this.props.property)}>
-                <View tyle={styles.infoContainer} >
+                
+            <TouchableWithoutFeedback style={{flex:1}} onPress={() => this.props.onPress(this.props.property)} activeOpacity={1.0}>
+                <View style={{flex:1}}>
+                    <FlatList
+                        style={styles.imagesContainer}
+                        data={this.props.property.images}
+                        renderItem={(image) => this._renderImage(image)}
+                        keyExtractor={(index) => index.toString()}
+                        removeClippedSubviews={false}
+                        horizontal
+                        pagingEnabled
+                    />
+                    { !this.props.enableFavourites ? null :
+                        <View style={styles.favouriteIconContainer}>
+                        <MaterialCommunityIcon.Button 
+                            name={this.props.property.isFavourite ? 'heart': 'heart-outline'} 
+                            backgroundColor='rgba(0,0,0,0)' 
+                            iconStyle={styles.favouriteIcon} 
+                            onPress={ this.props.property.isFavourite ? () => {this.props.onRemoveFromFavourites(this.props.user.id, this.props.property.id) } : () => { this.props.onAddToFavourites(this.props.user.id, this.props.property.id)}} /> 
+                        </View>
+                    }
+                    <View tyle={styles.infoContainer} > 
                     <View style={styles.propertyDescriptionWrapper}>
                         <View style={styles.leftWrapper}>
                             <View style={styles.priceWrapper}>
@@ -98,7 +97,9 @@ export default class PropertyRow extends Component{
                         }
                     </View>
                 </View>
-            </TouchableHighlight>
+                </View>
+                
+            </TouchableWithoutFeedback>
         </View>
         </View>
     );
@@ -129,8 +130,9 @@ const styles = StyleSheet.create({
         height: 250
     },
     backgroundImage: {
-        height: 250,
         borderRadius: 5,
+        flex: 1,
+        width: Dimensions.get('window').width,
     },
     propertContainer: {
         flex: 1,

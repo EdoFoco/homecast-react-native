@@ -15,7 +15,8 @@ class CreateChatContainer extends Component{
     super(props);
     this.state = {
       chat: {
-        users: this.props.navigation.state.params.recipients
+        users: this.props.navigation.state.params.recipients,
+        message: this.props.navigation.state.params.message
       }
     }
   }
@@ -37,7 +38,7 @@ class CreateChatContainer extends Component{
   }
 
   async _returnEmptyChat(){
-    return { messages: [], current_page: 0, last_page: 0 };
+    return { data: [], current_page: 0, last_page: 0 };
   }
 
   _getMessages(page){
@@ -53,8 +54,9 @@ class CreateChatContainer extends Component{
       <View style={styles.container}>
         <ChatScreen 
             user={this.props.user} 
-            chat={this.state.chat} 
-            getMessages={(page) => { return new Promise((resolve, reject) => {
+            chat={this.state.chat}
+            message={this.state.chat.message}
+            getMessages={(chatId, page) => { return new Promise((resolve, reject) => {
               resolve(this._getMessages(page));
               })}}
             sendMessage={(chatId, text) => {

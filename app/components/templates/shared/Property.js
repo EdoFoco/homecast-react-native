@@ -8,6 +8,7 @@ import ViewingRow from './ViewingRow';
 import PlaceholderFastImage from './PlaceholderFastImage';
 import FastImage from 'react-native-fast-image';
 import MapView, { Marker } from 'react-native-maps';
+import ViewingPicker from '../shared/ViewingPicker';
 import {
   StyleSheet,
   Text,
@@ -16,6 +17,7 @@ import {
   TouchableHighlight,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
   RefreshControl
 } from 'react-native';
 
@@ -26,7 +28,8 @@ export default class Property extends Component{
 
     this.state = {
         activeTab: 1,
-        isRefreshing: false
+        isRefreshing: false,
+        showViewingPicker: false
     }
    }
    
@@ -39,6 +42,7 @@ export default class Property extends Component{
     return `${weekday}, ${day} ${month} ${year}`;
   }
 
+  
   _renderImage = ({item}) => {
     let image = item;
     return(  
@@ -105,8 +109,11 @@ export default class Property extends Component{
               </View>
          </View>
         </View>
-        <View style={styles.sectionTitleContainer}>
-          <Text style={styles.sectionTitle}>Live Viewings</Text>
+        <View style={styles.sectionTitleContainerLiveViewing}>
+          <Text style={styles.sectionTitleLiveViewing}>Live Viewings</Text>
+          <TouchableOpacity activeOpacity={1} style={styles.requestDifferentViewingBtn} onPress={() => {this.setState({showViewingPicker: true})}}>
+              <Text style={styles.requestDifferentViewingTxt}>Request Different Time</Text>
+          </TouchableOpacity>
         </View>
         <View style={{marginBottom: 20, marginTop: 10, paddingBottom: 20, flex:1}}>
         {
@@ -159,6 +166,11 @@ export default class Property extends Component{
     });
   }
 
+  _sendViewingRequest(date){
+    let invitationMessage = `Hi. I'm available for a live viewing ${date.toLocaleString('en-gb', {timeZone:'Europe/London', hour12: true, day:'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'})} (GMT). Is it possible to arrange one on that date?`;
+    this.props.contactAgent(invitationMessage);
+  }
+
   render() {
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -180,6 +192,16 @@ export default class Property extends Component{
           <TouchableHighlight style={styles.contactAgentButton} onPress={() => {this.props.contactAgent()}}>
               <Text style={styles.contactAgentButtonTxt}>Contact Agent</Text>
           </TouchableHighlight>
+        }
+        {
+          !this.state.showViewingPicker ? null :
+          <ViewingPicker 
+            title="Choose date and time"
+            subTitle="Let the agent know when you'll be available to view the flat."
+            ctaText="Send Request"
+            close={() => { this.setState({showViewingPicker: false})} }
+            chooseDate = { (date) => { this._sendViewingRequest(date) } }
+          />
         }
       </View>
     )
@@ -229,13 +251,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   liveViewingsTitle: {
-      backgroundColor: "rgba(246,67,74,1)", 
-      alignSelf: 'stretch', 
-      color:'white',
-      fontSize: FontSizes.DEFAULT,
-      padding: 10, 
-      justifyContent: 'center'
-    },
+    backgroundColor: "rgba(246,67,74,1)", 
+    alignSelf: 'stretch', 
+    color:'white',
+    fontSize: FontSizes.DEFAULT,
+    padding: 10, 
+    justifyContent: 'center'
+  },
   menuWrapper: {
     flexDirection: 'row',
     backgroundColor: Colors.DARK_BLUE,
@@ -409,6 +431,33 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 15,
+  },
+  sectionTitleContainerLiveViewing: {
+    backgroundColor: Colors.WHITE_SMOKE,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 15,
+    flexDirection: 'row',
+    flex: 1
+  },
+  requestDifferentViewingBtn: {
+    backgroundColor: Colors.AQUA_GREEN,
+    borderRadius: 5,
+    marginRight: 10,
+    padding: 10,
+    position: 'absolute',
+    top: 10,
+    right: 0
+  },
+  requestDifferentViewingTxt: {
+    color: 'white',
+    fontSize: FontSizes.DEFAULT
+  },  
+  sectionTitleLiveViewing: {
+    fontSize: FontSizes.DEFAULT, 
+    color: Colors.LIGHT_GRAY,
+    fontWeight: 'bold',
+    flex: 0.6
   },
   sectionTitle: {
     fontSize: FontSizes.DEFAULT, 

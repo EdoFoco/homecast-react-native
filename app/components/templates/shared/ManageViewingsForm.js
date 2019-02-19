@@ -96,7 +96,7 @@ export default class ManageViewingsForm extends Component{
                 this.props.viewings.length == 0 ?
                 <View style={{flex: 0.9}}>
                     <Text style={styles.noViewingsText}>
-                        Add a viewing slots and start live streaming your flat.
+                        Add viewing slots and start live streaming your property.
                     </Text>
                 </View>
                 :

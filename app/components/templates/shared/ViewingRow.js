@@ -25,12 +25,11 @@ export default class ViewingRow extends Component{
         <TouchableHighlight onPress={() => {this.props.goToViewing(this.props.viewing.id)}}>
             <View style={styles.viewingRow}>
                 <View style={styles.viewingDateContainer}>
-                <Text>{this.props.viewing.status.status}</Text>
-
+                    {/* <Text>{this.props.viewing.status.status}</Text> */}
                     <Text style={styles.viewingTime}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                     <Text style={styles.dateStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
                 </View>
-                <Text style={styles.viewingCapacity}>{this.props.viewing.capacity} slots left</Text>
+                <Text style={styles.viewingCapacity}>{this.props.viewing.capacity} spaces left</Text>
             </View>
         </TouchableHighlight>
     )
@@ -52,13 +51,13 @@ const styles = StyleSheet.create({
         padding: 10
     },
     viewingCapacity: {
-        color: Colors.AQUA_GREEN,
+        color: Colors.DARK_GREY,
         fontSize: FontSizes.MEDIUM_BIG,
         textAlign: 'center',
-        borderWidth: 1,
-        borderColor: Colors.AQUA_GREEN,
-        padding: 5,
-        borderRadius: 10,
+        //borderWidth: 1,
+      //  borderColor: Colors.DARK_BLUE,
+       // padding: 5,
+        //borderRadius: 10,
         height: 40,
         flex: 0.4
     },

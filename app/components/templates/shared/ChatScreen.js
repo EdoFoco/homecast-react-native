@@ -21,11 +21,12 @@ export default class ChatScreen extends Component{
 
     constructor(props){
         super(props);
+        console.log(this.props);
         this.state = {
             currentPage: 1,
             lastPage: 1,
             messages: [],
-            message: null,
+            message: this.props.message,
             isLoadingMessages: true
         }
     }
@@ -36,6 +37,10 @@ export default class ChatScreen extends Component{
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
         this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
         
+        if(this.state.message){
+            this._send();
+        }
+
         this._getMessages()
         .then(() => {
             this.setState({isLoadingMessages: false});
@@ -44,6 +49,9 @@ export default class ChatScreen extends Component{
             this.chatPoll = setInterval(() => {
                 this._getMessages();
             }, 10000);
+        })
+        .catch((e) => {
+            console.log(e);
         });
     }
 

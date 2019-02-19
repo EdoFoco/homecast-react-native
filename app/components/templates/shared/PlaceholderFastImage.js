@@ -7,8 +7,7 @@ export default class PlaceHolderFastImage extends Component {
     super(props)
 
     this.state = {
-      loaded: false,
-      style: StyleSheet.flatten(props.style)
+      loaded: false
     }
   }
 
@@ -26,21 +25,41 @@ export default class PlaceHolderFastImage extends Component {
       source = this.props.source;
     }
 
-    return <View style={[this.props.style]}>
-      {
-        this.state.loaded ? null :
-          <FastImage 
-            source={img}
+    if(this.state.loaded){
+      return (
+        <FastImage 
+            source={source}
             style={this.props.style}
-            resizeMode={FastImage.resizeMode.cover}
+            resizeMode={this.props.resizeMode ? this.props.resizeMode : FastImage.resizeMode.cover}
+            onLoadEnd={() => {}}
           />
-       }
-      <FastImage 
-        source={source}
-        style={this.props.style}
-        onLoadEnd={() => {this.onLoadEnd() }}
-        resizeMode={this.props.resizeMode ? this.props.resizeMode : FastImage.resizeMode.cover}
-      />
-    </View>
+      )
+    }
+    else{
+      return (
+        <FastImage 
+          source={source}
+          style={this.props.style}
+          onLoadEnd={() => {this.onLoadEnd() }}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+      )
+    }
+    // return <View style={[this.props.style]}>
+    //   {
+    //     this.state.loaded ? null :
+    //       <FastImage 
+    //         source={img}
+    //         style={this.props.style}
+    //         resizeMode={FastImage.resizeMode.cover}
+    //       />
+    //    }
+    //   <FastImage 
+    //     source={source}
+    //     style={this.props.style}
+    //     onLoadEnd={() => {this.onLoadEnd() }}
+    //     resizeMode={this.props.resizeMode ? this.props.resizeMode : FastImage.resizeMode.cover}
+    //   />
+    // </View>
   }
 }
