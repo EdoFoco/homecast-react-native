@@ -35,7 +35,7 @@ export default class ViewingPicker extends Component{
     render(){
         return (
             <View style={styles.modalContainer}>
-                    <TouchableHighlight style={styles.formOverlay} onPress={() => {this.props.close()}}><Text></Text></TouchableHighlight>
+                    <TouchableOpacity style={styles.formOverlay} onPress={() => {this.props.close()}}><Text></Text></TouchableOpacity>
                     <View style={styles.formContainer}>
                         <View style={styles.formWrapper}>
                             <Text style={styles.modalTitle}>{this.props.title}</Text>
@@ -75,9 +75,9 @@ export default class ViewingPicker extends Component{
                             />
                         </View>
                         <View style={styles.actionsContainer}>
-                            <TouchableHighlight style={styles.saveButton} onPress={() => { this.props.chooseDate(this.state.viewingDateTime) }}>
+                            <TouchableOpacity style={styles.saveButton} onPress={() => { this.props.chooseDate(this.state.viewingDateTime) }}>
                                 <Text style={styles.buttonTextLight}>{this.props.ctaText}</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -168,5 +168,10 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: FontSizes.DEFAULT,
         alignSelf: 'center',
+    },
+    saveButton: {
+        backgroundColor: Colors.AQUA_GREEN,
+        flex: 1, 
+        justifyContent: 'center',
     },
 });

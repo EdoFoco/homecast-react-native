@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
+import EntypoIcons from 'react-native-vector-icons/Entypo';
 import {
    TouchableHighlight,
    View,
@@ -24,12 +25,14 @@ export default class ViewingRow extends Component{
     return (
         <TouchableHighlight onPress={() => {this.props.goToViewing(this.props.viewing.id)}}>
             <View style={styles.viewingRow}>
+                <EntypoIcons name="video-camera" style={styles.icon}/>
                 <View style={styles.viewingDateContainer}>
                     {/* <Text>{this.props.viewing.status.status}</Text> */}
-                    <Text style={styles.viewingTime}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                     <Text style={styles.dateStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
+                    <Text style={styles.viewingCapacity}>{this.props.viewing.capacity} slots left</Text>
                 </View>
-                <Text style={styles.viewingCapacity}>{this.props.viewing.capacity} spaces left</Text>
+                <Text style={styles.viewingTime}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
+
             </View>
         </TouchableHighlight>
     )
@@ -48,32 +51,37 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         flexDirection: 'row',
         justifyContent: 'center',
-        padding: 10
+        margin: 10,
+        paddingBottom: 10
     },
     viewingCapacity: {
-        color: Colors.DARK_GREY,
-        fontSize: FontSizes.MEDIUM_BIG,
-        textAlign: 'center',
+        color: Colors.VERY_LIGHT_GRAY,
+        fontSize: FontSizes.DEFAULT,
+        textAlign: 'left',
         //borderWidth: 1,
       //  borderColor: Colors.DARK_BLUE,
-       // padding: 5,
         //borderRadius: 10,
-        height: 40,
-        flex: 0.4
     },
     viewingDateContainer: {
         flex: 0.6,
     },
     viewingTime:{
-        fontSize: FontSizes.MEDIUM_BIG,
-        textAlign: 'left',
+        fontSize: FontSizes.DEFAULT,
+        textAlign: 'right',
         color: Colors.DARK_GREY,
-        paddingRight: 5
+        paddingRight: 5,
+        flex: 0.4
+
     },
     dateStyle:{
         fontSize: FontSizes.DEFAULT,
-        color: Colors.VERY_LIGHT_GRAY,
+        color: Colors.DARK_GREY,
         flex: 1,
         textAlign: 'left'
+    },
+    icon: {
+        fontSize: FontSizes.TITLE,
+        color: Colors.DARK_GREY,
+        marginRight: 20
     }
 })    

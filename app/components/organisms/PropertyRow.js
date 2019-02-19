@@ -6,6 +6,7 @@ import * as Colors from '../helpers/ColorPallette';
 import * as FontSizes from '../helpers/FontSizes';
 import FastImage from 'react-native-fast-image';
 import PlaceholderFastImage from '../templates/shared/PlaceholderFastImage';
+
 import {
     StyleSheet,
     TouchableWithoutFeedback,

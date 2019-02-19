@@ -27,6 +27,7 @@ export default class ViewingCell extends Component{
                 <View style={styles.viewingDateContainer}>
                     <Text style={styles.viewingTime}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
                     <Text style={styles.dateStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
+                    <Text style={styles.capacity}>10 spots left</Text>
                 </View>
             </View>
         </TouchableHighlight>
@@ -44,10 +45,12 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
-        padding: 5,
-        borderColor: Colors.AQUA_GREEN,
-        borderRadius: 10,
-        borderWidth: 1,
+        backgroundColor: Colors.AQUA_GREEN,
+        paddingLeft: 40,
+        paddingRight: 40,
+        borderRadius: 5,
+       // borderRightWidth: 1,
+        //borderColor: Colors.VERY_LIGHT_GRAY,
         marginLeft: 5,
         marginRight: 5,
         marginTop: 5
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
         flex: 0.4
     },
     viewingDateContainer: {
-        flex: 0.6,
+        //flex: 0.6,
     },
     viewingTime:{
         fontSize: FontSizes.DEFAULT,
@@ -74,8 +77,13 @@ const styles = StyleSheet.create({
     },
     dateStyle:{
         fontSize: FontSizes.DEFAULT,
+        color: Colors.DARK_GREY,
+        textAlign: 'center'
+    },
+    capacity: {
+        textAlign: 'center',
         color: Colors.VERY_LIGHT_GRAY,
-        flex: 1,
-        textAlign: 'left'
+        fontSize: FontSizes.DEFAULT,
+        marginTop: 20
     }
 })    

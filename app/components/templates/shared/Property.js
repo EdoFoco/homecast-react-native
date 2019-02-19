@@ -9,6 +9,7 @@ import PlaceholderFastImage from './PlaceholderFastImage';
 import FastImage from 'react-native-fast-image';
 import MapView, { Marker } from 'react-native-maps';
 import ViewingPicker from '../shared/ViewingPicker';
+import ViewingCell from './ViewingCell';
 import {
   StyleSheet,
   Text,
@@ -115,7 +116,7 @@ export default class Property extends Component{
               <Text style={styles.requestDifferentViewingTxt}>Request Different Time</Text>
           </TouchableOpacity>
         </View>
-        <View style={{marginBottom: 20, marginTop: 10, paddingBottom: 20, flex:1}}>
+        <View style={styles.viewingsContainer}>
         {
           !this.props.currentProperty.viewings || this.props.currentProperty.viewings.length == 0 ?
           <Text style={styles.noViewingsText}>There are no viewings scheduled for this property. Contact the agent to ask for availability.</Text> :
@@ -125,7 +126,6 @@ export default class Property extends Component{
               renderItem={(viewing) => this._renderViewingItem(viewing)}
               keyExtractor={(item, index) => index.toString()}
               removeClippedSubviews={false}
-              
           />
         } 
         </View>
@@ -475,5 +475,11 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.DEFAULT,
     alignSelf: 'center',
     color: Colors.LIGHT_GRAY
+  },
+  viewingsContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingTop: 10,
+    paddingBottom: 10
   }
 });
