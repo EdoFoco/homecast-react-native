@@ -4,12 +4,11 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import PlaceholderFastImage from './PlaceholderFastImage';
-
+import PropertyImageSlider from './PropertyImageSlider';
 import {
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   ScrollView,
   Dimensions,
@@ -39,28 +38,25 @@ export default class ViewingScreen extends Component{
     
     if(this.props.reservation){
       if(this.props.reservation.viewing.status.status == 'ACTIVE'){
-        return (<TouchableHighlight style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id)}}>
+        return (<TouchableOpacity activeOpacity={1.0} style={styles.ctaBtnRed} onPress={() => {this.props.cancelViewingReservation(this.props.user.info.id, this.props.reservation.id)}}>
           <Text style={styles.ctaText}>Cancel Reservation </Text>
-        </TouchableHighlight>)
+        </TouchableOpacity>)
       }
       return (
-        <TouchableHighlight style={styles.ctaBtnDisabled} onPress={() => {}}>
+        <TouchableOpacity activeOpacity={1.0}  style={styles.ctaBtnDisabled} onPress={() => {}}>
             <Text style={styles.ctaText}>Cancel Reservation </Text>
-        </TouchableHighlight>) 
+        </TouchableOpacity>) 
     }
     else{
-        return (<TouchableHighlight style={styles.ctaBtnGreen} onPress={() => {this.props.createViewingReservation(this.props.user.info.id, this.props.viewing.id)}}>
+        return (<TouchableOpacity activeOpacity={1.0}  style={styles.ctaBtnGreen} onPress={() => {this.props.createViewingReservation(this.props.user.info.id, this.props.viewing.id)}}>
             <Text style={styles.ctaText}>Reserve Slot</Text>
-        </TouchableHighlight>)
+        </TouchableOpacity>)
     }
   }
 
   _toDateString(date){
-    let weekday = new Date(`${date}`).toLocaleString('en-us', {  weekday: 'short' });
-    let day = new Date(`${date}`).getDate();
-    let month = new Date(`${date}`).toLocaleString('en-us', {  month: 'short' });
-
-    return `${weekday}, ${day} ${month}`;
+    let dateString = new Date(date).toLocaleString('en-gb', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})
+    return `${dateString}`;
   }
  
   _refresh(){
@@ -75,31 +71,24 @@ export default class ViewingScreen extends Component{
     return(
         <View style={{flex: 1}}>
             <View style={{backgroundColor: Colors.DARK_BLUE, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingTop: 20}}>
-                <TouchableHighlight style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
+                <TouchableOpacity activeOpacity={1.0}  style={styles.backButton} onPress={() => {this.props.goBack()}} underlayColor={'rgba(0,0,0,0)'}>
                   <MaterialIcons name="chevron-left" style={styles.backButtonIcon}/>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>
             <ScrollView style={{backgroundColor: 'white', flex: 0.9}} refreshControl={
               <RefreshControl
                   refreshing={this.state.isRefreshing}
                   onRefresh={() => {this._refresh()}}
                 />} >
-                <PlaceholderFastImage style={styles.propertyImage} source={{uri: this.props.property.images.length > 0 ? this.props.property.images[0].url : ''}} />
-                <View style={styles.imageOverlay}>
-                  <View style={styles.dateContainer}>
-                    <Text style={styles.timeStyle}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()}</Text>
-                    <Text style={styles.weekDayStyle}>{this._toDateString(this.props.viewing.date_time)}</Text>
-                  </View>
-                </View>
-                
-                  {
+                <PropertyImageSlider images={this.props.property.images}/>
+                {
                     this.props.reservation ? 
                     <View style={styles.capacityContainer}>
                       <MaterialIcons name={this.props.viewing.status.status == 'ACTIVE' ? "check-circle-outline" : 'alert-circle-outline' } style={this.props.viewing.status.status == 'ACTIVE' ? styles.confirmationIcon : styles.alertIcon }/>
                       <Text style={styles.capacityText}>
                         {
                           this.props.viewing.status.status == 'ACTIVE' ?
-                          'Your viewing is confirmed. You will receive a notification and will be able to join the live stream closer to the date.' :
+                          'Your viewing is confirmed. You will receive a call when the agent starts streaming.' :
                           'This viewing was cancelled by the agent'
                         }
                       </Text>
@@ -108,35 +97,64 @@ export default class ViewingScreen extends Component{
                     <View style={styles.capacityContainer}>
                       <MaterialIcons name="alert-outline" style={styles.warningIcon}/>
                       <Text style={styles.capacityText}>
-                        There are only {this.props.viewing.capacity} spots left for this viewing. Remember to reserve a slot.
+                        There are only {this.props.viewing.capacity} spots left for this viewing. Reservations close one hour before the viewing starts.
                       </Text>
                     </View>
                   }
-                  {
-                    this.props.viewing.status.status == 'ACTIVE' ?
-                    <TouchableHighlight style={styles.joinLiveCast} onPress={() => {this.props.joinLiveCast()}}>
-                      <Text style={styles.ctaText}>Join Live Cast</Text>
-                    </TouchableHighlight>
-                    :
-                    <TouchableHighlight style={styles.joinLiveCastDisabled} onPress={() => {}}>
-                      <Text style={styles.ctaText}>Join Live Cast</Text>
-                    </TouchableHighlight>
-                  }
-                <TouchableHighlight style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
+                <View style={styles.actionsContainer}>
+                  <TouchableOpacity activeOpacity={1.0}  style={styles.buttonContainer} onPress={() => {this.props.goToProperty()}}>
+                      <View style={styles.buttonTextContainer}>
+                          <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
+                          <Text style={styles.buttonText}>Property details</Text>
+                      </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={1.0}  style={styles.buttonContainer} onPress={this.props.contactAgent}>
                     <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>View Property Details</Text>
-                        <FontAwesomeIcon name="home" style={styles.buttonIcon} /> 
-                    </View>
-                </TouchableHighlight>
-                { 
-                  this.props.user.info.id == this.props.property.user.id ? null : 
-                  <TouchableHighlight style={styles.buttonContainer} onPress={this.props.contactAgent}>
-                    <View style={styles.buttonTextContainer}>
-                        <Text style={styles.buttonText}>Contact Agent</Text>
                         <FontAwesomeIcon name="envelope-o" style={styles.buttonIcon} /> 
+                        <Text style={styles.buttonText}>Contact agent</Text>
                     </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.sectionTitleContainer}>
+                  <Text style={styles.sectionTitle}>Viewing date</Text>
+                </View>    
+                <View style={styles.descriptionContainer}>
+                    <Text style={styles.descriptionText}>{new Date(`${this.props.viewing.date_time}`).toLocaleString([], {hour: '2-digit', minute:'2-digit', hour12: true}).toUpperCase()} {this._toDateString(this.props.viewing.date_time)}</Text>
+                </View>
+                <View style={styles.sectionTitleContainer}>
+                  <Text style={styles.sectionTitle}>Agent details</Text>
+                </View>    
+                <View style={styles.descriptionContainer}>
+                    <Text style={styles.descriptionText}>{this.props.property.user.name} from Foxtons</Text>
+                </View>
+                <View style={styles.sectionTitleContainer}>
+                  <Text style={styles.sectionTitle}>How it works</Text>
+                </View>    
+                <View style={styles.descriptionContainer}>
+                    <View style={styles.stepsRow}>
+                      <Text style={styles.stepTitle}>1. Reserve a slot</Text>
+                      <Text style={styles.stepDescription}>Make sure to register to the live viewing. Registrations close one hour before the start.</Text>
+                    </View>
+                    <View style={styles.stepsRow}>
+                      <Text style={styles.stepTitle}>2. Answer the call</Text>
+                      <Text style={styles.stepDescription}>When the live viewing is about to start you will receive a phone call. Don't worry if you miss it, you can still access the viewing through this page.</Text>
+                    </View>
+                    <View style={styles.stepsRow}>
+                      <Text style={styles.stepTitle}>3. Join the live viewing</Text>
+                      <Text style={styles.stepDescription}>Let the agent show you around the property and feel free to ask questions using the real-time chat.</Text>
+                    </View>
+                </View>
+                {/* {
+                  this.props.viewing.status.status == 'ACTIVE' ?
+                  <TouchableHighlight style={styles.joinLiveCast} onPress={() => {this.props.joinLiveCast()}}>
+                    <Text style={styles.ctaText}>Join Live Cast</Text>
                   </TouchableHighlight>
-                } 
+                  :
+                  <TouchableHighlight style={styles.joinLiveCastDisabled} onPress={() => {}}>
+                    <Text style={styles.ctaText}>Join Live Cast</Text>
+                  </TouchableHighlight>
+                } */}
+                
             </ScrollView>
             <View style={styles.joinCastContainer}>
                {this._renderCTA()}
@@ -181,25 +199,21 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flex: 1,
     alignSelf: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   buttonTextContainer: {
-    flexDirection: 'row',
-    padding: 20
+    padding: 20,
   },
   buttonText: {
     fontSize: FontSizes.DEFAULT,
-    flex: 0.5
+    textAlign: 'center',
+    alignSelf: 'center',
+    color: Colors.DARK_GREY
   },
-  buttonText: {
-    alignSelf: 'flex-start',
-    fontSize: FontSizes.DEFAULT,
-    color: Colors.DARK_GREY,
-    flex: 0.9
-  },
+  
   buttonIcon: {
     color: Colors.AQUA_GREEN,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     flex: 0.1,
     fontSize: 28,
     fontWeight: '100'
@@ -276,18 +290,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   weekDayStyle: {
-    color: 'white',
-    fontSize: FontSizes.DEFAULT,
+    color: Colors.DARK_GREY,
+    fontSize: FontSizes.MEDIUM_BIG,
   },
   dayStyle: {
-    color: 'white',
-    fontSize: FontSizes.DEFAULT,
+    color: Colors.DARK_GREY,
+    fontSize: FontSizes.MEDIUM_BIG,
   },
   timeStyle: {
-    color: 'white',
-    fontSize: FontSizes.TITLE,
-    marginTop: 10,
-    fontWeight: 'bold',
+    color: Colors.DARK_GREY,
+    fontSize: FontSizes.DEFAULT,
+  },
+  presenterDetails: {
+    color: Colors.DARK_GREY,
+    fontSize: FontSizes.DEFAULT
   },
   monthStyle: {
     color: 'white',
@@ -314,18 +330,19 @@ const styles = StyleSheet.create({
   },
   capacityContainer:{
     flex: 1,
-    alignSelf: 'stretch',
     padding: 20,
     paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: Colors.VERY_LIGHT_GRAY
   },
   capacityText: {
     fontSize: FontSizes.DEFAULT,
     color: Colors.LIGHT_GRAY,
     marginLeft: 10,
-    paddingRight: 20
+    paddingRight: 25
   },
   alertIcon: {
     fontSize: 32,
@@ -333,7 +350,8 @@ const styles = StyleSheet.create({
   },
   warningIcon: {
     fontSize: 32,
-    color: Colors.WARNING
+    color: Colors.WARNING,
+    marginRight: 10
   },
   confirmationIcon: {
     fontSize: 32,
@@ -354,5 +372,42 @@ const styles = StyleSheet.create({
     margin: 10,
     height: 60,
     borderRadius: 10
+  },
+  sectionTitleContainer: {
+    backgroundColor: Colors.WHITE_SMOKE,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 15,
+  },
+  sectionTitle: {
+    fontSize: FontSizes.DEFAULT, 
+    color: Colors.LIGHT_GRAY,
+    fontWeight: 'bold'
+  },
+  descriptionContainer: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  descriptionText: {
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.DARK_GREY,
+  },
+  actionsContainer: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  stepsRow: {
+    marginBottom: 20
+  },
+  stepTitle: {
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.DARK_GREY,
+    fontWeight: 'bold'
+  },
+  stepDescription: {
+    fontSize: FontSizes.DEFAULT,
+    color: Colors.DARK_GREY
   }
 });

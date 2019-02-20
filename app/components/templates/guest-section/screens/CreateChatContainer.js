@@ -3,11 +3,8 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import ChatScreen from '../../shared/ChatScreen';
-
-import {
-  StyleSheet,
-  View} from 'react-native';
-
+import ErrorScreen from '../../shared/ErrorScreen';
+import { StyleSheet, View} from 'react-native';
 
 class CreateChatContainer extends Component{
 
@@ -17,7 +14,8 @@ class CreateChatContainer extends Component{
       chat: {
         users: this.props.navigation.state.params.recipients,
         message: this.props.navigation.state.params.message
-      }
+      },
+      showErrorScreen: false
     }
   }
 
@@ -31,10 +29,14 @@ class CreateChatContainer extends Component{
       })
       .catch((e) => {
         console.log(e);
+        this.setState({showErrorScreen: true});
       })
     }
 
-    return this.props.sendMessage(this.state.chat.id, text);
+    return this.props.sendMessage(this.state.chat.id, text)
+    .catch((e) => {
+      this.setState({showErrorScreen: true});
+    });
   }
 
   async _returnEmptyChat(){
@@ -43,7 +45,11 @@ class CreateChatContainer extends Component{
 
   _getMessages(page){
     if(this.state.chat.id){
-      return this.props.getMessages(this.state.chat.id, page);
+      return this.props.getMessages(this.state.chat.id, page)
+      .catch((e) => {
+        console.log(e);
+        this.setState({showErrorScreen: true});
+      });
     }
     return this._returnEmptyChat();
   }
@@ -65,6 +71,10 @@ class CreateChatContainer extends Component{
               })}}
             goBack={this.props.navigation.goBack}
         />
+        {
+          !this.state.showErrorScreen ? null :
+          <ErrorScreen close={() => { this.setState({showErrorScreen: false})}} />
+        }
       </View>
     )
   }

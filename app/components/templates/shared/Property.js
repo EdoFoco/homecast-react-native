@@ -5,17 +5,15 @@ import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import PropTypes from 'prop-types';
 import ViewingRow from './ViewingRow';
-import PlaceholderFastImage from './PlaceholderFastImage';
-import FastImage from 'react-native-fast-image';
 import MapView, { Marker } from 'react-native-maps';
 import ViewingPicker from '../shared/ViewingPicker';
+import PropertyImageSlider from './PropertyImageSlider';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   TouchableHighlight,
-  Dimensions,
   ScrollView,
   TouchableOpacity,
   RefreshControl
@@ -42,22 +40,6 @@ export default class Property extends Component{
     return `${weekday}, ${day} ${month} ${year}`;
   }
 
-  
-  _renderImage = ({item}) => {
-    let image = item;
-    return(  
-      <View style={{ width:  Dimensions.get('window').width }}>
-        <PlaceholderFastImage
-            style={styles.backgroundImage}
-            source={{
-                uri: image ? image.url : '',
-                priority: FastImage.priority.normal,
-            }}
-        />
-      </View>
-    ) 
-  }
-
   _renderViewingItem({item}){
     let viewing = item;
     if(viewing.status.status != 'ACTIVE'){
@@ -75,18 +57,8 @@ export default class Property extends Component{
           refreshing={this.state.isRefreshing}
           onRefresh={() => {this._refresh()}}
         />} >
-        <View style={{flexDirection: 'row', marginBottom: 20, 'flex': 1, 'backgroundColor': 'black'}} >
-          <FlatList
-              style={styles.imagesContainer}
-              data={this.props.currentProperty.images}
-              renderItem={(image) => this._renderImage(image)}
-              keyExtractor={(index) => index.toString()}
-              removeClippedSubviews={false}
-              horizontal
-              pagingEnabled
-          />
-        </View>
-        <View style={{ flex: 1}}>
+        <PropertyImageSlider images={this.props.currentProperty.images} />
+        <View style={{ flex: 1, marginTop: 10}}>
           <View style={styles.titleContainer}>
             <View style={styles.priceContainer}>
               <Text style={styles.propertyTitle}>£ {Math.round(this.props.currentProperty.price)}</Text>
@@ -110,7 +82,7 @@ export default class Property extends Component{
          </View>
         </View>
         <View style={styles.sectionTitleContainerLiveViewing}>
-          <Text style={styles.sectionTitleLiveViewing}>Live Viewings</Text>
+          <Text style={styles.sectionTitleLiveViewing}>Live viewings</Text>
           <TouchableOpacity activeOpacity={1} style={styles.requestDifferentViewingBtn} onPress={() => {this.setState({showViewingPicker: true})}}>
               <Text style={styles.requestDifferentViewingTxt}>Request Different Time</Text>
           </TouchableOpacity>
@@ -228,9 +200,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     backgroundColor: "rgba(0,0,0,0.6)",
     justifyContent: 'center'
-  },
-  backgroundImage: {
-    height: 250,
   },
   tabContainer:{
       flex: 1,
@@ -417,10 +386,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: FontSizes.DEFAULT,
     color: 'white'
-  },
-  imagesContainer: {
-    height: 250,
-    backgroundColor: 'rgba(0,0,0,0.6)'
   },
   horizontalViewingContainer: {
     maxHeight: 200

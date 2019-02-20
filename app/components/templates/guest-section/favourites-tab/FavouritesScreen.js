@@ -7,7 +7,8 @@ import PropertyRow from '../../../organisms/PropertyRow';
 import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import InteractionBlocker from '../../shared/InteractionBlocker';
+import ErrorScreen from '../../shared/ErrorScreen';
 import {
   StyleSheet,
   View,
@@ -17,34 +18,55 @@ import {
 
 class FavouritesScreen extends Component{
 
+  constructor(props){
+    super(props);
+    this.state = {
+      showErrorScreen: false,
+      blockInteractions: false
+    }
+  }
+
   _onPress(property){
+    this.setState({blockInteractions: true});
     this.props.getPropertyViewings(property.id)
     .then(() => {
+      this.setState({blockInteractions: false});
       this.props.goToGuestFavouritesPropertyScreen(property);
       this.props.navigation.navigate('FavouritesStack');
     })
     .catch((e) => {
       console.log(e);
+      this.setState({showErrorScreen: true, blockInteractions: false});
     })
   }
 
   _addToFavourites(userId, propertyId){
+    this.setState({blockInteractions: true});
     this.props.addToFavourites(userId, propertyId)
     .then(() => {
       return this.props.getProperties();
     })
-    .catch((error) => {
-      console.error("Unahndled when adding to favourites");
+    .then(() => {
+      this.setState({blockInteractions: false});
+    })
+    .catch((e) => {
+      console.error(e);
+      this.setState({blockInteractions: false, showErrorScreen: true});
     });
   }
 
   _removeFromFavourites(userId, propertyId){
+    this.setState({blockInteractions: true});
     this.props.removeFromFavourites(userId, propertyId)
     .then(() => {
       return this.props.getProperties();
     })
-    .catch((error) => {
-      console.error("Unahndled when removing from favourites");
+    .then(() => {
+      this.setState({blockInteractions: false});
+    })
+    .catch((e) => {
+      console.error(e);
+      this.setState({blockInteractions: false, showErrorScreen: true});
     });
   }
 
@@ -79,9 +101,16 @@ class FavouritesScreen extends Component{
             keyExtractor={(item, index) => index.toString()}
             removeClippedSubviews={false}
           />
+          {
+            !this.state.blockInteractions ? null :
+            <InteractionBlocker />
+          }
+          {
+            !this.state.showErrorScreen ? null :
+            <ErrorScreen close={() => {this.setState({showErrorScreen: false})}} />
+          }
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>
-
     )
   }
   

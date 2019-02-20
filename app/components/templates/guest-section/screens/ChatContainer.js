@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
 import ChatScreen from '../../shared/ChatScreen';
+import ErrorScreen from '../../shared/ErrorScreen';
 
 import {
   StyleSheet,

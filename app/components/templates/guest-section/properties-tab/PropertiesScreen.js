@@ -62,6 +62,7 @@ class PropertiesScreen extends Component{
   }
 
   _removeFromFavourites(userId, propertyId){
+    this.setState({isLoading: true});
     this.props.removeFromFavourites(userId, propertyId)
     .then(() => {
       return this.props.getProperties();
