@@ -7,7 +7,7 @@ import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import ChatsScreen from '../../shared/ChatsScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { MaterialIndicator  } from 'react-native-indicators';
-
+import ErrorScreen from '../../shared/ErrorScreen';
 import {
   StyleSheet,
   View
@@ -18,7 +18,8 @@ class ChatsContainer extends Component{
   constructor(props){
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      showErrorScreen: false
     }
   }
 
@@ -29,6 +30,7 @@ class ChatsContainer extends Component{
       })
       .catch((e) => {
         console.log(e);
+        this.setState({showErrorScreen: true, isLoading: false});
       });
   }
 
@@ -44,12 +46,16 @@ class ChatsContainer extends Component{
             this.state.isLoading ?
             <MaterialIndicator style={{marginBottom: 100 }}color={Colors.AQUA_GREEN} size={50} /> :
             <ChatsScreen 
-            chats={this.props.chats} 
-            user={this.props.user} 
-            goToScreen={(chat) => {this._goToChatScreen(chat)}} 
-            getChats={this.props.getChats} 
-            getMessages={async (chatId, page) => { return await this.props.getMessages(chatId, page)}}
+              chats={this.props.chats} 
+              user={this.props.user} 
+              goToScreen={(chat) => {this._goToChatScreen(chat)}} 
+              getChats={this.props.getChats} 
+              getMessages={async (chatId, page) => { return await this.props.getMessages(chatId, page)}}
             >Chat</ChatsScreen>
+          }
+          {
+            !this.state.showErrorScreen ? null :
+            <ErrorScreen close={() => {this.setState({showErrorScreen: false})}} />
           }
           <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
       </View>

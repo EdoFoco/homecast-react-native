@@ -59,31 +59,6 @@ export default class ChatsScreen extends Component{
         return `${month} ${day}`;
     }
 
-    _renderChatRow(item) {
-        var chat = item.item;
-
-        return(
-            <TouchableHighlight onPress={() => {this._goToChatScreen(chat)}}>
-                <View style={styles.chatRow}>
-                    <View style={styles.unreadIconContainer}>
-                        {
-                            chat.wasRead ? null:
-                            <View style={styles.unreadIcon}></View>
-                        }
-                    </View>
-
-                    <View style={styles.rowDescriptionContainer}>
-                        <View style={{flexDirection: 'row', flex: 1}}>
-                            <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
-                            <Text style={styles.lastMessageTime}>{this._toDateString(chat.updated_at)}</Text>
-                        </View>
-                        <Text style={styles.lastMessage} numberOfLines={1}>{chat.last_message}</Text>
-                    </View>
-                </View>
-            </TouchableHighlight>
-        )
-    }
-
     _textChanged(text){
         this.setState({textValue: text});
         console.log(this.state.textValue);
@@ -112,6 +87,32 @@ export default class ChatsScreen extends Component{
         }
     }
 
+    _renderChatRow(item) {
+        var chat = item.item;
+
+        return(
+            <TouchableHighlight onPress={() => {this._goToChatScreen(chat)}}>
+                <View style={styles.chatRow}>
+                    <View style={styles.unreadIconContainer}>
+                        {
+                            chat.wasRead ? null:
+                            <View style={styles.unreadIcon}></View>
+                        }
+                    </View>
+
+                    <View style={styles.rowDescriptionContainer}>
+                        <View style={{flexDirection: 'row', flex: 1}}>
+                            <Text style={styles.rowTitle}>{this._renderUsernames(chat.users)}</Text>
+                            <Text style={styles.lastMessageTime}>{this._toDateString(chat.updated_at)}</Text>
+                        </View>
+                        <Text style={styles.lastMessage} numberOfLines={1}>{chat.last_message}</Text>
+                    </View>
+                </View>
+            </TouchableHighlight>
+        )
+    }
+
+   
     render() {
         return (
             <View style={styles.container}>

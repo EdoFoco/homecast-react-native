@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ErrorScreen from './ErrorScreen';
+import InteractionBlocker from './InteractionBlocker';
 import {
     StyleSheet,
     View,
@@ -27,7 +29,9 @@ export default class ChatScreen extends Component{
             lastPage: 1,
             messages: [],
             message: this.props.message,
-            isLoadingMessages: true
+            isLoadingMessages: true,
+            showErrorScreen: false,
+            blockInteractions: false
         }
     }
    
@@ -52,6 +56,7 @@ export default class ChatScreen extends Component{
         })
         .catch((e) => {
             console.log(e);
+            this.setState({showErrorScreen: true});
         });
     }
 
@@ -94,6 +99,7 @@ export default class ChatScreen extends Component{
         .catch((e) => {
             console.log(e);
             clearInterval(this.chatPoll);
+            this.setState({showErrorScreen: true});
         });
     }
 
@@ -137,7 +143,13 @@ export default class ChatScreen extends Component{
     }
 
     _send(){
-        this.props.sendMessage(this.props.chat.id, this.state.message)
+        if(!this.state.message || this.state.message == ''){
+            return;
+        }
+
+        this.setState({blockInteractions: true, message: null});
+        let message = this.state.message;
+        this.props.sendMessage(this.props.chat.id, message)
         .then(() => {
             Keyboard.dismiss();
         })
@@ -145,12 +157,15 @@ export default class ChatScreen extends Component{
             return this._getMessages(1);
         })
         .then(() => {
-            this.setState({ message: null });
+            this.setState({blockInteractions: false });
+        })
+        .catch(() => {
+            this.setState({showErrorScreen: true});
+            this.setState({blockInteractions: false});
         });
     }
 
     render() {
-        console.log(this.props.chat);
         var sender = this.props.chat.users.find(u => u.id != this.props.user.info.id);
 
         return (
@@ -190,8 +205,16 @@ export default class ChatScreen extends Component{
                             <MCIcon name="send" style={styles.sendIcon} />
                         </TouchableHighlight>
                     </View>
-                    </Animated.View>
-                </View>
+                </Animated.View>
+                {
+                    !this.state.showErrorScreen ? null :
+                    <ErrorScreen close={() => {this.setState({showErrorScreen: false})}} />
+                }
+                {
+                    !this.state.blockInteractions ? null :
+                    <InteractionBlocker />
+                }
+            </View>
         )
   }
 }

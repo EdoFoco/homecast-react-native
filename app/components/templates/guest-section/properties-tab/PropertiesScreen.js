@@ -113,6 +113,9 @@ class PropertiesScreen extends Component{
     this.props.getProperties()
     .then(() => {
       this.setState({isRefreshing: false})
+    })
+    .catch((e) => {
+      console.log(e);
     });
   }
 
