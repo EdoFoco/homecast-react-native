@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import * as Colors from '../../helpers/ColorPallette';
 import * as FontSizes from '../../helpers/FontSizes';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FastImage from 'react-native-fast-image';
-import * as Animatable from 'react-native-animatable';
 import {
     StyleSheet,
     View,
@@ -12,7 +10,6 @@ import {
     FlatList,
     TouchableHighlight,
     TextInput,
-    KeyboardAvoidingView,
     Animated,
     Keyboard,
     Dimensions
@@ -47,7 +44,7 @@ export default class CreateChatScreen extends Component{
         }).start();
     }
 
-    keyboardWillHide = e => {
+    keyboardWillHide = () => {
         Animated.spring(this.viewHeight, {
         duration: 150,
         toValue:   Dimensions.get('window').height - 70,
@@ -74,7 +71,7 @@ export default class CreateChatScreen extends Component{
     _send(){
         if(this.state.conversationId){
             this.props.sendMessage(this.state.conversationId, this.state.message)
-            .then((message) => {
+            .then(() => {
                 var messages = [...this.state.messages];
                 messages.push({
                     sender: {
@@ -97,7 +94,7 @@ export default class CreateChatScreen extends Component{
                 this.setState({conversationId: chat.id});
                 return this.props.sendMessage(chat.id, this.state.message);
             })
-            .then((message) => {
+            .then(() => {
                 var messages = [...this.state.messages];
                 messages.push({
                     sender: {
