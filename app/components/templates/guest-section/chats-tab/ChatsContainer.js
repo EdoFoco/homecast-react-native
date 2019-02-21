@@ -2,12 +2,11 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../../../actions';
 import { bindActionCreators } from 'redux';
-import * as Colors from '../../../helpers/ColorPallette';
 import NetworkErrorMessage from '../../shared/NetworkErrorMessage';
 import ChatsScreen from '../../shared/ChatsScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MaterialIndicator  } from 'react-native-indicators';
 import ErrorScreen from '../../shared/ErrorScreen';
+import FullScreenLoader from '../../shared/FullScreenLoader';
 import {
   StyleSheet,
   View
@@ -25,7 +24,7 @@ class ChatsContainer extends Component{
 
   componentWillMount(){
       this.props.getChats()
-      .then((chats) => {
+      .then(() => {
           this.setState({isLoading: false});
       })
       .catch((e) => {
@@ -44,7 +43,7 @@ class ChatsContainer extends Component{
       <View style={styles.container}>
           {
             this.state.isLoading ?
-            <MaterialIndicator style={{marginBottom: 100 }}color={Colors.AQUA_GREEN} size={50} /> :
+            <FullScreenLoader /> :
             <ChatsScreen 
               chats={this.props.chats} 
               user={this.props.user} 

@@ -9,8 +9,7 @@ import { View, StyleSheet } from 'react-native';
 import firebase from 'react-native-firebase';
 import InteractionBlocker from '../../shared/InteractionBlocker';
 import ErrorScreen from '../../shared/ErrorScreen';
-import { MaterialIndicator  } from 'react-native-indicators';
-import * as Colors from '../../../helpers/ColorPallette';
+import FullScreenLoader from '../../shared/FullScreenLoader';
 
 class ViewingContainer extends Component{
  
@@ -103,7 +102,7 @@ class ViewingContainer extends Component{
     _goToProperty(){
         this.setState({blockInteractions: true});
         return this.props.getProperty(this.props.property.id)
-        .then((property) => {
+        .then(() => {
             this.setState({blockInteractions: false});
             this.props.navigation.goBack();
         })
@@ -121,9 +120,7 @@ class ViewingContainer extends Component{
     render() {
         if(this.state.isLoading){
             return (
-                <View style={styles.container}>
-                    <MaterialIndicator style={{marginBottom: 100 }}color={Colors.AQUA_GREEN} size={50} /> :
-                </View>
+                <FullScreenLoader />
             )
         }
         return(

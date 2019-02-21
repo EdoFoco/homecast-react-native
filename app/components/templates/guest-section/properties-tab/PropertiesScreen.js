@@ -32,16 +32,13 @@ class PropertiesScreen extends Component{
   }
 
   _onPress(property){
-      this.setState({isLoading: true});
       this.props.getPropertyViewings(property.id)
       .then(() => {
-        this.setState({isLoading: false});
         this.props.goToGuestPropertyScreen(property);
         this.props.navigation.navigate('PropertyStack');
       })
       .catch((e) => {
         console.log(e);
-        this.setState({isLoading: false});
         this.setState({hasError: true, errorMessage: e.message});
       });
   }
@@ -79,14 +76,14 @@ class PropertiesScreen extends Component{
  _renderRow({item}){
     let property = item;
     return (
-        <PropertyRow 
-              property = {property}
-              user = {this.props.user.info}
-              onPress = { (property) => { this._onPress(property) }}
-              enableFavourites={true}
-              onAddToFavourites = { (userId, propertyId) => { this._addToFavourites(userId, propertyId) }}
-              onRemoveFromFavourites = { (userId, propertyId) => { this._removeFromFavourites(userId, propertyId) }} 
-            />
+      <PropertyRow 
+            property = {property}
+            user = {this.props.user.info}
+            onPress = { (property) => { this._onPress(property) }}
+            enableFavourites={true}
+            onAddToFavourites = { (userId, propertyId) => { this._addToFavourites(userId, propertyId) }}
+            onRemoveFromFavourites = { (userId, propertyId) => { this._removeFromFavourites(userId, propertyId) }} 
+          />
     )
   }
 

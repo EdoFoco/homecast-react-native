@@ -5,8 +5,7 @@ import * as FontSizes from '../../helpers/FontSizes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import ViewingRow from './ViewingRow';
-import { MaterialIndicator  } from 'react-native-indicators';
-
+import FullScreenLoader from './FullScreenLoader';
 import {
     StyleSheet,
     TouchableHighlight,
@@ -85,9 +84,7 @@ export default class ManageViewingsForm extends Component{
   render() {
     if(this.state.isLoading){
         return (
-            <View style={styles.container}>
-                <MaterialIndicator style={{marginBottom: 100 }}color={Colors.AQUA_GREEN} size={50} /> :
-            </View>
+            <FullScreenLoader />
         )
     }
     return (
