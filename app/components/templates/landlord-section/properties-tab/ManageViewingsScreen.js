@@ -36,7 +36,6 @@ class ManageViewingsScreen extends Component{
                 goToViewing={(viewingId) => { this.props.navigation.navigate('ViewingScreen', { viewingId : viewingId, property: this.props.property, goBack: () => {this.props.navigation.goBack()}}) }}
               /> 
             </View>
-          
         </View>
     )
   }
