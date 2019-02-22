@@ -32,14 +32,16 @@ class PropertiesScreen extends Component{
   }
 
   _onPress(property){
+      this.setState({isLoading: true});
       this.props.getPropertyViewings(property.id)
       .then(() => {
+        this.setState({isLoading: false});
         this.props.goToGuestPropertyScreen(property);
         this.props.navigation.navigate('PropertyStack');
       })
       .catch((e) => {
         console.log(e);
-        this.setState({hasError: true, errorMessage: e.message});
+        this.setState({isLoading: false, hasError: true, errorMessage: e.message});
       });
   }
 
