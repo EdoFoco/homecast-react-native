@@ -126,7 +126,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-exception-handler')
     compile project(':react-native-image-crop-picker')
     compile(project(':react-native-firebase')) {

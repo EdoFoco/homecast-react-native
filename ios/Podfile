@@ -19,7 +19,7 @@ target 'Homecast' do
 
 #  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
-  pod 'react-native-google-analytics-bridge', :path => '../node_modules/react-native-google-analytics-bridge'
+#  pod 'react-native-google-analytics-bridge', :path => '../node_modules/react-native-google-analytics-bridge'
 
   post_install do |installer|
     installer.pods_project.targets.each do |target|
