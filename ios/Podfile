@@ -14,8 +14,7 @@ target 'Homecast' do
   ]
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
   pod 'GoogleMaps'
-  pod 'Firebase/Core'
-  pod 'Firebase/Firestore'
+  pod 'Firebase/Core', '~> 5.15.0'
   pod 'Firebase/Messaging'
 
 #  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'

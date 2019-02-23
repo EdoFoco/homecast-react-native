@@ -5,7 +5,7 @@
   
 class GAClient {
   
-    //static gaClientInstance = GAClient.gaClientInstance == null ? new GAClient() : this.gaClientInstance
+    static gaClientInstance = GAClient.gaClientInstance == null ? new GAClient() : this.gaClientInstance
     tracker;
 
     constructor(){
