@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from 'redux';
 import AppReducer from './app/reducers';
 import MainScreen from './app/components/templates/MainScreen';
 import thunk from 'redux-thunk';
-import * as Colors from './app/components/helpers/ColorPallette';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import storage from 'redux-persist/lib/storage';

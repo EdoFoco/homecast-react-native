@@ -28,7 +28,7 @@ const routeConfiguration = {
 }
 
 const tabBarConfiguration = {
-  initialRoute: 'ViewingsTab',
+  tabBarPosition: 'bottom',
   headerMode: 'screen',
   backBehavior: 'none',
   tabBarOptions: {

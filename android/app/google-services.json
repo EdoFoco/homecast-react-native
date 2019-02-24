@@ -1,0 +1,43 @@
+{
+    "project_info": {
+      "project_number": "938933321324",
+      "firebase_url": "https://homecast-1520676328832.firebaseio.com",
+      "project_id": "homecast-1520676328832",
+      "storage_bucket": "homecast-1520676328832.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:938933321324:android:fb139f0e70510973",
+          "android_client_info": {
+            "package_name": "com.Homecast"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "938933321324-i874rqr2at9v7qrm3tlnu0mkvct9j9ao.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyBKdwtjzTEVvGFXEX3Ey2JH2pq-rtJ5Ofw"
+          }
+        ],
+        "services": {
+          "analytics_service": {
+            "status": 1
+          },
+          "appinvite_service": {
+            "status": 1,
+            "other_platform_oauth_client": []
+          },
+          "ads_service": {
+            "status": 2
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
+  

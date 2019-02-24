@@ -26,6 +26,7 @@ const routeConfiguration = {
 }
 
 const tabBarConfiguration = {
+  tabBarPosition: 'bottom',
   headerMode: 'screen',
   backBehavior: 'none',
   tabBarOptions: {
