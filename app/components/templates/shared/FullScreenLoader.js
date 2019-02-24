@@ -7,7 +7,7 @@ export default class FullScreenLoader extends Component{
     render(){
         return(
             <View style={styles.container}>
-                <MaterialIndicator style={{marginBottom: 100 }}color={Colors.AQUA_GREEN} size={50} /> :
+                <MaterialIndicator style={{marginBottom: 100 }}color={Colors.AQUA_GREEN} size={50} />
             </View>
         )
     }

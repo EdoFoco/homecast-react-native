@@ -18,9 +18,6 @@ class EditPropertyScreen extends Component{
   }
 
   render() {
-    if(!this.props.property){
-      return <View></View>
-    }
     return (
         <View style={{flex: 1}}>
           <View style={styles.menuWrapper}>
@@ -30,21 +27,21 @@ class EditPropertyScreen extends Component{
               <Text style={styles.menuText}>{this.props.property.address}</Text>
           </View>
             <View style={styles.fieldsForm}> 
-                  <EditPropertyForm 
-                    user={this.props.user}
-                    property={this.props.property}
-                    updateProperty={this.props.updateProperty}
-                    user={this.props.user}
-                    getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
-                    updateLocationSuggestions={(suggestions) => {this.props.updateLocationSuggestions(suggestions)}} 
-                    autocompleteSuggestions={this.props.autocompleteSuggestions}
-                    goToScreen={(screen) => {this.props.navigation.navigate(screen, {property: this.props.property})}}
-                    deleteProperty={() => { this._deleteProperty() }}
-                    activateProperty={async (isActive) => { await this.props.activateProperty(this.props.user.info.id, this.props.property.id, isActive)}}
-                    getPropertyViewings={async (propertyId) => { await this.props.getPropertyViewings(propertyId) }}
-                  /> 
-                  </View>
-              }
+                <EditPropertyForm 
+                  user={this.props.user}
+                  property={this.props.property}
+                  updateProperty={this.props.updateProperty}
+                  user={this.props.user}
+                  getLocationSuggestions={(text, type) => {this.props.getAddressSuggestions(text, type)}}
+                  updateLocationSuggestions={(suggestions) => {this.props.updateLocationSuggestions(suggestions)}} 
+                  autocompleteSuggestions={this.props.autocompleteSuggestions}
+                  goToScreen={(screen) => {this.props.navigation.navigate(screen, {property: this.props.property})}}
+                  deleteProperty={() => { this._deleteProperty() }}
+                  activateProperty={async (isActive) => { await this.props.activateProperty(this.props.user.info.id, this.props.property.id, isActive)}}
+                  getPropertyViewings={async (propertyId) => { await this.props.getPropertyViewings(propertyId) }}
+                /> 
+            </View>
+              
         </View>
     )
   }

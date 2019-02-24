@@ -50,7 +50,7 @@ class ChatsContainer extends Component{
               goToScreen={(chat) => {this._goToChatScreen(chat)}} 
               getChats={this.props.getChats} 
               getMessages={async (chatId, page) => { return await this.props.getMessages(chatId, page)}}
-            >Chat</ChatsScreen>
+            />
           }
           {
             !this.state.showErrorScreen ? null :

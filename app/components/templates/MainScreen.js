@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import GuestRootNav from '../../navigators/guest-section/GuestRootNavigator';
 import LandlordRootNav  from '../../navigators/landlord-section/LandlordRootNavigator';
 import NetworkErrorMessage from '../templates/shared/NetworkErrorMessage';
@@ -10,6 +10,7 @@ import AuthForm from '../molecules/AuthForm';
 import { YellowBox } from 'react-native';
 import * as Types from '../../actions/Types';
 import * as ErrorHandler from '../../actions/ErrorHandler';
+import * as Colors from '../helpers/ColorPallette';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Module WebRTCModule', 'Module RNInCallManager', 'Remote debugger']);
 import SplashScreen from 'react-native-splash-screen';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
@@ -62,12 +63,18 @@ class MainScreen extends Component {
     if(this.props.isLoggedIn && this.state.isReady){
       if(this.props.section.sectionName === 'guest'){
         return(
+          <View style={{flex: 1}}>
+            <StatusBar backgroundColor={Colors.DARK_BLUE} barStyle="light-content" />
             <GuestRootNav addListener={this.props.addListener} />
+          </View>
         )
       }
       if(this.props.section.sectionName === 'landlord'){
         return(
+          <View style={{flex: 1}}>
+            <StatusBar backgroundColor={Colors.DARK_BLUE} barStyle="light-content" />
             <LandlordRootNav addListener={this.props.addListener} />
+          </View>
         )
       }
     }

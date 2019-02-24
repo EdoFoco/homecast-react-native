@@ -54,7 +54,7 @@ export default class PropertyRow extends Component{
                             renderItem={(image) => this._renderImage(image)}
                             keyExtractor={(index) => index.toString()}
                             removeClippedSubviews={false}
-                            horizontal
+                            horizontal={true}
                             pagingEnabled
                         />
                         { !this.props.enableFavourites ? null :

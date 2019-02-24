@@ -30,13 +30,17 @@ const tabBarConfiguration = {
   headerMode: 'screen',
   backBehavior: 'none',
   tabBarOptions: {
+    showIcon: true,
     activeTintColor: Colors.AQUA_GREEN,
     inactiveTintColor: Colors.WHITE_SMOKE,
     showLabel: false,
 		style:{
       backgroundColor: Colors.DARK_BLUE,
       height: 60
-    } 
+    },
+    indicatorStyle: {
+      backgroundColor: Colors.DARK_BLUE,
+    }
   }
 }
 

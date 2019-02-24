@@ -14,16 +14,15 @@ import {
     View,
     TouchableHighlight,
     ScrollView,
-    Switch,
     Dimensions
   } from 'react-native';
 
-  
+
 export default class EditPropertyForm extends Component{
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
         property: this.props.property,
         showForm: false,
         formTarget: null,
@@ -111,9 +110,9 @@ export default class EditPropertyForm extends Component{
     switch(this.state.formTarget){
         case 'description': {
             return (
-                <TextControl 
-                    value={this.state.property.description} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, description: value}})}} 
+                <TextControl
+                    value={this.state.property.description}
+                    handleChange={(value) => { this.setState({property: {...this.state.property, description: value}})}}
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
@@ -126,9 +125,9 @@ export default class EditPropertyForm extends Component{
         }
         case 'price': {
             return (
-                <NumericUnitControl 
-                    value={this.state.property.price} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, price: value}})}} 
+                <NumericUnitControl
+                    value={this.state.property.price}
+                    handleChange={(value) => { this.setState({property: {...this.state.property, price: value}})}}
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
@@ -141,9 +140,9 @@ export default class EditPropertyForm extends Component{
         }
         case 'bedrooms': {
             return (
-                <NumericUnitControl 
-                    value={this.state.property.bedrooms} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, bedrooms: value}})}} 
+                <NumericUnitControl
+                    value={this.state.property.bedrooms}
+                    handleChange={(value) => { this.setState({property: {...this.state.property, bedrooms: value}})}}
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
@@ -157,9 +156,9 @@ export default class EditPropertyForm extends Component{
 
         case 'bathrooms': {
             return (
-                <NumericUnitControl 
-                    value={this.state.property.bathrooms} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}} 
+                <NumericUnitControl
+                    value={this.state.property.bathrooms}
+                    handleChange={(value) => { this.setState({property: {...this.state.property, bathrooms: value}})}}
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
@@ -173,9 +172,9 @@ export default class EditPropertyForm extends Component{
 
         case 'livingrooms': {
             return (
-                <NumericUnitControl 
-                    value={this.state.property.living_rooms} 
-                    handleChange={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}} 
+                <NumericUnitControl
+                    value={this.state.property.living_rooms}
+                    handleChange={(value) => { this.setState({property: {...this.state.property, living_rooms: value}})}}
                     updateProperty={() => this._updateProperty()}
                     cancelChanges={() => {this._cancelChanges()}}
                     hideForm={() => {this._hideForm()}}
@@ -186,15 +185,15 @@ export default class EditPropertyForm extends Component{
                 />
             )
         }
-      
+
         case 'address': {
             return <AutocompleteControl
                     style={styles.autoCompleteControl}
                     title="Property Address"
                     description=""
                     updateProperty={(placeId) => this._updatePropertyWithPlaceId(placeId)}
-                    placeholder="Type an address" 
-                    getLocationSuggestions={(text) => {this.props.getLocationSuggestions(text, 'address')}} 
+                    placeholder="Type an address"
+                    getLocationSuggestions={(text) => {this.props.getLocationSuggestions(text, 'address')}}
                     suggestions={this.props.autocompleteSuggestions}
                     updateLocationSuggestions={(suggestions) => { this.props.updateLocationSuggestions(suggestions) }}
                 />
@@ -205,10 +204,6 @@ export default class EditPropertyForm extends Component{
   }
 
   render() {
-    if(!this.props.property){
-        return <View></View>
-    }
-   
     return (
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white', flex: 1}}>
@@ -228,7 +223,7 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.sectionValue}>{this.props.property.listing_active ? 'Listing active' : 'Listing Inactive'}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            <Switch style={styles.activeSwitch} onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/>
+                            {/* <Switch style={styles.activeSwitch} onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/> */}
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>
@@ -293,7 +288,7 @@ export default class EditPropertyForm extends Component{
                 </View>
             </ScrollView>
                 {
-                    !this.state.showForm ? 
+                    !this.state.showForm ?
                     null :
                     <View>
                         <TouchableHighlight style={styles.formOverlay} onPress={() => {this._cancelChanges()}}><Text></Text></TouchableHighlight>
@@ -306,7 +301,7 @@ export default class EditPropertyForm extends Component{
                 }
                 {
                     !this.state.showDeleteModal ? null :
-                    <ModalBox 
+                    <ModalBox
                         close={() => this.setState({showDeleteModal: true})}
                         delete={() => this.props.deleteProperty()}
                         description="Are you sure you want to delete this property?"
@@ -315,7 +310,7 @@ export default class EditPropertyForm extends Component{
                 }
                 {
                     !this.state.showStatusBox ? null :
-                    <StatusBox 
+                    <StatusBox
                         close={() => {this.setState({showStatusBox: false})}}
                         isSuccess={this.state.statusBoxSuccess}
                         text={this.state.statusBoxText}
@@ -341,7 +336,7 @@ EditPropertyForm.propTypes = {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 0.2,    
+      flex: 0.2,
       backgroundColor: 'white',
     },
     viewTitle: {
