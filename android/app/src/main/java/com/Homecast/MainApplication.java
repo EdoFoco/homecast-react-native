@@ -1,4 +1,4 @@
-package com.Homecast;
+package com.homecast;
 
 import android.app.Application;
 
@@ -28,6 +28,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+            new MainReactPackage()
             new ReactNativeExceptionHandlerPackage(),
             new RNFirebasePackage(),
             new SplashScreenReactPackage(),
@@ -56,6 +57,11 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFirebaseNotificationsPackage(),
             new RNFirebaseMessagingPackage()
       );
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
     }
   };
 

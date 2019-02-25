@@ -1,4 +1,4 @@
-package com.Homecast;
+package com.homecast;
 
 import com.facebook.react.ReactActivity;
 
