@@ -3,9 +3,9 @@ package com.homecast;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -43,10 +43,10 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-            new MainReactPackage()
+            new MainReactPackage(),
+            new SplashScreenReactPackage()
             new ReactNativeExceptionHandlerPackage(),
             new RNFirebasePackage(),
-            new SplashScreenReactPackage(),
             new PickerPackage(),
             new ImagePickerPackage(),
             new MapsPackage(),

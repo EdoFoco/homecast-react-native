@@ -13,7 +13,7 @@
 #import <Firebase.h>
 #import "RNFirebaseMessaging.h"
 #import "RNFirebaseNotifications.h"
-#import "SplashScreen.h"
+#import "RNSplashScreen.h"  // here
 
 @import GoogleMaps;
 @implementation AppDelegate
@@ -22,7 +22,7 @@
 {
   [FIRApp configure];
   [RNFirebaseNotifications configure];
-  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+ // [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
   [GMSServices provideAPIKey:@"AIzaSyBI8XPW03pYA9WiEKjUiJ4d0Phz6e8VZE8"];
   NSURL *jsCodeLocation;
 
@@ -40,7 +40,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [SplashScreen show];
+ // [RNSplashScreen show];
   return YES;
 }
 
