@@ -49,6 +49,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8B9B845B663D455F9A6D47CF /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7490BA66046A4D90951383CD /* Montserrat-Regular.ttf */; };
 		96C9824622241988004283E8 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C98245222418CC004283E8 /* libSplashScreen.a */; };
+		96C9829A22241BA1004283E8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 96C9826F22241BA1004283E8 /* GoogleService-Info.plist */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BF9FAD7DD2524C4EAB27D2F3 /* libReactNativeExceptionHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE607A2E07B8464E85A98BF8 /* libReactNativeExceptionHandler.a */; };
 		C91961DECF3645C8B97F8A39 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0CC6669763704ABFBFDEE9D1 /* Montserrat-Bold.ttf */; };
@@ -413,6 +414,7 @@
 		8D78EEBD5E8D7641ECBB4EC9 /* Pods-Homecast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Homecast.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Homecast/Pods-Homecast.debug.xcconfig"; sourceTree = "<group>"; };
 		92789319E23B4571A669FDBA /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		96C98217222418CC004283E8 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
+		96C9826F22241BA1004283E8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9DFBD739F77743D59103C6E8 /* libRNInCallManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNInCallManager.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BBFD99F83D0040049BBD07D5 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 		13B07FAE1A68108700A75B9A /* Homecast */ = {
 			isa = PBXGroup;
 			children = (
+				96C9826F22241BA1004283E8 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1294,6 +1297,7 @@
 				56956951D2B24797BB16B448 /* Feather.ttf in Resources */,
 				3D1F933F351B45049BFC3736 /* FontAwesome.ttf in Resources */,
 				D5BB06BFE40F4780A81C451E /* Foundation.ttf in Resources */,
+				96C9829A22241BA1004283E8 /* GoogleService-Info.plist in Resources */,
 				054FF0F9FD4843C19532C694 /* Ionicons.ttf in Resources */,
 				E27F057A004344E294EB21D0 /* MaterialCommunityIcons.ttf in Resources */,
 				7878D7815A04459AA2B02F52 /* MaterialIcons.ttf in Resources */,

@@ -130,7 +130,7 @@ export function sendViewingInvitationEmail(viewingId, email){
 }
 
 function handleError(error, dispatch){
-    console.warn(error);
+    console.log(error);
     var action = ErrorHandler.getActionForError(error);
     if(action){
         dispatch(action);

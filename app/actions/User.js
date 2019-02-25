@@ -88,7 +88,6 @@ export function updateDeviceToken($userId, $token){
 }
 
 function handleError(error, dispatch){
-    console.warn(error);
     var action = ErrorHandler.getActionForError(error);
     if(action){
         dispatch(action);

@@ -52,7 +52,7 @@ const errorHandler = (e, isFatal) => {
       AsyncStorage.multiRemove(keys);
     })
     .catch((e) => {
-      console.debug(e);
+      console.log(e);
     });
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
@@ -118,7 +118,7 @@ class HomecastApp extends React.Component {
       AsyncStorage.multiRemove(keys);
     })
     .catch((e) => {
-      console.debug(e);
+      console.log(e);
     });
   }
   
@@ -132,23 +132,23 @@ class HomecastApp extends React.Component {
         }
     }
 
-    for(let i = 0; i < components.length; i++) {
-        const TextRender = components[i].prototype.render;
-        const initialDefaultProps = components[i].prototype.constructor.defaultProps;
-        components[i].prototype.constructor.defaultProps = {
-            ...initialDefaultProps,
-            ...customProps,
-        }
-        components[i].prototype.render = function render() {
-            let oldProps = this.props;
-            this.props = { ...this.props, style: [customProps.style, this.props.style] };
-            try {
-                return TextRender.apply(this, arguments);
-            } finally {
-                this.props = oldProps;
-            }
-        };
-    }
+    // for(let i = 0; i < components.length; i++) {
+    //     const TextRender = components[i].prototype.render;
+    //     const initialDefaultProps = components[i].prototype.constructor.defaultProps;
+    //     components[i].prototype.constructor.defaultProps = {
+    //         ...initialDefaultProps,
+    //         ...customProps,
+    //     }
+    //     components[i].prototype.render = function render() {
+    //         let oldProps = this.props;
+    //         this.props = { ...this.props, style: [customProps.style, this.props.style] };
+    //         try {
+    //             return TextRender.apply(this, arguments);
+    //         } finally {
+    //             this.props = oldProps;
+    //         }
+    //     };
+    // }
   }
 
   render() {

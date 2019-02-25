@@ -139,7 +139,7 @@ export function getMessages(chatId, page){
   }
 
 function handleError(error, dispatch){
-    console.warn(error);
+    console.log(error);
     var action = ErrorHandler.getActionForError(error);
     if(action){
         dispatch(action);

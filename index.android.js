@@ -52,7 +52,7 @@ const errorHandler = (e, isFatal) => {
       AsyncStorage.multiRemove(keys);
     })
     .catch((e) => {
-      console.debug(e);
+      console.log(e);
     });
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
@@ -118,7 +118,7 @@ class HomecastApp extends React.Component {
       AsyncStorage.multiRemove(keys);
     })
     .catch((e) => {
-      console.debug(e);
+      console.log(e);
     });
   }
   

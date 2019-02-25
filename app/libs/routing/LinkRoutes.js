@@ -4,7 +4,6 @@ import * as propertyActions from '../../actions/Properties';
 import * as viewingActions from '../../actions/Viewings';
 import * as chatActions from '../../actions/Chat';
 import * as navActions from '../../actions/NavActions';
-import store from '../../reducers';
 
 const paths = [
   {
@@ -58,7 +57,7 @@ async function handleViewingDeepLink(store, params) {
     await store.dispatch(navActions.goToPropertiesTabViewingsScreen(property, viewing.id));
   }
   catch(e){
-    console.warn(e);
+    console.log(e);
   }
 }
 
@@ -75,7 +74,7 @@ async function handleChatDeepLink(store, params){
     await store.dispatch(navActions.goToChat(chat));
   }
   catch(e){
-    console.warn(e);
+    console.log(e);
   }
   
 }
