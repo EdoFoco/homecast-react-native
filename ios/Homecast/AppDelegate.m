@@ -13,7 +13,7 @@
 #import <Firebase.h>
 #import "RNFirebaseMessaging.h"
 #import "RNFirebaseNotifications.h"
-#import "RNSplashScreen.h"  // here
+#import "RNSplashScreen.h"  
 
 @import GoogleMaps;
 @implementation AppDelegate
@@ -40,7 +40,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
- // [RNSplashScreen show];
+  [RNSplashScreen show];
   return YES;
 }
 
