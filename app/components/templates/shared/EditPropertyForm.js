@@ -14,7 +14,8 @@ import {
     View,
     TouchableHighlight,
     ScrollView,
-    Dimensions
+    Dimensions,
+    Switch
   } from 'react-native';
 
 
@@ -223,7 +224,7 @@ export default class EditPropertyForm extends Component{
                             <Text style={styles.sectionValue}>{this.props.property.listing_active ? 'Listing active' : 'Listing Inactive'}</Text>
                         </View>
                         <View style={styles.sectionActionContainer}>
-                            {/* <Switch style={styles.activeSwitch} onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/> */}
+                            <Switch style={styles.activeSwitch} onValueChange = {(value) => {this._handleChangeActive(value) }} value = {this.state.property.listing_active}/>
                         </View>
                     </View>
                     <View style={styles.propertyDetailCell}>

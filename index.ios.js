@@ -55,19 +55,27 @@ const errorHandler = (e, isFatal) => {
       console.log(e);
     });
   } else {
-    console.log(e); // So that we can see it in the ADB logs in case of Android if needed
+    console.log('Non fatal error occured');
   }
   if(e){
     GAClient.gaClientInstance.trackException(e.message, isFatal);
   }
 };
 
+
 setJSExceptionHandler(errorHandler, true);
 
 setNativeExceptionHandler((errorString) => {
-    console.log('setNativeExceptionHandler');
+    AsyncStorage.getAllKeys()
+    .then((keys) => {
+      AsyncStorage.multiRemove(keys);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
     GAClient.gaClientInstance.trackException(errorString, isFatal);
 });
+
 
 class HomecastApp extends React.Component {
   
