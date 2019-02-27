@@ -184,7 +184,7 @@ class PropertiesScreen extends Component{
           !this.state.hasError ? null :
           <ErrorScreen close={() => { this.setState({hasError: false, errorMessage: null})}} errorMessage={this.state.errorMessage} />
         }
-        <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} />
+        {/* <NetworkErrorMessage isVisible={this.props.network.hasError} showError={(show) => {this.props.showNetworkError(show)}} /> */}
       </View>
     )
   }

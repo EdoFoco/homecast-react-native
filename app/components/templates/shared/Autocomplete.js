@@ -48,14 +48,14 @@ export default class Autocomplete extends Component{
   }
 }
 
-Autocomplete.propTypes ={
-    textValue: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    getLocationSuggestions: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onFocus: PropTypes.func,
-    onEndFocus: PropTypes.func
-}
+// Autocomplete.propTypes ={
+//     textValue: PropTypes.string.isRequired,
+//     placeholder: PropTypes.string.isRequired,
+//     getLocationSuggestions: PropTypes.func.isRequired,
+//     onChange: PropTypes.func.isRequired,
+//     onFocus: PropTypes.func,
+//     onEndFocus: PropTypes.func
+// }
 
 const styles = StyleSheet.create({
     container: {

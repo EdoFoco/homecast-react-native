@@ -1,8 +1,9 @@
-package com.homecast;
+package com.Homecast;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import me.jhen.devsettings.DevSettingsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -12,18 +13,8 @@ import com.imagepicker.ImagePickerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;                       import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
-import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.airbnb.android.react.maps.MapsPackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
-import com.zxcpoiu.incallmanager.InCallManagerPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -44,7 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-            new SplashScreenReactPackage()
+            new DevSettingsPackage(),
+            new SplashScreenReactPackage(),
             new ReactNativeExceptionHandlerPackage(),
             new RNFirebasePackage(),
             new PickerPackage(),

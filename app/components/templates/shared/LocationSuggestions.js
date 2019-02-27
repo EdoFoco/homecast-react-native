@@ -42,10 +42,10 @@ export default class LocationSuggestions extends Component{
   }
 }
 
-LocationSuggestions.propTypes ={
-    suggestions: PropTypes.array.isRequired,
-    onPress: PropTypes.func.isRequired
-}
+// LocationSuggestions.propTypes ={
+//     suggestions: PropTypes.array.isRequired,
+//     onPress: PropTypes.func.isRequired
+// }
 
 const styles = StyleSheet.create({
     suggestionRow: {

@@ -24,10 +24,10 @@ export default class ErrorScreen extends Component{
     }
 }
 
-ErrorScreen.PropTpes = {
-    close: PropTypes.func.isRequired,
-    errorMessage: PropTypes.errorMessage
-}
+// ErrorScreen.PropTpes = {
+//     close: PropTypes.func.isRequired,
+//     errorMessage: PropTypes.errorMessage
+// }
 
 const styles = StyleSheet.create({
     container: {

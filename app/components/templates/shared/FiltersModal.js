@@ -129,12 +129,12 @@ export default class FiltersModal extends Component{
   }
 }
 
-FiltersModal.propTypes ={
-   getProperties: PropTypes.func.isRequired,
-   updateFilters: PropTypes.func.isRequired,
-   closeModal: PropTypes.func.isRequired,
-   filters: PropTypes.object.isRequired
-}
+// FiltersModal.propTypes ={
+//    getProperties: PropTypes.func.isRequired,
+//    updateFilters: PropTypes.func.isRequired,
+//    closeModal: PropTypes.func.isRequired,
+//    filters: PropTypes.object.isRequired
+// }
 
 const styles = StyleSheet.create({
     filtersModal: {

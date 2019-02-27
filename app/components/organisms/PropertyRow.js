@@ -107,14 +107,14 @@ export default class PropertyRow extends Component{
   }
 }
 
-PropertyRow.propTypes = {
-    property: PropTypes.object,
-    user: PropTypes.object,
-    onPress: PropTypes.func,
-    enableFavourites: PropTypes.bool,
-    onAddToFavourites: PropTypes.func,
-    onRemoveFromFavourites: PropTypes.func
-}  
+// PropertyRow.propTypes = {
+//     property: PropTypes.object,
+//     user: PropTypes.object,
+//     onPress: PropTypes.func,
+//     enableFavourites: PropTypes.bool,
+//     onAddToFavourites: PropTypes.func,
+//     onRemoveFromFavourites: PropTypes.func
+// }  
 
 
 const styles = StyleSheet.create({
