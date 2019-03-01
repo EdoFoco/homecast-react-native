@@ -28,12 +28,12 @@ export function deleteProperty(propertyId, userId){
     }
 }
 
-export function updatePropertiesList(listings, currentPage, nextPage){
+export function updatePropertiesList(listings, currentPage, lastPage){
     return {
         type: types.UPDATE_PROPERTIES_LIST,
         listings: listings,
         current_page: currentPage,
-        next_page: nextPage
+        last_page: lastPage
     }
 }
 
@@ -73,7 +73,7 @@ export function getProperties(filters, page) {
         try{
             var apiService = await ApiServiceFactory.getInstance();
             var resp = await apiService.getProperties(filters, page);
-            dispatch(updatePropertiesList(resp.data.data, resp.data.current_page, resp.data.next_page));
+            dispatch(updatePropertiesList(resp.data.data, resp.data.current_page, resp.data.last_page));
             return resp.data;
         }
         catch(error){
