@@ -51,13 +51,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your camera</string>
+	<string>Homecast would like to use your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
+	<string>Homecast would like to use your microphone (for videos)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your media library</string>
+	<string>Homecast would like to use your media library</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

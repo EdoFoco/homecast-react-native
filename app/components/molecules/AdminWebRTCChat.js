@@ -136,13 +136,14 @@ export default class AdminWebRTCChat extends Component{
     this.webRtcAdaptor.startMedia()
     .then(() => {
       this.webRtcAdaptor.publish(streamId);
-      this.publishTimeout = setTimeout(() => {
-        this.setState({ errorMessage: "There was a problem with your viewing, please try again."});
-        this._disconnectWebRtcAdaptor();
-        this._disconnectChat();
-      }, 10000);
+      // this.publishTimeout = setTimeout(() => {
+      //   this.setState({ errorMessage: "There was a problem with your viewing, please try again."});
+      //   this._disconnectWebRtcAdaptor();
+      //   this._disconnectChat();
+      // }, 10000);
     })
     .catch((e) => {
+      console.log(e);
       this.setState({errorMessage: 'There was a problem with your camera or microphone.'});
     });
   }

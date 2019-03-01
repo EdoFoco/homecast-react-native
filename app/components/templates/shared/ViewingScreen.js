@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   View,
   ScrollView,
   Dimensions,
@@ -144,7 +145,7 @@ export default class ViewingScreen extends Component{
                       <Text style={styles.stepDescription}>Let the agent show you around the property and feel free to ask questions using the real-time chat.</Text>
                     </View>
                 </View>
-                {/* {
+                {
                   this.props.viewing.status.status == 'ACTIVE' ?
                   <TouchableHighlight style={styles.joinLiveCast} onPress={() => {this.props.joinLiveCast()}}>
                     <Text style={styles.ctaText}>Join Live Cast</Text>
@@ -153,7 +154,7 @@ export default class ViewingScreen extends Component{
                   <TouchableHighlight style={styles.joinLiveCastDisabled} onPress={() => {}}>
                     <Text style={styles.ctaText}>Join Live Cast</Text>
                   </TouchableHighlight>
-                } */}
+                }
                 
             </ScrollView>
             <View style={styles.joinCastContainer}>

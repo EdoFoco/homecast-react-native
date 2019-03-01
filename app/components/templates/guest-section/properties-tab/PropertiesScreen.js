@@ -119,6 +119,7 @@ class PropertiesScreen extends Component{
   }
 
   _loadMoreProperties(){
+    console.log('Properties: ', this.props.properties);
     if(this.props.properties.current_page == this.props.properties.last_page){
       return;
     }
@@ -159,7 +160,7 @@ class PropertiesScreen extends Component{
         <FlatList
           data={this.props.properties.listings}
           renderItem={(property) => this._renderRow(property)}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item, index) => Math.random().toString(36).substring(7)}
           removeClippedSubviews={false}
           refreshing={this.state.isRefreshing}
           onRefresh={() => this._refresh()}
@@ -198,6 +199,7 @@ PropertiesScreen.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
+    console.log('State ', state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         user: state.user,

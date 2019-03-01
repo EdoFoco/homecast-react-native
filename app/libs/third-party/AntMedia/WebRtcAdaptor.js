@@ -5,7 +5,7 @@ import {
 	RTCPeerConnection,
 	RTCSessionDescription,
 	MediaStreamTrack,
-	getUserMedia
+	mediaDevices
   } from 'react-native-webrtc';
 
 var thiz;
@@ -58,20 +58,17 @@ export default class WebRTCAdaptor
 	 */
 	getMedia() {
 		var isFront = true;
-		return MediaStreamTrack.getSources()
-		.then((sourceInfos) => {
+		return mediaDevices.enumerateDevices()
+		.then(sourceInfos => {
+			console.log(sourceInfos);
 			let videoSourceId;
 			for (let i = 0; i < sourceInfos.length; i++) {
-			  const sourceInfo = sourceInfos[i];
-			  if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
-				videoSourceId = sourceInfo.id;
-			  }
+				const sourceInfo = sourceInfos[i];
+				if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
+					videoSourceId = sourceInfo.id;
+				}
 			}
-
-			return videoSourceId;
-		})
-		.then((videoSourceId) => {
-			return getUserMedia({
+			return mediaDevices.getUserMedia({
 				audio: true,
 				video: {
 					mandatory: {
@@ -83,8 +80,8 @@ export default class WebRTCAdaptor
 				   optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
 				}
 			});
-		});
-	}
+	});
+}
 
 	/**
 	 * Closes stream, if you want to stop peer connection, call stop(streamId)
@@ -121,7 +118,7 @@ export default class WebRTCAdaptor
 				streamId : streamId,
 				token : token,
 				video: thiz.mediaConstraints.video == false ? false : true,
-						audio: thiz.mediaConstraints.audio == false ? false : true,
+				audio: thiz.mediaConstraints.audio == false ? false : true,
 		};
 
 		thiz.webSocketAdaptor.send(JSON.stringify(jsCmd));
@@ -345,9 +342,7 @@ export default class WebRTCAdaptor
 		thiz.remotePeerConnection[streamId]
 		.setLocalDescription(configuration)
 		.then((responose) =>
-				{
-			//console.log("Set local description successfully for stream Id " + streamId);
-
+		{
 			var jsCmd = {
 					command : "takeConfiguration",
 					streamId : streamId,
@@ -357,17 +352,15 @@ export default class WebRTCAdaptor
 			};
 
 			if (thiz.debug) {
-				//console.log("local sdp: ");
-				//console.log(configuration.sdp);
+				console.log("local sdp: ");
+				console.log(configuration.sdp);
 			}
 
 			thiz.webSocketAdaptor.send(JSON.stringify(jsCmd));
 
-				}).catch((error) =>{
-					console.error("Cannot set local description. Error is: " + error);
-				});
-
-
+		}).catch((error) =>{
+			console.error("Cannot set local description. Error is: " + error);
+		});
 	}
 
 	turnOffLocalCamera(){
@@ -459,7 +452,8 @@ export default class WebRTCAdaptor
 		var candidateSdp = tmpCandidate;
 
 		var candidate = new RTCIceCandidate({
-			sdpMLineIndex : label,
+			sdpMLineIndex : 0,
+			sdpMid: 'data',
 			candidate : candidateSdp
 		});
 
@@ -472,6 +466,7 @@ export default class WebRTCAdaptor
 			}
 		})
 		.catch((error) =>{ 
+			console.log(candidate);
 			console.error("ice candiate cannot be added for stream id: " + streamId + " error is: " + error  );
 		});
 
@@ -482,9 +477,12 @@ export default class WebRTCAdaptor
 
 		this.initPeerConnection(streamId);
 
-		thiz.remotePeerConnection[streamId].createOffer(thiz.sdp_constraints)
+		return thiz.remotePeerConnection[streamId].createOffer(thiz.sdp_constraints)
 		.then((configuration) => {
 			this.gotDescription(configuration, streamId);
+		})
+		.catch((e) => {
+			console.log(e);
 		});
 	}
 

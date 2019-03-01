@@ -75,7 +75,11 @@ PODS:
   - QBImagePickerController (3.4.0)
   - React (0.58.5):
     - React/Core (= 0.58.5)
+  - react-native-image-picker (0.14.3):
+    - React
   - react-native-maps (0.23.0):
+    - React
+  - react-native-webrtc (1.69.0):
     - React
   - React/Core (0.58.5):
     - yoga (= 0.58.5.React)
@@ -116,6 +120,8 @@ PODS:
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
+  - RNVectorIcons (4.6.0):
+    - React
   - RSKImageCropper (2.2.1)
   - yoga (0.58.5.React)
 
@@ -125,7 +131,9 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleMaps
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-webrtc (from `../node_modules/react-native-webrtc`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -134,6 +142,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/Yoga`)
 
 SPEC REPOS:
@@ -161,10 +170,16 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-webrtc:
+    :path: "../node_modules/react-native-webrtc"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/Yoga"
 
@@ -186,11 +201,14 @@ SPEC CHECKSUMS:
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 16c4fb7ce3fc30c041bce809ceae33bf57e7c142
+  react-native-image-picker: 42cfe2c8435d893414f8714a81e480313cb1412b
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  react-native-webrtc: 31b6d3f1e3e2ce373aa43fd682b04367250f807d
   RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
+  RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 0885622311729a02c2bc02dca97167787a51488b
 
-PODFILE CHECKSUM: f485ff11a94e579f378b314a52055434ed987bfb
+PODFILE CHECKSUM: 97d28f4409b68f52bc83e5c3de4c1344649b3b49
 
 COCOAPODS: 1.5.0
