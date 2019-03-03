@@ -43,6 +43,7 @@ export default class WSAdaptor{
     }
 
     send(text) {
+        console.log(text);
         if (this.wsConn.readyState == 0 || this.wsConn.readyState == 2 || this.wsConn.readyState == 3) {
             this.onError("WebSocketNotConnected");
             return;

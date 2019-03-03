@@ -57,7 +57,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Homecast would like to use your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Homecast would like to use your microphone (for videos)</string>
 	<key>NSPhotoLibraryUsageDescription</key>

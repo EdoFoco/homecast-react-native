@@ -446,14 +446,13 @@ export default class WebRTCAdaptor
 		});
 	}
 
-	takeCandidate(idOfTheStream, tmpLabel, tmpCandidate) {
+	takeCandidate(idOfTheStream, sdpMLineIndex, sdpMid, tmpCandidate) {
 		var streamId = idOfTheStream;
-		var label = tmpLabel;
 		var candidateSdp = tmpCandidate;
 
 		var candidate = new RTCIceCandidate({
-			sdpMLineIndex : 0,
-			sdpMid: 'data',
+			sdpMLineIndex : sdpMLineIndex,
+			sdpMid: sdpMid,
 			candidate : candidateSdp
 		});
 
@@ -503,7 +502,7 @@ export default class WebRTCAdaptor
 				console.log("received ice candidate for stream id " + obj.streamId);
 			}
 
-			this.takeCandidate(obj.streamId, obj.label, obj.candidate);
+			this.takeCandidate(obj.streamId, obj.label, obj.id, obj.candidate);
 
 		} else if (obj.command == "takeConfiguration") {
 
