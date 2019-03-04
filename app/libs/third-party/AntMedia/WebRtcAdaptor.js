@@ -417,6 +417,7 @@ export default class WebRTCAdaptor
 
 		this.initPeerConnection(streamId);
 
+		//AntMedia doesn't support VP8 which causes android to crash
 		thiz.remotePeerConnection[streamId].setRemoteDescription(new RTCSessionDescription({
 			sdp : conf,
 			type : type
